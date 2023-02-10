@@ -5,7 +5,7 @@ const {
     CardCannotBeBuilt,
     DungeonFullError
 } = require('../errors')
-
+const feedback = require('../game/actionFeedbacks')
 
 
 class Player {
@@ -101,6 +101,7 @@ class Player {
 
     becomeReady() {
         this.finishedPhase = true
+        this.trackedGame.saveGameAction(feedback.PLAYER_BECOME_READY(this))
         this.trackedGame.checkForPhaseEnd()
     }
 

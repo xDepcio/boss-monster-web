@@ -5,12 +5,12 @@ const BOSS_CARDS = require('./cards.json').bosses
 const { DungeonCard, HeroCard, SpellCard } = require('./cards')
 
 
-function getShuffledDungeonCards() {
+function getShuffledDungeonCards(game) {
     let dungeonCards = []
     for (let card of DUNGEON_CARDS) {
         if (card.CARDTYPE === "DUNGEON") {
             const { id, name, CARDTYPE, damage, isFancy, treasure, type } = card
-            const createdCardObj = new DungeonCard(id, name, CARDTYPE, damage, treasure, type, isFancy,)
+            const createdCardObj = new DungeonCard(id, name, CARDTYPE, game, damage, treasure, type, isFancy)
             dungeonCards.push(createdCardObj)
         }
     }
@@ -18,22 +18,26 @@ function getShuffledDungeonCards() {
     return dungeonCards
 }
 
-function getShuffledSpellCards() {
+function getShuffledSpellCards(game) {
     let dungeonCards = []
     for (let card of SPELL_CARDS) {
         if (card.CARDTYPE === "SPELL") {
-            dungeonCards.push(card)
+            const { CARDTYPE, id, name, playablePhase } = card
+            const createdCardObj = new SpellCard(id, name, CARDTYPE, game, playablePhase)
+            dungeonCards.push(createdCardObj)
         }
     }
     dungeonCards = shuuffled(dungeonCards)
     return dungeonCards
 }
 
-function getShuffledHeroCards() {
+function getShuffledHeroCards(game) {
     let dungeonCards = []
     for (let card of HERO_CARDS) {
         if (card.CARDTYPE === "HERO") {
-            dungeonCards.push(card)
+            const { CARDTYPE, damageDealt, health, id, name, treasure } = card
+            const createdCardObj = new HeroCard(id, name, CARDTYPE, game, health, treasure, damageDealt)
+            dungeonCards.push(createdCardObj)
         }
     }
     dungeonCards = shuuffled(dungeonCards)

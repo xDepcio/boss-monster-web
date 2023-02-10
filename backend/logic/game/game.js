@@ -1,6 +1,7 @@
 const Player = require('../player/player')
 const { getShuffledDungeonCards, getShuffledHeroCards, getShuffledSpellCards } = require('./utils')
 const { PlayerAlreadyDeclaredBuild, HeroesCardsStackEmpty } = require('../errors')
+const feedback = require('./actionFeedbacks')
 
 
 class Game {
@@ -9,14 +10,15 @@ class Game {
     constructor(id, players = null) {
         this.id = id
         this.players = players || []
-        this.notUsedSpellCardsStack = getShuffledSpellCards()
-        this.notUsedDungeonCardsStack = getShuffledDungeonCards()
-        this.notUsedHeroCardsStack = getShuffledHeroCards()
+        this.notUsedSpellCardsStack = getShuffledSpellCards(this)
+        this.notUsedDungeonCardsStack = getShuffledDungeonCards(this)
+        this.notUsedHeroCardsStack = getShuffledHeroCards(this)
         this.usedCardsStack = []
         this.gameRound = 1
         this.roundPhase = 'build'
         this.buildPhaseDeclaredBuilds = {}
         this.city = []
+        this.movesHistory = []
         this.startGame()
     }
 
@@ -33,6 +35,7 @@ class Game {
             throw new PlayerAlreadyDeclaredBuild("Player already declared card to build in this round")
         }
         this.buildPhaseDeclaredBuilds[player.id] = card
+        this.saveGameAction(feedback.PLAYER_DECLARED_BUILD(player))
     }
 
     checkForPhaseEnd() {
@@ -51,9 +54,11 @@ class Game {
     }
 
     startNewFightPhase() {
+        this.saveGameAction(feedback.START_FIGHT_PHASE())
         this.players.forEach(player => player.becomeNotReady())
         this.roundPhase = 'fight'
         this.buildDeclaredCards()
+        this.city.forEach(hero => hero.goToLuredPlayer())
     }
 
     fillCityWithHeroes() {
@@ -86,6 +91,16 @@ class Game {
             }
         }
         return true
+    }
+
+    saveGameAction(feedbackObj) {
+        this.movesHistory.push(feedbackObj)
+    }
+
+    printHistory() {
+        for (let move of this.movesHistory) {
+            console.log(move.message)
+        }
     }
 
     static getGame(gameId) {

@@ -12,12 +12,12 @@ const game = new Game(1, [player1, player2])
 
 player1.declareBuild(player1.dungeonCards[0])
 player2.declareBuild(player2.dungeonCards[0])
-console.log(util.inspect(game, { colors: true, depth: null }))
-console.log('================================')
+// console.log(util.inspect(game, { colors: true, depth: null }))
+// console.log('================================')
 
 player1.becomeReady()
-player2.becomeReady()
-console.log(util.inspect(game, { colors: true, depth: null }))
+// player2.becomeReady()
+// console.log(util.inspect(game, { colors: true, depth: null }))
 
 
 
@@ -29,6 +29,7 @@ const rl = readline.createInterface({
 
 
 function showPlayers(choosenCard) {
+    console.clear()
     console.log(game.players)
     let choosen
     rl.question('Type player id to choose him: ', (id) => {
@@ -39,6 +40,7 @@ function showPlayers(choosenCard) {
 
 
 function showOptions(choosenPlayer = null, choosenCard = null) {
+    console.clear()
     if (choosenPlayer) {
         console.log('Your Player: ', choosenPlayer)
     }
@@ -52,6 +54,7 @@ function showOptions(choosenPlayer = null, choosenCard = null) {
         Type 'ready' to become ready
         Type 'g' to get game info
         Type 'play' to use selected card
+        Type 'h' to show game actions history
     `, (choice) => {
         if (choice === 'p') {
             showPlayers()
@@ -66,21 +69,48 @@ function showOptions(choosenPlayer = null, choosenCard = null) {
             }
         }
         else if (choice === 'g') {
-            console.log(game)
-            showOptions(choosenPlayer, choosenCard)
+            showGameInfo(choosenPlayer, choosenCard)
         }
         else if (choice === 'play') {
             switch (choosenCard.CARDTYPE) {
                 case 'DUNGEON': {
                     choosenPlayer.declareBuild(choosenCard)
+                    showOptions(choosenPlayer, choosenCard)
                 }
             }
+        }
+        else if (choice === 'ready') {
+            choosenPlayer.becomeReady()
+            showOptions(choosenPlayer, choosenCard)
+        }
+        else if (choice === 'h') {
+            showHistory(choosenPlayer, choosenCard)
         }
     })
 }
 
 
+function showGameInfo(choosenPlayer, choosenCard) {
+    console.clear()
+    // console.log(util.inspect(game, { colors: true, depth: null }))
+    console.log(game)
+    rl.question('Press Enter to exit: ', (e) => {
+        showOptions(choosenPlayer, choosenCard)
+    })
+}
+
+
+function showHistory(choosenPlayer, choosenCard) {
+    console.clear()
+    game.printHistory()
+    rl.question('Press Enter to exit: ', (e) => {
+        showOptions(choosenPlayer, choosenCard)
+    })
+}
+
+
 function showCards(player) {
+    console.clear()
     console.log('SPELL: ', player.spellCards)
     console.log('DUNGEONS: ', player.dungeonCards)
 
