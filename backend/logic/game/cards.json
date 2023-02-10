@@ -1,0 +1,120 @@
+{
+    "spells": [
+        {
+            "CARDTYPE": "SPELL",
+            "id": 3,
+            "name": "spell 1",
+            "playablePhase": "build"
+        },
+        {
+            "CARDTYPE": "SPELL",
+            "id": 6,
+            "name": "spell 2",
+            "playablePhase": "fight"
+        }
+    ],
+    "dungeons": [
+        {
+            "CARDTYPE": "DUNGEON",
+            "id": 1,
+            "name": "dungeon 1",
+            "type": "monsters",
+            "damage": 2,
+            "treasure": {
+                "faith": 1
+            },
+            "isFancy": false
+        },
+        {
+            "CARDTYPE": "DUNGEON",
+            "id": 2,
+            "name": "dungeon 2",
+            "type": "traps",
+            "damage": 3,
+            "treasure": {
+                "strength": 2
+            },
+            "isFancy": false
+        },
+        {
+            "CARDTYPE": "DUNGEON",
+            "id": 7,
+            "name": "dungeon 3",
+            "type": "monsters",
+            "damage": 2,
+            "treasure": {
+                "fortune": 2
+            },
+            "isFancy": false
+        },
+        {
+            "CARDTYPE": "DUNGEON",
+            "id": 8,
+            "name": "dungeon 4",
+            "type": "traps",
+            "damage": 4,
+            "treasure": {
+                "faith": 1,
+                "strength": 2
+            },
+            "isFancy": false
+        },
+        {
+            "CARDTYPE": "DUNGEON",
+            "id": 9,
+            "name": "dungeon 5",
+            "type": "traps",
+            "damage": 2,
+            "treasure": {
+                "strength": 1
+            },
+            "isFancy": false
+        },
+        {
+            "CARDTYPE": "DUNGEON",
+            "id": 10,
+            "name": "dungeon 6 fancy",
+            "type": "monsters",
+            "damage": 4,
+            "treasure": {
+                "magic": 2
+            },
+            "isFancy": true
+        }
+    ],
+    "heroes": [
+        {
+            "CARDTYPE": "HERO",
+            "id": 4,
+            "name": "hero 1",
+            "health": 4,
+            "treasure": "magic",
+            "damageDealt": 1
+        },
+        {
+            "CARDTYPE": "HERO",
+            "id": 5,
+            "name": "hero 2",
+            "health": 11,
+            "treasure": "strength",
+            "damageDealt": 1
+        },
+        {
+            "CARDTYPE": "HERO",
+            "id": 6,
+            "name": "hero 3",
+            "health": 8,
+            "treasure": "fortune",
+            "damageDealt": 1
+        },
+        {
+            "CARDTYPE": "HERO",
+            "id": 7,
+            "name": "hero 4",
+            "health": 4,
+            "treasure": "faith",
+            "damageDealt": 1
+        }
+    ],
+    "bosses": []
+}
