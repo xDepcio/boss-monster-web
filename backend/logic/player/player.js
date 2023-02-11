@@ -3,7 +3,10 @@ const {
     DungeonCardsStackEmpty,
     SpellCardsStackEmpty,
     CardCannotBeBuilt,
-    DungeonFullError
+    DungeonFullError,
+    BossCardStackEmpty,
+    NoSuchBossInPlayerCards,
+    PlayerAlreadySelectedBoss
 } = require('../errors')
 const feedback = require('../game/actionFeedbacks')
 
@@ -24,6 +27,8 @@ class Player {
         this.health = 5
         this.money = 3
         this.defeatedHeroes = []
+        this.drawnBosses = []
+        this.selectedBoss = null
         this.totalScore = 0
         this.heroesThatDefeatedPlayer = []
         this.collectedTreasure = {
@@ -45,6 +50,24 @@ class Player {
         this.trackedGame = game
     }
 
+    drawStartingBosses() {
+        this.drawNotUsedBossCard()
+        this.drawNotUsedBossCard()
+    }
+
+    selectBoss(bossId) {
+        if (this.selectedBoss) {
+            throw new PlayerAlreadySelectedBoss("Cannot select another boss in the same game")
+        }
+        const foundBoss = this.drawnBosses.find(boss => boss.id === bossId)
+        if (!foundBoss) {
+            throw new NoSuchBossInPlayerCards("Tried to select boss that wasn't in player cards")
+        }
+        this.selectedBoss = foundBoss
+        this.trackedGame.saveGameAction(feedback.PLAYER_SELECTED_BOSS(this, foundBoss))
+        this.becomeReady()
+    }
+
     drawNotUsedDungeonCard() {
         const card = this.trackedGame.notUsedDungeonCardsStack.pop()
         if (!card) {
@@ -63,6 +86,14 @@ class Player {
         return card
     }
 
+    drawNotUsedBossCard() {
+        const boss = this.trackedGame.notUsedBossesStack.pop()
+        if (!boss) {
+            throw new BossCardStackEmpty("Can;t draw from empty boss stack")
+        }
+        this.drawnBosses.push(boss)
+    }
+
     declareBuild(card) {
         if (card.CARDTYPE !== 'DUNGEON') {
             throw new CardCannotBeBuilt("Only dungeon cards can be built")
@@ -75,6 +106,7 @@ class Player {
             this.useDungeonCard(card)
         } catch (error) {
             if (error instanceof PlayerAlreadyDeclaredBuild) {
+                // ...TODO when players tries to build a 2nd dungeon in the same round
                 console.log(error.message)
             } else {
                 throw error

@@ -34,6 +34,18 @@ const feedback = {
             type: "PLAYER_DAMAGED",
             message: `hero ${hero.name} damaged player ${player.name} for ${hero.damageDealt} hp`
         }
+    },
+    PLAYER_SELECTED_BOSS: (player, boss) => {
+        return {
+            type: "PLAYER_SELECTED_BOSS",
+            message: `player ${player.name} selected boss ${boss.name}`
+        }
+    },
+    START_FIRST_ROUND: () => {
+        return {
+            type: "START_FIRST_ROUND",
+            message: `All players chose their bosses and first round has started`
+        }
     }
 }
 

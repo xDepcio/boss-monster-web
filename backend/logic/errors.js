@@ -25,6 +25,24 @@ class SpellCardsStackEmpty extends Error {
     }
 }
 
+class BossCardStackEmpty extends Error {
+    constructor(message) {
+        super(message)
+    }
+}
+
+class NoSuchBossInPlayerCards extends Error {
+    constructor(message) {
+        super(message)
+    }
+}
+
+class PlayerAlreadySelectedBoss extends Error {
+    constructor(message) {
+        super(message)
+    }
+}
+
 class CardCannotBeBuilt extends Error {
     constructor(message) {
         super(message)
@@ -54,5 +72,8 @@ module.exports = {
     SpellCardsStackEmpty,
     HeroesCardsStackEmpty,
     DungeonFullError,
-    NotAllPlayersAcceptedHeroMove
+    NotAllPlayersAcceptedHeroMove,
+    BossCardStackEmpty,
+    NoSuchBossInPlayerCards,
+    PlayerAlreadySelectedBoss
 }

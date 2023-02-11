@@ -10,12 +10,12 @@ const player2 = new Player(2, 'mat')
 const game = new Game(1, [player1, player2])
 
 
-player1.declareBuild(player1.dungeonCards[0])
-player2.declareBuild(player2.dungeonCards[0])
+// player1.declareBuild(player1.dungeonCards[0])
+// player2.declareBuild(player2.dungeonCards[0])
 // console.log(util.inspect(game, { colors: true, depth: null }))
 // console.log('================================')
 
-player1.becomeReady()
+// player1.becomeReady()
 // player2.becomeReady()
 // console.log(util.inspect(game, { colors: true, depth: null }))
 
@@ -26,8 +26,6 @@ const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 })
-
-
 
 
 function showOptions(choosenPlayer = null, choosenCard = null) {
@@ -49,6 +47,7 @@ function showOptions(choosenPlayer = null, choosenCard = null) {
     Type 'play' to use selected card
     Type 'h' to show game actions history
     Type 'acc' to accept hero dungeon entrance
+    Type 'b' to show avalible bosses
     `, (choice) => {
         if (choice === 'p') {
             showPlayers()
@@ -84,6 +83,19 @@ function showOptions(choosenPlayer = null, choosenCard = null) {
             choosenPlayer.acceptHeroMove()
             showOptions(choosenPlayer, choosenCard)
         }
+        else if (choice === 'b') {
+            showBosses(choosenPlayer)
+        }
+    })
+}
+
+
+function showBosses(choosenPlayer) {
+    process.stdout.write('\x1B[2J\x1B[3J\x1B[H')
+    console.log(choosenPlayer.drawnBosses)
+    rl.question('Type boss id to choose him: ', (bossId) => {
+        choosenPlayer.selectBoss(parseInt(bossId))
+        showOptions(choosenPlayer)
     })
 }
 

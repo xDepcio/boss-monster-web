@@ -6,7 +6,8 @@ const feedback = require('./actionFeedbacks')
 
 const phase = {
     BUILD: 'build',
-    FIGHT: 'fight'
+    FIGHT: 'fight',
+    START: 'start'
 }
 
 
@@ -22,7 +23,7 @@ class Game {
         this.notUsedBossesStack = getShuffledBossesCards(this)
         this.usedCardsStack = []
         this.gameRound = 1
-        this.roundPhase = phase.BUILD
+        this.roundPhase = phase.START
         this.buildPhaseDeclaredBuilds = {}
         this.city = []
         this.movesHistory = []
@@ -32,9 +33,22 @@ class Game {
     startGame() {
         this.players.forEach((player) => {
             player.trackGame(this)
+            player.drawStartingBosses()
+        })
+    }
+
+    startFirstRound() {
+        this.roundPhase = phase.BUILD
+        this.saveGameAction(feedback.START_FIRST_ROUND())
+        this.players.forEach(player => {
+            player.becomeNotReady()
             player.drawStartCards()
         })
         this.fillCityWithHeroes()
+    }
+
+    setPlayersOrder() {
+        this.players.sort((pl1, pl2) => pl2.selectedBoss.pd - pl1.selectedBoss.pd)
     }
 
     handlePlayerBuildDeclaration(player, card) {
@@ -48,6 +62,11 @@ class Game {
     checkForPhaseEnd() {
         if (this.areAllPlayersReady()) {
             switch (this.roundPhase) {
+                case phase.START: {
+                    this.setPlayersOrder()
+                    this.startFirstRound()
+                    break
+                }
                 case phase.BUILD: {
                     this.startNewFightPhase()
                     break
