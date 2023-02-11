@@ -11,8 +11,9 @@ const feedback = require('../game/actionFeedbacks')
 class Player {
     static players = {}
 
-    constructor(id) {
+    constructor(id, name) {
         this.id = id
+        this.name = name
         this.dungeonCards = []
         this.spellCards = []
         this.trackedGame = null
@@ -21,6 +22,7 @@ class Player {
         this.dungeonEntranceHeroes = []
         this.acceptedheroMove = false
         this.health = 5
+        this.money = 3
         this.defeatedHeroes = []
         this.totalScore = 0
         this.heroesThatDefeatedPlayer = []

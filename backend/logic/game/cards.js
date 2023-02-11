@@ -1,4 +1,5 @@
 const { NotAllPlayersAcceptedHeroMove } = require('../errors')
+const feedback = require('./actionFeedbacks')
 
 
 class Card {
@@ -24,6 +25,7 @@ class HeroCard extends Card {
     goToLuredPlayer() {
         const mostValuablePlayer = this.getMostValuablePlayer(this.trackedGame.players)
         if (mostValuablePlayer) {
+            this.trackedGame.saveGameAction(feedback.HERO_GOTO_PLAYER(this, mostValuablePlayer))
             this.removeSelfFromCity()
             mostValuablePlayer.dungeonEntranceHeroes.push(this)
             this.dungeonOwner = mostValuablePlayer
@@ -56,6 +58,11 @@ class HeroCard extends Card {
         this.trackedGame.city.splice(heroIndexInCity, 1)
     }
 
+    removeSelfFromDungeonEntrance() {
+        const heroIndexInEntrance = this.dungeonOwner.dungeonEntranceHeroes.findIndex((hero) => hero.id === this.id)
+        this.dungeonOwner.dungeonEntranceHeroes.splice(heroIndexInEntrance, 1)
+    }
+
     moveToNextRoom() {
         if (this.checkAllPlayersAcceptedHeroEntrance()) {
             if (this.dungeonRoom === null) {
@@ -79,15 +86,18 @@ class HeroCard extends Card {
     }
 
     triggerCurrentDungeonCard() {
-        this.health -= this.dungeonRoom.damage
-        this.checkDeath()
+        this.dungeonRoom.heroEnteredRoom(this)
     }
 
     checkDeath() {
-        if (this.health <= 0) {
-            this.dungeonOwner.defeatedHeroes.push(this)
-            this.dungeonOwner.updateScore()
-        }
+        return this.health <= 0
+    }
+
+    die() {
+        this.trackedGame.saveGameAction(feedback.PLAYER_KILLED_HERO(this.dungeonOwner, this))
+        this.dungeonOwner.defeatedHeroes.push(this)
+        this.removeSelfFromDungeonEntrance()
+        this.dungeonOwner.updateScore()
     }
 
     finishPlayerDungeon() {
@@ -96,6 +106,7 @@ class HeroCard extends Card {
     }
 
     damageCurrentPlayer() {
+        this.trackedGame.saveGameAction(feedback.HERO_ATTACKED_PLAYER(this, this.dungeonOwner))
         this.dungeonOwner.getDamage(this.damageDealt)
     }
 
@@ -118,6 +129,22 @@ class DungeonCard extends Card {
         this.type = type
         this.isFancy = isFancy
     }
+
+    heroEnteredRoom(hero) {
+        this.damageHero(hero)
+    }
+
+    damageHero(hero) {
+        hero.health -= this.damage
+        if (hero.checkDeath()) {
+            hero.die()
+            this.handleHeroDiedInRoom()
+        }
+    }
+
+    handleHeroDiedInRoom() {
+        // ...TODO something when hero died in this dungeon room
+    }
 }
 
 
@@ -129,9 +156,19 @@ class SpellCard extends Card {
 }
 
 
+class BossCard extends Card {
+    constructor(id, name, CARDTYPE, trackedGame, pd, treasure) {
+        super(id, name, CARDTYPE, trackedGame)
+        this.pd = pd
+        this.treasure = treasure
+    }
+}
+
+
 module.exports = {
     Card,
     HeroCard,
     DungeonCard,
-    SpellCard
+    SpellCard,
+    BossCard
 }

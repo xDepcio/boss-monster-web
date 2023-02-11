@@ -5,8 +5,8 @@ const readline = require('readline');
 const prompt = require('prompt')
 
 
-const player1 = new Player(1)
-const player2 = new Player(2)
+const player1 = new Player(1, 'olek')
+const player2 = new Player(2, 'mat')
 const game = new Game(1, [player1, player2])
 
 
@@ -89,7 +89,8 @@ function showOptions(choosenPlayer = null, choosenCard = null) {
 
 
 function showPlayers(choosenCard) {
-    console.clear()
+    // console.clear()
+    process.stdout.write('\x1B[2J\x1B[3J\x1B[H');
     console.log(game.players)
     let choosen
     rl.question('Type player id to choose him: ', (id) => {
@@ -100,7 +101,8 @@ function showPlayers(choosenCard) {
 
 
 function showGameInfo(choosenPlayer, choosenCard) {
-    console.clear()
+    // console.clear()
+    process.stdout.write('\x1B[2J\x1B[3J\x1B[H');
     // console.log(util.inspect(game, { colors: true, depth: null }))
     console.log(game)
     rl.question('Press Enter to exit: ', (e) => {
@@ -110,7 +112,8 @@ function showGameInfo(choosenPlayer, choosenCard) {
 
 
 function showHistory(choosenPlayer, choosenCard) {
-    console.clear()
+    // console.clear()
+    process.stdout.write('\x1B[2J\x1B[3J\x1B[H');
     game.printHistory()
     console.log('')
     rl.question('Press Enter to exit: ', (e) => {
@@ -120,7 +123,8 @@ function showHistory(choosenPlayer, choosenCard) {
 
 
 function showCards(player) {
-    console.clear()
+    // console.clear()
+    process.stdout.write('\x1B[2J\x1B[3J\x1B[H');
     console.log('SPELL: ', player.spellCards)
     console.log('DUNGEONS: ', player.dungeonCards)
 

@@ -80,6 +80,51 @@
                 "magic": 2
             },
             "isFancy": true
+        },
+        {
+            "CARDTYPE": "DUNGEON",
+            "id": 11,
+            "name": "Biuro kadr",
+            "type": "monsters",
+            "damage": 1,
+            "treasure": {
+                "magic": 1,
+                "strength": 1
+            },
+            "isFancy": false
+        },
+        {
+            "CARDTYPE": "DUNGEON",
+            "id": 12,
+            "name": "Niszczyciel umysłów",
+            "type": "monsters",
+            "damage": 2,
+            "treasure": {
+                "magic": 1
+            },
+            "isFancy": false
+        },
+        {
+            "CARDTYPE": "DUNGEON",
+            "id": 13,
+            "name": "Bezdenna czeluść",
+            "type": "traps",
+            "damage": 1,
+            "treasure": {
+                "fortune": 1
+            },
+            "isFancy": false
+        },
+        {
+            "CARDTYPE": "DUNGEON",
+            "id": 14,
+            "name": "Diabliczki w spa",
+            "type": "monsters",
+            "damage": 1,
+            "treasure": {
+                "faith": 1
+            },
+            "isFancy": false
         }
     ],
     "heroes": [
@@ -114,7 +159,76 @@
             "health": 4,
             "treasure": "faith",
             "damageDealt": 1
+        },
+        {
+            "CARDTYPE": "HERO",
+            "id": 8,
+            "name": "Mag",
+            "health": 4,
+            "treasure": "magic",
+            "damageDealt": 1
+        },
+        {
+            "CARDTYPE": "HERO",
+            "id": 9,
+            "name": "Najemnik",
+            "health": 6,
+            "treasure": "strength",
+            "damageDealt": 1
+        },
+        {
+            "CARDTYPE": "HERO",
+            "id": 10,
+            "name": "Wojownik",
+            "health": 6,
+            "treasure": "strength",
+            "damageDealt": 1
+        },
+        {
+            "CARDTYPE": "HERO",
+            "id": 11,
+            "name": "Złodziej",
+            "health": 4,
+            "treasure": "fortune",
+            "damageDealt": 1
         }
     ],
-    "bosses": []
+    "bosses": [
+        {
+            "CARDTYPE": "BOSS",
+            "id": 1,
+            "name": "Lamia",
+            "pd": 255,
+            "treasure": {
+                "strength": 1
+            }
+        },
+        {
+            "CARDTYPE": "BOSS",
+            "id": 2,
+            "name": "Belladonna",
+            "pd": 860,
+            "treasure": {
+                "faith": 1
+            }
+        },
+        {
+            "CARDTYPE": "BOSS",
+            "id": 3,
+            "name": "ROBOBO",
+            "pd": 400,
+            "treasure": {
+                "strength": 1
+            }
+        },
+        {
+            "CARDTYPE": "BOSS",
+            "id": 4,
+            "name": "gała",
+            "pd": 630,
+            "treasure": {
+                "magic": 1
+            }
+        }
+    ]
 }

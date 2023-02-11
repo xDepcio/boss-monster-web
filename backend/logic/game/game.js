@@ -1,7 +1,13 @@
 const Player = require('../player/player')
-const { getShuffledDungeonCards, getShuffledHeroCards, getShuffledSpellCards } = require('./utils')
+const { getShuffledDungeonCards, getShuffledHeroCards, getShuffledSpellCards, getShuffledBossesCards } = require('./utils')
 const { PlayerAlreadyDeclaredBuild, HeroesCardsStackEmpty, NotAllPlayersAcceptedHeroMove } = require('../errors')
 const feedback = require('./actionFeedbacks')
+
+
+const phase = {
+    BUILD: 'build',
+    FIGHT: 'fight'
+}
 
 
 class Game {
@@ -13,9 +19,10 @@ class Game {
         this.notUsedSpellCardsStack = getShuffledSpellCards(this)
         this.notUsedDungeonCardsStack = getShuffledDungeonCards(this)
         this.notUsedHeroCardsStack = getShuffledHeroCards(this)
+        this.notUsedBossesStack = getShuffledBossesCards(this)
         this.usedCardsStack = []
         this.gameRound = 1
-        this.roundPhase = 'build'
+        this.roundPhase = phase.BUILD
         this.buildPhaseDeclaredBuilds = {}
         this.city = []
         this.movesHistory = []
@@ -41,11 +48,11 @@ class Game {
     checkForPhaseEnd() {
         if (this.areAllPlayersReady()) {
             switch (this.roundPhase) {
-                case 'build': {
+                case phase.BUILD: {
                     this.startNewFightPhase()
                     break
                 }
-                case 'fight': {
+                case phase.FIGHT: {
                     this.startNewBuildPhase()
                     break
                 }
@@ -56,10 +63,18 @@ class Game {
     startNewFightPhase() {
         this.saveGameAction(feedback.START_FIGHT_PHASE())
         this.players.forEach(player => player.becomeNotReady())
-        this.roundPhase = 'fight'
+        this.roundPhase = phase.FIGHT
         this.buildDeclaredCards()
         this.city.forEach(hero => hero.goToLuredPlayer())
         this.requestHeroDungeonEntrance()
+    }
+
+    startNewBuildPhase() {
+        this.players.forEach(player => player.becomeNotReady())
+        this.players.forEach(player => player.drawNotUsedDungeonCard())
+        this.roundPhase = phase.BUILD
+        this.buildPhaseDeclaredBuilds = {}
+        this.fillCityWithHeroes()
     }
 
     requestHeroDungeonEntrance() {
@@ -81,7 +96,7 @@ class Game {
 
     getHeroAtNextPlayerDungeon() {
         for (let player of this.players) {
-            const hero = player.dungeonEntranceHeroes.pop()
+            const hero = player.dungeonEntranceHeroes[player.dungeonEntranceHeroes.length - 1]
             if (hero) {
                 return hero
             }

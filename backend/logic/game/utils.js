@@ -2,7 +2,7 @@ const DUNGEON_CARDS = require('./cards.json').dungeons
 const SPELL_CARDS = require('./cards.json').spells
 const HERO_CARDS = require('./cards.json').heroes
 const BOSS_CARDS = require('./cards.json').bosses
-const { DungeonCard, HeroCard, SpellCard } = require('./cards')
+const { DungeonCard, HeroCard, SpellCard, BossCard } = require('./cards')
 
 
 function getShuffledDungeonCards(game) {
@@ -45,6 +45,17 @@ function getShuffledHeroCards(game) {
 }
 
 
+function getShuffledBossesCards(game) {
+    let bossCards = []
+    for (let card of BOSS_CARDS) {
+        const { id, name, pd, treasure, CARDTYPE } = card
+        const createdCardObj = new BossCard(id, name, CARDTYPE, game, pd, treasure)
+        bossCards.push(createdCardObj)
+    }
+    bossCards = shuuffled(bossCards)
+    return bossCards
+}
+
 
 function shuuffled(array) {
     let shuffledArray = [...array]
@@ -61,5 +72,6 @@ function shuuffled(array) {
 module.exports = {
     getShuffledDungeonCards,
     getShuffledHeroCards,
-    getShuffledSpellCards
+    getShuffledSpellCards,
+    getShuffledBossesCards
 }
