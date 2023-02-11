@@ -28,19 +28,12 @@ const rl = readline.createInterface({
 })
 
 
-function showPlayers(choosenCard) {
-    console.clear()
-    console.log(game.players)
-    let choosen
-    rl.question('Type player id to choose him: ', (id) => {
-        choosen = Player.getPlayer(id)
-        showOptions(choosen, choosenCard)
-    })
-}
 
 
 function showOptions(choosenPlayer = null, choosenCard = null) {
-    console.clear()
+    // console.clear()
+    process.stdout.write('\x1B[2J\x1B[3J\x1B[H');
+
     if (choosenPlayer) {
         console.log('Your Player: ', choosenPlayer)
     }
@@ -49,12 +42,13 @@ function showOptions(choosenPlayer = null, choosenCard = null) {
     }
 
     rl.question(`
-        Type 'p' to show players
-        Type 'c' to show avalible card
-        Type 'ready' to become ready
-        Type 'g' to get game info
-        Type 'play' to use selected card
-        Type 'h' to show game actions history
+    Type 'p' to show players
+    Type 'c' to show avalible card
+    Type 'ready' to become ready
+    Type 'g' to get game info
+    Type 'play' to use selected card
+    Type 'h' to show game actions history
+    Type 'acc' to accept hero dungeon entrance
     `, (choice) => {
         if (choice === 'p') {
             showPlayers()
@@ -86,6 +80,21 @@ function showOptions(choosenPlayer = null, choosenCard = null) {
         else if (choice === 'h') {
             showHistory(choosenPlayer, choosenCard)
         }
+        else if (choice === 'acc') {
+            choosenPlayer.acceptHeroMove()
+            showOptions(choosenPlayer, choosenCard)
+        }
+    })
+}
+
+
+function showPlayers(choosenCard) {
+    console.clear()
+    console.log(game.players)
+    let choosen
+    rl.question('Type player id to choose him: ', (id) => {
+        choosen = Player.getPlayer(id)
+        showOptions(choosen, choosenCard)
     })
 }
 
@@ -103,6 +112,7 @@ function showGameInfo(choosenPlayer, choosenCard) {
 function showHistory(choosenPlayer, choosenCard) {
     console.clear()
     game.printHistory()
+    console.log('')
     rl.question('Press Enter to exit: ', (e) => {
         showOptions(choosenPlayer, choosenCard)
     })

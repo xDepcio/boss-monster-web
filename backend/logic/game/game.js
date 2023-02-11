@@ -1,6 +1,6 @@
 const Player = require('../player/player')
 const { getShuffledDungeonCards, getShuffledHeroCards, getShuffledSpellCards } = require('./utils')
-const { PlayerAlreadyDeclaredBuild, HeroesCardsStackEmpty } = require('../errors')
+const { PlayerAlreadyDeclaredBuild, HeroesCardsStackEmpty, NotAllPlayersAcceptedHeroMove } = require('../errors')
 const feedback = require('./actionFeedbacks')
 
 
@@ -59,6 +59,33 @@ class Game {
         this.roundPhase = 'fight'
         this.buildDeclaredCards()
         this.city.forEach(hero => hero.goToLuredPlayer())
+        this.requestHeroDungeonEntrance()
+    }
+
+    requestHeroDungeonEntrance() {
+        const hero = this.getHeroAtNextPlayerDungeon()
+        if (!hero) {
+            throw new Error('NO HEROES IN PLAYERS DUNGEONS. TODO...')
+        }
+        try {
+            hero.moveToNextRoom()
+        } catch (error) {
+            if (error instanceof NotAllPlayersAcceptedHeroMove) {
+                console.log('Not all players ready for hero to move')
+            }
+            else {
+                throw error
+            }
+        }
+    }
+
+    getHeroAtNextPlayerDungeon() {
+        for (let player of this.players) {
+            const hero = player.dungeonEntranceHeroes.pop()
+            if (hero) {
+                return hero
+            }
+        }
     }
 
     fillCityWithHeroes() {

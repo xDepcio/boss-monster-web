@@ -19,6 +19,11 @@ class Player {
         this.finishedPhase = false
         this.dungeon = []
         this.dungeonEntranceHeroes = []
+        this.acceptedheroMove = false
+        this.health = 5
+        this.defeatedHeroes = []
+        this.totalScore = 0
+        this.heroesThatDefeatedPlayer = []
         this.collectedTreasure = {
             faith: 0,
             strength: 0,
@@ -107,6 +112,45 @@ class Player {
 
     becomeNotReady() {
         this.finishedPhase = false
+    }
+
+    hasAcceptedHeroEntrance() {
+        return this.acceptedheroMove
+    }
+
+    acceptHeroMove() {
+        this.acceptedheroMove = true
+        this.trackedGame.requestHeroDungeonEntrance()
+    }
+
+    getDamage(damageAmount) {
+        this.health -= damageAmount
+        if (this.health <= 0) {
+            this.die()
+        }
+    }
+
+    die() {
+        throw new Error('PLAYER DIED. TODO...')
+    }
+
+    updateScore() {
+        let score = 0
+        for (let hero of this.defeatedHeroes) {
+            score += hero.damageDealt
+        }
+        this.totalScore = score
+        this.checkWin()
+    }
+
+    checkWin() {
+        if (this.totalScore >= 10) {
+            this.declareWin()
+        }
+    }
+
+    declareWin() {
+        throw new Error("PLAYER HAS WON. TODO...")
     }
 
     static getPlayer(playerId) {

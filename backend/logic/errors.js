@@ -38,11 +38,21 @@ class DungeonFullError extends Error {
 }
 
 
+// In Hero card
+class NotAllPlayersAcceptedHeroMove extends Error {
+    constructor(message) {
+        super(message)
+    }
+}
+
+
+
 module.exports = {
     CardCannotBeBuilt,
     DungeonCardsStackEmpty,
     PlayerAlreadyDeclaredBuild,
     SpellCardsStackEmpty,
     HeroesCardsStackEmpty,
-    DungeonFullError
+    DungeonFullError,
+    NotAllPlayersAcceptedHeroMove
 }

@@ -1,3 +1,6 @@
+const { NotAllPlayersAcceptedHeroMove } = require('../errors')
+
+
 class Card {
     constructor(id, name, CARDTYPE, trackedGame) {
         this.id = id
@@ -14,6 +17,8 @@ class HeroCard extends Card {
         this.health = health
         this.treasureSign = treasureSign
         this.damageDealt = damageDealt
+        this.dungeonRoom = null
+        this.dungeonOwner = null
     }
 
     goToLuredPlayer() {
@@ -21,6 +26,7 @@ class HeroCard extends Card {
         if (mostValuablePlayer) {
             this.removeSelfFromCity()
             mostValuablePlayer.dungeonEntranceHeroes.push(this)
+            this.dungeonOwner = mostValuablePlayer
         }
     }
 
@@ -48,6 +54,58 @@ class HeroCard extends Card {
     removeSelfFromCity() {
         const heroIndexInCity = this.trackedGame.city.findIndex((hero) => hero.id === this.id)
         this.trackedGame.city.splice(heroIndexInCity, 1)
+    }
+
+    moveToNextRoom() {
+        if (this.checkAllPlayersAcceptedHeroEntrance()) {
+            if (this.dungeonRoom === null) {
+                this.dungeonRoom = this.dungeonOwner.dungeon[this.dungeonOwner.dungeon.length - 1]
+                this.triggerCurrentDungeonCard()
+            }
+            else {
+                const newDungeonIndex = this.dungeonOwner.dungeon.findIndex(dung => dung.id = this.dungeonRoom.id) - 1
+                if (newDungeonIndex === -1) {
+                    this.finishPlayerDungeon()
+                }
+                else {
+                    this.dungeonRoom = this.dungeonOwner.dungeon[newDungeonIndex]
+                    this.triggerCurrentDungeonCard()
+                }
+            }
+        }
+        else {
+            throw new NotAllPlayersAcceptedHeroMove("All players must accept hero move")
+        }
+    }
+
+    triggerCurrentDungeonCard() {
+        this.health -= this.dungeonRoom.damage
+        this.checkDeath()
+    }
+
+    checkDeath() {
+        if (this.health <= 0) {
+            this.dungeonOwner.defeatedHeroes.push(this)
+            this.dungeonOwner.updateScore()
+        }
+    }
+
+    finishPlayerDungeon() {
+        this.dungeonOwner.heroesThatDefeatedPlayer.push(this)
+        this.damageCurrentPlayer()
+    }
+
+    damageCurrentPlayer() {
+        this.dungeonOwner.getDamage(this.damageDealt)
+    }
+
+    checkAllPlayersAcceptedHeroEntrance() {
+        for (let player of this.trackedGame.players) {
+            if (!player.hasAcceptedHeroEntrance()) {
+                return false
+            }
+        }
+        return true
     }
 }
 
