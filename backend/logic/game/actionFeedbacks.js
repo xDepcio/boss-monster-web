@@ -46,6 +46,36 @@ const feedback = {
             type: "START_FIRST_ROUND",
             message: `All players chose their bosses and first round has started`
         }
+    },
+    HERO_DAMAGED: (hero, dungeon, player) => {
+        return {
+            type: "HERO_DAMAGED",
+            message: `Hero ${hero.name} got damaged for ${dungeon.damage} hp in ${player.name}'s dungeon. Hp left: ${hero.health}`
+        }
+    },
+    PLAYER_ACCEPTED_HERO_MOVE: (player) => {
+        return {
+            type: "PLAYER_ACCEPTED_HERO_MOVE",
+            message: `Player ${player.name} accepted hero move`
+        }
+    },
+    NO_MORE_HEROES_IN_FIGHT_PHASE: () => {
+        return {
+            type: "NO_MORE_HEROES_IN_FIGHT_PHASE",
+            message: `All heroes completed their movement. Waiting for players to become ready for round end`
+        }
+    },
+    NEW_ROUND_BEGUN: (game) => {
+        return {
+            type: "NEW_ROUND_BEGUN",
+            message: `===== Round ${game.gameRound} has started =====`
+        }
+    },
+    START_BUILD_PHASE: () => {
+        return {
+            type: "START_BUILD_PHASE",
+            message: `New build phase has started`
+        }
     }
 }
 

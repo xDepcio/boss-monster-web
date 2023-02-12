@@ -89,7 +89,7 @@ class Player {
     drawNotUsedBossCard() {
         const boss = this.trackedGame.notUsedBossesStack.pop()
         if (!boss) {
-            throw new BossCardStackEmpty("Can;t draw from empty boss stack")
+            throw new BossCardStackEmpty("Can't draw from empty boss stack")
         }
         this.drawnBosses.push(boss)
     }
@@ -131,10 +131,19 @@ class Player {
     }
 
     updateCollectedTreasure() {
+        this.collectedTreasure = {
+            faith: 0,
+            strength: 0,
+            magic: 0,
+            fortune: 0
+        }
         for (const dungeonCard of this.dungeon) {
             for (const [treasureSign, treasureAmount] of Object.entries(dungeonCard.treasure)) {
                 this.collectedTreasure[treasureSign] += treasureAmount
             }
+        }
+        for (const [treasureSign, treasureAmount] of Object.entries(this.selectedBoss.treasure)) {
+            this.collectedTreasure[treasureSign] += treasureAmount
         }
     }
 
@@ -154,7 +163,12 @@ class Player {
 
     acceptHeroMove() {
         this.acceptedheroMove = true
+        this.trackedGame.saveGameAction(feedback.PLAYER_ACCEPTED_HERO_MOVE(this))
         this.trackedGame.requestHeroDungeonEntrance()
+    }
+
+    becomeNotReadyForHeroMove() {
+        this.acceptedheroMove = false
     }
 
     getDamage(damageAmount) {

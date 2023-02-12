@@ -9,13 +9,14 @@ const player1 = new Player(1, 'olek')
 const player2 = new Player(2, 'mat')
 const game = new Game(1, [player1, player2])
 
-
-// player1.declareBuild(player1.dungeonCards[0])
-// player2.declareBuild(player2.dungeonCards[0])
+player1.selectBoss(player1.drawnBosses[0].id)
+player2.selectBoss(player2.drawnBosses[0].id)
+player1.declareBuild(player1.dungeonCards[0])
+player2.declareBuild(player2.dungeonCards[0])
 // console.log(util.inspect(game, { colors: true, depth: null }))
 // console.log('================================')
 
-// player1.becomeReady()
+player1.becomeReady()
 // player2.becomeReady()
 // console.log(util.inspect(game, { colors: true, depth: null }))
 
@@ -86,6 +87,9 @@ function showOptions(choosenPlayer = null, choosenCard = null) {
         else if (choice === 'b') {
             showBosses(choosenPlayer)
         }
+        else {
+            showOptions(choosenPlayer, choosenCard)
+        }
     })
 }
 
@@ -115,8 +119,8 @@ function showPlayers(choosenCard) {
 function showGameInfo(choosenPlayer, choosenCard) {
     // console.clear()
     process.stdout.write('\x1B[2J\x1B[3J\x1B[H');
-    // console.log(util.inspect(game, { colors: true, depth: null }))
-    console.log(game)
+    console.log(util.inspect(game, { colors: true, depth: null }))
+    // console.log(game)
     rl.question('Press Enter to exit: ', (e) => {
         showOptions(choosenPlayer, choosenCard)
     })

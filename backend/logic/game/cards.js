@@ -16,10 +16,12 @@ class HeroCard extends Card {
     constructor(id, name, CARDTYPE, trackedGame, health, treasureSign, damageDealt) {
         super(id, name, CARDTYPE, trackedGame)
         this.health = health
+        this.baseHealth = health
         this.treasureSign = treasureSign
         this.damageDealt = damageDealt
         this.dungeonRoom = null
         this.dungeonOwner = null
+        this.finishedMoving = false
     }
 
     goToLuredPlayer() {
@@ -85,6 +87,14 @@ class HeroCard extends Card {
         }
     }
 
+    hasFinishedMoving() {
+        return this.finishedMoving
+    }
+
+    finishMoving() {
+        this.finishedMoving = true
+    }
+
     triggerCurrentDungeonCard() {
         this.dungeonRoom.heroEnteredRoom(this)
     }
@@ -98,11 +108,14 @@ class HeroCard extends Card {
         this.dungeonOwner.defeatedHeroes.push(this)
         this.removeSelfFromDungeonEntrance()
         this.dungeonOwner.updateScore()
+        this.finishMoving()
     }
 
     finishPlayerDungeon() {
         this.dungeonOwner.heroesThatDefeatedPlayer.push(this)
         this.damageCurrentPlayer()
+        this.removeSelfFromDungeonEntrance()
+        this.finishMoving()
     }
 
     damageCurrentPlayer() {
@@ -136,6 +149,7 @@ class DungeonCard extends Card {
 
     damageHero(hero) {
         hero.health -= this.damage
+        this.trackedGame.saveGameAction(feedback.HERO_DAMAGED(hero, this, hero.dungeonOwner))
         if (hero.checkDeath()) {
             hero.die()
             this.handleHeroDiedInRoom()

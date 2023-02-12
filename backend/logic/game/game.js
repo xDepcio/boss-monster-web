@@ -27,6 +27,7 @@ class Game {
         this.buildPhaseDeclaredBuilds = {}
         this.city = []
         this.movesHistory = []
+        this.heroToMove = null
         this.startGame()
     }
 
@@ -84,11 +85,27 @@ class Game {
         this.players.forEach(player => player.becomeNotReady())
         this.roundPhase = phase.FIGHT
         this.buildDeclaredCards()
-        this.city.forEach(hero => hero.goToLuredPlayer())
+        // this.city.forEach(hero => hero.goToLuredPlayer())
+        for (let i = 0; i < this.city.length; i++) {
+            const hero = this.city[i]
+            const beforeMoveLength = this.city.length
+            hero.goToLuredPlayer()
+            const AfterMoveLength = this.city.length
+            i -= beforeMoveLength - AfterMoveLength
+        }
+        // Known issue: When hero goes to player it is removed from city and thus
+        // this.city gets shorter and next index in this.city array gets skipped
+        this.selectNextHeroToMove()
+    }
+
+    selectNextHeroToMove() {
+        this.heroToMove = this.getHeroAtNextPlayerDungeon()
         this.requestHeroDungeonEntrance()
     }
 
     startNewBuildPhase() {
+        this.incrementGameRound()
+        this.saveGameAction(feedback.START_BUILD_PHASE())
         this.players.forEach(player => player.becomeNotReady())
         this.players.forEach(player => player.drawNotUsedDungeonCard())
         this.roundPhase = phase.BUILD
@@ -96,19 +113,29 @@ class Game {
         this.fillCityWithHeroes()
     }
 
+    incrementGameRound() {
+        this.gameRound += 1
+        this.saveGameAction(feedback.NEW_ROUND_BEGUN(this))
+    }
+
     requestHeroDungeonEntrance() {
-        const hero = this.getHeroAtNextPlayerDungeon()
-        if (!hero) {
-            throw new Error('NO HEROES IN PLAYERS DUNGEONS. TODO...')
+        if (!this.heroToMove) {
+            this.saveGameAction(feedback.NO_MORE_HEROES_IN_FIGHT_PHASE())
         }
-        try {
-            hero.moveToNextRoom()
-        } catch (error) {
-            if (error instanceof NotAllPlayersAcceptedHeroMove) {
-                console.log('Not all players ready for hero to move')
-            }
-            else {
-                throw error
+        else {
+            try {
+                this.heroToMove.moveToNextRoom()
+                this.players.forEach(player => player.becomeNotReadyForHeroMove())
+                if (this.heroToMove.hasFinishedMoving()) {
+                    this.selectNextHeroToMove()
+                }
+            } catch (error) {
+                if (error instanceof NotAllPlayersAcceptedHeroMove) {
+                    console.log('Not all players ready for hero to move')
+                }
+                else {
+                    throw error
+                }
             }
         }
     }
