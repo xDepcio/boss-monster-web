@@ -86,6 +86,7 @@ class Game {
         this.roundPhase = phase.FIGHT
         this.buildDeclaredCards()
         // this.city.forEach(hero => hero.goToLuredPlayer())
+        // not elegeant fix below
         for (let i = 0; i < this.city.length; i++) {
             const hero = this.city[i]
             const beforeMoveLength = this.city.length

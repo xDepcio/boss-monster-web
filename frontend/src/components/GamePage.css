@@ -1,0 +1,284 @@
+.dungeon {
+    /* max-height: 200px; */
+    /* max-width: 140px; */
+    /* width: 100%; */
+    /* height: 100%; */
+    width: 140px;
+    background-color: rgba(31, 31, 31, 0.789);
+    display: flex;
+    border-radius: 3%;
+    aspect-ratio: 746/1039;
+    color: rgb(204, 204, 204);
+}
+
+.card {
+    aspect-ratio: 746/1039;
+    overflow: hidden;
+    position: relative;
+}
+
+.dungeons-holder {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    width: fit-content;
+    height: 100%;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.dung-name {
+    max-width: inherit;
+}
+
+.dungeon-empty {
+    align-items: center;
+    justify-content: center;
+}
+
+.boss-holder {
+    max-height: 197px;
+    /* max-width: 140px; */
+    /* width: 100%; */
+    height: 100%;
+    /* background-color: yellowgreen; */
+    /* display: flex; */
+}
+
+.dungeon-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 220px;
+    justify-content: flex-end;
+}
+
+.game-page-wrapper {
+    /* background-color: aliceblue; */
+    display: grid;
+    grid-template-columns: 60% 40%;
+}
+
+.players-wrapper {
+    /* background-color: orange; */
+}
+
+.lured-heroes-wrapper {
+    display: flex;
+    height: 100%;
+    width: fit-content;
+    align-items: center;
+    flex-grow: 1;
+    justify-content: center;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.lured-hero-card {
+    max-height: 200px;
+    max-width: 140px;
+    /* width: 100%; */
+    aspect-ratio: 140/200;
+    flex-grow: 1;
+    /* height: 100%; */
+    background-color: plum;
+    min-width: 50px;
+}
+
+.game-content {
+    display: grid;
+    place-items: center;
+    grid-template-columns: 75% 25%;
+}
+
+/* .game-city {
+    height: fit-content;
+    background-color: bisque;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-self: flex-start;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+} */
+
+/* .city-hero-wrapper {
+    height: 220px;
+    background-color: yellow;
+    min-width: 160px;
+} */
+
+.game-cards {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.cards-stack {
+    background-color: brown;
+    height: 220px;
+    max-width: 160px;
+    min-width: 160px;
+}
+
+.choose-boss-wrapper {
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.303);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.choose-boss {
+    display: flex;
+    gap: 10px;
+}
+
+.choose-boss-card {
+    width: 280px;
+    /* height: 250px; */
+    background-color: greenyellow;
+    cursor: pointer;
+    transition-duration: 0.15s;
+    border-radius: 10px;
+    /* background-image: url('../static/monsters_symbol.png'), url('../static/strength_sword.png'), url('../static/red_bg_canvas.png');
+    background-size: cover */
+}
+
+.choose-boss-card:hover {
+    scale: 1.05;
+}
+
+.boss-choice {
+    cursor: pointer;
+    transition-duration: 0.15s;
+}
+
+.boss-choice:hover {
+    scale: 1.05;
+}
+
+.card-info {
+    position: absolute;
+}
+
+.card-img {
+    width: inherit;
+    border-radius: inherit;
+}
+
+.card-bg {
+    z-index: 1;
+}
+
+.card-type,
+.card-symbol {
+    z-index: 2;
+}
+
+.card-symbol {
+    position: absolute;
+    height: 100%;
+    width: auto;
+    right: 0;
+}
+
+/*
+.my-width {
+    width: 200px;
+} */
+
+.card-hover {
+    transition-duration: 0.3s;
+    top: 0%;
+}
+
+.card-hover:hover {
+    scale: 2;
+    z-index: 9;
+    top: 50%;
+
+}
+
+/* .city-wrapper {
+    align-self: flex-start;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.city-header {
+    color: white;
+    justify-self: center;
+    text-align: center;
+} */
+
+/* .player-cards-btn {
+    width: 60%;
+    align-self: center;
+    border-radius: 999px;
+    border: none;
+    padding: 10px;
+    background-color: rgb(194, 79, 37);
+    color: whitesmoke;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+
+.player-cards-wrapper {
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.433);
+    width: 100vw;
+    height: 100vh;
+    z-index: 50;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.player-cards {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 50px;
+} */
+
+.dung-card-to-play-wrapper {
+    position: fixed;
+    /* background-color: red; */
+    right: 15%;
+    bottom: 25%;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.play-dung-card {
+    box-shadow: -1px 1px 15px 8px rgba(165, 119, 80, 1);
+    border-radius: 3%;
+
+}
+
+.play-dung-card-btn {
+    width: 45%;
+    padding: 5px;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+}
+
+.play-dung-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}

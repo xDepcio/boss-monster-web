@@ -21,3 +21,10 @@ a {
   text-decoration: none;
   color: unset;
 }
+
+body {
+  background-image: url('../../backend/public/images/bg/bg_scaled.png');
+  /* background-size: cover; */
+  /* background-size: contain; */
+  /* background-repeat: repeat; */
+}

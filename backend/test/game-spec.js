@@ -317,6 +317,16 @@ describe('Game Object', () => {
             player2.acceptHeroMove()
             player2.acceptHeroMove()
             player1.acceptHeroMove()
+            player1.becomeReady()
+            player2.becomeReady()
+            player1.declareBuild(player1.dungeonCards[0])
+            player2.declareBuild(player2.dungeonCards[0])
+            player1.becomeReady()
+            player2.becomeReady()
+            player1.acceptHeroMove()
+            player2.acceptHeroMove()
+            player2.acceptHeroMove()
+            player1.acceptHeroMove()
         })
 
 

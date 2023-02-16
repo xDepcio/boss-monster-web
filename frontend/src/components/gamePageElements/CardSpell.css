@@ -1,0 +1,22 @@
+.spell-card-name {
+    top: 14.6%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgb(27, 27, 27);
+}
+
+.spell-card-desc {
+    /* bottom: 15%; */
+    height: fit-content;
+    width: fit-content;
+    color: rgb(27, 27, 27);
+    /* font-family: 'Lora', serif; */
+    z-index: 3;
+    top: 69%;
+    font-size: 0.8em;
+    left: 50%;
+    transform: translateX(-50%);
+    aspect-ratio: unset;
+    text-align: center;
+    width: 60%;
+}

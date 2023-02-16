@@ -55,6 +55,18 @@ class DungeonFullError extends Error {
     }
 }
 
+class NoSuchDungeonInPlayerCards extends Error {
+    constructor(message) {
+        super(message)
+    }
+}
+
+class InvalidFancyDungeonBuild extends Error {
+    constructor(message) {
+        super(message)
+    }
+}
+
 
 // In Hero card
 class NotAllPlayersAcceptedHeroMove extends Error {
@@ -75,5 +87,7 @@ module.exports = {
     NotAllPlayersAcceptedHeroMove,
     BossCardStackEmpty,
     NoSuchBossInPlayerCards,
-    PlayerAlreadySelectedBoss
+    PlayerAlreadySelectedBoss,
+    InvalidFancyDungeonBuild,
+    NoSuchDungeonInPlayerCards
 }

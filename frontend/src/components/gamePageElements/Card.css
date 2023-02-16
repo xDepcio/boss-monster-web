@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Press+Start+2P&display=swap');
+
+
+.card-comp {
+    aspect-ratio: 746/1039;
+    overflow: hidden;
+    position: relative;
+    border-radius: 3%;
+}
+
+.card-info-comp {
+    position: absolute;
+}
+
+.card-img-comp {
+    width: inherit;
+    border-radius: inherit;
+}
+
+.card-bg-comp {
+    z-index: 1;
+}
+
+.card-type-comp,
+.card-symbol-comp {
+    z-index: 2;
+}
+
+.card-symbol-comp {
+    position: absolute;
+    height: 100%;
+    width: auto;
+    right: 0;
+}
+
+.card-name {
+    color: white;
+    z-index: 3;
+    font-family: 'Press Start 2P', cursive;
+    transform: translateX(-40%);
+    left: 50%;
+    top: 5.5%;
+    /* font-size: 15px; */
+    font-weight: 400;
+    /* font-size: 100%; */
+    font-size: 1em;
+    aspect-ratio: unset;
+}
+
+.card-subname {
+    font-family: 'Press Start 2P', cursive;
+    color: white;
+    z-index: 3;
+    font-size: 0.45em;
+    transform: translateX(-40%);
+    left: 50%;
+    top: 10.7%;
+    font-weight: 400;
+    aspect-ratio: unset;
+}
+
+.card-desc-header {
+    font-family: 'Lora', serif;
+    z-index: 2;
+    color: white;
+    transform: translateX(-50%);
+    left: 50%;
+    bottom: 29.5%;
+    font-weight: 600;
+    font-size: 0.8em;
+    aspect-ratio: unset;
+}
+
+.card-desc {
+    font-family: 'Lora', serif;
+    z-index: 2;
+    color: white;
+    transform: translateX(-50%);
+    left: 50%;
+    top: 71%;
+    width: 75%;
+    font-size: 0.65em;
+    font-weight: 200;
+    aspect-ratio: unset;
+}

@@ -6,7 +6,9 @@ const {
     DungeonFullError,
     BossCardStackEmpty,
     NoSuchBossInPlayerCards,
-    PlayerAlreadySelectedBoss
+    PlayerAlreadySelectedBoss,
+    InvalidFancyDungeonBuild,
+    NoSuchDungeonInPlayerCards
 } = require('../errors')
 const feedback = require('../game/actionFeedbacks')
 
@@ -94,24 +96,37 @@ class Player {
         this.drawnBosses.push(boss)
     }
 
-    declareBuild(card) {
+    declareBuild(card, index = null) {
+        if (this.checkIfDungeonBuildValid(card, index)) {
+            if (index !== null) {
+                card.setCardToBuildOn(this.dungeon[index])
+            }
+            this.trackedGame.handlePlayerBuildDeclaration(this, card)
+            this.useDungeonCard(card)
+        }
+    }
+
+    checkIfDungeonBuildValid(card, index) {
         if (card.CARDTYPE !== 'DUNGEON') {
             throw new CardCannotBeBuilt("Only dungeon cards can be built")
         }
-        if (this.dungeon.length >= 5) {
-            throw new DungeonFullError("Cannot build card because player's dungeon is full")
-        }
-        try {
-            this.trackedGame.handlePlayerBuildDeclaration(this, card)
-            this.useDungeonCard(card)
-        } catch (error) {
-            if (error instanceof PlayerAlreadyDeclaredBuild) {
-                // ...TODO when players tries to build a 2nd dungeon in the same round
-                console.log(error.message)
-            } else {
-                throw error
+        if (index === null) {
+            if (this.dungeon.length >= 5) {
+                throw new DungeonFullError("Cannot build card because player's dungeon is full")
+            }
+            if (card.isFancy) {
+                throw new InvalidFancyDungeonBuild("Fancy dungeon can only be built on top of normal dungeon with matching type")
             }
         }
+        else {
+            const cardToBuildOn = this.dungeon[index]
+            if (card.isFancy) {
+                if (card.type !== cardToBuildOn.type) {
+                    throw new InvalidFancyDungeonBuild("Fancy dungeon can only be built on top of normal dungeon with matching type")
+                }
+            }
+        }
+        return true
     }
 
     useDungeonCard(card) {
@@ -126,8 +141,23 @@ class Player {
     }
 
     buildDungeon(dungeonCard) {
-        this.dungeon.push(dungeonCard)
+        if (dungeonCard.belowDungeon === null) {
+            this.dungeon.push(dungeonCard)
+        }
+        else {
+            const toBuildOnIndex = this.dungeon.findIndex(card => card.id === dungeonCard.belowDungeon.id)
+            this.dungeon.splice(toBuildOnIndex, 1, dungeonCard)
+        }
         this.updateCollectedTreasure()
+    }
+
+    getDungeonCard(cardId) {
+        for (let dungeon of this.dungeonCards) {
+            if (dungeon.id === cardId) {
+                return dungeon
+            }
+        }
+        throw new NoSuchDungeonInPlayerCards(`Dungeon with id ${cardId} found in player cards`)
     }
 
     updateCollectedTreasure() {

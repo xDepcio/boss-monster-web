@@ -1,0 +1,77 @@
+.city-wrapper {
+    position: fixed;
+    background-color: rgba(81, 81, 81, 0.8);
+    height: 100vh;
+    width: 45vw;
+    right: -45vw;
+    z-index: 10;
+    transition-duration: 0.3s;
+}
+
+.city-wrapper-expanded {
+    right: 0;
+}
+
+.city-expand-btn {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    align-items: center;
+    left: -34px;
+    position: absolute;
+    padding: 10px;
+    line-height: 120%;
+    top: 40px;
+    border-bottom-left-radius: 10px;
+    border-top-left-radius: 10px;
+    background-color: rgb(118, 23, 13);
+    cursor: pointer;
+}
+
+/* .city-wrapper:has(.city-expand-btn:hover), .city-wrapper:hover {
+    right: -44vw;
+    background-color: gold;
+} */
+
+.city-heroes-header,
+.city-cards-header {
+    color: whitesmoke;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.city-hero {
+    position: relative;
+    top: 0%;
+    transition-duration: 0.3s;
+    left: 0%;
+    right: 0%;
+}
+
+.city-hero:hover:not(:nth-child(4)) {
+    scale: 1.5;
+    z-index: 11;
+    top: 25%;
+    left: 25%;
+}
+
+.city-hero:nth-child(4):hover {
+    scale: 1.5;
+    z-index: 11;
+    left: unset;
+    top: 25%;
+    right: 25%;
+}
+
+.city-heroes-wrapper {
+    padding: 20px;
+    gap: 5px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.city-cards-wrapper {
+    display: flex;
+    gap: 7px;
+    padding: 20px;
+}

@@ -72,7 +72,7 @@ class HeroCard extends Card {
                 this.triggerCurrentDungeonCard()
             }
             else {
-                const newDungeonIndex = this.dungeonOwner.dungeon.findIndex(dung => dung.id = this.dungeonRoom.id) - 1
+                const newDungeonIndex = this.dungeonOwner.dungeon.findIndex(dung => dung.id === this.dungeonRoom.id) - 1
                 if (newDungeonIndex === -1) {
                     this.finishPlayerDungeon()
                 }
@@ -135,12 +135,17 @@ class HeroCard extends Card {
 
 
 class DungeonCard extends Card {
+    static dungeons = {}
+
     constructor(id, name, CARDTYPE, trackedGame, damage, treasure, type, isFancy) {
         super(id, name, CARDTYPE, trackedGame)
         this.damage = damage
         this.treasure = treasure
         this.type = type
         this.isFancy = isFancy
+        this.belowDungeon = null
+        this.isActive = true
+        DungeonCard.dungeons[id] = this
     }
 
     heroEnteredRoom(hero) {
@@ -158,6 +163,11 @@ class DungeonCard extends Card {
 
     handleHeroDiedInRoom() {
         // ...TODO something when hero died in this dungeon room
+    }
+
+    setCardToBuildOn(dungeonCard) {
+        this.belowDungeon = dungeonCard
+        this.belowDungeon.isActive = false
     }
 }
 

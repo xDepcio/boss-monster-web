@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Press+Start+2P&display=swap');
+
+.dung-card-desc {}
+
+.dungeon-card-damage-img {
+    bottom: 0%;
+    z-index: 10;
+}
+
+.dungeon-card-damage {
+    /* background-color: red; */
+    z-index: 11;
+    bottom: 6.5%;
+    color: whitesmoke;
+    font-family: 'Press Start 2P', cursive;
+    left: 16.3%;
+}
+
+.dungeon-card-type {
+    width: 100%;
+    text-align: center;
+    transform: translateX(-45%);
+}

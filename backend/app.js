@@ -10,7 +10,7 @@ app.use(cookieParser());
 app.use(express.json())
 
 // serving static files
-app.use(express.static('static'))
+app.use(express.static('public'))
 
 const routes = require('./routes')
 app.use(routes)

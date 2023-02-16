@@ -3,7 +3,9 @@ const router = express.Router();
 const uuid = require('uuid');
 const Lobby = require('../logic/lobby/lobby');
 const Player = require('../logic/player/player')
-const Game = require('../logic/game/game')
+const { Game } = require('../logic/game/game')
+const { flattenCircular } = require('../utils/responseFormat')
+
 
 // const lobbies = {}
 // const players = {}
@@ -49,19 +51,21 @@ router.post('/:lobbyId/start', (req, res) => {
     if (lobby.gameStarted) {
         return next(new Error("Cannot start game 2nd time"))
     }
-    const game = new Game(uuid.v4(), lobby.players)
+    const newPlayers = lobby.players.map((player) => new Player(player.id, 'olo'))
+    // const game = new Game(uuid.v4(), lobby.players)
+    const game = new Game(uuid.v4(), newPlayers)
     lobby.trackGame(game)
     console.log(lobby)
-    res.json(lobby)
+    res.json(flattenCircular(lobby))
 })
 
 // Get lobby info (players...)
 router.get('/:lobbyId', (req, res) => {
     const lobby = Lobby.getLobby(req.params.lobbyId)
-    res.json({
+    res.json(flattenCircular({
         players: lobby.players,
         gameStarted: !!lobby.trackedGame
-    })
+    }))
 })
 
 
