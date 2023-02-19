@@ -1,0 +1,15 @@
+.empty-card-desc {
+    aspect-ratio: unset;
+    z-index: 3;
+    color: #636363;
+    text-align: center;
+    width: fit-content;
+    height: fit-content;
+    bottom: 40%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.empty-card {
+    opacity: 80%;
+}

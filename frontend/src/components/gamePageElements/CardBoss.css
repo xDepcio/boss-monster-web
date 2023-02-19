@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Press+Start+2P&display=swap');
+
+
+
+.boss-card-pd {
+    color: whitesmoke;
+    font-family: 'Press Start 2P', cursive;
+    bottom: 0px;
+    left: 100px;
+    height: fit-content;
+    width: fit-content;
+    /* background-color: red; */
+    z-index: 3;
+    bottom: 9%;
+    left: 11%;
+    font-size: 0.9em;
+    text-shadow: 2px 2px 4px rgb(23, 23, 23);
+
+}
+
+.boss-card-subname {
+    width: 80%;
+    text-align: center;
+    transform: translateX(-47%);
+}
+
+.boss-card-desc {
+    /* font-family: 'Lora', serif; */
+    z-index: 2;
+    color: white;
+    transform: translateX(-50%);
+    left: 50%;
+    top: 71%;
+    width: 75%;
+    font-size: 0.67em;
+    font-weight: 200;
+    aspect-ratio: unset;
+    text-align: center;
+}

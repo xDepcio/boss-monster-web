@@ -1,0 +1,52 @@
+.dungeon-section {
+    display: flex;
+    gap: 10px;
+}
+
+.player-dungeons-wrapper {
+    display: flex;
+    gap: 5px;
+    flex-direction: row-reverse;
+}
+
+.single-player-dungeon {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+}
+
+.info-section {
+    background-color: rgba(44, 44, 44, 0.85);
+    color: whitesmoke;
+    padding: 20px;
+    border-radius: 3%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.empty-dungeon {
+    cursor: pointer;
+}
+
+.player-ready-button {
+    border: none;
+    border-radius: 999px;
+    min-width: 100%;
+    padding: 7px 0;
+    background-color: green;
+    cursor: pointer;
+    color: whitesmoke;
+    margin-top: auto;
+    font-weight: 600;
+    transition-duration: 0.2s;
+}
+
+.player-ready-button:hover:not(:disabled) {
+    background-color: rgb(31, 162, 31);
+}
+
+.player-ready-button:disabled {
+    background-color: rgb(73, 109, 73);
+    cursor: unset;
+}

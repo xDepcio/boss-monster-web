@@ -20,3 +20,7 @@
     text-align: center;
     width: 60%;
 }
+
+.spell-card-phase-img {
+    z-index: 2;
+}

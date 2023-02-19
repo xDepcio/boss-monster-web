@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Press+Start+2P&display=swap');
+
+
+
+.choose-boss-wrapper {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.311);
+    z-index: 15;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.choose-boss-holder {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    justify-content: center;
+}
+
+.choose-boss {
+    cursor: pointer;
+    transition-duration: 0.3s;
+}
+
+.choose-boss:hover {
+    scale: 1.05;
+}
+
+.choose-boss-header {
+    color: whitesmoke;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 25px;
+    text-shadow: 2px 2px 5px rgb(38, 38, 38);
+}

@@ -83,3 +83,46 @@
     font-weight: 200;
     aspect-ratio: unset;
 }
+
+.main-card-wrapper.card-selected {
+    position: fixed;
+    right: 10%;
+    transform: unset;
+    left: unset;
+    top: 30%;
+    scale: 2;
+    box-shadow: 0px 0px 11px 0px rgb(230, 205, 139);
+    animation-name: play-card;
+    animation-duration: 10s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-timing-function: cubic-bezier(.59, .23, .47, .78);
+    z-index: 11;
+}
+
+.main-card-wrapper.card-selected:hover {
+    scale: 2;
+    transform: unset;
+}
+
+@keyframes play-card {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    25% {
+        transform: rotate(-3deg);
+    }
+
+    50% {
+        transform: rotate(0deg);
+    }
+
+    75% {
+        transform: rotate(3deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+}

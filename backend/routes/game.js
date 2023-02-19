@@ -58,4 +58,19 @@ router.post('/:lobbyId/build-dungeon', assignPlayer, (req, res, next) => {
     })
 })
 
+// Get ready
+router.post('/:lobbyId/become-ready', assignPlayer, (req, res, next) => {
+    const player = req.player
+
+    try {
+        player.becomeReady()
+    } catch (err) {
+        next(err)
+        return
+    }
+    return res.json({
+        success: true
+    })
+})
+
 module.exports = router;

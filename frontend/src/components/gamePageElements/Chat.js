@@ -13,14 +13,14 @@ function Chat() {
 
     function handleToggleChat() {
         if (showChat) {
-            document.getElementById('chat').classList.add('expand-chat')
-            setChatBtnText("Pokaż czat")
-            setChatBtnIcon(faCaretRight)
-        }
-        else {
             document.getElementById('chat').classList.remove('expand-chat')
             setChatBtnText("Ukryj czat")
             setChatBtnIcon(faCaretLeft)
+        }
+        else {
+            document.getElementById('chat').classList.add('expand-chat')
+            setChatBtnText("Pokaż czat")
+            setChatBtnIcon(faCaretRight)
         }
         setShowChat(!showChat)
     }

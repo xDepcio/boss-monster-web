@@ -8,7 +8,8 @@ const {
     NoSuchBossInPlayerCards,
     PlayerAlreadySelectedBoss,
     InvalidFancyDungeonBuild,
-    NoSuchDungeonInPlayerCards
+    NoSuchDungeonInPlayerCards,
+    WrongPhaseToBuild
 } = require('../errors')
 const feedback = require('../game/actionFeedbacks')
 
@@ -32,6 +33,7 @@ class Player {
         this.drawnBosses = []
         this.selectedBoss = null
         this.totalScore = 0
+        this.declaredBuild = null
         this.heroesThatDefeatedPlayer = []
         this.collectedTreasure = {
             faith: 0,
@@ -101,12 +103,20 @@ class Player {
             if (index !== null) {
                 card.setCardToBuildOn(this.dungeon[index])
             }
-            this.trackedGame.handlePlayerBuildDeclaration(this, card)
+            this.declaredBuild = card
+            this.trackedGame.saveGameAction(feedback.PLAYER_DECLARED_BUILD(this))
+            // this.trackedGame.handlePlayerBuildDeclaration(this, card)
             this.useDungeonCard(card)
         }
     }
 
     checkIfDungeonBuildValid(card, index) {
+        if (this.trackedGame.roundPhase !== 'build') {
+            throw new WrongPhaseToBuild("Cards can only be build during bild phase")
+        }
+        if (this.declaredBuild) {
+            throw new PlayerAlreadyDeclaredBuild("Player already declared card to build in this round")
+        }
         if (card.CARDTYPE !== 'DUNGEON') {
             throw new CardCannotBeBuilt("Only dungeon cards can be built")
         }
@@ -140,14 +150,15 @@ class Player {
         return false
     }
 
-    buildDungeon(dungeonCard) {
-        if (dungeonCard.belowDungeon === null) {
-            this.dungeon.push(dungeonCard)
+    buildDeclaredDungeon() {
+        if (this.declaredBuild.belowDungeon === null) {
+            this.dungeon.push(this.declaredBuild)
         }
         else {
-            const toBuildOnIndex = this.dungeon.findIndex(card => card.id === dungeonCard.belowDungeon.id)
-            this.dungeon.splice(toBuildOnIndex, 1, dungeonCard)
+            const toBuildOnIndex = this.dungeon.findIndex(card => card.id === this.declaredBuild.belowDungeon.id)
+            this.dungeon.splice(toBuildOnIndex, 1, this.declaredBuild)
         }
+        this.declaredBuild = null
         this.updateCollectedTreasure()
     }
 

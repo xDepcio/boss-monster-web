@@ -55,3 +55,27 @@
     left: 5%; */
     transform: translateY(16.6%);
 }
+
+.play-card-cancel {
+    position: fixed;
+    z-index: 13;
+    right: 9%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 75px;
+    border: none;
+    border-radius: 999px;
+    gap: 7px;
+    top: 77%;
+    font-size: 16px;
+    font-weight: 600;
+    background-color: rgb(103, 28, 28);
+    color: whitesmoke;
+    transition-duration: 0.2s;
+    cursor: pointer;
+}
+
+.play-card-cancel:hover {
+    background-color: rgb(140, 37, 37);
+}
