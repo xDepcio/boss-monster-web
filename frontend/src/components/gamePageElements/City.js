@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import Card from './card'
 import CardBack from './CardBack'
+import CardHero from './CardHero'
 import './City.css'
 
 
@@ -44,10 +45,13 @@ function City() {
                 <div className='city-heroes-section'>
                     <h3 className='city-heroes-header'>Bohaterowie w mieście</h3>
                     <div className='city-heroes-wrapper'>
-                        {game?.city.map((hero, i) => <Card
+                        {game?.city.map((hero, i) => <CardHero
                             name={hero.name}
                             width={190}
+                            health={hero.baseHealth}
+                            treasure={hero.treasureSign}
                             _className={'city-hero'}
+                            key={i}
                         />)}
                     </div>
                 </div>

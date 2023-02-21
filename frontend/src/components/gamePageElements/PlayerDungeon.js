@@ -1,9 +1,11 @@
 import Cookies from 'js-cookie'
+import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import CardBack from './CardBack'
 import CardBoss from './CardBoss'
 import CardDungeon from './CardDungeon'
+import CardHero from './CardHero'
 import EmptyDungeon from './EmptyDungeon'
 import './PlayerDungeon.css'
 
@@ -49,7 +51,15 @@ function PlayerDungeon({ player, selectedDungCard, setSelectedDungCard }) {
     return (
         <div className="single-player-dungeon">
             <div className='heroes-section'>
-
+                {[...player.dungeonEntranceHeroes].reverse().map((hero, i) => <CardHero
+                    id={hero.id}
+                    baseHealth={hero.baseHealth}
+                    health={hero.health}
+                    name={hero.name}
+                    treasure={hero.treasureSign}
+                    width={220}
+                    _className={'player-hero'}
+                />)}
             </div>
             <div className='dungeon-section'>
                 <div className='player-dungeons-wrapper'>

@@ -1,12 +1,14 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import './Card.css'
 import './CardBoss.css'
 import { symbolImage } from '../../static/constants'
+import { getBgColor } from '../utils'
 
 
 function CardBoss({ width, _className, bgImage, description = '', mainImg, treasure, name = '', pd = 0, subName = '', _onClick, fontHelp }) {
 
     const [cardTreasureArr, setCardTreasureArr] = useState([])
+    const bgUrl = useMemo(() => getBgColor(treasure), [treasure])
 
     useEffect(() => {
         if (treasure) {
@@ -28,7 +30,7 @@ function CardBoss({ width, _className, bgImage, description = '', mainImg, treas
             <p className='card-info-comp card-comp card-desc-header'>Awans:</p>
             <p className='card-info-comp card-comp boss-card-desc'>Każdy przeciwnik musi wybrać i zniszczyć komnatę w swoich podziemiach</p>
             <img className='card-info-comp card-img-comp card-comp card-type-comp' src={'/images/dungeon_types/monsters_symbol.png'} />
-            <img className='card-info-comp card-img-comp card-comp card-bg-comp' src={bgImage || '/images/red_bg_canvas.png'} />
+            <img className='card-info-comp card-img-comp card-comp card-bg-comp' src={bgUrl || '/images/red_bg_canvas.png'} />
             <img className='card-info-comp card-img-comp card-comp card-main-img-comp' src={mainImg || '/images/bosses/boss_ROBOBO.png'} />
             {cardTreasureArr.map((symbol, i) => {
                 return (

@@ -39,7 +39,7 @@ function Chat() {
             <div className='chat'>
                 {gameMessages?.map((msg, i) => {
                     return (
-                        <div className='single-message'>
+                        <div key={i} className='single-message'>
                             <p>{msg.message}</p>
                         </div>
                     )

@@ -10,14 +10,21 @@
 .dungeon-card-damage {
     /* background-color: red; */
     z-index: 11;
-    bottom: 6.5%;
+    bottom: 7%;
     color: whitesmoke;
     font-family: 'Press Start 2P', cursive;
-    left: 16.3%;
+    left: 18.7%;
+    transform: translateX(-50%);
 }
 
 .dungeon-card-type {
     width: 100%;
     text-align: center;
     transform: translateX(-45%);
+}
+
+.dung-card-name {
+    width: fit-content;
+    text-align: center;
+    white-space: nowrap;
 }

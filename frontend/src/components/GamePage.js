@@ -38,26 +38,6 @@ function GamePage() {
             <Chat />
             <PlayerCards selectedDungCard={selectedDungCard} setSelectedDungCard={setSelectedDungCard} />
             {game?.roundPhase === 'start' && <ChooseBoss />}
-            {/* {game?.roundPhase === 'start' && (
-                <div className='choose-boss-wrapper'>
-                    <div className='choose-boss'>
-                        {selfPlayer.drawnBosses.map((boss, i) => {
-                            return (
-                                <>
-                                    <Card
-                                        _onClick={() => handleBossSelect(boss)}
-                                        key={i}
-                                        width={280}
-                                        name={boss.name}
-                                        _className={'boss-choice'}
-                                        treasure={boss.treasure}
-                                    />
-                                </>
-                            )
-                        })}
-                    </div>
-                </div>
-            )} */}
             <div className='players-dungeons-wrapper'>
                 {players?.map((player, i) => <PlayerDungeon setSelectedDungCard={setSelectedDungCard} selectedDungCard={selectedDungCard} key={i} player={player} />)}
             </div>

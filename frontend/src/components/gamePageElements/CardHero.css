@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Press+Start+2P&display=swap');
+
+
+.hero-card-name {
+    font-family: 'Press Start 2P', cursive;
+    color: rgb(27, 27, 27);
+    /* background-color: red; */
+    left: 50%;
+    transform: translateX(-65%);
+    top: 8%;
+    aspect-ratio: unset;
+}
+
+.hero-health-img {
+    z-index: 2;
+}
+
+.hero-hp-text {
+    font-family: 'Press Start 2P', cursive;
+    color: white;
+    z-index: 4;
+    position: absolute;
+    left: 19%;
+    bottom: 7.5%;
+    height: fit-content;
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    aspect-ratio: unset;
+    transform: translateX(-50%);
+}
+
+.hero-card-subname {
+    font-family: 'Press Start 2P', cursive;
+    color: rgb(27, 27, 27);
+    aspect-ratio: unset;
+    z-index: 4;
+    top: 13%;
+    font-size: 0.53em;
+    left: 50%;
+    transform: translateX(-65%);
+    height: fit-content;
+    width: fit-content;
+    text-align: center;
+    /* line-height: 20px; */
+    line-height: 200%;
+    /* font-weight: bolder; */
+
+}
+
+.hero-damage-comp {
+    z-index: 4;
+}
+
+.hero-damage-comp {
+    max-height: 100%;
+    aspect-ratio: unset;
+    width: fit-content;
+    right: 0;
+}
+
+.hero-to-move {
+    box-shadow: 0px 0px 14px 5px rgb(233, 233, 90);
+    /* scale: 1.05; */
+    z-index: 30;
+}

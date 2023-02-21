@@ -73,4 +73,19 @@ router.post('/:lobbyId/become-ready', assignPlayer, (req, res, next) => {
     })
 })
 
+// Accept hero move
+router.post('/:lobbyId/accept-hero-move', assignPlayer, (req, res, next) => {
+    const player = req.player
+
+    try {
+        player.acceptHeroMove()
+    } catch (err) {
+        next(err)
+        return
+    }
+    return res.json({
+        success: true
+    })
+})
+
 module.exports = router;
