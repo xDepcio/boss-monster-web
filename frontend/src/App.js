@@ -19,19 +19,12 @@ function App() {
         }
     }, [])
 
-    // function handleSocket() {
-    //     socket.emit('test', { msg: 'this is test' })
-    // }
-
     return (
-        <>
-            {/* <button onClick={handleSocket}>JEBAC DISA</button> */}
-            <Routes>
-                <Route path='/' element={<MainPage />} />
-                <Route path='/lobby/:lobbyId' element={<LobbyPage />} />
-                <Route path='/lobby/:lobbyId/game' element={<GamePage />} />
-            </Routes>
-        </>
+        <Routes>
+            <Route path='/' element={<MainPage />} />
+            <Route path='/lobby/:lobbyId' element={<LobbyPage />} />
+            <Route path='/lobby/:lobbyId/game' element={<GamePage />} />
+        </Routes>
     );
 }
 

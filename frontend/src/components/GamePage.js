@@ -22,24 +22,9 @@ function GamePage() {
     const [selectedDungCard, setSelectedDungCard] = useState(null)
 
     useEffect(() => {
-        // const gameSyncInterval = setInterval(() => {
         dispatch(getGameInfo(params.lobbyId))
-        //     console.log('t')
-        // }, 1500)
-
-        // return () => {
-        //     clearInterval(gameSyncInterval)
-        // }
-    }, [])
-
-    useEffect(() => {
-        socket.on('xd', (data) => console.log('xddd', data))
-        socket.on('test2', (data) => console.log('this is test2', data))
         socket.on('gameSync', (data) => {
-
-            // dispatch(getGameInfo(params.lobbyId))
             dispatch(loadGameInfo(data))
-            console.log('dick', data)
         })
     }, [])
 
