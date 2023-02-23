@@ -5,7 +5,10 @@ import Cookies from 'js-cookie'
 import { useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import GamePage from './components/GamePage';
+import io from "socket.io-client";
 
+
+export const socket = io.connect("http://localhost:3001");
 
 function App() {
 
@@ -16,12 +19,19 @@ function App() {
         }
     }, [])
 
+    // function handleSocket() {
+    //     socket.emit('test', { msg: 'this is test' })
+    // }
+
     return (
-        <Routes>
-            <Route path='/' element={<MainPage />} />
-            <Route path='/lobby/:lobbyId' element={<LobbyPage />} />
-            <Route path='/lobby/:lobbyId/game' element={<GamePage />} />
-        </Routes>
+        <>
+            {/* <button onClick={handleSocket}>JEBAC DISA</button> */}
+            <Routes>
+                <Route path='/' element={<MainPage />} />
+                <Route path='/lobby/:lobbyId' element={<LobbyPage />} />
+                <Route path='/lobby/:lobbyId/game' element={<GamePage />} />
+            </Routes>
+        </>
     );
 }
 

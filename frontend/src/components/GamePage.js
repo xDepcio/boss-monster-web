@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate, useParams } from 'react-router-dom'
-import { getGameInfo } from '../store/game'
+import { getGameInfo, loadGameInfo } from '../store/game'
 import './GamePage.css'
 import Card from './gamePageElements/card'
 import Cookies from 'js-cookie'
@@ -10,6 +10,7 @@ import City from './gamePageElements/City'
 import PlayerCards from './gamePageElements/PlayerCards'
 import PlayerDungeon from './gamePageElements/PlayerDungeon'
 import ChooseBoss from './gamePageElements/ChooseBoss'
+import { socket } from '../App'
 
 function GamePage() {
     const params = useParams()
@@ -21,16 +22,26 @@ function GamePage() {
     const [selectedDungCard, setSelectedDungCard] = useState(null)
 
     useEffect(() => {
-        const gameSyncInterval = setInterval(() => {
-            dispatch(getGameInfo(params.lobbyId))
-            console.log('t')
-        }, 1500)
+        // const gameSyncInterval = setInterval(() => {
+        dispatch(getGameInfo(params.lobbyId))
+        //     console.log('t')
+        // }, 1500)
 
-        return () => {
-            clearInterval(gameSyncInterval)
-        }
-    })
+        // return () => {
+        //     clearInterval(gameSyncInterval)
+        // }
+    }, [])
 
+    useEffect(() => {
+        socket.on('xd', (data) => console.log('xddd', data))
+        socket.on('test2', (data) => console.log('this is test2', data))
+        socket.on('gameSync', (data) => {
+
+            // dispatch(getGameInfo(params.lobbyId))
+            dispatch(loadGameInfo(data))
+            console.log('dick', data)
+        })
+    }, [])
 
     return (
         <>

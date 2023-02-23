@@ -8,6 +8,7 @@ const gameRouter = require('./game')
 router.use('/users', usersRouter)
 router.use('/lobby', lobbyRouter)
 router.use('/game', gameRouter)
+require('./socket')
 
 /* GET home page. */
 router.get('/', (req, res, next) => {

@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const uuid = require('uuid');
+// const uuid = require('uuid');
 const Lobby = require('../logic/lobby/lobby');
-const Player = require('../logic/player/player')
-const Game = require('../logic/game/game')
-const { flattenCircular } = require('../utils/responseFormat')
+// const Player = require('../logic/player/player')
+// const Game = require('../logic/game/game')
+const { flattenCircular, getCurrentGameData } = require('../utils/responseFormat')
 const { assignPlayer } = require('../utils/verifyPlayer')
 const { parse, stringify, toJSON, fromJSON } = require('flatted');
+const { updateLobbyPlayers } = require('../utils/socketsHelper');
 
 
 // Get game info (players...)
@@ -33,6 +34,7 @@ router.post('/:lobbyId/choose-boss', assignPlayer, (req, res, next) => {
     const bossId = req.body.bossId
     try {
         player.selectBoss(bossId)
+        updateLobbyPlayers(req.params.lobbyId)
     } catch (err) {
         next(err)
         return
@@ -49,6 +51,7 @@ router.post('/:lobbyId/build-dungeon', assignPlayer, (req, res, next) => {
 
     try {
         player.declareBuild(dungeon, req.body.buildIndex)
+        updateLobbyPlayers(req.params.lobbyId)
     } catch (err) {
         next(err)
         return
@@ -64,6 +67,7 @@ router.post('/:lobbyId/become-ready', assignPlayer, (req, res, next) => {
 
     try {
         player.becomeReady()
+        updateLobbyPlayers(req.params.lobbyId)
     } catch (err) {
         next(err)
         return

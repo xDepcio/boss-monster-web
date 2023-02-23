@@ -6,10 +6,13 @@ const LOAD_GAME_INFO = 'loadGameInfo'
 
 
 // Normal actions creator
-export const loadGameInfo = (gameData) => ({
-    type: LOAD_GAME_INFO,
-    gameData
-})
+export const loadGameInfo = (gameData) => {
+    gameData = parse(gameData)
+    return {
+        type: LOAD_GAME_INFO,
+        gameData
+    }
+}
 
 
 // Thunk actions creator
@@ -18,7 +21,7 @@ export const getGameInfo = (lobbyId) => async (dispatch) => {
 
     if (response.ok) {
         const gameData = await response.text()
-        const parsedGameData = parse(gameData)
+        // const parsedGameData = parse(gameData)
 
         // const gameData = await response.json()
         // const test = stringify(gameData)
@@ -26,7 +29,7 @@ export const getGameInfo = (lobbyId) => async (dispatch) => {
 
         // const parsed = parse(test)
         // console.log(parsed)
-        dispatch(loadGameInfo(parsedGameData))
+        dispatch(loadGameInfo(gameData))
     }
 }
 
