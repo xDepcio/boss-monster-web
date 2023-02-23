@@ -25,23 +25,11 @@ const io = new Server(server, {
     },
 });
 
-io.on("connection", (socket) => {
-    console.log(`User Connected: ${socket.id}`);
-
-    socket.on("join_room", (data) => {
-        socket.join(data);
-    });
-
-    socket.on("send_message", (data) => {
-        socket.to(data.room).emit("receive_message", data);
-    });
-
-    socket.on('test', (data) => {
-        console.log("SOCKET:", data)
-    })
-});
-
-
+module.exports = {
+    getIo: () => {
+        return io
+    }
+}
 
 // serving static files
 app.use(express.static('public'))
@@ -76,7 +64,6 @@ app.use((err, _req, res, _next) => {
 server.listen(3001, () => {
     console.log("SERVER IS RUNNING on 3001");
 });
-
 
 
 

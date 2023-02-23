@@ -8,7 +8,7 @@ import GamePage from './components/GamePage';
 import io from "socket.io-client";
 
 
-const socket = io.connect("http://localhost:3001");
+export const socket = io.connect("http://localhost:3001");
 
 function App() {
 
@@ -19,13 +19,13 @@ function App() {
         }
     }, [])
 
-    function handleSocket() {
-        socket.emit('test', { msg: 'this is test' })
-    }
+    // function handleSocket() {
+    //     socket.emit('test', { msg: 'this is test' })
+    // }
 
     return (
         <>
-            <button onClick={handleSocket}>JEBAC DISA</button>
+            {/* <button onClick={handleSocket}>JEBAC DISA</button> */}
             <Routes>
                 <Route path='/' element={<MainPage />} />
                 <Route path='/lobby/:lobbyId' element={<LobbyPage />} />
