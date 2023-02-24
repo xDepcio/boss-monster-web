@@ -169,6 +169,18 @@ class DungeonCard extends Card {
         this.belowDungeon = dungeonCard
         this.belowDungeon.isActive = false
     }
+
+    canBeBuiltOn(cardToBuildOn) {
+        if (!this.isFancy) return true
+        if (this.matchesTreasureWith(cardToBuildOn)) return true
+        return false
+    }
+
+    matchesTreasureWith(anotherCard) {
+        if (Object.keys(anotherCard.treasure).length > 1) return false
+        if (Object.keys(this.treasure)[0] === Object.keys(anotherCard.treasure)[0]) return true
+        return false
+    }
 }
 
 

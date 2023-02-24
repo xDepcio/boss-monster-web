@@ -9,7 +9,10 @@ const {
     PlayerAlreadySelectedBoss,
     InvalidFancyDungeonBuild,
     NoSuchDungeonInPlayerCards,
-    WrongPhaseToBuild
+    WrongPhaseToBuild,
+    PhaseNotFinished,
+    PlayerAlreadyReady,
+    PlayerAlreadyAcceptedHeroMove
 } = require('../errors')
 const feedback = require('../game/actionFeedbacks')
 
@@ -26,7 +29,7 @@ class Player {
         this.finishedPhase = false
         this.dungeon = []
         this.dungeonEntranceHeroes = []
-        this.acceptedheroMove = false
+        this.acceptedHeroMove = false
         this.health = 5
         this.money = 3
         this.defeatedHeroes = []
@@ -69,6 +72,7 @@ class Player {
         }
         this.selectedBoss = foundBoss
         this.trackedGame.saveGameAction(feedback.PLAYER_SELECTED_BOSS(this, foundBoss))
+        this.updateCollectedTreasure()
         this.becomeReady()
     }
 
@@ -105,7 +109,6 @@ class Player {
             }
             this.declaredBuild = card
             this.trackedGame.saveGameAction(feedback.PLAYER_DECLARED_BUILD(this))
-            // this.trackedGame.handlePlayerBuildDeclaration(this, card)
             this.useDungeonCard(card)
         }
     }
@@ -131,7 +134,7 @@ class Player {
         else {
             const cardToBuildOn = this.dungeon[index]
             if (card.isFancy) {
-                if (card.type !== cardToBuildOn.type) {
+                if (!card.canBeBuiltOn(cardToBuildOn)) {
                     throw new InvalidFancyDungeonBuild("Fancy dungeon can only be built on top of normal dungeon with matching type")
                 }
             }
@@ -151,6 +154,7 @@ class Player {
     }
 
     buildDeclaredDungeon() {
+        if (this.declaredBuild === null) return
         if (this.declaredBuild.belowDungeon === null) {
             this.dungeon.push(this.declaredBuild)
         }
@@ -189,6 +193,12 @@ class Player {
     }
 
     becomeReady() {
+        if (this.isReady()) {
+            throw new PlayerAlreadyReady('Player is already ready')
+        }
+        if (this.trackedGame.getHeroToMove()) {
+            throw new PhaseNotFinished('Cannot become ready when there are heroes at players dungeons')
+        }
         this.finishedPhase = true
         this.trackedGame.saveGameAction(feedback.PLAYER_BECOME_READY(this))
         this.trackedGame.checkForPhaseEnd()
@@ -198,18 +208,25 @@ class Player {
         this.finishedPhase = false
     }
 
+    isReady() {
+        return this.finishedPhase
+    }
+
     hasAcceptedHeroEntrance() {
-        return this.acceptedheroMove
+        return this.acceptedHeroMove
     }
 
     acceptHeroMove() {
-        this.acceptedheroMove = true
+        if (this.hasAcceptedHeroEntrance()) {
+            throw new PlayerAlreadyAcceptedHeroMove('Player has already accepted current hero move')
+        }
+        this.acceptedHeroMove = true
         this.trackedGame.saveGameAction(feedback.PLAYER_ACCEPTED_HERO_MOVE(this))
         this.trackedGame.requestHeroDungeonEntrance()
     }
 
     becomeNotReadyForHeroMove() {
-        this.acceptedheroMove = false
+        this.acceptedHeroMove = false
     }
 
     getDamage(damageAmount) {

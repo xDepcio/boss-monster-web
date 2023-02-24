@@ -7,18 +7,16 @@ import CardBoss from './CardBoss'
 import CardDungeon from './CardDungeon'
 import CardHero from './CardHero'
 import EmptyDungeon from './EmptyDungeon'
+import HeroToMoveMarker from './HeroToMoveMarker'
 import './PlayerDungeon.css'
 
 
 function PlayerDungeon({ player, selectedDungCard, setSelectedDungCard }) {
     const selfPlayer = useSelector(state => state.game.selfPlayer)
     const params = useParams()
+    const heroToMove = useSelector(state => state.game.game.heroToMove)
 
     function handleBuildNewDungeon() {
-        console.log('dddddd')
-        console.log(player.id)
-        console.log(selfPlayer.id)
-        console.log(selectedDungCard)
         if (player.id === selfPlayer.id && selectedDungCard) {
             selectedDungCard.htmlElement.classList.remove('card-selected')
             setSelectedDungCard(null)
@@ -48,6 +46,18 @@ function PlayerDungeon({ player, selectedDungCard, setSelectedDungCard }) {
         })
     }
 
+    function handleAcceptHeroMove() {
+        fetch(`/game/${params.lobbyId}/accept-hero-move`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userId: Cookies.get('user'),
+            })
+        })
+    }
+
     return (
         <div className="single-player-dungeon">
             <div className='heroes-section'>
@@ -63,7 +73,7 @@ function PlayerDungeon({ player, selectedDungCard, setSelectedDungCard }) {
             </div>
             <div className='dungeon-section'>
                 <div className='player-dungeons-wrapper'>
-                    {player.dungeon.map((dungeon, i) => <CardDungeon damage={dungeon.damage} width={220} treasure={dungeon.treasure} type={dungeon.type} name={dungeon.name} key={i} />)}
+                    {player.dungeon.map((dungeon, i) => <CardDungeon damage={dungeon.damage} width={220} treasure={dungeon.treasure} type={dungeon.type} name={dungeon.name} key={i} id={dungeon.id} />)}
                     {new Array(5 - player.dungeon.length).fill(null).map((e, i) => {
                         return player.declaredBuild && i === 0 ? <CardBack key={i} text={'TALIA KOMNAT'} width={220} /> : <EmptyDungeon _className={'empty-dungeon'} key={i} _onClick={() => handleBuildNewDungeon()} width={220} />
                     })}
@@ -82,16 +92,33 @@ function PlayerDungeon({ player, selectedDungCard, setSelectedDungCard }) {
                 <p>Gold: {player.money}</p>
                 <p>Zebrane dusze: {player.totalScore}</p>
                 <p>Życie: {player.health}</p>
-                {selfPlayer.id === player.id ? (
-                    <>
-                        <p>Ty</p>
-                        <button onClick={handleBecomeReady} className='player-ready-button' disabled={selfPlayer.finishedPhase}>
-                            <p>{selfPlayer.finishedPhase ? 'Jesteś gotowy' : 'Bądź gotów'}</p>
-                        </button>
-                    </>
-                ) : player.finishedPhase && (
+                {selfPlayer.id === player.id && <p>Ty</p>}
+
+                {(selfPlayer.id === player.id && !heroToMove) ? (
+                    <button onClick={handleBecomeReady} className='player-ready-button' disabled={selfPlayer.finishedPhase}>
+                        <p>{selfPlayer.finishedPhase ? 'Jesteś gotowy' : 'Bądź gotów'}</p>
+                    </button>
+                ) : player.finishedPhase ? (
                     <button className='player-ready-button' disabled={true}>
                         <p>Gotowy</p>
+                    </button>
+                ) : !heroToMove && (
+                    <button className='player-ready-button btn-red' disabled={true}>
+                        <p>Nie gotowy</p>
+                    </button>
+                )}
+
+                {(selfPlayer.id === player.id && heroToMove) ? (
+                    <button onClick={handleAcceptHeroMove} className='player-ready-button' disabled={selfPlayer.acceptedHeroMove}>
+                        <p>{selfPlayer.acceptedHeroMove ? 'Zakceptowałeś' : 'Akceptuj ruch'}</p>
+                    </button>
+                ) : player.acceptedHeroMove ? (
+                    <button className='player-ready-button' disabled={true}>
+                        <p>Zaakceptował</p>
+                    </button>
+                ) : heroToMove && (
+                    <button className='btn-red player-ready-button btn-red' disabled={true}>
+                        <p>Nie akceptował</p>
                     </button>
                 )}
             </div>

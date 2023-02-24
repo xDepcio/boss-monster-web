@@ -8,6 +8,23 @@ class HeroesCardsStackEmpty extends Error {
 
 
 // In Player errors
+class PlayerAlreadyAcceptedHeroMove extends Error {
+    constructor(message) {
+        super(message)
+    }
+}
+
+class PlayerAlreadyReady extends Error {
+    constructor(message) {
+        super(message)
+    }
+}
+
+class PhaseNotFinished extends Error {
+    constructor(message) {
+        super(message)
+    }
+}
 
 class WrongPhaseToBuild extends Error {
     constructor(message) {
@@ -98,5 +115,8 @@ module.exports = {
     PlayerAlreadySelectedBoss,
     InvalidFancyDungeonBuild,
     NoSuchDungeonInPlayerCards,
-    WrongPhaseToBuild
+    WrongPhaseToBuild,
+    PhaseNotFinished,
+    PlayerAlreadyReady,
+    PlayerAlreadyAcceptedHeroMove
 }

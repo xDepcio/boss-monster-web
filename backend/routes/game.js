@@ -20,11 +20,6 @@ router.get('/:lobbyId', (req, res) => {
         gameStarted: !!game,
         game: game
     }))
-    res.json({
-        players: flattenCircular(game.players),
-        gameStarted: flattenCircular(!!game),
-        game: flattenCircular(game)
-    })
 })
 
 // Select boss
@@ -83,6 +78,7 @@ router.post('/:lobbyId/accept-hero-move', assignPlayer, (req, res, next) => {
 
     try {
         player.acceptHeroMove()
+        updateLobbyPlayers(req.params.lobbyId)
     } catch (err) {
         next(err)
         return

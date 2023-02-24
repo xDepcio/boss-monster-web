@@ -3,13 +3,16 @@ import './Card.css'
 import './CardDungeon.css'
 import { symbolImage } from '../../static/constants'
 import { getBgColor, getFontEm } from '../utils'
+import { useSelector } from 'react-redux'
+import HeroToMoveMarker from './HeroToMoveMarker'
 
 
-function CardDungeon({ width, _className, bgImage, isFancy = false, description = '', mainImg, damage = 'X', type, treasure, name = '', _onClick, fontHelp }) {
+function CardDungeon({ width, _className, bgImage, isFancy = false, description = '', mainImg, damage = 'X', type, treasure, name = '', _onClick, fontHelp, id }) {
     const [cardTreasureArr, setCardTreasureArr] = useState([])
     const [subHeader, setSubHeader] = useState('')
     const [typeUrl, setTypeUrl] = useState('')
     const bgUrl = useMemo(() => getBgColor(treasure), [treasure])
+    const heroToMove = useSelector(state => state.game?.game.heroToMove)
 
     useEffect(() => {
         switch (type) {
@@ -61,6 +64,7 @@ function CardDungeon({ width, _className, bgImage, isFancy = false, description 
             }}
             className={`main-card-wrapper card-comp ${_className}`}
         >
+            {(heroToMove && heroToMove?.dungeonRoom?.id === id) && <HeroToMoveMarker />}
             <h3 style={{ fontSize: getFontEm(name.length) }} className='card-info-comp card-name dung-card-name'>{name}</h3>
             <p className='card-info-comp card-subname dungeon-card-type'>{subHeader}</p>
             <p className='card-info-comp dungeon-card-damage'>{damage}</p>

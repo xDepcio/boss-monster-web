@@ -3,7 +3,7 @@
 
 .card-comp {
     aspect-ratio: 746/1039;
-    overflow: hidden;
+    /* overflow: hidden; */
     position: relative;
     border-radius: 3%;
 }

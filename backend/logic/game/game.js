@@ -24,7 +24,6 @@ class Game {
         this.usedCardsStack = []
         this.gameRound = 1
         this.roundPhase = phase.START
-        // this.buildPhaseDeclaredBuilds = {}
         this.city = []
         this.movesHistory = []
         this.heroToMove = null
@@ -51,14 +50,6 @@ class Game {
     setPlayersOrder() {
         this.players.sort((pl1, pl2) => pl2.selectedBoss.pd - pl1.selectedBoss.pd)
     }
-
-    // handlePlayerBuildDeclaration(player, card) {
-    //     if (this.buildPhaseDeclaredBuilds[player.id]) {
-    //         throw new PlayerAlreadyDeclaredBuild("Player already declared card to build in this round")
-    //     }
-    //     this.buildPhaseDeclaredBuilds[player.id] = card
-    //     this.saveGameAction(feedback.PLAYER_DECLARED_BUILD(player))
-    // }
 
     checkForPhaseEnd() {
         if (this.areAllPlayersReady()) {
@@ -111,7 +102,6 @@ class Game {
         this.players.forEach(player => player.becomeNotReady())
         this.players.forEach(player => player.drawNotUsedDungeonCard())
         this.roundPhase = phase.BUILD
-        // this.buildPhaseDeclaredBuilds = {}
         this.fillCityWithHeroes()
     }
 
@@ -149,6 +139,7 @@ class Game {
                 return hero
             }
         }
+        return null
     }
 
     fillCityWithHeroes() {
@@ -167,13 +158,6 @@ class Game {
         return card
     }
 
-    // buildDeclaredCards() {
-    //     for (const [playerId, card] of Object.entries(this.buildPhaseDeclaredBuilds)) {
-    //         const player = Player.getPlayer(playerId)
-    //         player.buildDungeon(card)
-    //     }
-    // }
-
     areAllPlayersReady() {
         for (const player of this.players) {
             if (!player.finishedPhase) {
@@ -191,6 +175,10 @@ class Game {
         for (let move of this.movesHistory) {
             console.log(move.message)
         }
+    }
+
+    getHeroToMove() {
+        return this.heroToMove
     }
 
     static getGame(gameId) {

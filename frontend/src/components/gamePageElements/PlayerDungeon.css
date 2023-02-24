@@ -52,6 +52,14 @@
     cursor: unset;
 }
 
+.btn-red {
+    background-color: rgb(181, 33, 33);
+}
+
+.btn-red:disabled {
+    background-color: rgb(147, 67, 67);
+}
+
 /*
 .heroes-section {
     display: grid;
