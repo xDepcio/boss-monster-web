@@ -16,7 +16,8 @@ function PlayerDungeon({ player, selectedDungCard, setSelectedDungCard }) {
     const params = useParams()
     const heroToMove = useSelector(state => state.game.game.heroToMove)
 
-    function handleBuildNewDungeon() {
+    function handleBuildNewDungeon(index = null) {
+        console.log(index)
         if (player.id === selfPlayer.id && selectedDungCard) {
             selectedDungCard.htmlElement.classList.remove('card-selected')
             setSelectedDungCard(null)
@@ -28,7 +29,7 @@ function PlayerDungeon({ player, selectedDungCard, setSelectedDungCard }) {
                 body: JSON.stringify({
                     userId: Cookies.get('user'),
                     dungeonId: selectedDungCard.id,
-                    buildIndex: null
+                    buildIndex: index
                 })
             })
         }
@@ -73,9 +74,24 @@ function PlayerDungeon({ player, selectedDungCard, setSelectedDungCard }) {
             </div>
             <div className='dungeon-section'>
                 <div className='player-dungeons-wrapper'>
-                    {player.dungeon.map((dungeon, i) => <CardDungeon damage={dungeon.damage} width={220} treasure={dungeon.treasure} type={dungeon.type} name={dungeon.name} key={i} id={dungeon.id} />)}
+                    {player.dungeon.map((dungeon, i) => {
+                        return (
+                            player.declaredBuild?.belowDungeon?.id === dungeon.id ?
+                                <CardBack key={i} width={220} text={'TALIA KOMNAT'} /> :
+                                <CardDungeon
+                                    _onClick={() => handleBuildNewDungeon(i)}
+                                    damage={dungeon.damage} width={220}
+                                    treasure={dungeon.treasure}
+                                    type={dungeon.type}
+                                    name={dungeon.name}
+                                    key={i}
+                                    id={dungeon.id}
+                                    isFancy={dungeon.isFancy}
+                                />
+                        )
+                    })}
                     {new Array(5 - player.dungeon.length).fill(null).map((e, i) => {
-                        return player.declaredBuild && i === 0 ? <CardBack key={i} text={'TALIA KOMNAT'} width={220} /> : <EmptyDungeon _className={'empty-dungeon'} key={i} _onClick={() => handleBuildNewDungeon()} width={220} />
+                        return (player.declaredBuild && i === 0 && !player.declaredBuild?.belowDungeon) ? <CardBack key={i} text={'TALIA KOMNAT'} width={220} /> : <EmptyDungeon _className={'empty-dungeon'} key={i} _onClick={() => handleBuildNewDungeon()} width={220} />
                     })}
                 </div>
                 <div className='player-boss-wrapper'>

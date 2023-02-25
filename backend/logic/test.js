@@ -29,7 +29,7 @@ const rl = readline.createInterface({
 })
 
 
-function showOptions(choosenPlayer = null, choosenCard = null) {
+function showOptions(choosenPlayer = null, choosenCard = null, lastError = null) {
     // console.clear()
     process.stdout.write('\x1B[2J\x1B[3J\x1B[H');
 
@@ -38,6 +38,10 @@ function showOptions(choosenPlayer = null, choosenCard = null) {
     }
     if (choosenCard) {
         console.log('Your card: ', choosenCard)
+    }
+
+    if (lastError) {
+        console.log('\n', "Error: ", lastError.message, '\n')
     }
 
     rl.question(`
@@ -49,6 +53,7 @@ function showOptions(choosenPlayer = null, choosenCard = null) {
     Type 'h' to show game actions history
     Type 'acc' to accept hero dungeon entrance
     Type 'b' to show avalible bosses
+    Type 'destroy' to choose card to destroy
     `, (choice) => {
         if (choice === 'p') {
             showPlayers()
@@ -74,21 +79,46 @@ function showOptions(choosenPlayer = null, choosenCard = null) {
             }
         }
         else if (choice === 'ready') {
-            choosenPlayer.becomeReady()
-            showOptions(choosenPlayer, choosenCard)
+            try {
+                choosenPlayer.becomeReady()
+                showOptions(choosenPlayer, choosenCard)
+            } catch (e) {
+                showOptions(choosenPlayer, choosenCard, e)
+            }
         }
         else if (choice === 'h') {
             showHistory(choosenPlayer, choosenCard)
         }
         else if (choice === 'acc') {
-            choosenPlayer.acceptHeroMove()
-            showOptions(choosenPlayer, choosenCard)
+            try {
+                choosenPlayer.acceptHeroMove()
+                showOptions(choosenPlayer, choosenCard)
+            } catch (e) {
+                showOptions(choosenPlayer, choosenCard, e)
+            }
         }
         else if (choice === 'b') {
             showBosses(choosenPlayer)
         }
+        else if (choice === 'destroy') {
+            showDestroyMenu(choosenPlayer)
+        }
         else {
             showOptions(choosenPlayer, choosenCard)
+        }
+    })
+}
+
+
+function showDestroyMenu(choosenPlayer) {
+    process.stdout.write('\x1B[2J\x1B[3J\x1B[H')
+    console.log(choosenPlayer.dungeon)
+    rl.question('Type dungeon card id to destroy it: ', (dungeonId) => {
+        try {
+            choosenPlayer.destroyDungeonCard(parseInt(dungeonId))
+            showOptions(choosenPlayer)
+        } catch (e) {
+            showOptions(choosenPlayer, null, e)
         }
     })
 }

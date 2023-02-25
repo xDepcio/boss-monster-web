@@ -92,6 +92,19 @@ class InvalidFancyDungeonBuild extends Error {
     }
 }
 
+class CardCannotBeDestroyed extends Error {
+    constructor(message) {
+        super(message)
+    }
+}
+
+class NoSuchDungeonCardInPlayerDungeon extends Error {
+    constructor(message) {
+        super(message)
+    }
+}
+
+
 
 // In Hero card
 class NotAllPlayersAcceptedHeroMove extends Error {
@@ -118,5 +131,7 @@ module.exports = {
     WrongPhaseToBuild,
     PhaseNotFinished,
     PlayerAlreadyReady,
-    PlayerAlreadyAcceptedHeroMove
+    PlayerAlreadyAcceptedHeroMove,
+    CardCannotBeDestroyed,
+    NoSuchDungeonCardInPlayerDungeon
 }

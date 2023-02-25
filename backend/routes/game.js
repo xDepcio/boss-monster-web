@@ -42,7 +42,7 @@ router.post('/:lobbyId/choose-boss', assignPlayer, (req, res, next) => {
 // Build dungeon
 router.post('/:lobbyId/build-dungeon', assignPlayer, (req, res, next) => {
     const player = req.player
-    const dungeon = player.getDungeonCard(req.body.dungeonId)
+    const dungeon = player.getDungeonCardInHand(req.body.dungeonId)
 
     try {
         player.declareBuild(dungeon, req.body.buildIndex)

@@ -1,5 +1,6 @@
 const { NotAllPlayersAcceptedHeroMove } = require('../errors')
 const feedback = require('./actionFeedbacks')
+const { mechanicsTypes } = require('./unique_mechanics/dungeonMechanics')
 
 
 class Card {
@@ -137,7 +138,7 @@ class HeroCard extends Card {
 class DungeonCard extends Card {
     static dungeons = {}
 
-    constructor(id, name, CARDTYPE, trackedGame, damage, treasure, type, isFancy) {
+    constructor(id, name, CARDTYPE, trackedGame, damage, treasure, type, isFancy, mechanic, mechanicType, mechanicDescription) {
         super(id, name, CARDTYPE, trackedGame)
         this.damage = damage
         this.treasure = treasure
@@ -145,7 +146,14 @@ class DungeonCard extends Card {
         this.isFancy = isFancy
         this.belowDungeon = null
         this.isActive = true
+        this.owner = null
+        this.allowDestroy = false
+        this.mechanic = mechanic ? new mechanic(this, mechanicType, mechanicDescription) : null
         DungeonCard.dungeons[id] = this
+    }
+
+    setOwner(player) {
+        this.owner = player
     }
 
     heroEnteredRoom(hero) {
@@ -161,6 +169,14 @@ class DungeonCard extends Card {
         }
     }
 
+    setAllowDestroy(bool) {
+        this.allowDestroy = bool
+    }
+
+    isDestroyable() {
+        return this.allowDestroy
+    }
+
     handleHeroDiedInRoom() {
         // ...TODO something when hero died in this dungeon room
     }
@@ -168,6 +184,12 @@ class DungeonCard extends Card {
     setCardToBuildOn(dungeonCard) {
         this.belowDungeon = dungeonCard
         this.belowDungeon.isActive = false
+    }
+
+    handleCardDestroyedMechanic() {
+        if (this.mechanic.getType() === mechanicsTypes.ON_DESTORY) {
+            this.mechanic.use()
+        }
     }
 
     canBeBuiltOn(cardToBuildOn) {

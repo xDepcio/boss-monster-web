@@ -113,7 +113,9 @@
             "treasure": {
                 "fortune": 1
             },
-            "isFancy": false
+            "isFancy": false,
+            "mechanicType": "onDestroy",
+            "mechanicDescription": "Zniszcz tę komnatę: wyeliminuj bohatera w tej komnacie."
         },
         {
             "CARDTYPE": "DUNGEON",

@@ -12,7 +12,9 @@ const {
     WrongPhaseToBuild,
     PhaseNotFinished,
     PlayerAlreadyReady,
-    PlayerAlreadyAcceptedHeroMove
+    PlayerAlreadyAcceptedHeroMove,
+    CardCannotBeDestroyed,
+    NoSuchDungeonCardInPlayerDungeon
 } = require('../errors')
 const feedback = require('../game/actionFeedbacks')
 
@@ -82,6 +84,7 @@ class Player {
             throw new DungeonCardsStackEmpty("Can't draw from empty dungeon stack")
         }
         this.dungeonCards.push(card)
+        card.setOwner(this)
         return card
     }
 
@@ -166,13 +169,41 @@ class Player {
         this.updateCollectedTreasure()
     }
 
-    getDungeonCard(cardId) {
+    destroyDungeonCard(cardId) {
+        const dungeonCard = this.getDungeonCardFromDungeon(cardId)
+        if (!dungeonCard.isDestroyable()) {
+            throw new CardCannotBeDestroyed("This dungeon cannot be destroyed")
+        }
+        dungeonCard.handleCardDestroyedMechanic()
+        this.deleteFromDungeon(dungeonCard)
+        this.trackedGame.saveGameAction(feedback.PLAYER_DESTROYED_DUNGEON(this, dungeonCard))
+    }
+
+    deleteFromDungeon(dungeonCard) {
+        const cardIndex = this.dungeon.findIndex(dungeon => dungeon.id === dungeonCard.id)
+        if (!dungeonCard.belowDungeon) {
+            this.dungeon.splice(cardIndex, 1)
+        }
+        else {
+            this.dungeon.splice(cardIndex, 1, dungeonCard.belowDungeon)
+        }
+    }
+
+    getDungeonCardFromDungeon(cardId) {
+        const dungeonCard = this.dungeon.find(dung => dung.id === cardId)
+        if (!dungeonCard) {
+            throw new NoSuchDungeonCardInPlayerDungeon(`Dungeon with id ${cardId} not found in player dungeon`)
+        }
+        return dungeonCard
+    }
+
+    getDungeonCardInHand(cardId) {
         for (let dungeon of this.dungeonCards) {
             if (dungeon.id === cardId) {
                 return dungeon
             }
         }
-        throw new NoSuchDungeonInPlayerCards(`Dungeon with id ${cardId} found in player cards`)
+        throw new NoSuchDungeonInPlayerCards(`Dungeon with id ${cardId} not found in player cards`)
     }
 
     updateCollectedTreasure() {

@@ -76,6 +76,18 @@ const feedback = {
             type: "START_BUILD_PHASE",
             message: `New build phase has started`
         }
+    },
+    PLAYER_DESTROYED_DUNGEON: (player, dungeon) => {
+        return {
+            type: "PLAYER_DESTROYED_DUNGEON",
+            message: `player ${player.name} destroyed dungeon ${dungeon.name}`
+        }
+    },
+    PLAYER_USED_MECHANIC: (player, mechanic) => {
+        return {
+            type: "PLAYER_USED_MECHANIC",
+            message: `player ${player.name} used '${mechanic.getDescription()}'`
+        }
     }
 }
 
