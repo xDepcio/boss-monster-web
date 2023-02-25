@@ -94,6 +94,7 @@ class HeroCard extends Card {
 
     finishMoving() {
         this.finishedMoving = true
+        this.trackedGame.selectNextHeroToMove()
     }
 
     triggerCurrentDungeonCard() {

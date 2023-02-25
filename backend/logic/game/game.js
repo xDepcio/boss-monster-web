@@ -118,9 +118,9 @@ class Game {
             try {
                 this.heroToMove.moveToNextRoom()
                 this.players.forEach(player => player.becomeNotReadyForHeroMove())
-                if (this.heroToMove.hasFinishedMoving()) {
-                    this.selectNextHeroToMove()
-                }
+                // if (this.heroToMove.hasFinishedMoving()) {
+                //     this.selectNextHeroToMove()
+                // }
             } catch (error) {
                 if (error instanceof NotAllPlayersAcceptedHeroMove) {
                     console.log('Not all players ready for hero to move')
