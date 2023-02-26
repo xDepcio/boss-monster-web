@@ -89,6 +89,7 @@ function PlayerCards({ setSelectedDungCard, selectedDungCard }) {
                         _className={'player-card-in-inv'}
                         isFancy={dungeon.isFancy}
                         key={i}
+                        id={dungeon.id}
                     />)}
                     {selfPlayer?.spellCards.map((spell, i) => <CardSpell
                         width={200}

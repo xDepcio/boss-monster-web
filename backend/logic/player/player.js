@@ -14,7 +14,9 @@ const {
     PlayerAlreadyReady,
     PlayerAlreadyAcceptedHeroMove,
     CardCannotBeDestroyed,
-    NoSuchDungeonCardInPlayerDungeon
+    NoSuchDungeonCardInPlayerDungeon,
+    WrongRoundPhase,
+    NoSuchSpellInPlayerHand
 } = require('../errors')
 const feedback = require('../game/actionFeedbacks')
 
@@ -46,7 +48,12 @@ class Player {
             magic: 0,
             fortune: 0
         }
+        this.requestedSelection = null
         Player.players[id] = this
+    }
+
+    setRequestedSelection(selection) {
+        this.requestedSelection = selection
     }
 
     drawStartCards() {
@@ -94,6 +101,7 @@ class Player {
             throw new SpellCardsStackEmpty("Can't draw from empty spell stack")
         }
         this.spellCards.push(card)
+        card.setOwner(this)
         return card
     }
 
@@ -156,6 +164,25 @@ class Player {
         return false
     }
 
+    playSpell(spellId) {
+        const spell = this.getSpellInHandById(spellId)
+        if (this.checkIfSpellPlayValid(spell)) {
+            spell.play()
+        }
+    }
+
+    removeSpellFromHand(spell) {
+        const spellIndex = this.spellCards.findIndex(spellCard => spellCard.id === spell.id)
+        this.spellCards.splice(spellIndex, 1)
+    }
+
+    checkIfSpellPlayValid(spellCard) {
+        if (spellCard.playablePhase !== this.trackedGame.roundPhase) {
+            throw new WrongRoundPhase(`${spellCard.name} can only be played during ${spellCard.playablePhase} phase. Current phase: ${this.trackedGame.roundPhase}`)
+        }
+        return true
+    }
+
     buildDeclaredDungeon() {
         if (this.declaredBuild === null) return
         if (this.declaredBuild.belowDungeon === null) {
@@ -204,6 +231,22 @@ class Player {
             }
         }
         throw new NoSuchDungeonInPlayerCards(`Dungeon with id ${cardId} not found in player cards`)
+    }
+
+    getHeroFromDungeonEntranceById(heroId) {
+        const hero = this.dungeonEntranceHeroes.find(hero => hero.id === heroId)
+        if (!hero) {
+            throw new NoSuchHeroAtDungeonEntrance(`Hero with id ${heroId} was not found in player dungeon`)
+        }
+        return hero
+    }
+
+    getSpellInHandById(spellId) {
+        const spell = this.spellCards.find(spellCard => spellCard.id === spellId)
+        if (!spell) {
+            throw new NoSuchSpellInPlayerHand(`Player does not have spell with id ${spellId}`)
+        }
+        return spell
     }
 
     updateCollectedTreasure() {

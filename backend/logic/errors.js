@@ -104,6 +104,17 @@ class NoSuchDungeonCardInPlayerDungeon extends Error {
     }
 }
 
+class WrongRoundPhase extends Error {
+    constructor(message) {
+        super(message)
+    }
+}
+
+class NoSuchSpellInPlayerHand extends Error {
+    constructor(message) {
+        super(message)
+    }
+}
 
 
 // In Hero card
@@ -133,5 +144,7 @@ module.exports = {
     PlayerAlreadyReady,
     PlayerAlreadyAcceptedHeroMove,
     CardCannotBeDestroyed,
-    NoSuchDungeonCardInPlayerDungeon
+    NoSuchDungeonCardInPlayerDungeon,
+    WrongRoundPhase,
+    NoSuchSpellInPlayerHand
 }

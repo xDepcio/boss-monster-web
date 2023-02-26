@@ -88,6 +88,12 @@ const feedback = {
             type: "PLAYER_USED_MECHANIC",
             message: `player ${player.name} used '${mechanic.getDescription()}'`
         }
+    },
+    HERO_DAMAGED_BY_SPELL: (hero, spellDamageAmount, spellName, player) => {
+        return {
+            type: "HERO_DAMAGED_BY_SPELL",
+            message: `player ${player.name} damaged hero ${hero.name} for ${spellDamageAmount} with ${spellName}`
+        }
     }
 }
 

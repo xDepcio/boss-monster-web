@@ -94,6 +94,7 @@ class HeroCard extends Card {
 
     finishMoving() {
         this.finishedMoving = true
+        this.trackedGame.players.forEach(player => player.becomeNotReadyForHeroMove())
         this.trackedGame.selectNextHeroToMove()
     }
 
@@ -103,6 +104,10 @@ class HeroCard extends Card {
 
     checkDeath() {
         return this.health <= 0
+    }
+
+    getDamaged(amount) {
+        this.health -= amount
     }
 
     die() {
@@ -162,7 +167,7 @@ class DungeonCard extends Card {
     }
 
     damageHero(hero) {
-        hero.health -= this.damage
+        hero.getDamaged(this.damage)
         this.trackedGame.saveGameAction(feedback.HERO_DAMAGED(hero, this, hero.dungeonOwner))
         if (hero.checkDeath()) {
             hero.die()
@@ -208,9 +213,24 @@ class DungeonCard extends Card {
 
 
 class SpellCard extends Card {
-    constructor(id, name, CARDTYPE, trackedGame, playablePhase) {
+    constructor(id, name, CARDTYPE, trackedGame, playablePhase, mechanic, mechanicDescription) {
         super(id, name, CARDTYPE, trackedGame)
         this.playablePhase = playablePhase
+        this.owner = null
+        this.mechanic = mechanic ? new mechanic(this, mechanicDescription) : null
+    }
+
+    setOwner(player) {
+        this.owner = player
+    }
+
+    play() {
+        this.mechanic.use()
+    }
+
+    completeUsage() {
+        this.owner.removeSpellFromHand(this)
+        this.setOwner(null)
     }
 }
 

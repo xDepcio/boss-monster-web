@@ -4,6 +4,7 @@ const HERO_CARDS = require('./cards.json').heroes
 const BOSS_CARDS = require('./cards.json').bosses
 const { DungeonCard, HeroCard, SpellCard, BossCard } = require('./cards')
 const { dungeonMechanicsMap } = require('./unique_mechanics/dungeonMechanics')
+const { spellsMechanicsMap } = require('./unique_mechanics/spellsMechanics')
 
 
 function getShuffledDungeonCards(game) {
@@ -25,8 +26,10 @@ function getShuffledSpellCards(game) {
     let dungeonCards = []
     for (let card of SPELL_CARDS) {
         if (card.CARDTYPE === "SPELL") {
-            const { CARDTYPE, id, name, playablePhase } = card
-            const createdCardObj = new SpellCard(id, name, CARDTYPE, game, playablePhase)
+            const { CARDTYPE, id, name, playablePhase, description } = card
+            const spellMechanic = spellsMechanicsMap[name]
+
+            const createdCardObj = new SpellCard(id, name, CARDTYPE, game, playablePhase, spellMechanic, description)
             dungeonCards.push(createdCardObj)
         }
     }

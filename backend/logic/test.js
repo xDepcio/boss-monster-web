@@ -2,7 +2,8 @@ const { Game } = require('./game/game')
 const Player = require('./player/player')
 const util = require('util')
 const readline = require('readline');
-const prompt = require('prompt')
+const prompt = require('prompt');
+const { SelectionRequest } = require('./game/playerRequestSelections');
 
 
 const player1 = new Player(1, 'olek')
@@ -54,6 +55,7 @@ function showOptions(choosenPlayer = null, choosenCard = null, lastError = null)
     Type 'acc' to accept hero dungeon entrance
     Type 'b' to show avalible bosses
     Type 'destroy' to choose card to destroy
+    Type 'select' to choose requested selections
     `, (choice) => {
         if (choice === 'p') {
             showPlayers()
@@ -71,11 +73,19 @@ function showOptions(choosenPlayer = null, choosenCard = null, lastError = null)
             showGameInfo(choosenPlayer, choosenCard)
         }
         else if (choice === 'play') {
-            switch (choosenCard.CARDTYPE) {
-                case 'DUNGEON': {
-                    choosenPlayer.declareBuild(choosenCard)
-                    showOptions(choosenPlayer, choosenCard)
+            try {
+                switch (choosenCard.CARDTYPE) {
+                    case 'DUNGEON': {
+                        choosenPlayer.declareBuild(choosenCard)
+                        showOptions(choosenPlayer, choosenCard)
+                    }
+                    case 'SPELL': {
+                        choosenPlayer.playSpell(choosenCard.id)
+                        showOptions(choosenPlayer, choosenCard)
+                    }
                 }
+            } catch (e) {
+                showOptions(choosenPlayer, choosenCard, e)
             }
         }
         else if (choice === 'ready') {
@@ -103,10 +113,34 @@ function showOptions(choosenPlayer = null, choosenCard = null, lastError = null)
         else if (choice === 'destroy') {
             showDestroyMenu(choosenPlayer)
         }
+        else if (choice === 'select') {
+            showSelectionMenu(choosenPlayer, choosenCard)
+        }
         else {
             showOptions(choosenPlayer, choosenCard)
         }
     })
+}
+
+
+function showSelectionMenu(choosenPlayer, choosenCard) {
+    process.stdout.write('\x1B[2J\x1B[3J\x1B[H')
+    switch (choosenPlayer.requestedSelection.getRequestItemType()) {
+        case SelectionRequest.requestItemTypes.HERO: {
+            if (choosenPlayer.requestedSelection.choiceScope !== 'ANY') {
+                console.log(choosenPlayer.requestedSelection.choiceScope.dungeonEntranceHeroes)
+                rl.question('Type hero card id to select it: ', (heroId) => {
+                    try {
+                        const selectedHero = choosenPlayer.getHeroFromDungeonEntranceById(parseInt(heroId))
+                        choosenPlayer.requestedSelection.selectItem(selectedHero)
+                        showOptions(choosenPlayer, choosenCard)
+                    } catch (e) {
+                        showOptions(choosenPlayer, choosenCard, e)
+                    }
+                })
+            }
+        }
+    }
 }
 
 
