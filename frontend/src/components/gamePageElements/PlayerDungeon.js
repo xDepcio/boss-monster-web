@@ -1,5 +1,7 @@
+import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Cookies from 'js-cookie'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import CardBack from './CardBack'
@@ -15,6 +17,8 @@ function PlayerDungeon({ player, selectedDungCard, setSelectedDungCard }) {
     const selfPlayer = useSelector(state => state.game.selfPlayer)
     const params = useParams()
     const heroToMove = useSelector(state => state.game.game.heroToMove)
+
+    const [clickedCardId, setClickedCardId] = useState(null)
 
     function handleBuildNewDungeon(index = null) {
         console.log(index)
@@ -33,6 +37,19 @@ function PlayerDungeon({ player, selectedDungCard, setSelectedDungCard }) {
                 })
             })
         }
+    }
+
+    function handleDestroyDungeon(dungeonId) {
+        fetch(`/game/${params.lobbyId}/destroy-dungeon`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userId: Cookies.get('user'),
+                dungeonId
+            })
+        })
     }
 
     function handleBecomeReady() {
@@ -69,6 +86,7 @@ function PlayerDungeon({ player, selectedDungCard, setSelectedDungCard }) {
                     name={hero.name}
                     treasure={hero.treasureSign}
                     width={220}
+                    key={i}
                     _className={'player-hero'}
                 />)}
             </div>
@@ -76,18 +94,39 @@ function PlayerDungeon({ player, selectedDungCard, setSelectedDungCard }) {
                 <div className='player-dungeons-wrapper'>
                     {player.dungeon.map((dungeon, i) => {
                         return (
-                            player.declaredBuild?.belowDungeon?.id === dungeon.id ?
-                                <CardBack key={i} width={220} text={'TALIA KOMNAT'} /> :
-                                <CardDungeon
-                                    _onClick={() => handleBuildNewDungeon(i)}
-                                    damage={dungeon.damage} width={220}
-                                    treasure={dungeon.treasure}
-                                    type={dungeon.type}
-                                    name={dungeon.name}
-                                    key={i}
-                                    id={dungeon.id}
-                                    isFancy={dungeon.isFancy}
-                                />
+                            <div key={i} className='single-player-dungeon-wrapper'>
+                                {(clickedCardId === dungeon.id && player.id === selfPlayer.id) && (
+                                    <div className='clicked-dung-wrapper'>
+                                        {dungeon.allowDestroy && (
+                                            <button onClick={() => handleDestroyDungeon(dungeon.id)} className='destroy-dung-btn'>
+                                                <FontAwesomeIcon icon={faTrashCan} />
+                                                <p>Zniszcz loch</p>
+                                            </button>
+                                        )}
+                                    </div>
+                                )}
+                                {player.declaredBuild?.belowDungeon?.id === dungeon.id ?
+                                    <CardBack width={220} text={'TALIA KOMNAT'} /> :
+                                    <CardDungeon
+                                        _onClick={() => {
+                                            handleBuildNewDungeon(i)
+                                            if (clickedCardId === dungeon.id) {
+                                                setClickedCardId(null)
+                                            }
+                                            else {
+                                                setClickedCardId(dungeon.id)
+                                            }
+                                        }}
+                                        damage={dungeon.damage} width={220}
+                                        treasure={dungeon.treasure}
+                                        type={dungeon.type}
+                                        name={dungeon.name}
+                                        id={dungeon.id}
+                                        isFancy={dungeon.isFancy}
+                                        _className={'built-dung'}
+                                    />
+                                }
+                            </div>
                         )
                     })}
                     {new Array(5 - player.dungeon.length).fill(null).map((e, i) => {

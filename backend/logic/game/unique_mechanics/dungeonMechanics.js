@@ -36,6 +36,7 @@ class EliminateHeroInDungeon extends DungeonMechanic {
         if (hero) {
             hero.die()
         }
+        this.dungeonCard.owner.deleteFromDungeon(this)
     }
 
     getHeroOnThisDungeon() {
@@ -45,8 +46,23 @@ class EliminateHeroInDungeon extends DungeonMechanic {
 }
 
 
+class Get3MoneyOnDestroy extends DungeonMechanic {
+    constructor(dungeonCard, type, mechanicDescription) {
+        super(dungeonCard, type, mechanicDescription)
+        dungeonCard.setAllowDestroy(true)
+    }
+
+    use() {
+        this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
+        this.dungeonCard.owner.addGold(3)
+        this.dungeonCard.owner.deleteFromDungeon(this)
+    }
+}
+
+
 const dungeonMechanicsMap = {
-    'Bezdenna czeluść': EliminateHeroInDungeon
+    'Bezdenna czeluść': EliminateHeroInDungeon,
+    'Niestabilna kopalnia': Get3MoneyOnDestroy
 }
 
 module.exports = {

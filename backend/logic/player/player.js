@@ -202,7 +202,7 @@ class Player {
             throw new CardCannotBeDestroyed("This dungeon cannot be destroyed")
         }
         dungeonCard.handleCardDestroyedMechanic()
-        this.deleteFromDungeon(dungeonCard)
+        // this.deleteFromDungeon(dungeonCard)
         this.trackedGame.saveGameAction(feedback.PLAYER_DESTROYED_DUNGEON(this, dungeonCard))
     }
 
@@ -247,6 +247,10 @@ class Player {
             throw new NoSuchSpellInPlayerHand(`Player does not have spell with id ${spellId}`)
         }
         return spell
+    }
+
+    addGold(amount) {
+        this.money += amount
     }
 
     updateCollectedTreasure() {

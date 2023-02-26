@@ -134,6 +134,19 @@
                 "faith": 1
             },
             "isFancy": false
+        },
+        {
+            "CARDTYPE": "DUNGEON",
+            "id": 15,
+            "name": "Niestabilna kopalnia",
+            "type": "traps",
+            "damage": 2,
+            "treasure": {
+                "fortune": 1
+            },
+            "mechanicType": "onDestroy",
+            "mechanicDescription": "Możesz zniszczyć tę komnatę aby otrzymać 3 golda.",
+            "isFancy": false
         }
     ],
     "heroes": [

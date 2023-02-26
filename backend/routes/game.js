@@ -88,4 +88,20 @@ router.post('/:lobbyId/accept-hero-move', assignPlayer, (req, res, next) => {
     })
 })
 
+// Destroy dungeon
+router.post('/:lobbyId/destroy-dungeon', assignPlayer, (req, res, next) => {
+    const player = req.player
+
+    try {
+        player.destroyDungeonCard(req.body.dungeonId)
+        updateLobbyPlayers(req.params.lobbyId)
+    } catch (err) {
+        next(err)
+        return
+    }
+    return res.json({
+        success: true
+    })
+})
+
 module.exports = router;
