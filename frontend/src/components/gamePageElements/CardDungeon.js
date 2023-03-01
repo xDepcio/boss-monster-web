@@ -5,14 +5,16 @@ import { symbolImage } from '../../static/constants'
 import { getBgColor, getFontEm } from '../utils'
 import { useSelector } from 'react-redux'
 import HeroToMoveMarker from './HeroToMoveMarker'
+import CardRequestedSelectionHandle from './CardRequestedSelectionHandle'
 
 
-function CardDungeon({ width, _className, bgImage, isFancy = false, description = '', mainImg, damage = 'X', type, treasure, name = '', _onClick, fontHelp, id }) {
+function CardDungeon({ width, _className, bgImage, isFancy = false, description = '', mainImg, damage = 'X', type, treasure, name = '', _onClick, fontHelp, id, card }) {
     const [cardTreasureArr, setCardTreasureArr] = useState([])
     const [subHeader, setSubHeader] = useState('')
     const [typeUrl, setTypeUrl] = useState('')
     const bgUrl = useMemo(() => getBgColor(treasure), [treasure])
     const heroToMove = useSelector(state => state.game?.game.heroToMove)
+    const selfPlayer = useSelector(state => state.game?.selfPlayer)
 
     useEffect(() => {
         switch (type) {
@@ -42,6 +44,9 @@ function CardDungeon({ width, _className, bgImage, isFancy = false, description 
                 break
             }
         }
+
+
+
     }, [])
 
     useEffect(() => {
@@ -64,6 +69,7 @@ function CardDungeon({ width, _className, bgImage, isFancy = false, description 
             }}
             className={`main-card-wrapper card-comp ${_className}`}
         >
+            {selfPlayer?.requestedSelection && <CardRequestedSelectionHandle card={card} />}
             {(heroToMove && heroToMove?.dungeonRoom?.id === id) && <HeroToMoveMarker />}
             <h3 style={{ fontSize: getFontEm(name.length) }} className='card-info-comp card-name dung-card-name'>{name}</h3>
             <p className='card-info-comp card-subname dungeon-card-type'>{subHeader}</p>

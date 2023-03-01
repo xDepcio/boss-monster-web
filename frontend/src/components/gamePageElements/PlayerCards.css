@@ -79,3 +79,32 @@
 .play-card-cancel:hover {
     background-color: rgb(140, 37, 37);
 }
+
+.play-card-btn-in-spell {
+    right: 4.5%;
+    padding: 10px 65px;
+}
+
+.play-card-play {
+    position: fixed;
+    z-index: 13;
+    right: 15.5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 65px;
+    border: none;
+    border-radius: 999px;
+    gap: 7px;
+    top: 77%;
+    font-size: 16px;
+    font-weight: 600;
+    background-color: rgb(52, 103, 28);
+    color: whitesmoke;
+    transition-duration: 0.2s;
+    cursor: pointer;
+}
+
+.play-card-play:hover {
+    background-color: rgb(70, 139, 38);
+}

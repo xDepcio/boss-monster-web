@@ -1,11 +1,13 @@
 import { useSelector } from 'react-redux'
 import './CardHero.css'
+import CardRequestedSelectionHandle from './CardRequestedSelectionHandle'
 import HeroToMoveMarker from './HeroToMoveMarker'
 
 
-function CardHero({ width, _className, heroClass = '', id, mainImg, type = 'common', name = '', description = '', baseHealth, health, treasure, damageDealt, _onClick, fontHelp }) {
+function CardHero({ width, _className, heroClass = '', id, mainImg, type = 'common', name = '', description = '', baseHealth, health, treasure, damageDealt, _onClick, fontHelp, card }) {
 
     const heroToMove = useSelector(state => state.game?.game.heroToMove)
+    const selfPlayer = useSelector(state => state.game?.selfPlayer)
 
     const treasures = {
         strength: '/images/hero/symbols/hero_strength.png',
@@ -27,6 +29,7 @@ function CardHero({ width, _className, heroClass = '', id, mainImg, type = 'comm
             }}
             className={`main-card-wrapper card-comp ${heroToMove ? heroToMove.id === id ? 'hero-to-move' : '' : ''} ${_className}`}
         >
+            {selfPlayer?.requestedSelection && <CardRequestedSelectionHandle card={card} />}
             {(heroToMove?.id === id && heroToMove?.dungeonRoom === null) && <HeroToMoveMarker />}
             <h3 className='card-info-comp card-name hero-card-name '>{name}</h3>
             <p className='card-info-comp card-comp hero-card-subname'>{heroTypes[type]}</p>

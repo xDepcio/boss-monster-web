@@ -1,19 +1,24 @@
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import './PlayerCards.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { } from '@fortawesome/fontawesome-svg-core'
-import { faCaretDown, faCaretLeft, faCaretRight, faCaretUp, faCartShopping, faClose } from '@fortawesome/free-solid-svg-icons'
+import { faCaretDown, faCaretLeft, faCaretRight, faCaretUp, faCartShopping, faClose, faGamepad, faPlay } from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useState } from 'react'
 import CardDungeon from './CardDungeon'
 import CardSpell from './CardSpell'
+import { useParams } from 'react-router-dom'
+import Cookies from 'js-cookie'
+import { saveResponseError } from '../utils'
 
 
 function PlayerCards({ setSelectedDungCard, selectedDungCard }) {
     const selfPlayer = useSelector(state => state.game.selfPlayer)
+    const params = useParams()
+    const dispatch = useDispatch()
 
     const [showCards, setShowCards] = useState(false)
     const [cardsShowIcon, setCardsShowIcon] = useState(faCaretLeft)
-    // const [selectedCard, setSelectedCard] = useState()
+    const [selectedSpellCard, setSelectedSpellCard] = useState()
 
 
     function handleToggleShowCards() {
@@ -43,9 +48,38 @@ function PlayerCards({ setSelectedDungCard, selectedDungCard }) {
         element.classList.add('card-selected')
     }
 
+    function handleSelectSpellToPlay(spell, event) {
+        if (selectedSpellCard) {
+            selectedSpellCard.htmlElement.classList.remove('card-selected')
+        }
+        handleToggleShowCards()
+        const element = event.currentTarget
+        spell.htmlElement = element
+        setSelectedSpellCard(spell)
+
+        element.classList.add('card-selected')
+    }
+
     function handleCancelSelectedCard() {
         selectedDungCard?.htmlElement.classList.remove('card-selected')
+        selectedSpellCard?.htmlElement.classList.remove('card-selected')
         setSelectedDungCard(null)
+        setSelectedSpellCard(null)
+    }
+
+    function handlePlaySpellCard() {
+        const res = fetch(`/game/${params.lobbyId}/play-spell`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userId: Cookies.get('user'),
+                spellId: selectedSpellCard.id
+            })
+        })
+        handleCancelSelectedCard()
+        saveResponseError(res, dispatch)
     }
 
     useEffect(() => {
@@ -62,6 +96,18 @@ function PlayerCards({ setSelectedDungCard, selectedDungCard }) {
                     <FontAwesomeIcon icon={faClose} />
                     <p>Anuluj</p>
                 </button>
+            )}
+            {selectedSpellCard && (
+                <>
+                    <button onClick={handleCancelSelectedCard} className='play-card-cancel play-card-btn-in-spell'>
+                        <FontAwesomeIcon icon={faClose} />
+                        <p>Anuluj</p>
+                    </button>
+                    <button onClick={handlePlaySpellCard} className='play-card-play'>
+                        <FontAwesomeIcon icon={faGamepad} />
+                        <p>Zagraj</p>
+                    </button>
+                </>
             )}
             <div id='player-cards' className="player-cards-wrapper">
                 <button onClick={handleToggleShowCards} className='player-cards-expand-btn'>
@@ -92,6 +138,7 @@ function PlayerCards({ setSelectedDungCard, selectedDungCard }) {
                         id={dungeon.id}
                     />)}
                     {selfPlayer?.spellCards.map((spell, i) => <CardSpell
+                        _onClick={(e) => handleSelectSpellToPlay(spell, e)}
                         width={200}
                         name={spell.name}
                         key={i}

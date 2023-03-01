@@ -3,6 +3,7 @@ import { stringify, parse, fromJSON, toJSON } from 'flatted'
 
 
 const LOAD_GAME_INFO = 'loadGameInfo'
+const LOAD_ERROR_MESSAGE = 'loadErrorMessage'
 
 
 // Normal actions creator
@@ -11,6 +12,13 @@ export const loadGameInfo = (gameData) => {
     return {
         type: LOAD_GAME_INFO,
         gameData
+    }
+}
+
+export const loadErrorMessage = (errorMessage) => {
+    return {
+        type: LOAD_ERROR_MESSAGE,
+        errorMessage
     }
 }
 
@@ -43,6 +51,11 @@ const gameReducer = (state = {}, action) => {
             const selfId = Cookies.get('user')
             const selfPlayer = action.gameData.players.find(player => player.id === selfId)
             newState.selfPlayer = selfPlayer
+            return newState
+        }
+        case LOAD_ERROR_MESSAGE: {
+            const newState = { ...state }
+            newState.userError = action.errorMessage
             return newState
         }
         default: {

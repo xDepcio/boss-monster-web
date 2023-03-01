@@ -3,12 +3,15 @@ import './Card.css'
 import './CardBoss.css'
 import { symbolImage } from '../../static/constants'
 import { getBgColor } from '../utils'
+import CardRequestedSelectionHandle from './CardRequestedSelectionHandle'
+import { useSelector } from 'react-redux'
 
 
-function CardBoss({ width, _className, bgImage, description = '', mainImg, treasure, name = '', pd = 0, subName = '', _onClick, fontHelp }) {
+function CardBoss({ width, _className, bgImage, description = '', mainImg, treasure, name = '', pd = 0, subName = '', _onClick, fontHelp, card }) {
 
     const [cardTreasureArr, setCardTreasureArr] = useState([])
     const bgUrl = useMemo(() => getBgColor(treasure), [treasure])
+    const selfPlayer = useSelector(state => state.game?.selfPlayer)
 
     useEffect(() => {
         if (treasure) {
@@ -24,6 +27,7 @@ function CardBoss({ width, _className, bgImage, description = '', mainImg, treas
 
     return (
         <div onClick={_onClick} style={{ width: typeof width === 'string' ? width : width + 'px', fontSize: typeof width === 'string' ? fontHelp : `${width / 18}px` }} className={`main-card-wrapper card-comp ${_className}`}>
+            {selfPlayer?.requestedSelection && <CardRequestedSelectionHandle card={card} />}
             <h3 className='card-info-comp card-name'>{name}</h3>
             <p className='card-info-comp card-subname boss-card-subname'>{subName || 'Boss subname destr'}</p>
             <p className='card-info-comp boss-card-pd'>{pd} PD</p>

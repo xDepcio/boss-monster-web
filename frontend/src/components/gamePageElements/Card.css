@@ -105,6 +105,21 @@
     transform: unset;
 }
 
+.main-card-wrapper:has(.player-item-selectable.item-selection-not-valid) {
+    filter: brightness(0.5);
+    cursor: unset;
+}
+
+.main-card-wrapper:has(.player-item-selectable.item-selection-valid) {
+    cursor: pointer;
+}
+
+.main-card-wrapper:has(.card-item-selected) {
+    box-shadow: 0px 0px 5px 3px rgb(126, 237, 101);
+}
+
+
+
 @keyframes play-card {
     0% {
         transform: rotate(0deg);
