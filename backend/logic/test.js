@@ -139,6 +139,23 @@ function showSelectionMenu(choosenPlayer, choosenCard) {
                     }
                 })
             }
+            else if (choosenPlayer.requestedSelection.choiceScope === 'ANY') {
+                const players = choosenPlayer.trackedGame.players
+                let heroes = []
+                players.forEach(player => {
+                    heroes = heroes.concat(player.dungeonEntranceHeroes)
+                })
+                console.log(heroes)
+                rl.question('Type hero card id to select it: ', (heroId) => {
+                    try {
+                        const selectedHero = choosenPlayer.getHeroFromDungeonEntranceById(parseInt(heroId))
+                        choosenPlayer.requestedSelection.selectItem(selectedHero)
+                        showOptions(choosenPlayer, choosenCard)
+                    } catch (e) {
+                        showOptions(choosenPlayer, choosenCard, e)
+                    }
+                })
+            }
         }
     }
 }

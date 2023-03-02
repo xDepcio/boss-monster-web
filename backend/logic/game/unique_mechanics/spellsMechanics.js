@@ -53,9 +53,39 @@ class Exhaustion extends SpellMechanic {
     }
 }
 
+// Przerażenie
+class Fear extends SpellMechanic {
+    constructor(spellCard, mechanicDescription, targetHero = null) {
+        super(spellCard, mechanicDescription)
+        this.targetHero = targetHero
+    }
+
+    use() {
+        if (!this.targetHero) {
+            this.requestPlayerSelect()
+        }
+        else {
+            this.spellCard.trackedGame.addHeroToCity(this.targetHero)
+            this.targetHero.finishMoving()
+            this.targetHero.setDungeonOwner(null)
+            this.spellCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.spellCard.owner, this))
+        }
+    }
+
+    requestPlayerSelect() {
+        const selectionReq = new SelectionRequest(this.spellCard.owner, SelectionRequest.requestItemTypes.HERO, 1, SelectionRequest.scopeAny, this)
+        this.spellCard.owner.setRequestedSelection(selectionReq)
+    }
+
+    receiveSelectionData(data) {
+        this.targetHero = data[0]
+    }
+}
+
 
 const spellsMechanicsMap = {
-    'Wyczerpanie': Exhaustion
+    'Wyczerpanie': Exhaustion,
+    'Przerażenie': Fear
 }
 
 module.exports = {

@@ -105,6 +105,10 @@ class Game {
         this.fillCityWithHeroes()
     }
 
+    addHeroToCity(hero) {
+        this.city.push(hero)
+    }
+
     incrementGameRound() {
         this.gameRound += 1
         this.saveGameAction(feedback.NEW_ROUND_BEGUN(this))

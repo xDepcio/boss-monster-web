@@ -25,13 +25,18 @@ class HeroCard extends Card {
         this.finishedMoving = false
     }
 
+    setDungeonOwner(player) {
+        this.dungeonOwner = player
+    }
+
     goToLuredPlayer() {
         const mostValuablePlayer = this.getMostValuablePlayer(this.trackedGame.players)
         if (mostValuablePlayer) {
             this.trackedGame.saveGameAction(feedback.HERO_GOTO_PLAYER(this, mostValuablePlayer))
             this.removeSelfFromCity()
             mostValuablePlayer.dungeonEntranceHeroes.push(this)
-            this.dungeonOwner = mostValuablePlayer
+            this.setDungeonOwner(mostValuablePlayer)
+            // this.dungeonOwner = mostValuablePlayer
         }
     }
 

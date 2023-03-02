@@ -4,6 +4,7 @@ class SelectionRequest {
         DUNGEON: 'dungeon',
         PLAYER: 'player',
     }
+    static scopeAny = 'ANY'
 
     constructor(requestedPlayer, requestItemType, amount, choiceScope = 'ANY', target) {
         this.requestedPlayer = requestedPlayer
