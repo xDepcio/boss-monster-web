@@ -4,6 +4,7 @@ const { mechanicsTypes } = require('./unique_mechanics/dungeonMechanics')
 
 
 class Card {
+
     constructor(id, name, CARDTYPE, trackedGame) {
         this.id = id
         this.name = name
@@ -14,6 +15,8 @@ class Card {
 
 
 class HeroCard extends Card {
+    static heroes = {}
+
     constructor(id, name, CARDTYPE, trackedGame, health, treasureSign, damageDealt) {
         super(id, name, CARDTYPE, trackedGame)
         this.health = health
@@ -23,6 +26,7 @@ class HeroCard extends Card {
         this.dungeonRoom = null
         this.dungeonOwner = null
         this.finishedMoving = false
+        HeroCard.heroes[id] = this
     }
 
     setDungeonOwner(player) {
@@ -143,6 +147,10 @@ class HeroCard extends Card {
         }
         return true
     }
+
+    static getHero(heroId) {
+        return HeroCard.heroes[heroId]
+    }
 }
 
 
@@ -214,15 +222,22 @@ class DungeonCard extends Card {
         if (Object.keys(this.treasure)[0] === Object.keys(anotherCard.treasure)[0]) return true
         return false
     }
+
+    static getDungeon(dungeonId) {
+        return DungeonCard.dungeons[dungeonId]
+    }
 }
 
 
 class SpellCard extends Card {
+    static spells = {}
+
     constructor(id, name, CARDTYPE, trackedGame, playablePhase, mechanic, mechanicDescription) {
         super(id, name, CARDTYPE, trackedGame)
         this.playablePhase = playablePhase
         this.owner = null
         this.mechanic = mechanic ? new mechanic(this, mechanicDescription) : null
+        SpellCard.spells[id] = this
     }
 
     setOwner(player) {
@@ -236,6 +251,10 @@ class SpellCard extends Card {
     completeUsage() {
         this.owner.removeSpellFromHand(this)
         this.setOwner(null)
+    }
+
+    static getSpell(spellId) {
+        return SpellCard.spells[spellId]
     }
 }
 

@@ -11,6 +11,7 @@ import PlayerCards from './gamePageElements/PlayerCards'
 import PlayerDungeon from './gamePageElements/PlayerDungeon'
 import ChooseBoss from './gamePageElements/ChooseBoss'
 import { socket } from '../App'
+import ErrorMessageComp from './gamePageElements/ErrorMessageComp'
 
 function GamePage() {
     const params = useParams()
@@ -30,6 +31,7 @@ function GamePage() {
 
     return (
         <>
+            <ErrorMessageComp />
             <City />
             <Chat />
             <PlayerCards selectedDungCard={selectedDungCard} setSelectedDungCard={setSelectedDungCard} />

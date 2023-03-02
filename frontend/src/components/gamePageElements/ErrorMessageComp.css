@@ -1,0 +1,19 @@
+.user-error-message-wrapper {
+    position: fixed;
+    z-index: 101;
+    background-color: rgba(30, 30, 30, 1);
+    padding: 20px;
+    top: 0;
+    width: 600px;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 2px solid brown;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.user-error-msg {
+    color: brown;
+    font-size: 1rem;
+    font-family: 'Press Start 2P', cursive;
+}

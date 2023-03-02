@@ -1,3 +1,5 @@
+import { loadErrorMessage } from "../store/game"
+
 export function getBgColor(treasure) {
     if (treasure) {
         const bgs = {
@@ -39,4 +41,24 @@ export function getFontEm(textLength) {
             return '0.65em'
         }
     }
+}
+
+
+export function saveResponseError(response, dispatch) {
+    response.then((res) => {
+        return new Promise((resolve, reject) => {
+            resolve(res.json())
+        }).then((d) => {
+            return {
+                response: res,
+                data: d
+            }
+        })
+    }).then((payload) => {
+        // console.log(payload.response)
+        // console.log(payload.data)
+        if (!payload.response.ok) {
+            dispatch(loadErrorMessage(payload.data.message))
+        }
+    })
 }

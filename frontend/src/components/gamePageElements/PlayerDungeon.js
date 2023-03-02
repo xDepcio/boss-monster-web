@@ -2,8 +2,9 @@ import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Cookies from 'js-cookie'
 import { useMemo, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import { saveResponseError } from '../utils'
 import CardBack from './CardBack'
 import CardBoss from './CardBoss'
 import CardDungeon from './CardDungeon'
@@ -17,6 +18,7 @@ function PlayerDungeon({ player, selectedDungCard, setSelectedDungCard }) {
     const selfPlayer = useSelector(state => state.game.selfPlayer)
     const params = useParams()
     const heroToMove = useSelector(state => state.game.game.heroToMove)
+    const dispatch = useDispatch()
 
     const [clickedCardId, setClickedCardId] = useState(null)
 
@@ -25,7 +27,7 @@ function PlayerDungeon({ player, selectedDungCard, setSelectedDungCard }) {
         if (player.id === selfPlayer.id && selectedDungCard) {
             selectedDungCard.htmlElement.classList.remove('card-selected')
             setSelectedDungCard(null)
-            fetch(`/game/${params.lobbyId}/build-dungeon`, {
+            const res = fetch(`/game/${params.lobbyId}/build-dungeon`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -36,6 +38,7 @@ function PlayerDungeon({ player, selectedDungCard, setSelectedDungCard }) {
                     buildIndex: index
                 })
             })
+            saveResponseError(res, dispatch)
         }
     }
 
@@ -80,6 +83,7 @@ function PlayerDungeon({ player, selectedDungCard, setSelectedDungCard }) {
         <div className="single-player-dungeon">
             <div className='heroes-section'>
                 {[...player.dungeonEntranceHeroes].reverse().map((hero, i) => <CardHero
+                    card={hero}
                     id={hero.id}
                     baseHealth={hero.baseHealth}
                     health={hero.health}
@@ -124,6 +128,7 @@ function PlayerDungeon({ player, selectedDungCard, setSelectedDungCard }) {
                                         id={dungeon.id}
                                         isFancy={dungeon.isFancy}
                                         _className={'built-dung'}
+                                        card={dungeon}
                                     />
                                 }
                             </div>
@@ -135,6 +140,7 @@ function PlayerDungeon({ player, selectedDungCard, setSelectedDungCard }) {
                 </div>
                 <div className='player-boss-wrapper'>
                     <CardBoss
+                        card={player.selectedBoss}
                         treasure={player.selectedBoss?.treasure}
                         width={220}
                         pd={player.selectedBoss?.pd}

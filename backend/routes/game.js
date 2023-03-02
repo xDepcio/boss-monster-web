@@ -8,6 +8,9 @@ const { flattenCircular, getCurrentGameData } = require('../utils/responseFormat
 const { assignPlayer } = require('../utils/verifyPlayer')
 const { parse, stringify, toJSON, fromJSON } = require('flatted');
 const { updateLobbyPlayers } = require('../utils/socketsHelper');
+const { SelectionRequest } = require('../logic/game/playerRequestSelections');
+const { HeroCard, DungeonCard } = require('../logic/game/cards');
+const Player = require('../logic/player/player');
 
 
 // Get game info (players...)
@@ -42,10 +45,65 @@ router.post('/:lobbyId/choose-boss', assignPlayer, (req, res, next) => {
 // Build dungeon
 router.post('/:lobbyId/build-dungeon', assignPlayer, (req, res, next) => {
     const player = req.player
-    const dungeon = player.getDungeonCardInHand(req.body.dungeonId)
 
     try {
+        const dungeon = player.getDungeonCardInHand(req.body.dungeonId)
         player.declareBuild(dungeon, req.body.buildIndex)
+        updateLobbyPlayers(req.params.lobbyId)
+    } catch (err) {
+        res.status(500)
+        res.json({
+            title: err.title || 'Server Error',
+            message: err.message,
+            errors: err.errors,
+            stack: err.stack
+        })
+        return
+        next(err)
+        return
+    }
+    return res.json({
+        success: true
+    })
+})
+
+// Play spell
+router.post('/:lobbyId/play-spell', assignPlayer, (req, res, next) => {
+
+    try {
+        const player = req.player
+        player.playSpell(req.body.spellId)
+        updateLobbyPlayers(req.params.lobbyId)
+    } catch (err) {
+        next(err)
+        return
+    }
+    return res.json({
+        success: true
+    })
+})
+
+// Select item for requested selection
+router.post('/:lobbyId/select-item', assignPlayer, (req, res, next) => {
+
+    try {
+        const player = req.player
+        let selectedCard
+        switch (player.requestedSelection.requestItemType) {
+            case SelectionRequest.requestItemTypes.HERO: {
+                selectedCard = HeroCard.getHero(req.body.itemId)
+                break
+            }
+            case SelectionRequest.requestItemTypes.PLAYER: {
+                selectedCard = Player.getPlayer(req.body.itemId)
+                break
+            }
+            case SelectionRequest.requestItemTypes.DUNGEON: {
+                selectedCard = DungeonCard.getDungeon(req.body.itemId)
+                break
+            }
+        }
+        player.requestedSelection.selectItem(selectedCard)
         updateLobbyPlayers(req.params.lobbyId)
     } catch (err) {
         next(err)
