@@ -41,8 +41,8 @@ function getShuffledHeroCards(game) {
     let dungeonCards = []
     for (let card of HERO_CARDS) {
         if (card.CARDTYPE === "HERO") {
-            const { CARDTYPE, damageDealt, health, id, name, treasure } = card
-            const createdCardObj = new HeroCard(id, name, CARDTYPE, game, health, treasure, damageDealt)
+            const { CARDTYPE, damageDealt, health, id, name, treasure, description, specialName, typeName } = card
+            const createdCardObj = new HeroCard(id, name, CARDTYPE, game, health, treasure, damageDealt, description || null, specialName || null, typeName || null)
             dungeonCards.push(createdCardObj)
         }
     }

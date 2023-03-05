@@ -74,3 +74,33 @@
 .hero-hp-buffed {
     color: rgb(67, 219, 67);
 }
+
+.hero-card-special-name {
+    z-index: 3;
+    aspect-ratio: unset;
+    position: absolute;
+    top: 65.2%;
+    width: 100%;
+    font-weight: 700;
+    text-align: center;
+    font-size: 0.72em;
+    font-style: italic;
+    color: rgb(27, 27, 27);
+}
+
+.hero-card-desc {
+    height: fit-content;
+    width: fit-content;
+    color: rgb(27, 27, 27);
+    /* font-family: 'Lora', serif; */
+    z-index: 3;
+    top: 69%;
+    font-size: 0.7em;
+    left: 50%;
+    transform: translateX(-50%);
+    aspect-ratio: unset;
+    text-align: center;
+    width: 78%;
+    line-height: 1.2em;
+    font-style: italic;
+}

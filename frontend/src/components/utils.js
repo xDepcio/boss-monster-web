@@ -40,7 +40,22 @@ export function getFontEm(textLength) {
         if (textLength <= 20) {
             return '0.65em'
         }
+        return '0.5em'
     }
+}
+
+export function getHeroDescFontEm(textLength) {
+    if (!textLength) {
+        return '0.5em'
+    }
+
+    if (textLength <= 145) {
+        return '0.7em'
+    }
+    if (textLength <= 175) {
+        return '0.65em'
+    }
+    return '0.5em'
 }
 
 

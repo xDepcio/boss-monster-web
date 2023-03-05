@@ -95,6 +95,9 @@ function PlayerDungeon({ player, selectedDungCard, setSelectedDungCard }) {
                     width={220}
                     key={i}
                     _className={'player-hero'}
+                    description={hero.description}
+                    typeName={hero.typeName}
+                    specialName={hero.specialName}
                 />)}
             </div>
             <div className='dungeon-section'>

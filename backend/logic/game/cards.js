@@ -21,12 +21,15 @@ class Card {
 class HeroCard extends Card {
     static heroes = {}
 
-    constructor(id, name, CARDTYPE, trackedGame, health, treasureSign, damageDealt) {
+    constructor(id, name, CARDTYPE, trackedGame, health, treasureSign, damageDealt, description = null, specialName = null, typeName = null) {
         super(id, name, CARDTYPE, trackedGame)
         this.health = health
         this.baseHealth = health
         this.treasureSign = treasureSign
         this.damageDealt = damageDealt
+        this.description = description
+        this.specialName = specialName
+        this.typeName = typeName
         this.dungeonRoom = null
         this.dungeonOwner = null
         this.finishedMoving = false

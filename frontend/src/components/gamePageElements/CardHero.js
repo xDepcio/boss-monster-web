@@ -1,10 +1,13 @@
 import { useSelector } from 'react-redux'
+import { getHeroDescFontEm } from '../utils'
 import './CardHero.css'
 import CardRequestedSelectionHandle from './CardRequestedSelectionHandle'
 import HeroToMoveMarker from './HeroToMoveMarker'
 
 
-function CardHero({ width, _className, heroClass = '', id, mainImg, type = 'common', name = '', description = '', baseHealth, health, treasure, damageDealt, _onClick, fontHelp, card }) {
+function CardHero({ width, _className, heroClass = '', id, mainImg, type = 'common', name = '',
+    description = '', baseHealth, health, treasure, damageDealt, _onClick, fontHelp, card,
+    typeName = '', specialName = '' }) {
 
     const heroToMove = useSelector(state => state.game?.game.heroToMove)
     const selfPlayer = useSelector(state => state.game?.selfPlayer)
@@ -33,7 +36,8 @@ function CardHero({ width, _className, heroClass = '', id, mainImg, type = 'comm
             {(heroToMove?.id === id && heroToMove?.dungeonRoom === null) && <HeroToMoveMarker />}
             <h3 className='card-info-comp card-name hero-card-name '>{name}</h3>
             <p className='card-info-comp card-comp hero-card-subname'>{heroTypes[type]}</p>
-            <p className='card-info-comp card-comp spell-card-desc'>Każdy przeciwnik musi wybrać i zniszczyć komnatę w swoich podziemiach</p>
+            <p className='card-info-comp card-comp hero-card-special-name'>{specialName}</p>
+            <p style={{ fontSize: getHeroDescFontEm(description?.length) }} className='card-info-comp card-comp hero-card-desc'>{description || 'Każdy przeciwnik musi wybrać i zniszczyć komnatę w swoich podziemiach'}</p>
             <p className={`card-info-comp card-comp hero-hp-text ${health < baseHealth && 'hero-hp-damaged'} ${health > baseHealth && 'hero-hp-buffed'} `}>{health}</p>
             <img className='card-info-comp card-img-comp card-comp hero-health-img' src={'/images/hero/hero_hp.png'} />
             <img className='card-info-comp card-img-comp card-comp card-bg-comp' src={'/images/hero/bgs/hero_common_bg.png'} />

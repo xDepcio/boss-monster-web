@@ -52,6 +52,9 @@ function City() {
                             treasure={hero.treasureSign}
                             _className={'city-hero'}
                             key={i}
+                            specialName={hero.specialName}
+                            description={hero.description}
+                            typeName={hero.typeName}
                         />)}
                     </div>
                 </div>
