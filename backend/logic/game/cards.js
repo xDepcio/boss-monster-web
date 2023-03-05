@@ -1,5 +1,5 @@
 const { NotAllPlayersAcceptedHeroMove, HeroAlreadyInCity } = require('../errors')
-const feedback = require('./actionFeedbacks')
+const { feedback, eventTypes } = require('./actionFeedbacks')
 const { mechanicsTypes } = require('./unique_mechanics/dungeonMechanics')
 
 
@@ -10,6 +10,10 @@ class Card {
         this.name = name
         this.CARDTYPE = CARDTYPE
         this.trackedGame = trackedGame
+    }
+
+    getName() {
+        return this.name
     }
 }
 
@@ -204,6 +208,10 @@ class DungeonCard extends Card {
         return this.description
     }
 
+    getMechanic() {
+        return this.mechanic
+    }
+
     setDescription(description) {
         this.description = description
     }
@@ -241,6 +249,15 @@ class DungeonCard extends Card {
     handleCardDestroyedMechanic() {
         if (this.mechanic.getType() === mechanicsTypes.ON_DESTORY) {
             this.mechanic.use()
+        }
+    }
+
+    handleGameEvent(event) {
+        const dungeonMechanic = this.getMechanic()
+        if (dungeonMechanic) {
+            if (dungeonMechanic.getType() === mechanicsTypes.ONE_PER_ROUND) {
+                dungeonMechanic.handleGameEvent(event)
+            }
         }
     }
 
@@ -292,6 +309,7 @@ class SpellCard extends Card {
 
     completeUsage() {
         this.owner.removeSpellFromHand(this)
+        this.trackedGame.saveGameAction(feedback.PLAYER_PLAYED_SPELL(this.owner, this))
         this.setOwner(null)
     }
 

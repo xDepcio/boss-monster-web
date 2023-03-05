@@ -131,6 +131,14 @@ class HeroAlreadyInCity extends Error {
 }
 
 
+// In dungeon mechanic
+class OncePerRoundMechanicUsedAlready extends Error {
+    constructor(message) {
+        super(message)
+    }
+}
+
+
 
 module.exports = {
     CardCannotBeBuilt,
@@ -153,5 +161,6 @@ module.exports = {
     NoSuchDungeonCardInPlayerDungeon,
     WrongRoundPhase,
     NoSuchSpellInPlayerHand,
-    HeroAlreadyInCity
+    HeroAlreadyInCity,
+    OncePerRoundMechanicUsedAlready
 }

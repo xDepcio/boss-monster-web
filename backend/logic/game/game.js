@@ -1,7 +1,7 @@
 const Player = require('../player/player')
 const { getShuffledDungeonCards, getShuffledHeroCards, getShuffledSpellCards, getShuffledBossesCards } = require('./utils')
 const { PlayerAlreadyDeclaredBuild, HeroesCardsStackEmpty, NotAllPlayersAcceptedHeroMove } = require('../errors')
-const feedback = require('./actionFeedbacks')
+const { feedback } = require('./actionFeedbacks')
 
 
 const phase = {
@@ -172,6 +172,10 @@ class Game {
     }
 
     saveGameAction(feedbackObj) {
+        this.players.forEach(player => {
+            player.dungeon.forEach(dungeon => dungeon.handleGameEvent(feedbackObj))
+        })
+
         this.movesHistory.push(feedbackObj)
     }
 

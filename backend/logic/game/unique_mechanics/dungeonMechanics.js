@@ -1,4 +1,5 @@
-const feedback = require("../actionFeedbacks")
+const { OncePerRoundMechanicUsedAlready } = require("../../errors")
+const { feedback, eventTypes } = require("../actionFeedbacks")
 
 const mechanicsTypes = {
     ON_DESTORY: 'onDestroy',
@@ -63,10 +64,39 @@ class Get3MoneyOnDestroy extends DungeonMechanic {
 }
 
 
+class DrawSpellWhenPlayedSpell extends DungeonMechanic { // "Raz na rundę: kiedy zagrasz kartę czaru, dociągnij kartę czaru."
+    constructor(dungeonCard, type, mechanicDescription) {
+        super(dungeonCard, type, mechanicDescription)
+        this.usedInRound = false
+    }
+
+    use() {
+        if (this.usedInRound) {
+            throw new OncePerRoundMechanicUsedAlready("This card was already used in this round")
+        }
+        this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
+        this.dungeonCard.owner.drawNotUsedSpellCard()
+        this.usedInRound = true
+    }
+
+    handleGameEvent(event) {
+        if (!this.usedInRound) {
+            if (event.type === eventTypes.PLAYER_PLAYED_SPELL) {
+                if (event.player === this.dungeonCard.owner) {
+                    this.use()
+                }
+            }
+        }
+    }
+}
+
+
 const dungeonMechanicsMap = {
     'Bezdenna czeluść': EliminateHeroInDungeon,
-    'Niestabilna kopalnia': Get3MoneyOnDestroy
+    'Niestabilna kopalnia': Get3MoneyOnDestroy,
+    'Norka kocicy': DrawSpellWhenPlayedSpell
 }
+
 
 module.exports = {
     dungeonMechanicsMap,

@@ -18,7 +18,7 @@ const {
     WrongRoundPhase,
     NoSuchSpellInPlayerHand
 } = require('../errors')
-const feedback = require('../game/actionFeedbacks')
+const { feedback } = require('../game/actionFeedbacks')
 
 
 class Player {
@@ -50,6 +50,10 @@ class Player {
         }
         this.requestedSelection = null
         Player.players[id] = this
+    }
+
+    getName() {
+        return this.name
     }
 
     setRequestedSelection(selection) {
@@ -92,6 +96,7 @@ class Player {
         }
         this.dungeonCards.push(card)
         card.setOwner(this)
+        this.trackedGame.saveGameAction(feedback.PLAYER_DRAWNED_DUNGEON_CARD(this))
         return card
     }
 
@@ -102,6 +107,7 @@ class Player {
         }
         this.spellCards.push(card)
         card.setOwner(this)
+        this.trackedGame.saveGameAction(feedback.PLAYER_DRAWNED_SPELL_CARD(this))
         return card
     }
 

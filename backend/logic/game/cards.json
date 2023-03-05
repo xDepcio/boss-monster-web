@@ -142,6 +142,19 @@
             "mechanicType": "onDestroy",
             "mechanicDescription": "Możesz zniszczyć tę komnatę aby otrzymać 3 golda.",
             "isFancy": false
+        },
+        {
+            "CARDTYPE": "DUNGEON",
+            "id": 16,
+            "name": "Norka kocicy",
+            "type": "monsters",
+            "damage": 2,
+            "treasure": {
+                "magic": 1
+            },
+            "mechanicType": "onePerRound",
+            "mechanicDescription": "Raz na rundę: kiedy zagrasz kartę czaru, dociągnij kartę czaru.",
+            "isFancy": true
         }
     ],
     "heroes": [

@@ -1,4 +1,4 @@
-const feedback = require("../actionFeedbacks")
+const { feedback } = require("../actionFeedbacks")
 const { SelectionRequest } = require("../playerRequestSelections")
 
 

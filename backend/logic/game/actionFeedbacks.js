@@ -1,3 +1,26 @@
+const eventTypes = {
+    PLAYER_DECLARED_BUILD: 'BUILD',
+    PLAYER_BECOME_READY: 'READY',
+    START_FIGHT_PHASE: 'START_FIGHT',
+    HERO_GOTO_PLAYER: 'HERO_LURED',
+    PLAYER_KILLED_HERO: 'HERO_KILLED',
+    HERO_ATTACKED_PLAYER: 'PLAYER_DAMAGED',
+    PLAYER_SELECTED_BOSS: 'PLAYER_SELECTED_BOSS',
+    START_FIRST_ROUND: 'START_FIRST_ROUND',
+    HERO_DAMAGED: 'HERO_DAMAGED',
+    PLAYER_ACCEPTED_HERO_MOVE: 'PLAYER_ACCEPTED_HERO_MOVE',
+    NO_MORE_HEROES_IN_FIGHT_PHASE: 'NO_MORE_HEROES_IN_FIGHT_PHASE',
+    NEW_ROUND_BEGUN: 'NEW_ROUND_BEGUN',
+    START_BUILD_PHASE: 'START_BUILD_PHASE',
+    PLAYER_DESTROYED_DUNGEON: 'PLAYER_DESTROYED_DUNGEON',
+    PLAYER_USED_MECHANIC: 'PLAYER_USED_MECHANIC',
+    HERO_DAMAGED_BY_SPELL: 'HERO_DAMAGED_BY_SPELL',
+    HERO_WENT_BACK_TO_CITY: 'HERO_WENT_BACK_TO_CITY',
+    PLAYER_PLAYED_SPELL: 'PLAYER_PLAYED_SPELL',
+    PLAYER_DRAWNED_DUNGEON_CARD: 'PLAYER_DRAWNED_DUNGEON_CARD',
+    PLAYER_DRAWNED_SPELL_CARD: 'PLAYER_DRAWNED_SPELL_CARD'
+}
+
 const feedback = {
     PLAYER_DECLARED_BUILD: (player) => {
         return {
@@ -20,25 +43,25 @@ const feedback = {
     HERO_GOTO_PLAYER: (hero, player) => {
         return {
             type: "HERO_LURED",
-            message: `hero ${hero.name} went to ${player.name}`
+            message: `hero ${hero.getName()} went to ${player.getName()}`
         }
     },
     PLAYER_KILLED_HERO: (player, hero) => {
         return {
             type: "HERO_KILLED",
-            message: `player ${player.name} killed hero ${hero.name}`
+            message: `player ${player.getName()} killed hero ${hero.getName()}`
         }
     },
     HERO_ATTACKED_PLAYER: (hero, player) => {
         return {
             type: "PLAYER_DAMAGED",
-            message: `hero ${hero.name} damaged player ${player.name} for ${hero.damageDealt} hp`
+            message: `hero ${hero.getName()} damaged player ${player.getName()} for ${hero.damageDealt} hp`
         }
     },
     PLAYER_SELECTED_BOSS: (player, boss) => {
         return {
             type: "PLAYER_SELECTED_BOSS",
-            message: `player ${player.name} selected boss ${boss.name}`
+            message: `player ${player.getName()} selected boss ${boss.getName()}`
         }
     },
     START_FIRST_ROUND: () => {
@@ -50,13 +73,13 @@ const feedback = {
     HERO_DAMAGED: (hero, dungeon, player) => {
         return {
             type: "HERO_DAMAGED",
-            message: `Hero ${hero.name} got damaged for ${dungeon.damage} hp in ${player.name}'s dungeon. Hp left: ${hero.health}`
+            message: `Hero ${hero.getName()} got damaged for ${dungeon.damage} hp in ${player.getName()}'s dungeon. Hp left: ${hero.health}`
         }
     },
     PLAYER_ACCEPTED_HERO_MOVE: (player) => {
         return {
             type: "PLAYER_ACCEPTED_HERO_MOVE",
-            message: `Player ${player.name} accepted hero move`
+            message: `Player ${player.getName()} accepted hero move`
         }
     },
     NO_MORE_HEROES_IN_FIGHT_PHASE: () => {
@@ -80,27 +103,50 @@ const feedback = {
     PLAYER_DESTROYED_DUNGEON: (player, dungeon) => {
         return {
             type: "PLAYER_DESTROYED_DUNGEON",
-            message: `player ${player.name} destroyed dungeon ${dungeon.name}`
+            message: `player ${player.getName()} destroyed dungeon ${dungeon.getName()}`
+        }
+    },
+    PLAYER_PLAYED_SPELL: (player, spell) => {
+        return {
+            type: "PLAYER_PLAYED_SPELL",
+            message: `player ${player.getName()} used spell: '${spell.getName()}'`,
+            player: player,
+            spell: spell
         }
     },
     PLAYER_USED_MECHANIC: (player, mechanic) => {
         return {
             type: "PLAYER_USED_MECHANIC",
-            message: `player ${player.name} used '${mechanic.getDescription()}'`
+            message: `player ${player.getName()} used '${mechanic.getDescription()}'`
         }
     },
     HERO_DAMAGED_BY_SPELL: (hero, spellDamageAmount, spellName, player) => {
         return {
             type: "HERO_DAMAGED_BY_SPELL",
-            message: `player ${player.name} damaged hero ${hero.name} for ${spellDamageAmount} with ${spellName}`
+            message: `player ${player.getName()} damaged hero ${hero.getName()} for ${spellDamageAmount} with ${spellName}`
         }
     },
     HERO_WENT_BACK_TO_CITY: (hero) => {
         return {
             type: "HERO_WENT_BACK_TO_CITY",
-            message: `hero ${hero.name} went back to the city`
+            message: `hero ${hero.getName()} went back to the city`
+        }
+    },
+    PLAYER_DRAWNED_SPELL_CARD: (player) => {
+        return {
+            type: eventTypes.PLAYER_DRAWNED_SPELL_CARD,
+            message: `player ${player.getName()} drawned new spell card`
+        }
+    },
+    PLAYER_DRAWNED_DUNGEON_CARD: (player) => {
+        return {
+            type: eventTypes.PLAYER_DRAWNED_DUNGEON_CARD,
+            message: `player ${player.getName()} drawned new dungeon card`
         }
     }
 }
 
-module.exports = feedback
+module.exports = {
+    feedback,
+    eventTypes
+}
