@@ -6,6 +6,9 @@ class SpellMechanic {
     constructor(spellCard, mechanicDescription) {
         this.spellCard = spellCard
         this.mechanicDescription = mechanicDescription
+        if (!this.spellCard.getDescription()) {
+            this.spellCard.setDescription(this.mechanicDescription)
+        }
     }
 
     getDescription() {
@@ -65,10 +68,12 @@ class Fear extends SpellMechanic {
             this.requestPlayerSelect()
         }
         else {
-            this.spellCard.trackedGame.addHeroToCity(this.targetHero)
-            this.targetHero.finishMoving()
-            this.targetHero.setDungeonOwner(null)
+            this.targetHero.goBackToCity()
+            // this.spellCard.trackedGame.addHeroToCity(this.targetHero)
+            // this.targetHero.finishMoving()
+            // this.targetHero.setDungeonOwner(null)
             this.spellCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.spellCard.owner, this))
+            this.spellCard.completeUsage()
         }
     }
 

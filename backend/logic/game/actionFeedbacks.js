@@ -94,6 +94,12 @@ const feedback = {
             type: "HERO_DAMAGED_BY_SPELL",
             message: `player ${player.name} damaged hero ${hero.name} for ${spellDamageAmount} with ${spellName}`
         }
+    },
+    HERO_WENT_BACK_TO_CITY: (hero) => {
+        return {
+            type: "HERO_WENT_BACK_TO_CITY",
+            message: `hero ${hero.name} went back to the city`
+        }
     }
 }
 

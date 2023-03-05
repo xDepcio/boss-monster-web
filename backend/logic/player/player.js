@@ -202,7 +202,7 @@ class Player {
             throw new CardCannotBeDestroyed("This dungeon cannot be destroyed")
         }
         dungeonCard.handleCardDestroyedMechanic()
-        // this.deleteFromDungeon(dungeonCard)
+        this.deleteFromDungeon(dungeonCard)
         this.trackedGame.saveGameAction(feedback.PLAYER_DESTROYED_DUNGEON(this, dungeonCard))
     }
 

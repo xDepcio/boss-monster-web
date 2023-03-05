@@ -89,7 +89,7 @@ router.post('/:lobbyId/select-item', assignPlayer, (req, res, next) => {
     try {
         const player = req.player
         let selectedCard
-        switch (player.requestedSelection.requestItemType) {
+        switch (player.requestedSelection.getRequestItemType()) {
             case SelectionRequest.requestItemTypes.HERO: {
                 selectedCard = HeroCard.getHero(req.body.itemId)
                 break

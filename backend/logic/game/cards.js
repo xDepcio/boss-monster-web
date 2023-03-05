@@ -1,4 +1,4 @@
-const { NotAllPlayersAcceptedHeroMove } = require('../errors')
+const { NotAllPlayersAcceptedHeroMove, HeroAlreadyInCity } = require('../errors')
 const feedback = require('./actionFeedbacks')
 const { mechanicsTypes } = require('./unique_mechanics/dungeonMechanics')
 
@@ -40,7 +40,6 @@ class HeroCard extends Card {
             this.removeSelfFromCity()
             mostValuablePlayer.dungeonEntranceHeroes.push(this)
             this.setDungeonOwner(mostValuablePlayer)
-            // this.dungeonOwner = mostValuablePlayer
         }
     }
 
@@ -65,6 +64,26 @@ class HeroCard extends Card {
         return choosen
     }
 
+    goBackToCity() {
+        if (this.isInCity()) {
+            throw new HeroAlreadyInCity("Hero ordered to go back to city, was already in city")
+        }
+        this.trackedGame.addHeroToCity(this)
+        this.removeSelfFromDungeonEntrance()
+        this.setDungeonOwner(null)
+        this.trackedGame.saveGameAction(feedback.HERO_WENT_BACK_TO_CITY(this))
+        this.finishMoving()
+    }
+
+    isInCity() {
+        for (let hero of this.trackedGame.city) {
+            if (hero.id === this.id) {
+                return true
+            }
+        }
+        return false
+    }
+
     removeSelfFromCity() {
         const heroIndexInCity = this.trackedGame.city.findIndex((hero) => hero.id === this.id)
         this.trackedGame.city.splice(heroIndexInCity, 1)
@@ -78,8 +97,13 @@ class HeroCard extends Card {
     moveToNextRoom() {
         if (this.checkAllPlayersAcceptedHeroEntrance()) {
             if (this.dungeonRoom === null) {
-                this.dungeonRoom = this.dungeonOwner.dungeon[this.dungeonOwner.dungeon.length - 1]
-                this.triggerCurrentDungeonCard()
+                if (this.dungeonOwner.dungeon.length === 0) {
+                    this.finishPlayerDungeon()
+                }
+                else {
+                    this.dungeonRoom = this.dungeonOwner.dungeon[this.dungeonOwner.dungeon.length - 1]
+                    this.triggerCurrentDungeonCard()
+                }
             }
             else {
                 const newDungeonIndex = this.dungeonOwner.dungeon.findIndex(dung => dung.id === this.dungeonRoom.id) - 1
@@ -163,6 +187,7 @@ class DungeonCard extends Card {
         this.treasure = treasure
         this.type = type
         this.isFancy = isFancy
+        this.description = null
         this.belowDungeon = null
         this.isActive = true
         this.owner = null
@@ -173,6 +198,14 @@ class DungeonCard extends Card {
 
     setOwner(player) {
         this.owner = player
+    }
+
+    getDescription() {
+        return this.description
+    }
+
+    setDescription(description) {
+        this.description = description
     }
 
     heroEnteredRoom(hero) {
@@ -235,6 +268,7 @@ class SpellCard extends Card {
     constructor(id, name, CARDTYPE, trackedGame, playablePhase, mechanic, mechanicDescription) {
         super(id, name, CARDTYPE, trackedGame)
         this.playablePhase = playablePhase
+        this.description = null
         this.owner = null
         this.mechanic = mechanic ? new mechanic(this, mechanicDescription) : null
         SpellCard.spells[id] = this
@@ -242,6 +276,14 @@ class SpellCard extends Card {
 
     setOwner(player) {
         this.owner = player
+    }
+
+    getDescription() {
+        return this.description
+    }
+
+    setDescription(description) {
+        this.description = description
     }
 
     play() {

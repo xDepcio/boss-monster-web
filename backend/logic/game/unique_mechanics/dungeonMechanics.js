@@ -12,6 +12,9 @@ class DungeonMechanic {
         this.dungeonCard = dungeonCard
         this.type = type
         this.mechanicDescription = mechanicDescription
+        if (!this.dungeonCard.getDescription()) {
+            this.dungeonCard.setDescription(this.mechanicDescription)
+        }
     }
 
     getType() {
@@ -36,7 +39,7 @@ class EliminateHeroInDungeon extends DungeonMechanic {
         if (hero) {
             hero.die()
         }
-        this.dungeonCard.owner.deleteFromDungeon(this)
+        // this.dungeonCard.owner.deleteFromDungeon(this)
     }
 
     getHeroOnThisDungeon() {
@@ -55,7 +58,7 @@ class Get3MoneyOnDestroy extends DungeonMechanic {
     use() {
         this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
         this.dungeonCard.owner.addGold(3)
-        this.dungeonCard.owner.deleteFromDungeon(this)
+        // this.dungeonCard.owner.deleteFromDungeon(this)
     }
 }
 

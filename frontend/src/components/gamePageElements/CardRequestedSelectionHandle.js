@@ -1,12 +1,16 @@
 import Cookies from 'js-cookie'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import { saveResponseError } from '../utils'
 import './CardRequestedSelectionHandle.css'
 
 
 function CardRequestedSelectionHandle({ card = null }) {
     const selectedItems = useSelector(state => state.game?.selfPlayer?.requestedSelection?.selectedItems)
     const requestedSelection = useSelector(state => state.game?.selfPlayer?.requestedSelection)
+    const selfPlayer = useSelector(state => state.game.selfPlayer)
+    const players = useSelector(state => state.game?.game?.players)
+    const dispatch = useDispatch()
 
     const params = useParams()
 
@@ -16,6 +20,24 @@ function CardRequestedSelectionHandle({ card = null }) {
 
     function isSelectionValid(clickedCard) {
         if (requestedSelection.requestItemType.toLowerCase() !== clickedCard.CARDTYPE.toLowerCase()) {
+            return false
+        }
+        if (requestedSelection.choiceScope !== "ANY") {
+            switch (card?.CARDTYPE) {
+                case 'HERO':
+                    if (card.dungeonOwner.id === requestedSelection.choiceScope.id) {
+                        return true
+                    }
+                    break;
+                case 'DUNGEON':
+                    if (card.owner.id === requestedSelection.choiceScope.id) {
+                        return true
+                    }
+                    break;
+                default:
+                    return false
+                    break;
+            }
             return false
         }
         return true
@@ -31,16 +53,19 @@ function CardRequestedSelectionHandle({ card = null }) {
     }
 
     function handleSelectableCardClick() {
-        fetch(`/game/${params.lobbyId}/select-item`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                userId: Cookies.get('user'),
-                itemId: card.id
+        if (isSelectionValid(card)) {
+            const res = fetch(`/game/${params.lobbyId}/select-item`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    userId: Cookies.get('user'),
+                    itemId: card.id
+                })
             })
-        })
+            saveResponseError(res, dispatch)
+        }
     }
 
 

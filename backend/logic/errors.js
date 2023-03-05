@@ -124,6 +124,12 @@ class NotAllPlayersAcceptedHeroMove extends Error {
     }
 }
 
+class HeroAlreadyInCity extends Error {
+    constructor(message) {
+        super(message)
+    }
+}
+
 
 
 module.exports = {
@@ -146,5 +152,6 @@ module.exports = {
     CardCannotBeDestroyed,
     NoSuchDungeonCardInPlayerDungeon,
     WrongRoundPhase,
-    NoSuchSpellInPlayerHand
+    NoSuchSpellInPlayerHand,
+    HeroAlreadyInCity
 }

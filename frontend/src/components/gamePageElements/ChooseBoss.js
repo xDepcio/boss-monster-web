@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import { saveResponseError } from '../utils'
 import CardBoss from './CardBoss'
 import './ChooseBoss.css'
 
@@ -8,9 +9,10 @@ import './ChooseBoss.css'
 function ChooseBoss() {
     const params = useParams()
     const selfPlayer = useSelector(state => state.game.selfPlayer)
+    const dispatch = useDispatch()
 
     function handleBossSelect(boss) {
-        fetch(`/game/${params.lobbyId}/choose-boss`, {
+        const res = fetch(`/game/${params.lobbyId}/choose-boss`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -20,6 +22,7 @@ function ChooseBoss() {
                 bossId: boss.id
             })
         })
+        saveResponseError(res, dispatch)
     }
 
     return (

@@ -18,7 +18,7 @@ player2.declareBuild(player2.dungeonCards[0])
 // console.log('================================')
 
 player1.becomeReady()
-// player2.becomeReady()
+player2.becomeReady()
 // console.log(util.inspect(game, { colors: true, depth: null }))
 
 

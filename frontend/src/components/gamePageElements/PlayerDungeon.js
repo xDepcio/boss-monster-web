@@ -43,7 +43,7 @@ function PlayerDungeon({ player, selectedDungCard, setSelectedDungCard }) {
     }
 
     function handleDestroyDungeon(dungeonId) {
-        fetch(`/game/${params.lobbyId}/destroy-dungeon`, {
+        const res = fetch(`/game/${params.lobbyId}/destroy-dungeon`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -53,10 +53,11 @@ function PlayerDungeon({ player, selectedDungCard, setSelectedDungCard }) {
                 dungeonId
             })
         })
+        saveResponseError(res, dispatch)
     }
 
     function handleBecomeReady() {
-        fetch(`/game/${params.lobbyId}/become-ready`, {
+        const res = fetch(`/game/${params.lobbyId}/become-ready`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -65,10 +66,11 @@ function PlayerDungeon({ player, selectedDungCard, setSelectedDungCard }) {
                 userId: Cookies.get('user'),
             })
         })
+        saveResponseError(res, dispatch)
     }
 
     function handleAcceptHeroMove() {
-        fetch(`/game/${params.lobbyId}/accept-hero-move`, {
+        const res = fetch(`/game/${params.lobbyId}/accept-hero-move`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -77,6 +79,7 @@ function PlayerDungeon({ player, selectedDungCard, setSelectedDungCard }) {
                 userId: Cookies.get('user'),
             })
         })
+        saveResponseError(res, dispatch)
     }
 
     return (
@@ -126,6 +129,7 @@ function PlayerDungeon({ player, selectedDungCard, setSelectedDungCard }) {
                                         type={dungeon.type}
                                         name={dungeon.name}
                                         id={dungeon.id}
+                                        description={dungeon.description}
                                         isFancy={dungeon.isFancy}
                                         _className={'built-dung'}
                                         card={dungeon}

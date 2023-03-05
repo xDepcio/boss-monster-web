@@ -130,6 +130,7 @@ function PlayerCards({ setSelectedDungCard, selectedDungCard }) {
                         width={200}
                         type={dungeon.type}
                         name={dungeon.name}
+                        description={dungeon.description}
                         treasure={dungeon.treasure}
                         damage={dungeon.damage}
                         _className={'player-card-in-inv'}
@@ -141,6 +142,7 @@ function PlayerCards({ setSelectedDungCard, selectedDungCard }) {
                         _onClick={(e) => handleSelectSpellToPlay(spell, e)}
                         width={200}
                         name={spell.name}
+                        description={spell.description}
                         key={i}
                         phase={spell.playablePhase}
                         _className={'player-card-in-inv'}
