@@ -32,7 +32,8 @@
             "treasure": {
                 "faith": 1
             },
-            "isFancy": false
+            "isFancy": false,
+            "skip": true
         },
         {
             "CARDTYPE": "DUNGEON",
@@ -43,7 +44,8 @@
             "treasure": {
                 "strength": 2
             },
-            "isFancy": false
+            "isFancy": false,
+            "skip": true
         },
         {
             "CARDTYPE": "DUNGEON",
@@ -54,7 +56,8 @@
             "treasure": {
                 "fortune": 2
             },
-            "isFancy": false
+            "isFancy": false,
+            "skip": true
         },
         {
             "CARDTYPE": "DUNGEON",
@@ -66,7 +69,8 @@
                 "faith": 1,
                 "strength": 2
             },
-            "isFancy": false
+            "isFancy": false,
+            "skip": true
         },
         {
             "CARDTYPE": "DUNGEON",
@@ -77,7 +81,8 @@
             "treasure": {
                 "strength": 1
             },
-            "isFancy": false
+            "isFancy": false,
+            "skip": true
         },
         {
             "CARDTYPE": "DUNGEON",
@@ -88,7 +93,8 @@
             "treasure": {
                 "magic": 2
             },
-            "isFancy": true
+            "isFancy": true,
+            "skip": true
         },
         {
             "CARDTYPE": "DUNGEON",
@@ -100,7 +106,8 @@
                 "magic": 1,
                 "strength": 1
             },
-            "isFancy": false
+            "isFancy": false,
+            "skip": true
         },
         {
             "CARDTYPE": "DUNGEON",
@@ -111,7 +118,8 @@
             "treasure": {
                 "magic": 1
             },
-            "isFancy": false
+            "isFancy": false,
+            "skip": true
         },
         {
             "CARDTYPE": "DUNGEON",
@@ -162,6 +170,32 @@
             "mechanicType": "onePerRound",
             "mechanicDescription": "Raz na rundę: kiedy zagrasz kartę czaru, dociągnij kartę czaru.",
             "isFancy": true
+        },
+        {
+            "CARDTYPE": "DUNGEON",
+            "id": 17,
+            "name": "Zgniatarka odpadów",
+            "type": "traps",
+            "damage": 1,
+            "treasure": {
+                "fortune": 2
+            },
+            "mechanicType": "onePerRound",
+            "mechanicDescription": "Raz na rundę: kiedy komnata zostanie zniszczona otrzymujesz 2 golda.",
+            "isFancy": false
+        },
+        {
+            "CARDTYPE": "DUNGEON",
+            "id": 18,
+            "name": "Targowisko goblinów",
+            "type": "monsters",
+            "damage": 1,
+            "treasure": {
+                "strength": 2
+            },
+            "mechanicType": "everyGameAction",
+            "mechanicDescription": "Za każdym razem, kiedy obok tej komnaty zbudujesz inną komnatę, otrzymujesz 2 golda.",
+            "isFancy": false
         }
     ],
     "heroes": [

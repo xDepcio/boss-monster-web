@@ -266,8 +266,17 @@ class DungeonCard extends Card {
     handleGameEvent(event) {
         const dungeonMechanic = this.getMechanic()
         if (dungeonMechanic) {
-            if (dungeonMechanic.getType() === mechanicsTypes.ONE_PER_ROUND) {
+            const mechanicType = dungeonMechanic.getType()
+            if (mechanicType === mechanicsTypes.ONE_PER_ROUND) {
                 dungeonMechanic.handleGameEvent(event)
+            }
+            else if (mechanicType === mechanicsTypes.EVERY_GAME_ACTION) {
+                dungeonMechanic.handleGameEvent(event)
+            }
+            else {
+                // TODO...
+                console.log('NOT HANDLED TODO... (maybe bigger refactor)')
+                // throw new Error("Not handled game event in dungeon")
             }
         }
     }

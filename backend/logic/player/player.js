@@ -202,8 +202,9 @@ class Player {
             const toBuildOnIndex = this.dungeon.findIndex(card => card.id === this.declaredBuild.belowDungeon.id)
             this.dungeon.splice(toBuildOnIndex, 1, this.declaredBuild)
         }
-        this.declaredBuild = null
         this.updateCollectedTreasure()
+        this.trackedGame.saveGameAction(feedback.PLAYER_BUILD_DUNGEON(this, this.declaredBuild))
+        this.declaredBuild = null
     }
 
     destroyDungeonCard(cardId) {

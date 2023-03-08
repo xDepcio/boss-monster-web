@@ -4,7 +4,8 @@ const { feedback, eventTypes } = require("../actionFeedbacks")
 const mechanicsTypes = {
     ON_DESTORY: 'onDestroy',
     ON_BUILD: 'onBuild',
-    ONE_PER_ROUND: 'onePerRound'
+    ONE_PER_ROUND: 'onePerRound',
+    EVERY_GAME_ACTION: 'everyGameAction'
 }
 
 
@@ -72,6 +73,7 @@ class DrawSpellWhenPlayedSpell extends DungeonMechanic { // "Raz na rundę: kied
 
     use() {
         if (this.usedInRound) {
+            // TODO probably shouldn't throw an error because effect is triggered automatically
             throw new OncePerRoundMechanicUsedAlready("This card was already used in this round")
         }
         this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
@@ -91,10 +93,80 @@ class DrawSpellWhenPlayedSpell extends DungeonMechanic { // "Raz na rundę: kied
 }
 
 
+class Draw2GoldWhenAnyDungeonDestoryed extends DungeonMechanic {
+    constructor(dungeonCard, type, mechanicDescription) {
+        super(dungeonCard, type, mechanicDescription)
+        this.usedInRound = false
+    }
+
+    use() {
+        if (this.usedInRound) {
+            // TODO probably shouldn't throw an error because effect is triggered automatically
+            throw new OncePerRoundMechanicUsedAlready("This card was already used in this round")
+        }
+        this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
+        this.dungeonCard.owner.addGold(2)
+        this.usedInRound = true
+    }
+
+    handleGameEvent(event) {
+        if (!this.usedInRound) {
+            if (event.type === eventTypes.PLAYER_DESTROYED_DUNGEON) {
+                this.use()
+            }
+        }
+    }
+}
+
+
+class Draw2GoldWhenDungeonBuildNext extends DungeonMechanic {
+    constructor(dungeonCard, type, mechanicDescription) {
+        super(dungeonCard, type, mechanicDescription)
+        this.previousLeft = null
+        this.previousRight = null
+    }
+
+    getLeft() {
+        const dungCardIndex = this.dungeonCard.owner.dungeon.findIndex(dungeon => dungeon.id === this.dungeonCard.id)
+        const dungOnLeft = this.dungeonCard.owner.dungeon[dungCardIndex + 1]
+        return dungOnLeft || null
+    }
+
+    getRight() {
+        const dungCardIndex = this.dungeonCard.owner.dungeon.findIndex(dungeon => dungeon.id === this.dungeonCard.id)
+        const dungOnRight = this.dungeonCard.owner.dungeon[dungCardIndex - 1]
+        return dungOnRight || null
+    }
+
+    use() {
+        const newLeft = this.getLeft()
+        const newRight = this.getRight()
+        if (newLeft !== this.previousLeft) {
+            this.dungeonCard.owner.addGold(2)
+            this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
+        }
+        if (newRight !== this.previousRight) {
+            this.dungeonCard.owner.addGold(2)
+            this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
+        }
+        this.previousLeft = newLeft
+        this.previousRight = newRight
+    }
+
+    handleGameEvent(event) {
+        if (event.type === eventTypes.PLAYER_BUILD_DUNGEON) {
+            this.use()
+        }
+    }
+}
+
+
 const dungeonMechanicsMap = {
     'Bezdenna czeluść': EliminateHeroInDungeon,
     'Niestabilna kopalnia': Get3MoneyOnDestroy,
-    'Norka kocicy': DrawSpellWhenPlayedSpell
+    'Norka kocicy': DrawSpellWhenPlayedSpell,
+    'Zgniatarka odpadów': Draw2GoldWhenAnyDungeonDestoryed,
+    'Targowisko goblinów': Draw2GoldWhenDungeonBuildNext
 }
 
 

@@ -18,7 +18,8 @@ const eventTypes = {
     HERO_WENT_BACK_TO_CITY: 'HERO_WENT_BACK_TO_CITY',
     PLAYER_PLAYED_SPELL: 'PLAYER_PLAYED_SPELL',
     PLAYER_DRAWNED_DUNGEON_CARD: 'PLAYER_DRAWNED_DUNGEON_CARD',
-    PLAYER_DRAWNED_SPELL_CARD: 'PLAYER_DRAWNED_SPELL_CARD'
+    PLAYER_DRAWNED_SPELL_CARD: 'PLAYER_DRAWNED_SPELL_CARD',
+    PLAYER_BUILD_DUNGEON: 'PLAYER_BUILD_DUNGEON'
 }
 
 const feedback = {
@@ -142,6 +143,14 @@ const feedback = {
         return {
             type: eventTypes.PLAYER_DRAWNED_DUNGEON_CARD,
             message: `player ${player.getName()} drawned new dungeon card`
+        }
+    },
+    PLAYER_BUILD_DUNGEON: (player, dungeon) => {
+        return {
+            type: eventTypes.PLAYER_BUILD_DUNGEON,
+            message: `player ${player.getName()} build ${dungeon.getName()}.`,
+            player,
+            dungeon
         }
     }
 }

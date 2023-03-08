@@ -44,10 +44,7 @@ function CardDungeon({ width, _className, bgImage, isFancy = false, description 
                 break
             }
         }
-
-
-
-    }, [])
+    }, [type])
 
     useEffect(() => {
         if (treasure) {
