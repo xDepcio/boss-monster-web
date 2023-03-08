@@ -88,9 +88,38 @@ class Fear extends SpellMechanic {
 }
 
 
+// Na ratuenk
+class PlaceHeroFromCityInOwnedDungeon extends SpellMechanic {
+    constructor(spellCard, mechanicDescription, targetHero = null) {
+        super(spellCard, mechanicDescription)
+        this.targetHero = targetHero
+    }
+
+    use() {
+        if (!this.targetHero) {
+            this.requestPlayerSelect()
+        }
+        else {
+            this.spellCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.spellCard.owner, this))
+            this.targetHero.goToPlayer(this.spellCard.owner)
+            this.spellCard.completeUsage()
+        }
+    }
+
+    requestPlayerSelect() {
+        const selectionReq = new SelectionRequest(this.spellCard.owner, SelectionRequest.requestItemTypes.HERO, 1, SelectionRequest.scopeAny, this)
+        this.spellCard.owner.setRequestedSelection(selectionReq)
+    }
+
+    receiveSelectionData(data) {
+        this.targetHero = data[0]
+    }
+}
+
 const spellsMechanicsMap = {
     'Wyczerpanie': Exhaustion,
-    'Przerażenie': Fear
+    'Przerażenie': Fear,
+    'Na ratunek': PlaceHeroFromCityInOwnedDungeon
 }
 
 module.exports = {

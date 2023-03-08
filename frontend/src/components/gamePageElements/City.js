@@ -55,6 +55,7 @@ function City() {
                             specialName={hero.specialName}
                             description={hero.description}
                             typeName={hero.typeName}
+                            card={hero}
                         />)}
                     </div>
                 </div>

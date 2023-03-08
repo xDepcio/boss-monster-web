@@ -139,6 +139,13 @@ class OncePerRoundMechanicUsedAlready extends Error {
 }
 
 
+// In player request selections
+class HeroNotFoundInCity extends Error {
+    constructor(message) {
+        super(message)
+    }
+}
+
 
 module.exports = {
     CardCannotBeBuilt,
@@ -162,5 +169,6 @@ module.exports = {
     WrongRoundPhase,
     NoSuchSpellInPlayerHand,
     HeroAlreadyInCity,
-    OncePerRoundMechanicUsedAlready
+    OncePerRoundMechanicUsedAlready,
+    HeroNotFoundInCity
 }

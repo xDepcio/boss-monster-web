@@ -66,6 +66,10 @@ class Player {
         this.drawNotUsedSpellCard()
     }
 
+    addHeroToDungeonEntrance(hero) {
+        this.dungeonEntranceHeroes.push(hero)
+    }
+
     trackGame(game) {
         this.trackedGame = game
     }

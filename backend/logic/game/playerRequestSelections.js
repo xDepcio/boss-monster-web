@@ -1,3 +1,5 @@
+const { HeroNotFoundInCity } = require("../errors")
+
 class SelectionRequest {
     static requestItemTypes = {
         HERO: 'hero',
@@ -5,6 +7,7 @@ class SelectionRequest {
         PLAYER: 'player',
     }
     static scopeAny = 'ANY'
+    static scopeCity = 'CITY'
 
     constructor(requestedPlayer, requestItemType, amount, choiceScope = 'ANY', target) {
         this.requestedPlayer = requestedPlayer
@@ -28,8 +31,23 @@ class SelectionRequest {
         }
     }
 
-    isSelectionValid() {
-        ///TODO...
+    isSelectionValid(selectedItem) {
+        // Still TODO other variants...
+        if (this.choiceScope === SelectionRequest.scopeCity) {
+            switch (this.requestItemType) {
+                case SelectionRequest.requestItemTypes.HERO:
+                    const hero = this.requestedPlayer.trackedGame.city.find((hero) => hero.id === selectedItem.id)
+                    if (!hero) {
+                        throw new HeroNotFoundInCity("Selected hero isn't in city")
+                    }
+                    break;
+
+                default:
+                    // TODO...
+                    throw new Error("Unhandled check. TODO...")
+                    break;
+            }
+        }
         return true
     }
 

@@ -11,7 +11,10 @@ function getShuffledDungeonCards(game) {
     let dungeonCards = []
     for (let card of DUNGEON_CARDS) {
         if (card.CARDTYPE === "DUNGEON") {
-            const { id, name, CARDTYPE, damage, isFancy, treasure, type, mechanicType, mechanicDescription } = card
+            const { id, name, CARDTYPE, damage, isFancy, treasure, type, mechanicType, mechanicDescription, skip } = card
+            if (skip) {
+                continue
+            }
             const cardMechanic = dungeonMechanicsMap[name]
 
             const createdCardObj = new DungeonCard(id, name, CARDTYPE, game, damage, treasure, type, isFancy, cardMechanic, mechanicType, mechanicDescription)
@@ -26,7 +29,10 @@ function getShuffledSpellCards(game) {
     let dungeonCards = []
     for (let card of SPELL_CARDS) {
         if (card.CARDTYPE === "SPELL") {
-            const { CARDTYPE, id, name, playablePhase, description } = card
+            const { CARDTYPE, id, name, playablePhase, description, skip } = card
+            if (skip) {
+                continue
+            }
             const spellMechanic = spellsMechanicsMap[name]
 
             const createdCardObj = new SpellCard(id, name, CARDTYPE, game, playablePhase, spellMechanic, description)
@@ -41,7 +47,10 @@ function getShuffledHeroCards(game) {
     let dungeonCards = []
     for (let card of HERO_CARDS) {
         if (card.CARDTYPE === "HERO") {
-            const { CARDTYPE, damageDealt, health, id, name, treasure, description, specialName, typeName } = card
+            const { CARDTYPE, damageDealt, health, id, name, treasure, description, specialName, typeName, skip } = card
+            if (skip) {
+                continue
+            }
             const createdCardObj = new HeroCard(id, name, CARDTYPE, game, health, treasure, damageDealt, description || null, specialName || null, typeName || null)
             dungeonCards.push(createdCardObj)
         }
@@ -54,7 +63,10 @@ function getShuffledHeroCards(game) {
 function getShuffledBossesCards(game) {
     let bossCards = []
     for (let card of BOSS_CARDS) {
-        const { id, name, pd, treasure, CARDTYPE } = card
+        const { id, name, pd, treasure, CARDTYPE, skip } = card
+        if (skip) {
+            continue
+        }
         const createdCardObj = new BossCard(id, name, CARDTYPE, game, pd, treasure)
         bossCards.push(createdCardObj)
     }

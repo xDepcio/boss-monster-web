@@ -29,6 +29,9 @@ router.post('/:lobbyId/join', (req, res, next) => {
     }
 
     const userId = req.body.userId
+    if (!userId) {
+        return res.json({ success: false })
+    }
 
     let player = Player.getPlayer(userId)
     if (!player) {
