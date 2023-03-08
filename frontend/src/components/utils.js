@@ -58,6 +58,22 @@ export function getHeroDescFontEm(textLength) {
     return '0.5em'
 }
 
+export function getSpellDescDontEm(textLength) {
+    if (!textLength) {
+        return '0.5em'
+    }
+    if (textLength <= 100) {
+        return '0.8em'
+    }
+    if (textLength <= 145) {
+        return '0.7em'
+    }
+    if (textLength <= 175) {
+        return '0.65em'
+    }
+    return '0.5em'
+}
+
 
 export function saveResponseError(response, dispatch) {
     response.then((res) => {
