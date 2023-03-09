@@ -146,6 +146,22 @@ router.post('/:lobbyId/accept-hero-move', assignPlayer, (req, res, next) => {
     })
 })
 
+// Accept spell play
+router.post('/:lobbyId/accept-spell-play', assignPlayer, (req, res, next) => {
+    const player = req.player
+
+    try {
+        player.acceptSpellPlay()
+        updateLobbyPlayers(req.params.lobbyId)
+    } catch (err) {
+        next(err)
+        return
+    }
+    return res.json({
+        success: true
+    })
+})
+
 // Destroy dungeon
 router.post('/:lobbyId/destroy-dungeon', assignPlayer, (req, res, next) => {
     const player = req.player

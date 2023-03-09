@@ -1,0 +1,53 @@
+.accept-spell-popup-wrapper {
+    /* position: fixed; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%); */
+    z-index: 10;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.accept-spell-btns-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.accept-spell-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px;
+    width: 200px;
+    border: none;
+    background-color: green;
+    gap: 5px;
+    color: whitesmoke;
+    font-weight: 600;
+    font-size: 14px;
+    border-radius: 999px;
+    transition-duration: 0.2s;
+    cursor: pointer;
+}
+
+.accept-spell-btn:disabled {
+    background-color: rgb(73, 109, 73);
+    cursor: unset;
+}
+
+.accept-spell-btn:hover:not(:disabled) {
+    background-color: rgb(31, 162, 31);
+}
+
+.accept-spell-header {
+    color: whitesmoke;
+    font-size: 22px;
+}
+
+.accept-spell-card {
+    box-shadow: 0px 0px 15px 0px rgb(244, 228, 80);
+}

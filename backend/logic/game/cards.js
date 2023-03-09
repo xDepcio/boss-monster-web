@@ -324,12 +324,17 @@ class SpellCard extends Card {
     }
 
     play() {
-        this.mechanic.use()
+        this.trackedGame.setCurrentlyPlayedSpell(this)
+        if (this.trackedGame.hasAllPlayersAcceptedSpellPlay()) {
+            this.mechanic.use()
+        }
     }
 
     completeUsage() {
+        this.trackedGame.setCurrentlyPlayedSpell(null)
         this.owner.removeSpellFromHand(this)
         this.trackedGame.saveGameAction(feedback.PLAYER_PLAYED_SPELL(this.owner, this))
+        this.trackedGame.players.forEach(player => player.becomeNotReadyForSpellPlay())
         this.setOwner(null)
     }
 

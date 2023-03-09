@@ -27,7 +27,16 @@ class Game {
         this.city = []
         this.movesHistory = []
         this.heroToMove = null
+        this.currentlyPlayedSpell = null
         this.startGame()
+    }
+
+    setCurrentlyPlayedSpell(spell) {
+        this.currentlyPlayedSpell = spell
+    }
+
+    getCurrentlyPlayedSpell() {
+        return this.currentlyPlayedSpell
     }
 
     startGame() {
@@ -165,6 +174,24 @@ class Game {
     areAllPlayersReady() {
         for (const player of this.players) {
             if (!player.finishedPhase) {
+                return false
+            }
+        }
+        return true
+    }
+
+    hasAllPlayersAcceptedHeroMove() {
+        for (const player of this.players) {
+            if (!player.hasAcceptedHeroEntrance()) {
+                return false
+            }
+        }
+        return true
+    }
+
+    hasAllPlayersAcceptedSpellPlay() {
+        for (const player of this.players) {
+            if (!player.hasAcceptedSpellPlay()) {
                 return false
             }
         }

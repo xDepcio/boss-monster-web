@@ -16,7 +16,10 @@ const {
     CardCannotBeDestroyed,
     NoSuchDungeonCardInPlayerDungeon,
     WrongRoundPhase,
-    NoSuchSpellInPlayerHand
+    NoSuchSpellInPlayerHand,
+    OtherSpellCurrentlyAtPlay,
+    PlayerAlreadyAcceptedSpellPlay,
+    NoSpellCurrentylAtPlay
 } = require('../errors')
 const { feedback } = require('../game/actionFeedbacks')
 
@@ -34,6 +37,7 @@ class Player {
         this.dungeon = []
         this.dungeonEntranceHeroes = []
         this.acceptedHeroMove = false
+        this.acceptedSpellPlay = false
         this.health = 5
         this.money = 3
         this.defeatedHeroes = []
@@ -50,6 +54,27 @@ class Player {
         }
         this.requestedSelection = null
         Player.players[id] = this
+    }
+
+    hasAcceptedSpellPlay() {
+        return this.acceptedSpellPlay
+    }
+
+    acceptSpellPlay() {
+        const spell = this.trackedGame.getCurrentlyPlayedSpell()
+        if (!spell) {
+            throw new NoSpellCurrentylAtPlay('You cannot accept spell play when there is none at play')
+        }
+        if (this.hasAcceptedSpellPlay()) {
+            throw new PlayerAlreadyAcceptedSpellPlay('Player has already accepted current hero move')
+        }
+        this.acceptedSpellPlay = true
+        this.trackedGame.saveGameAction(feedback.PLAYER_ACCEPTED_SPELL_PLAY(this, spell))
+        spell.play()
+    }
+
+    becomeNotReadyForSpellPlay() {
+        this.acceptedSpellPlay = false
     }
 
     getName() {
@@ -135,6 +160,9 @@ class Player {
     }
 
     checkIfDungeonBuildValid(card, index) {
+        if (this.trackedGame.getCurrentlyPlayedSpell()) {
+            throw new OtherSpellCurrentlyAtPlay("You have to wait for current spell play to end to build a dungeon.")
+        }
         if (this.trackedGame.roundPhase !== 'build') {
             throw new WrongPhaseToBuild("Cards can only be build during bild phase")
         }
@@ -177,6 +205,7 @@ class Player {
     playSpell(spellId) {
         const spell = this.getSpellInHandById(spellId)
         if (this.checkIfSpellPlayValid(spell)) {
+            this.trackedGame.players.forEach(player => player.becomeNotReadyForSpellPlay())
             spell.play()
         }
     }
@@ -189,6 +218,9 @@ class Player {
     checkIfSpellPlayValid(spellCard) {
         if (spellCard.playablePhase !== this.trackedGame.roundPhase) {
             throw new WrongRoundPhase(`${spellCard.name} can only be played during ${spellCard.playablePhase} phase. Current phase: ${this.trackedGame.roundPhase}`)
+        }
+        if (this.trackedGame.getCurrentlyPlayedSpell()) {
+            throw new OtherSpellCurrentlyAtPlay("You have to wait for other spell play to end to use your spell.")
         }
         return true
     }

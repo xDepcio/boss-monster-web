@@ -116,6 +116,24 @@ class NoSuchSpellInPlayerHand extends Error {
     }
 }
 
+class OtherSpellCurrentlyAtPlay extends Error {
+    constructor(message) {
+        super(message)
+    }
+}
+
+class NoSpellCurrentylAtPlay extends Error {
+    constructor(message) {
+        super(message)
+    }
+}
+
+class PlayerAlreadyAcceptedSpellPlay extends Error {
+    constructor(message) {
+        super(message)
+    }
+}
+
 
 // In Hero card
 class NotAllPlayersAcceptedHeroMove extends Error {
@@ -170,5 +188,8 @@ module.exports = {
     NoSuchSpellInPlayerHand,
     HeroAlreadyInCity,
     OncePerRoundMechanicUsedAlready,
-    HeroNotFoundInCity
+    HeroNotFoundInCity,
+    OtherSpellCurrentlyAtPlay,
+    NoSpellCurrentylAtPlay,
+    PlayerAlreadyAcceptedSpellPlay
 }

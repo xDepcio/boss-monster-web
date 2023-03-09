@@ -12,6 +12,8 @@ import PlayerDungeon from './gamePageElements/PlayerDungeon'
 import ChooseBoss from './gamePageElements/ChooseBoss'
 import { socket } from '../App'
 import ErrorMessageComp from './gamePageElements/ErrorMessageComp'
+import AcceptSpellComp from './gamePageElements/AcceptSpellComp'
+import CurrentActionsComp from './gamePageElements/CurrentActionsComp'
 
 function GamePage() {
     const params = useParams()
@@ -19,6 +21,8 @@ function GamePage() {
 
     const players = useSelector(state => state.game.players)
     const game = useSelector(state => state.game.game)
+    const spellAtPay = useSelector(state => state.game.game?.currentlyPlayedSpell)
+    const selfPlayer = useSelector(state => state.game.selfPlayer)
 
     const [selectedDungCard, setSelectedDungCard] = useState(null)
 
@@ -31,6 +35,7 @@ function GamePage() {
 
     return (
         <>
+            <CurrentActionsComp />
             <ErrorMessageComp />
             <City />
             <Chat />

@@ -19,7 +19,8 @@ const eventTypes = {
     PLAYER_PLAYED_SPELL: 'PLAYER_PLAYED_SPELL',
     PLAYER_DRAWNED_DUNGEON_CARD: 'PLAYER_DRAWNED_DUNGEON_CARD',
     PLAYER_DRAWNED_SPELL_CARD: 'PLAYER_DRAWNED_SPELL_CARD',
-    PLAYER_BUILD_DUNGEON: 'PLAYER_BUILD_DUNGEON'
+    PLAYER_BUILD_DUNGEON: 'PLAYER_BUILD_DUNGEON',
+    PLAYER_ACCEPTED_SPELL_PLAY: 'PLAYER_ACCEPTED_SPELL_PLAY'
 }
 
 const feedback = {
@@ -151,6 +152,12 @@ const feedback = {
             message: `player ${player.getName()} build ${dungeon.getName()}.`,
             player,
             dungeon
+        }
+    },
+    PLAYER_ACCEPTED_SPELL_PLAY: (player, spell) => {
+        return {
+            type: eventTypes.PLAYER_ACCEPTED_SPELL_PLAY,
+            message: `player ${player.getName()} accepted play of '${spell.getName()}' by ${spell.owner.getName()}.`,
         }
     }
 }

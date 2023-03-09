@@ -1,0 +1,48 @@
+.current-actions-wrapper {
+    position: fixed;
+    height: 100%;
+    width: 35vw;
+    background-color: rgba(57, 57, 57, 0.835);
+    right: -35vw;
+    transition-duration: 0.3s;
+    z-index: 13;
+}
+
+
+.current-actions-wrapper-expanded {
+    right: 0;
+}
+
+.current-actions-expand-btn {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    align-items: center;
+    left: -32px;
+    position: absolute;
+    padding: 10px;
+    line-height: 120%;
+    top: 595px;
+    border-bottom-left-radius: 10px;
+    border-top-left-radius: 10px;
+    background-color: rgb(220, 143, 0);
+    cursor: pointer;
+}
+
+.show-accept-reminder-icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: rgb(226, 226, 0);
+    padding: 7px;
+    color: black;
+    border: 2px solid black;
+    font-size: 30px;
+    border-radius: 999px;
+    transform: translateX(-50%) translateY(-50%);
+    aspect-ratio: 1/1;
+}
+
+.show-accept-reminder-icon>path {
+    transform: translateX(20%);
+}
