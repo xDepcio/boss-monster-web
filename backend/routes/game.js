@@ -9,7 +9,7 @@ const { assignPlayer } = require('../utils/verifyPlayer')
 const { parse, stringify, toJSON, fromJSON } = require('flatted');
 const { updateLobbyPlayers } = require('../utils/socketsHelper');
 const { SelectionRequest } = require('../logic/game/playerRequestSelections');
-const { HeroCard, DungeonCard } = require('../logic/game/cards');
+const { HeroCard, DungeonCard, SpellCard } = require('../logic/game/cards');
 const Player = require('../logic/player/player');
 
 
@@ -102,6 +102,10 @@ router.post('/:lobbyId/select-item', assignPlayer, (req, res, next) => {
                 selectedCard = DungeonCard.getDungeon(req.body.itemId)
                 break
             }
+            case SelectionRequest.requestItemTypes.SPELL: {
+                selectedCard = SpellCard.getSpell(req.body.itemId)
+                break
+            }
         }
         player.requestedSelection.selectItem(selectedCard)
         updateLobbyPlayers(req.params.lobbyId)
@@ -168,6 +172,22 @@ router.post('/:lobbyId/destroy-dungeon', assignPlayer, (req, res, next) => {
 
     try {
         player.destroyDungeonCard(req.body.dungeonId)
+        updateLobbyPlayers(req.params.lobbyId)
+    } catch (err) {
+        next(err)
+        return
+    }
+    return res.json({
+        success: true
+    })
+})
+
+// Use dungeon effect
+router.post('/:lobbyId/use-dungeon', assignPlayer, (req, res, next) => {
+    const player = req.player
+
+    try {
+        player.useDungeonEffect(req.body.dungeonId)
         updateLobbyPlayers(req.params.lobbyId)
     } catch (err) {
         next(err)

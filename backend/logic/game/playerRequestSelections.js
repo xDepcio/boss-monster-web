@@ -5,6 +5,7 @@ class SelectionRequest {
         HERO: 'hero',
         DUNGEON: 'dungeon',
         PLAYER: 'player',
+        SPELL: 'spell'
     }
     static scopeAny = 'ANY'
     static scopeCity = 'CITY'

@@ -19,9 +19,11 @@ const {
     NoSuchSpellInPlayerHand,
     OtherSpellCurrentlyAtPlay,
     PlayerAlreadyAcceptedSpellPlay,
-    NoSpellCurrentylAtPlay
+    NoSpellCurrentylAtPlay,
+    DungeonEffectCannotBeUsed
 } = require('../errors')
 const { feedback } = require('../game/actionFeedbacks')
+const { mechanicsTypes } = require('../game/unique_mechanics/dungeonMechanics')
 
 
 class Player {
@@ -88,6 +90,8 @@ class Player {
     drawStartCards() {
         this.drawNotUsedDungeonCard()
         this.drawNotUsedDungeonCard()
+        this.drawNotUsedDungeonCard()
+        this.drawNotUsedSpellCard()
         this.drawNotUsedSpellCard()
     }
 
@@ -241,12 +245,21 @@ class Player {
 
     destroyDungeonCard(cardId) {
         const dungeonCard = this.getDungeonCardFromDungeon(cardId)
+        if (this.checkIfDungeonDestoryValid()) {
+            dungeonCard.handleCardDestroyedMechanic()
+            this.deleteFromDungeon(dungeonCard)
+            this.trackedGame.saveGameAction(feedback.PLAYER_DESTROYED_DUNGEON(this, dungeonCard))
+        }
+    }
+
+    checkIfDungeonDestoryValid(dungeonCard) {
         if (!dungeonCard.isDestroyable()) {
             throw new CardCannotBeDestroyed("This dungeon cannot be destroyed")
         }
-        dungeonCard.handleCardDestroyedMechanic()
-        this.deleteFromDungeon(dungeonCard)
-        this.trackedGame.saveGameAction(feedback.PLAYER_DESTROYED_DUNGEON(this, dungeonCard))
+        if (this.trackedGame.getCurrentlyPlayedSpell()) {
+            throw new OtherSpellCurrentlyAtPlay("You can't destory a dungeon when there is a spell at play.")
+        }
+        return true
     }
 
     deleteFromDungeon(dungeonCard) {
@@ -257,6 +270,20 @@ class Player {
         else {
             this.dungeon.splice(cardIndex, 1, dungeonCard.belowDungeon)
         }
+    }
+
+    useDungeonEffect(dungeonId) {
+        const dungeonCard = this.getDungeonCardFromDungeon(dungeonId)
+        if (this.checkIfDungeonUseValid(dungeonCard)) {
+            dungeonCard.handleDungeonUsed()
+        }
+    }
+
+    checkIfDungeonUseValid(dungeonCard) {
+        if (!dungeonCard.isUsable()) {
+            throw new DungeonEffectCannotBeUsed("This dungeons effect is not usable.")
+        }
+        return true
     }
 
     getDungeonCardFromDungeon(cardId) {

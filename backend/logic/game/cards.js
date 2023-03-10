@@ -207,6 +207,7 @@ class DungeonCard extends Card {
         this.isActive = true
         this.owner = null
         this.allowDestroy = false
+        this.allowUse = false
         this.mechanic = mechanic ? new mechanic(this, mechanicType, mechanicDescription) : null
         DungeonCard.dungeons[id] = this
     }
@@ -244,8 +245,16 @@ class DungeonCard extends Card {
         this.allowDestroy = bool
     }
 
+    setAllowUse(bool) {
+        this.allowUse = bool
+    }
+
     isDestroyable() {
         return this.allowDestroy
+    }
+
+    isUsable() {
+        return this.allowUse
     }
 
     handleHeroDiedInRoom() {
@@ -259,6 +268,12 @@ class DungeonCard extends Card {
 
     handleCardDestroyedMechanic() {
         if (this.mechanic.getType() === mechanicsTypes.ON_DESTORY) {
+            this.mechanic.use()
+        }
+    }
+
+    handleDungeonUsed() {
+        if (this.mechanic.getType() === mechanicsTypes.ON_USE_ONE_PER_ROUND) {
             this.mechanic.use()
         }
     }

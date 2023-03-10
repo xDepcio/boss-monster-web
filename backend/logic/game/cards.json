@@ -20,6 +20,27 @@
             "name": "Na ratunek",
             "playablePhase": "build",
             "description": "Wybierz jednego bohatera w mieście. Połóż go przed wejściem do Twoich podziemi."
+        },
+        {
+            "CARDTYPE": "SPELL",
+            "id": 4,
+            "name": "Przerażenie",
+            "playablePhase": "fight",
+            "description": "Wybierz bohatera w dowolonych podziemiach i odeślij go do miasta."
+        },
+        {
+            "CARDTYPE": "SPELL",
+            "id": 5,
+            "name": "Przerażenie",
+            "playablePhase": "fight",
+            "description": "Wybierz bohatera w dowolonych podziemiach i odeślij go do miasta."
+        },
+        {
+            "CARDTYPE": "SPELL",
+            "id": 6,
+            "name": "Przerażenie",
+            "playablePhase": "fight",
+            "description": "Wybierz bohatera w dowolonych podziemiach i odeślij go do miasta."
         }
     ],
     "dungeons": [
@@ -195,6 +216,45 @@
             },
             "mechanicType": "everyGameAction",
             "mechanicDescription": "Za każdym razem, kiedy obok tej komnaty zbudujesz inną komnatę, otrzymujesz 2 golda.",
+            "isFancy": false
+        },
+        {
+            "CARDTYPE": "DUNGEON",
+            "id": 19,
+            "name": "Wszystkowidzące Oko",
+            "type": "traps",
+            "damage": 3,
+            "treasure": {
+                "magic": 1
+            },
+            "mechanicType": "onUseOnePerRound",
+            "mechanicDescription": "Raz na rundę: kiedy przeciwnik zagra kartę czaru, możesz odrzucić z ręki kartę czaru, aby zanegować efekty właśnie zagranej przez przeciwnika karty.",
+            "isFancy": false
+        },
+        {
+            "CARDTYPE": "DUNGEON",
+            "id": 20,
+            "name": "Wszystkowidzące Oko",
+            "type": "traps",
+            "damage": 3,
+            "treasure": {
+                "magic": 1
+            },
+            "mechanicType": "onUseOnePerRound",
+            "mechanicDescription": "Raz na rundę: kiedy przeciwnik zagra kartę czaru, możesz odrzucić z ręki kartę czaru, aby zanegować efekty właśnie zagranej przez przeciwnika karty.",
+            "isFancy": false
+        },
+        {
+            "CARDTYPE": "DUNGEON",
+            "id": 21,
+            "name": "Wszystkowidzące Oko",
+            "type": "traps",
+            "damage": 3,
+            "treasure": {
+                "magic": 1
+            },
+            "mechanicType": "onUseOnePerRound",
+            "mechanicDescription": "Raz na rundę: kiedy przeciwnik zagra kartę czaru, możesz odrzucić z ręki kartę czaru, aby zanegować efekty właśnie zagranej przez przeciwnika karty.",
             "isFancy": false
         }
     ],

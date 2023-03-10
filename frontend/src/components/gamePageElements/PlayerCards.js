@@ -137,6 +137,7 @@ function PlayerCards({ setSelectedDungCard, selectedDungCard }) {
                         isFancy={dungeon.isFancy}
                         key={i}
                         id={dungeon.id}
+                        card={dungeon}
                     />)}
                     {selfPlayer?.spellCards.map((spell, i) => <CardSpell
                         _onClick={(e) => handleSelectSpellToPlay(spell, e)}
@@ -146,6 +147,7 @@ function PlayerCards({ setSelectedDungCard, selectedDungCard }) {
                         key={i}
                         phase={spell.playablePhase}
                         _className={'player-card-in-inv'}
+                        card={spell}
                     />)}
                 </div>
             </div>

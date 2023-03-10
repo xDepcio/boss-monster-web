@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import './Card.css'
 import './CardDungeon.css'
 import { symbolImage } from '../../static/constants'
-import { getBgColor, getFontEm } from '../utils'
+import { getBgColor, getDungDescEm, getFontEm } from '../utils'
 import { useSelector } from 'react-redux'
 import HeroToMoveMarker from './HeroToMoveMarker'
 import CardRequestedSelectionHandle from './CardRequestedSelectionHandle'
@@ -71,7 +71,7 @@ function CardDungeon({ width, _className, bgImage, isFancy = false, description 
             <h3 style={{ fontSize: getFontEm(name.length) }} className='card-info-comp card-name dung-card-name'>{name}</h3>
             <p className='card-info-comp card-subname dungeon-card-type'>{subHeader}</p>
             <p className='card-info-comp dungeon-card-damage'>{damage}</p>
-            <p className='card-info-comp card-comp dung-card-desc'>{description}</p>
+            <p style={{ fontSize: getDungDescEm(description?.length) }} className='card-info-comp card-comp dung-card-desc'>{description}</p>
             <img className='card-info-comp card-img-comp card-comp card-type-comp' src={typeUrl} />
             <img className='card-info-comp card-img-comp card-comp card-bg-comp' src={bgUrl || '/images/red_bg_canvas.png'} />
             <img className='card-info-comp card-img-comp card-comp card-main-img-comp' src={mainImg || '/images/bosses/boss_ROBOBO.png'} />

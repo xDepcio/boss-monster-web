@@ -1,4 +1,4 @@
-import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
+import { faGamepad, faPlay, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Cookies from 'js-cookie'
 import { useMemo, useState } from 'react'
@@ -82,6 +82,20 @@ function PlayerDungeon({ player, selectedDungCard, setSelectedDungCard }) {
         saveResponseError(res, dispatch)
     }
 
+    function handleUseDungeon(dungeonId) {
+        const res = fetch(`/game/${params.lobbyId}/use-dungeon`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                dungeonId: dungeonId,
+                userId: Cookies.get('user'),
+            })
+        })
+        saveResponseError(res, dispatch)
+    }
+
     return (
         <div className="single-player-dungeon">
             <div className='heroes-section'>
@@ -111,6 +125,12 @@ function PlayerDungeon({ player, selectedDungCard, setSelectedDungCard }) {
                                             <button onClick={() => handleDestroyDungeon(dungeon.id)} className='destroy-dung-btn'>
                                                 <FontAwesomeIcon icon={faTrashCan} />
                                                 <p>Zniszcz loch</p>
+                                            </button>
+                                        )}
+                                        {dungeon.allowUse && (
+                                            <button onClick={() => handleUseDungeon(dungeon.id)} className='use-dung-btn'>
+                                                <FontAwesomeIcon icon={faGamepad} />
+                                                <p>Użyj lochu</p>
                                             </button>
                                         )}
                                     </div>

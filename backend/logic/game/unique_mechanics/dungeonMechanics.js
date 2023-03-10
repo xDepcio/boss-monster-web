@@ -1,11 +1,13 @@
-const { OncePerRoundMechanicUsedAlready } = require("../../errors")
+const { OncePerRoundMechanicUsedAlready, DungeonMechanicUseConditionError } = require("../../errors")
 const { feedback, eventTypes } = require("../actionFeedbacks")
+const { SelectionRequest } = require("../playerRequestSelections")
 
 const mechanicsTypes = {
     ON_DESTORY: 'onDestroy',
     ON_BUILD: 'onBuild',
     ONE_PER_ROUND: 'onePerRound',
-    EVERY_GAME_ACTION: 'everyGameAction'
+    EVERY_GAME_ACTION: 'everyGameAction',
+    ON_USE_ONE_PER_ROUND: 'onUseOnePerRound'
 }
 
 
@@ -160,13 +162,59 @@ class Draw2GoldWhenDungeonBuildNext extends DungeonMechanic {
     }
 }
 
+class NegateSpellByRemovingYourSpell extends DungeonMechanic {
+    constructor(dungeonCard, type, mechanicDescription) {
+        super(dungeonCard, type, mechanicDescription)
+        this.usedInRound = false
+        this.selectedSpell = null
+        this.dungeonCard.setAllowUse(true)
+    }
+
+    use() {
+        if (this.checkMechanicUseValid()) {
+            if (!this.selectedSpell) {
+                this.requestPlayerSelect()
+            }
+            else {
+                const playedSpell = this.dungeonCard.trackedGame.getCurrentlyPlayedSpell()
+                playedSpell.completeUsage()
+                this.selectedSpell.owner.removeSpellFromHand(this.selectedSpell)
+                this.selectedSpell.setOwner(null)
+                this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
+                this.selectedSpell = null
+                this.usedInRound = true
+            }
+        }
+    }
+
+    checkMechanicUseValid() {
+        if (this.usedInRound) {
+            throw new OncePerRoundMechanicUsedAlready("This card was already used in this round.")
+        }
+        if (!this.dungeonCard.trackedGame.getCurrentlyPlayedSpell()) {
+            throw new DungeonMechanicUseConditionError("The isn't any spell currently at play.")
+        }
+        return true
+    }
+
+    requestPlayerSelect() {
+        const selectionReq = new SelectionRequest(this.dungeonCard.owner, SelectionRequest.requestItemTypes.SPELL, 1, this.dungeonCard.owner, this)
+        this.dungeonCard.owner.setRequestedSelection(selectionReq)
+    }
+
+    receiveSelectionData(data) {
+        this.selectedSpell = data[0]
+    }
+}
+
 
 const dungeonMechanicsMap = {
     'Bezdenna czeluść': EliminateHeroInDungeon,
     'Niestabilna kopalnia': Get3MoneyOnDestroy,
     'Norka kocicy': DrawSpellWhenPlayedSpell,
     'Zgniatarka odpadów': Draw2GoldWhenAnyDungeonDestoryed,
-    'Targowisko goblinów': Draw2GoldWhenDungeonBuildNext
+    'Targowisko goblinów': Draw2GoldWhenDungeonBuildNext,
+    'Wszystkowidzące Oko': NegateSpellByRemovingYourSpell
 }
 
 

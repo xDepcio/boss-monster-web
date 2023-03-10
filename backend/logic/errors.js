@@ -134,6 +134,12 @@ class PlayerAlreadyAcceptedSpellPlay extends Error {
     }
 }
 
+class DungeonEffectCannotBeUsed extends Error {
+    constructor(message) {
+        super(message)
+    }
+}
+
 
 // In Hero card
 class NotAllPlayersAcceptedHeroMove extends Error {
@@ -151,6 +157,12 @@ class HeroAlreadyInCity extends Error {
 
 // In dungeon mechanic
 class OncePerRoundMechanicUsedAlready extends Error {
+    constructor(message) {
+        super(message)
+    }
+}
+
+class DungeonMechanicUseConditionError extends Error {
     constructor(message) {
         super(message)
     }
@@ -191,5 +203,7 @@ module.exports = {
     HeroNotFoundInCity,
     OtherSpellCurrentlyAtPlay,
     NoSpellCurrentylAtPlay,
-    PlayerAlreadyAcceptedSpellPlay
+    PlayerAlreadyAcceptedSpellPlay,
+    DungeonEffectCannotBeUsed,
+    DungeonMechanicUseConditionError
 }

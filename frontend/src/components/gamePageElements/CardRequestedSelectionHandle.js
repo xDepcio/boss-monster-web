@@ -34,6 +34,11 @@ function CardRequestedSelectionHandle({ card = null }) {
                         return true
                     }
                     break;
+                case 'SPELL':
+                    if (card.owner.id === requestedSelection.choiceScope.id) {
+                        return true
+                    }
+                    break;
                 default:
                     return false
                     break;
@@ -52,7 +57,8 @@ function CardRequestedSelectionHandle({ card = null }) {
         return false
     }
 
-    function handleSelectableCardClick() {
+    function handleSelectableCardClick(event) {
+        event.stopPropagation()
         if (isSelectionValid(card)) {
             const res = fetch(`/game/${params.lobbyId}/select-item`, {
                 method: 'POST',
@@ -70,7 +76,7 @@ function CardRequestedSelectionHandle({ card = null }) {
 
 
     return (
-        <div onClick={handleSelectableCardClick} className={`player-item-selectable ${isSelected(card) ? 'card-item-selected' : ''} ${isSelectionValid(card) ? 'item-selection-valid' : 'item-selection-not-valid'}`}></div>
+        <div onClick={(e) => handleSelectableCardClick(e)} className={`player-item-selectable ${isSelected(card) ? 'card-item-selected' : ''} ${isSelectionValid(card) ? 'item-selection-valid' : 'item-selection-not-valid'}`}></div>
     )
 }
 
