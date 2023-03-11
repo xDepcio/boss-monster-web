@@ -29,6 +29,7 @@ class Game {
         this.movesHistory = []
         this.heroToMove = null
         this.currentlyPlayedSpell = null
+        this.roundModifiers = []
         this.startGame()
     }
 
@@ -38,6 +39,15 @@ class Game {
 
     getCurrentlyPlayedSpell() {
         return this.currentlyPlayedSpell
+    }
+
+    addRoundModifier(modifer) {
+        this.roundModifiers.push(modifer)
+    }
+
+    removeRoundModifiers() {
+        this.roundModifiers.forEach(modifier => modifier.handleRoundEnded())
+        this.roundModifiers = []
     }
 
     startGame() {
@@ -114,6 +124,7 @@ class Game {
         this.roundPhase = phase.BUILD
         this.fillCityWithHeroes()
         this.setOnePerRoundCardsBackToUsable()
+        this.removeRoundModifiers()
     }
 
     setOnePerRoundCardsBackToUsable() {

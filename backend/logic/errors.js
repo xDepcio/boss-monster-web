@@ -176,6 +176,13 @@ class HeroNotFoundInCity extends Error {
     }
 }
 
+class InvalidTreasureType extends Error {
+    constructor(message) {
+        super(message)
+    }
+}
+
+
 
 module.exports = {
     CardCannotBeBuilt,
@@ -205,5 +212,6 @@ module.exports = {
     NoSpellCurrentylAtPlay,
     PlayerAlreadyAcceptedSpellPlay,
     DungeonEffectCannotBeUsed,
-    DungeonMechanicUseConditionError
+    DungeonMechanicUseConditionError,
+    InvalidTreasureType
 }

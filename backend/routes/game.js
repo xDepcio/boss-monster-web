@@ -88,26 +88,30 @@ router.post('/:lobbyId/select-item', assignPlayer, (req, res, next) => {
 
     try {
         const player = req.player
-        let selectedCard
+        let selectedItem
         switch (player.requestedSelection.getRequestItemType()) {
             case SelectionRequest.requestItemTypes.HERO: {
-                selectedCard = HeroCard.getHero(req.body.itemId)
+                selectedItem = HeroCard.getHero(req.body.itemId)
                 break
             }
             case SelectionRequest.requestItemTypes.PLAYER: {
-                selectedCard = Player.getPlayer(req.body.itemId)
+                selectedItem = Player.getPlayer(req.body.itemId)
                 break
             }
             case SelectionRequest.requestItemTypes.DUNGEON: {
-                selectedCard = DungeonCard.getDungeon(req.body.itemId)
+                selectedItem = DungeonCard.getDungeon(req.body.itemId)
                 break
             }
             case SelectionRequest.requestItemTypes.SPELL: {
-                selectedCard = SpellCard.getSpell(req.body.itemId)
+                selectedItem = SpellCard.getSpell(req.body.itemId)
+                break
+            }
+            case SelectionRequest.requestItemTypes.TREASURE: {
+                selectedItem = req.body.treasureSymbol
                 break
             }
         }
-        player.requestedSelection.selectItem(selectedCard)
+        player.requestedSelection.selectItem(selectedItem)
         updateLobbyPlayers(req.params.lobbyId)
     } catch (err) {
         next(err)

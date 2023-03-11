@@ -14,6 +14,7 @@ import { socket } from '../App'
 import ErrorMessageComp from './gamePageElements/ErrorMessageComp'
 import AcceptSpellComp from './gamePageElements/AcceptSpellComp'
 import CurrentActionsComp from './gamePageElements/CurrentActionsComp'
+import SelectionRequestsComp from './gamePageElements/SelectionRequestsComp'
 
 function GamePage() {
     const params = useParams()
@@ -35,6 +36,7 @@ function GamePage() {
 
     return (
         <>
+            <SelectionRequestsComp />
             <CurrentActionsComp />
             <ErrorMessageComp />
             <City />

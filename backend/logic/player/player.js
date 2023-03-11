@@ -245,7 +245,7 @@ class Player {
 
     destroyDungeonCard(cardId) {
         const dungeonCard = this.getDungeonCardFromDungeon(cardId)
-        if (this.checkIfDungeonDestoryValid()) {
+        if (this.checkIfDungeonDestoryValid(dungeonCard)) {
             dungeonCard.handleCardDestroyedMechanic()
             this.deleteFromDungeon(dungeonCard)
             this.trackedGame.saveGameAction(feedback.PLAYER_DESTROYED_DUNGEON(this, dungeonCard))
@@ -270,6 +270,7 @@ class Player {
         else {
             this.dungeon.splice(cardIndex, 1, dungeonCard.belowDungeon)
         }
+        this.updateCollectedTreasure()
     }
 
     useDungeonEffect(dungeonId) {

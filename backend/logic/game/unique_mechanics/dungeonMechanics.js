@@ -1,6 +1,7 @@
 const { OncePerRoundMechanicUsedAlready, DungeonMechanicUseConditionError } = require("../../errors")
 const { feedback, eventTypes } = require("../actionFeedbacks")
 const { SelectionRequest } = require("../playerRequestSelections")
+const { RoundModifer } = require("./roundModifiers")
 
 // Inheritance Scheme
 // DungeonMechanic --|-- DungeonMechanicOnBuild
@@ -253,6 +254,53 @@ class NegateSpellByRemovingYourSpell extends DungeonMechanic {
     }
 }
 
+class add1TreasureToAnyDungeonForThisRoundOnDestory extends DungeonMechanic {
+    constructor(dungeonCard, type, mechanicDescription) {
+        super(dungeonCard, type, mechanicDescription)
+        this.dungeonCard.setAllowDestroy(true)
+        this.selectedTreasure = null
+        this.selectedPlayer = null
+        this.requestedSelection = null
+    }
+
+    use() {
+        if (!this.selectedTreasure) {
+            this.requestPlayerSelectTreasure()
+        }
+        else if (!this.selectedPlayer) {
+            this.requestPlayerSelectPlayer()
+        }
+        else {
+            this.dungeonCard.trackedGame.addRoundModifier(new RoundModifer(
+                () => this.selectedPlayer.collectedTreasure[this.selectedTreasure] += 1, // TODO... add method on player to do this and this method should save new gameAction
+                () => this.selectedPlayer.collectedTreasure[this.selectedTreasure] -= 1 // TODO... add method on player to do this and this method should save new gameAction
+            ))
+            this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
+        }
+    }
+
+    requestPlayerSelectTreasure() {
+        this.requestedSelection = 'TREASURE'
+        const selectionReq = new SelectionRequest(this.dungeonCard.owner, SelectionRequest.requestItemTypes.TREASURE, 1, SelectionRequest.scopeAny, this)
+        this.dungeonCard.owner.setRequestedSelection(selectionReq)
+    }
+
+    requestPlayerSelectPlayer() {
+        this.requestedSelection = 'PLAYER'
+        const selectionReq = new SelectionRequest(this.dungeonCard.owner, SelectionRequest.requestItemTypes.PLAYER, 1, SelectionRequest.scopeAny, this)
+        this.dungeonCard.owner.setRequestedSelection(selectionReq)
+    }
+
+    receiveSelectionData(data) {
+        if (this.requestedSelection === 'TREASURE') {
+            this.selectedTreasure = data[0]
+        }
+        else if (this.requestedSelection === 'PLAYER') {
+            this.selectedPlayer = data[0]
+        }
+    }
+}
+
 
 const dungeonMechanicsMap = {
     'Bezdenna czeluść': EliminateHeroInDungeon,
@@ -260,7 +308,8 @@ const dungeonMechanicsMap = {
     'Norka kocicy': DrawSpellWhenPlayedSpell,
     'Zgniatarka odpadów': Draw2GoldWhenAnyDungeonDestoryed,
     'Targowisko goblinów': Draw2GoldWhenDungeonBuildNext,
-    'Wszystkowidzące Oko': NegateSpellByRemovingYourSpell
+    'Wszystkowidzące Oko': NegateSpellByRemovingYourSpell,
+    'Nieprzebyty krużganek': add1TreasureToAnyDungeonForThisRoundOnDestory
 }
 
 

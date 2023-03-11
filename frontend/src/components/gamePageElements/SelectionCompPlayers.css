@@ -1,0 +1,23 @@
+.player-selection-single-player {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    /* background-color: red; */
+    gap: 15px;
+    border: 2px solid rgb(56, 56, 56);
+    border-radius: 20px;
+    border-bottom: none;
+    padding-top: 20px;
+    cursor: pointer;
+    transition-duration: 0.2s;
+}
+
+.player-selection-single-player:hover {
+    background-color: rgb(56, 56, 56);
+}
+
+.player-selection-single-player-icon {
+    height: 150px;
+    color: rgb(87, 138, 116);
+}

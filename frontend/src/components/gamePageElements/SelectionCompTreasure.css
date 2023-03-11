@@ -1,0 +1,71 @@
+.treasure-selection-wrapper {
+    position: fixed;
+    /* background-color: red; */
+    width: 45%;
+    height: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 12;
+    background-color: rgb(44, 44, 44);
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    flex-direction: column;
+    gap: 80px;
+    border-radius: 100px;
+    border: 2px solid goldenrod;
+}
+
+.treasure-selection-header {
+    color: whitesmoke;
+    font-family: 'Press Start 2P', cursive;
+}
+
+.single-treasure {
+    /* background-color: red; */
+    height: fit-content;
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.single-treasure img {
+    /* background-color: black; */
+    position: absolute;
+    bottom: 0px;
+}
+
+.treausre-img-holder {
+    height: 200px;
+    position: relative;
+    overflow: hidden;
+    width: 170px;
+}
+
+.single-treasure-name {
+    color: whitesmoke;
+    font-family: 'Press Start 2P', cursive;
+}
+
+.treasure-sumbol-holder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.single-treasure {
+    border: 2px solid rgb(56, 56, 56);
+    border-radius: 20px;
+    padding: 5px;
+    padding-top: 25px;
+    cursor: pointer;
+    transition-duration: 0.2s;
+}
+
+.single-treasure:hover {
+    background-color: rgb(56, 56, 56);
+}

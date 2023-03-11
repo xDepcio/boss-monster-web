@@ -1,11 +1,12 @@
-const { HeroNotFoundInCity } = require("../errors")
+const { HeroNotFoundInCity, InvalidTreasureType } = require("../errors")
 
 class SelectionRequest {
     static requestItemTypes = {
         HERO: 'hero',
         DUNGEON: 'dungeon',
         PLAYER: 'player',
-        SPELL: 'spell'
+        SPELL: 'spell',
+        TREASURE: 'treasure'
     }
     static scopeAny = 'ANY'
     static scopeCity = 'CITY'
@@ -46,6 +47,18 @@ class SelectionRequest {
                 default:
                     // TODO...
                     throw new Error("Unhandled check. TODO...")
+                    break;
+            }
+        }
+        else if (this.choiceScope === SelectionRequest.scopeAny) {
+            switch (this.requestItemType) {
+                case SelectionRequest.requestItemTypes.TREASURE:
+                    if (!(selectedItem === 'magic' || selectedItem === 'fortune' || selectedItem === 'strength' || selectedItem === 'faith')) {
+                        throw new InvalidTreasureType("Only 'fortune', 'magic', 'streangth' and 'faith' are valid treasure types.")
+                    }
+                    break;
+
+                default:
                     break;
             }
         }
