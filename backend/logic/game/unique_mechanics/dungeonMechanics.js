@@ -2,6 +2,15 @@ const { OncePerRoundMechanicUsedAlready, DungeonMechanicUseConditionError } = re
 const { feedback, eventTypes } = require("../actionFeedbacks")
 const { SelectionRequest } = require("../playerRequestSelections")
 
+// Inheritance Scheme
+// DungeonMechanic --|-- DungeonMechanicOnBuild
+//                   |-- DungeonMechanicOnDestory
+//                   |-- DungeonMechanicAutomatic --|-- DungeonMechanicAutomaticOnePerRound
+//                   |                              |
+//                   |                              |
+//                   |
+//                   |-- DungeonMechanicOnUse ------|-- DungeonMechanicOnUseOnePerRound
+
 const mechanicsTypes = {
     ON_DESTORY: 'onDestroy',
     ON_BUILD: 'onBuild',
