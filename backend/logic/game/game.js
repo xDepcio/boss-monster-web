@@ -2,6 +2,7 @@ const Player = require('../player/player')
 const { getShuffledDungeonCards, getShuffledHeroCards, getShuffledSpellCards, getShuffledBossesCards } = require('./utils')
 const { PlayerAlreadyDeclaredBuild, HeroesCardsStackEmpty, NotAllPlayersAcceptedHeroMove } = require('../errors')
 const { feedback } = require('./actionFeedbacks')
+const { mechanicsTypes } = require('./unique_mechanics/dungeonMechanics')
 
 
 const phase = {
@@ -112,6 +113,21 @@ class Game {
         this.players.forEach(player => player.drawNotUsedDungeonCard())
         this.roundPhase = phase.BUILD
         this.fillCityWithHeroes()
+        this.setOnePerRoundCardsBackToUsable()
+    }
+
+    setOnePerRoundCardsBackToUsable() {
+        this.players.forEach(player => {
+            player.dungeon.forEach(dungCard => {
+                const cardsMechanic = dungCard.getMechanic()
+                if (cardsMechanic) {
+                    const mechanicType = cardsMechanic.getType()
+                    if (mechanicType === mechanicsTypes.ONE_PER_ROUND || mechanicType === mechanicsTypes.ON_USE_ONE_PER_ROUND) {
+                        cardsMechanic.setUsedInRound(false)
+                    }
+                }
+            })
+        })
     }
 
     addHeroToCity(hero) {

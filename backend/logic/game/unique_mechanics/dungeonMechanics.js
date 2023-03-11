@@ -39,6 +39,31 @@ class DungeonMechanic {
     }
 }
 
+// class DungeonMechanicOnBuild extends DungeonMechanic {
+//     constructor(dungeonCard, type, mechanicDescription) {
+//         super(dungeonCard, type, mechanicDescription)
+//     }
+// }
+
+// class DungeonMechanicOnDestory extends DungeonMechanic {
+//     constructor(dungeonCard, type, mechanicDescription) {
+//         super(dungeonCard, type, mechanicDescription)
+//         this.dungeonCard.setAllowDestroy(true)
+//     }
+// }
+
+// class DungeonMechanicAutomatic extends DungeonMechanic {
+//     constructor(dungeonCard, type, mechanicDescription) {
+//         super(dungeonCard, type, mechanicDescription)
+//     }
+// }
+
+// class DungeonMechanicOnUse extends DungeonMechanic {
+//     constructor(dungeonCard, type, mechanicDescription) {
+//         super(dungeonCard, type, mechanicDescription)
+//         this.dungeonCard.setAllowUse(true)
+//     }
+// }
 
 class EliminateHeroInDungeon extends DungeonMechanic {
     constructor(dungeonCard, type, mechanicDescription) {
@@ -82,6 +107,10 @@ class DrawSpellWhenPlayedSpell extends DungeonMechanic { // "Raz na rundę: kied
         this.usedInRound = false
     }
 
+    setUsedInRound(bool) {
+        this.usedInRound = bool
+    }
+
     use() {
         if (this.usedInRound) {
             // TODO probably shouldn't throw an error because effect is triggered automatically
@@ -108,6 +137,10 @@ class Draw2GoldWhenAnyDungeonDestoryed extends DungeonMechanic {
     constructor(dungeonCard, type, mechanicDescription) {
         super(dungeonCard, type, mechanicDescription)
         this.usedInRound = false
+    }
+
+    setUsedInRound(bool) {
+        this.usedInRound = bool
     }
 
     use() {
@@ -177,6 +210,10 @@ class NegateSpellByRemovingYourSpell extends DungeonMechanic {
         this.usedInRound = false
         this.selectedSpell = null
         this.dungeonCard.setAllowUse(true)
+    }
+
+    setUsedInRound(bool) {
+        this.usedInRound = bool
     }
 
     use() {
