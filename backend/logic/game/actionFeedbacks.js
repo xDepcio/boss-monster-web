@@ -45,7 +45,9 @@ const feedback = {
     HERO_GOTO_PLAYER: (hero, player) => {
         return {
             type: "HERO_LURED",
-            message: `hero ${hero.getName()} went to ${player.getName()}`
+            message: `hero ${hero.getName()} went to ${player.getName()}`,
+            hero,
+            player
         }
     },
     PLAYER_KILLED_HERO: (player, hero) => {

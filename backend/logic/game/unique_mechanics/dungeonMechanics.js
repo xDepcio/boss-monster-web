@@ -38,6 +38,10 @@ class DungeonMechanic {
     getDescription() {
         return this.mechanicDescription
     }
+
+    handleGameEvent(event) {
+
+    }
 }
 
 // class DungeonMechanicOnBuild extends DungeonMechanic {
@@ -301,6 +305,27 @@ class add1TreasureToAnyDungeonForThisRoundOnDestory extends DungeonMechanic {
     }
 }
 
+class getOneDamageForEveryLuredHero extends DungeonMechanic {
+    constructor(dungeonCard, type, mechanicDescription) {
+        super(dungeonCard, type, mechanicDescription)
+    }
+
+    use() {
+        this.dungeonCard.trackedGame.addRoundModifier(new RoundModifer(
+            () => this.dungeonCard.damage += 1,
+            () => this.dungeonCard.damage -= 1
+        ))
+    }
+
+    handleGameEvent(event) {
+        if (event.type === eventTypes.HERO_GOTO_PLAYER) {
+            if (event.player.id === this.dungeonCard.owner.id) {
+                this.use()
+            }
+        }
+    }
+}
+
 
 const dungeonMechanicsMap = {
     'Bezdenna czeluść': EliminateHeroInDungeon,
@@ -309,7 +334,8 @@ const dungeonMechanicsMap = {
     'Zgniatarka odpadów': Draw2GoldWhenAnyDungeonDestoryed,
     'Targowisko goblinów': Draw2GoldWhenDungeonBuildNext,
     'Wszystkowidzące Oko': NegateSpellByRemovingYourSpell,
-    'Nieprzebyty krużganek': add1TreasureToAnyDungeonForThisRoundOnDestory
+    'Nieprzebyty krużganek': add1TreasureToAnyDungeonForThisRoundOnDestory,
+    'Kopiec doppelgangerów': getOneDamageForEveryLuredHero
 }
 
 
