@@ -233,6 +233,45 @@
         },
         {
             "CARDTYPE": "DUNGEON",
+            "id": 192,
+            "name": "Wszystkowidzące Oko",
+            "type": "traps",
+            "damage": 3,
+            "treasure": {
+                "magic": 1
+            },
+            "mechanicType": "onUseOnePerRound",
+            "mechanicDescription": "Raz na rundę: kiedy przeciwnik zagra kartę czaru, możesz odrzucić z ręki kartę czaru, aby zanegować efekty właśnie zagranej przez przeciwnika karty.",
+            "isFancy": false
+        },
+        {
+            "CARDTYPE": "DUNGEON",
+            "id": 191,
+            "name": "Wszystkowidzące Oko",
+            "type": "traps",
+            "damage": 3,
+            "treasure": {
+                "magic": 1
+            },
+            "mechanicType": "onUseOnePerRound",
+            "mechanicDescription": "Raz na rundę: kiedy przeciwnik zagra kartę czaru, możesz odrzucić z ręki kartę czaru, aby zanegować efekty właśnie zagranej przez przeciwnika karty.",
+            "isFancy": false
+        },
+        {
+            "CARDTYPE": "DUNGEON",
+            "id": 190,
+            "name": "Wszystkowidzące Oko",
+            "type": "traps",
+            "damage": 3,
+            "treasure": {
+                "magic": 1
+            },
+            "mechanicType": "onUseOnePerRound",
+            "mechanicDescription": "Raz na rundę: kiedy przeciwnik zagra kartę czaru, możesz odrzucić z ręki kartę czaru, aby zanegować efekty właśnie zagranej przez przeciwnika karty.",
+            "isFancy": false
+        },
+        {
+            "CARDTYPE": "DUNGEON",
             "id": 22,
             "name": "Nieprzebyty krużganek",
             "type": "traps",
@@ -247,66 +286,66 @@
         {
             "CARDTYPE": "DUNGEON",
             "id": 23,
-            "name": "Nieprzebyty krużganek",
-            "type": "traps",
+            "name": "Kopiec doppelgangerów",
+            "type": "monsters",
             "damage": 2,
             "treasure": {
-                "fortune": 1
+                "strength": 1
             },
-            "mechanicType": "onDestroy",
-            "mechanicDescription": "Możesz zniszczyć tę komnatę, aby do końca rundy dodać jeden symbol dowolnego skarbu do podziemi dowolnego gracza.",
+            "mechanicType": "everyGameAction",
+            "mechanicDescription": "Ta komnata otrzymuje +1 damage za każdego bohatera, który w tej rundzie został zwabiony do Twoich podziemi.",
+            "isFancy": false
+        },
+        {
+            "CARDTYPE": "DUNGEON",
+            "id": 24,
+            "name": "Skarbiec diabląt",
+            "type": "monsters",
+            "damage": 1,
+            "treasure": {
+                "faith": 1
+            },
+            "mechanicType": "onePerRound",
+            "mechanicDescription": "Raz na rundę: kiedy przeciwnik odrzuca kartę, możesz ją umieścić na swojej ręce.",
+            "isFancy": false
+        },
+        {
+            "CARDTYPE": "DUNGEON",
+            "id": 25,
+            "name": "Skarbiec diabląt",
+            "type": "monsters",
+            "damage": 1,
+            "treasure": {
+                "faith": 1
+            },
+            "mechanicType": "onePerRound",
+            "mechanicDescription": "Raz na rundę: kiedy przeciwnik odrzuca kartę, możesz ją umieścić na swojej ręce.",
             "isFancy": false
         },
         {
             "CARDTYPE": "DUNGEON",
             "id": 26,
-            "name": "Kopiec doppelgangerów",
+            "name": "Skarbiec diabląt",
             "type": "monsters",
-            "damage": 2,
+            "damage": 1,
             "treasure": {
-                "strength": 1
+                "faith": 1
             },
-            "mechanicType": "everyGameAction",
-            "mechanicDescription": "Ta komnata otrzymuje +1 damage za każdego bohatera, który w tej rundzie został zwabiony do Twoich podziemi.",
+            "mechanicType": "onePerRound",
+            "mechanicDescription": "Raz na rundę: kiedy przeciwnik odrzuca kartę, możesz ją umieścić na swojej ręce.",
             "isFancy": false
         },
         {
             "CARDTYPE": "DUNGEON",
             "id": 27,
-            "name": "Kopiec doppelgangerów",
+            "name": "Skarbiec diabląt",
             "type": "monsters",
-            "damage": 2,
+            "damage": 1,
             "treasure": {
-                "strength": 1
+                "faith": 1
             },
-            "mechanicType": "everyGameAction",
-            "mechanicDescription": "Ta komnata otrzymuje +1 damage za każdego bohatera, który w tej rundzie został zwabiony do Twoich podziemi.",
-            "isFancy": false
-        },
-        {
-            "CARDTYPE": "DUNGEON",
-            "id": 28,
-            "name": "Kopiec doppelgangerów",
-            "type": "monsters",
-            "damage": 2,
-            "treasure": {
-                "strength": 1
-            },
-            "mechanicType": "everyGameAction",
-            "mechanicDescription": "Ta komnata otrzymuje +1 damage za każdego bohatera, który w tej rundzie został zwabiony do Twoich podziemi.",
-            "isFancy": false
-        },
-        {
-            "CARDTYPE": "DUNGEON",
-            "id": 29,
-            "name": "Kopiec doppelgangerów",
-            "type": "monsters",
-            "damage": 2,
-            "treasure": {
-                "strength": 1
-            },
-            "mechanicType": "everyGameAction",
-            "mechanicDescription": "Ta komnata otrzymuje +1 damage za każdego bohatera, który w tej rundzie został zwabiony do Twoich podziemi.",
+            "mechanicType": "onePerRound",
+            "mechanicDescription": "Raz na rundę: kiedy przeciwnik odrzuca kartę, możesz ją umieścić na swojej ręce.",
             "isFancy": false
         }
     ],

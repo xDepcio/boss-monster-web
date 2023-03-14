@@ -347,11 +347,10 @@ class SpellCard extends Card {
     }
 
     completeUsage() {
+        this.trackedGame.saveGameAction(feedback.PLAYER_PLAYED_SPELL(this.owner, this))
         this.trackedGame.setCurrentlyPlayedSpell(null)
         this.owner.removeSpellFromHand(this)
-        this.trackedGame.saveGameAction(feedback.PLAYER_PLAYED_SPELL(this.owner, this))
         this.trackedGame.players.forEach(player => player.becomeNotReadyForSpellPlay())
-        this.setOwner(null)
     }
 
     static getSpell(spellId) {

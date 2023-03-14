@@ -1,6 +1,6 @@
 const { OncePerRoundMechanicUsedAlready, DungeonMechanicUseConditionError } = require("../../errors")
 const { feedback, eventTypes } = require("../actionFeedbacks")
-const { SelectionRequest } = require("../playerRequestSelections")
+const { SelectionRequest, SelectionRequestOneFromGivenList } = require("../playerRequestSelections")
 const { RoundModifer } = require("./roundModifiers")
 
 // Inheritance Scheme
@@ -229,8 +229,9 @@ class NegateSpellByRemovingYourSpell extends DungeonMechanic {
             else {
                 const playedSpell = this.dungeonCard.trackedGame.getCurrentlyPlayedSpell()
                 playedSpell.completeUsage()
-                this.selectedSpell.owner.removeSpellFromHand(this.selectedSpell)
-                this.selectedSpell.setOwner(null)
+                this.selectedSpell.owner.throwCardAway(this.selectedSpell)
+                // this.selectedSpell.owner.removeSpellFromHand(this.selectedSpell)
+                // this.selectedSpell.setOwner(null)
                 this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
                 this.selectedSpell = null
                 this.usedInRound = true
@@ -326,6 +327,51 @@ class getOneDamageForEveryLuredHero extends DungeonMechanic {
     }
 }
 
+class TakeThrownAwayCardByOtherPlayer extends DungeonMechanic {
+    constructor(dungeonCard, type, mechanicDescription) {
+        super(dungeonCard, type, mechanicDescription)
+        this.thrownAwayCard = null
+        this.shouldGetCard = null
+        this.usedInRound = false
+    }
+
+    setUsedInRound(bool) {
+        this.usedInRound = bool
+    }
+
+    use() {
+        if (this.shouldGetCard === null) {
+            this.requestPlayerSelect()
+        }
+        else {
+            this.setUsedInRound(true)
+            if (this.shouldGetCard === 'tak') {
+                this.dungeonCard.owner.receiveCard(this.thrownAwayCard)
+            }
+        }
+    }
+
+    handleGameEvent(event) {
+        if (event.type === eventTypes.PLAYER_THROWN_AWAY_CARD) {
+            if (event.player.id !== this.dungeonCard.owner.id) {
+                this.thrownAwayCard = event.card
+                if (!this.usedInRound) {
+                    this.use()
+                }
+            }
+        }
+    }
+
+    requestPlayerSelect() {
+        const requestedSelection = new SelectionRequestOneFromGivenList(this.dungeonCard.owner, 'Czy chcesz wziąść odrzuconą przez przeciwnika kartę?', ['tak', 'nie'], this)
+        this.dungeonCard.owner.setRequestedSelection(requestedSelection)
+    }
+
+    receiveSelectionData(data) {
+        this.shouldGetCard = data[0]
+    }
+}
+
 
 const dungeonMechanicsMap = {
     'Bezdenna czeluść': EliminateHeroInDungeon,
@@ -335,7 +381,8 @@ const dungeonMechanicsMap = {
     'Targowisko goblinów': Draw2GoldWhenDungeonBuildNext,
     'Wszystkowidzące Oko': NegateSpellByRemovingYourSpell,
     'Nieprzebyty krużganek': add1TreasureToAnyDungeonForThisRoundOnDestory,
-    'Kopiec doppelgangerów': getOneDamageForEveryLuredHero
+    'Kopiec doppelgangerów': getOneDamageForEveryLuredHero,
+    'Skarbiec diabląt': TakeThrownAwayCardByOtherPlayer
 }
 
 

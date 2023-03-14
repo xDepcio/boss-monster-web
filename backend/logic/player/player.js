@@ -214,8 +214,33 @@ class Player {
         }
     }
 
+    throwCardAway(card) {
+        if (card.CARDTYPE === 'SPELL') {
+            this.trackedGame.saveGameAction(feedback.PLAYER_THROWN_AWAY_CARD(this, card))
+            this.removeSpellFromHand(card)
+        }
+        else if (card.CARDTYPE === 'DUNGEON') {
+            // TODO...
+            throw new Error('TODO when player throw away dung card')
+        }
+        else {
+            throw new Error('cardtype doesnnot exists proly TODO...')
+        }
+    }
+
+    receiveCard(card) {
+        if (card.CARDTYPE === 'SPELL') {
+            this.spellCards.push(card)
+        }
+        else if (card.CARDTYPE === 'DUNGEON') {
+            this.dungeonCards.push(card)
+        }
+        card.setOwner(this)
+    }
+
     removeSpellFromHand(spell) {
         const spellIndex = this.spellCards.findIndex(spellCard => spellCard.id === spell.id)
+        spell.setOwner(null)
         this.spellCards.splice(spellIndex, 1)
     }
 

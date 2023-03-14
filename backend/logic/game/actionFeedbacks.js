@@ -20,7 +20,8 @@ const eventTypes = {
     PLAYER_DRAWNED_DUNGEON_CARD: 'PLAYER_DRAWNED_DUNGEON_CARD',
     PLAYER_DRAWNED_SPELL_CARD: 'PLAYER_DRAWNED_SPELL_CARD',
     PLAYER_BUILD_DUNGEON: 'PLAYER_BUILD_DUNGEON',
-    PLAYER_ACCEPTED_SPELL_PLAY: 'PLAYER_ACCEPTED_SPELL_PLAY'
+    PLAYER_ACCEPTED_SPELL_PLAY: 'PLAYER_ACCEPTED_SPELL_PLAY',
+    PLAYER_THROWN_AWAY_CARD: 'PLAYER_THROWN_AWAY_CARD'
 }
 
 const feedback = {
@@ -160,6 +161,14 @@ const feedback = {
         return {
             type: eventTypes.PLAYER_ACCEPTED_SPELL_PLAY,
             message: `player ${player.getName()} accepted play of '${spell.getName()}' by ${spell.owner.getName()}.`,
+        }
+    },
+    PLAYER_THROWN_AWAY_CARD: (player, card) => {
+        return {
+            type: eventTypes.PLAYER_THROWN_AWAY_CARD,
+            message: `player ${player.getName()} thrown away card '${card.getName()}'.`,
+            player,
+            card
         }
     }
 }

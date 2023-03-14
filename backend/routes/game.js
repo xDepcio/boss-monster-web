@@ -8,7 +8,7 @@ const { flattenCircular, getCurrentGameData } = require('../utils/responseFormat
 const { assignPlayer } = require('../utils/verifyPlayer')
 const { parse, stringify, toJSON, fromJSON } = require('flatted');
 const { updateLobbyPlayers } = require('../utils/socketsHelper');
-const { SelectionRequest } = require('../logic/game/playerRequestSelections');
+const { SelectionRequest, SelectionRequestOneFromGivenList } = require('../logic/game/playerRequestSelections');
 const { HeroCard, DungeonCard, SpellCard } = require('../logic/game/cards');
 const Player = require('../logic/player/player');
 
@@ -108,6 +108,10 @@ router.post('/:lobbyId/select-item', assignPlayer, (req, res, next) => {
             }
             case SelectionRequest.requestItemTypes.TREASURE: {
                 selectedItem = req.body.treasureSymbol
+                break
+            }
+            case SelectionRequestOneFromGivenList.chooseFromGivenListRequestType: {
+                selectedItem = req.body.selectedItem
                 break
             }
         }

@@ -76,7 +76,54 @@ class SelectionRequest {
     }
 }
 
+class SelectionRequestOneFromGivenList {
+    static chooseFromGivenListRequestType = 'CHOOSE_FROM_GIVEN_LIST'
+
+    constructor(requestedPlayer, selectionMessage, avalibleItemsForSelectArr, target) {
+        this.requestedPlayer = requestedPlayer
+        this.selectionMessage = selectionMessage
+        this.avalibleItemsForSelectArr = avalibleItemsForSelectArr
+        this.selectedItems = []
+        this.target = target
+        this.requestItemType = SelectionRequestOneFromGivenList.chooseFromGivenListRequestType
+    }
+
+    getRequestItemType() {
+        return this.requestItemType
+    }
+
+    selectItem(item) {
+        if (this.isSelectionValid(item)) {
+            this.selectedItems.push(item)
+            if (this.isCompleted()) {
+                this.resolveTarget()
+            }
+        }
+    }
+
+    isSelectionValid(selectedItem) {
+        let isItemIn = false
+        for (const item of this.avalibleItemsForSelectArr) {
+            if (selectedItem === item) {
+                isItemIn = true
+            }
+        }
+        return isItemIn
+    }
+
+    isCompleted() {
+        return this.selectedItems.length === 1
+    }
+
+    resolveTarget() {
+        this.requestedPlayer.setRequestedSelection(null)
+        this.target.receiveSelectionData(this.selectedItems)
+        this.target.use()
+    }
+}
+
 
 module.exports = {
-    SelectionRequest
+    SelectionRequest,
+    SelectionRequestOneFromGivenList
 }

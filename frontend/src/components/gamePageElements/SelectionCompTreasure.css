@@ -15,9 +15,12 @@
     gap: 80px;
     border-radius: 100px;
     border: 2px solid goldenrod;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 .treasure-selection-header {
+    text-align: center;
     color: whitesmoke;
     font-family: 'Press Start 2P', cursive;
 }

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
+import SelectionCompOneFromList from './SelectionCompOneFromList'
 import SelectionCompPlayers from './SelectionCompPlayers'
 import SelectionCompTreasure from './SelectionCompTreasure'
 import './SelectionRequestsComp.css'
@@ -17,6 +18,9 @@ function SelectionRequestsComp() {
             case 'player':
                 setDisplayedSelectionComp('player')
                 break;
+            case 'CHOOSE_FROM_GIVEN_LIST':
+                setDisplayedSelectionComp('oneFromList')
+                break;
             default:
                 setDisplayedSelectionComp(null)
                 break;
@@ -31,6 +35,7 @@ function SelectionRequestsComp() {
             <>
                 {displayedSelectionComp === 'treasure' && <SelectionCompTreasure />}
                 {displayedSelectionComp === 'player' && <SelectionCompPlayers />}
+                {displayedSelectionComp === 'oneFromList' && <SelectionCompOneFromList />}
             </>
         )
     }

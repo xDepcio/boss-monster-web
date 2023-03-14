@@ -1,0 +1,22 @@
+.single-item-holder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    /* background-color: red; */
+    gap: 15px;
+    border: 2px solid rgb(56, 56, 56);
+    border-radius: 20px;
+    padding: 20px;
+    cursor: pointer;
+    transition-duration: 0.2s;
+}
+
+.single-item-holder:hover {
+    background-color: rgb(56, 56, 56);
+}
+
+.single-item-value {
+    color: whitesmoke;
+    font-family: 'Press Start 2P', cursive;
+}
