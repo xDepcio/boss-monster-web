@@ -21,7 +21,8 @@ const eventTypes = {
     PLAYER_DRAWNED_SPELL_CARD: 'PLAYER_DRAWNED_SPELL_CARD',
     PLAYER_BUILD_DUNGEON: 'PLAYER_BUILD_DUNGEON',
     PLAYER_ACCEPTED_SPELL_PLAY: 'PLAYER_ACCEPTED_SPELL_PLAY',
-    PLAYER_THROWN_AWAY_CARD: 'PLAYER_THROWN_AWAY_CARD'
+    PLAYER_THROWN_AWAY_CARD: 'PLAYER_THROWN_AWAY_CARD',
+    HERO_ENTERED_ROOM: 'HERO_ENTERED_ROOM'
 }
 
 const feedback = {
@@ -169,6 +170,15 @@ const feedback = {
             message: `player ${player.getName()} thrown away card '${card.getName()}'.`,
             player,
             card
+        }
+    },
+    HERO_ENTERED_ROOM: (hero, dungeonCard, dungeonOwner) => {
+        return {
+            type: eventTypes.HERO_ENTERED_ROOM,
+            message: `hero ${hero.getName()} entered ${dungeonCard.getName()} at ${dungeonOwner.getName()}'s dungeon.`,
+            hero,
+            dungeonCard,
+            dungeonOwner
         }
     }
 }

@@ -372,6 +372,43 @@ class TakeThrownAwayCardByOtherPlayer extends DungeonMechanic {
     }
 }
 
+class SendHeroBackToDungeonStart extends DungeonMechanic {
+    constructor(dungeonCard, type, mechanicDescription) {
+        super(dungeonCard, type, mechanicDescription)
+        this.heroesThatEnteredInRound = []
+    }
+
+    hasHeroEnteredThisRound(heroCard) {
+        const foundHero = this.heroesThatEnteredInRound.find(hero => hero.id === heroCard.id)
+        return !!foundHero
+    }
+
+    use() {
+        const hero = this.getHeroOnThisDungeon()
+        if (hero) {
+            if (!this.hasHeroEnteredThisRound(hero)) {
+                this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
+                hero.setDungeonRoom(null)
+                this.heroesThatEnteredInRound.push(hero)
+            }
+        }
+    }
+
+    getHeroOnThisDungeon() {
+        const hero = this.dungeonCard.owner.dungeonEntranceHeroes.find(hero => hero.dungeonRoom?.id === this.dungeonCard.id)
+        return hero
+    }
+
+    handleGameEvent(event) {
+        if (event.type === eventTypes.NEW_ROUND_BEGUN) {
+            this.heroesThatEnteredInRound = []
+        }
+        else if (event.type === eventTypes.HERO_ENTERED_ROOM) {
+            this.use()
+        }
+    }
+}
+
 
 const dungeonMechanicsMap = {
     'Bezdenna czeluść': EliminateHeroInDungeon,
@@ -382,7 +419,8 @@ const dungeonMechanicsMap = {
     'Wszystkowidzące Oko': NegateSpellByRemovingYourSpell,
     'Nieprzebyty krużganek': add1TreasureToAnyDungeonForThisRoundOnDestory,
     'Kopiec doppelgangerów': getOneDamageForEveryLuredHero,
-    'Skarbiec diabląt': TakeThrownAwayCardByOtherPlayer
+    'Skarbiec diabląt': TakeThrownAwayCardByOtherPlayer,
+    'Labirynt Minotaura': SendHeroBackToDungeonStart
 }
 
 

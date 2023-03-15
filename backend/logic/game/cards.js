@@ -40,6 +40,10 @@ class HeroCard extends Card {
         this.dungeonOwner = player
     }
 
+    setDungeonRoom(dungeonCard) {
+        this.dungeonRoom = dungeonCard
+    }
+
     goToLuredPlayer() {
         const mostValuablePlayer = this.getMostValuablePlayer(this.trackedGame.players)
         if (mostValuablePlayer) {
@@ -229,6 +233,7 @@ class DungeonCard extends Card {
     }
 
     heroEnteredRoom(hero) {
+        this.trackedGame.saveGameAction(feedback.HERO_ENTERED_ROOM(hero, this, this.owner))
         this.damageHero(hero)
     }
 

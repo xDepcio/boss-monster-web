@@ -233,45 +233,6 @@
         },
         {
             "CARDTYPE": "DUNGEON",
-            "id": 192,
-            "name": "Wszystkowidzące Oko",
-            "type": "traps",
-            "damage": 3,
-            "treasure": {
-                "magic": 1
-            },
-            "mechanicType": "onUseOnePerRound",
-            "mechanicDescription": "Raz na rundę: kiedy przeciwnik zagra kartę czaru, możesz odrzucić z ręki kartę czaru, aby zanegować efekty właśnie zagranej przez przeciwnika karty.",
-            "isFancy": false
-        },
-        {
-            "CARDTYPE": "DUNGEON",
-            "id": 191,
-            "name": "Wszystkowidzące Oko",
-            "type": "traps",
-            "damage": 3,
-            "treasure": {
-                "magic": 1
-            },
-            "mechanicType": "onUseOnePerRound",
-            "mechanicDescription": "Raz na rundę: kiedy przeciwnik zagra kartę czaru, możesz odrzucić z ręki kartę czaru, aby zanegować efekty właśnie zagranej przez przeciwnika karty.",
-            "isFancy": false
-        },
-        {
-            "CARDTYPE": "DUNGEON",
-            "id": 190,
-            "name": "Wszystkowidzące Oko",
-            "type": "traps",
-            "damage": 3,
-            "treasure": {
-                "magic": 1
-            },
-            "mechanicType": "onUseOnePerRound",
-            "mechanicDescription": "Raz na rundę: kiedy przeciwnik zagra kartę czaru, możesz odrzucić z ręki kartę czaru, aby zanegować efekty właśnie zagranej przez przeciwnika karty.",
-            "isFancy": false
-        },
-        {
-            "CARDTYPE": "DUNGEON",
             "id": 22,
             "name": "Nieprzebyty krużganek",
             "type": "traps",
@@ -311,41 +272,54 @@
         },
         {
             "CARDTYPE": "DUNGEON",
-            "id": 25,
-            "name": "Skarbiec diabląt",
+            "id": 28,
+            "name": "Labirynt Minotaura",
             "type": "monsters",
-            "damage": 1,
+            "damage": 0,
             "treasure": {
-                "faith": 1
+                "strength": 1
             },
-            "mechanicType": "onePerRound",
-            "mechanicDescription": "Raz na rundę: kiedy przeciwnik odrzuca kartę, możesz ją umieścić na swojej ręce.",
+            "mechanicType": "everyGameAction",
+            "mechanicDescription": "Kiedy bohater wchodzi do tej komnaty po raz pierwszy w tej rundzie, odeślij go z powrotem do poprzedniej komnaty.",
             "isFancy": false
         },
         {
             "CARDTYPE": "DUNGEON",
-            "id": 26,
-            "name": "Skarbiec diabląt",
+            "id": 29,
+            "name": "Labirynt Minotaura",
             "type": "monsters",
-            "damage": 1,
+            "damage": 0,
             "treasure": {
-                "faith": 1
+                "strength": 1
             },
-            "mechanicType": "onePerRound",
-            "mechanicDescription": "Raz na rundę: kiedy przeciwnik odrzuca kartę, możesz ją umieścić na swojej ręce.",
+            "mechanicType": "everyGameAction",
+            "mechanicDescription": "Kiedy bohater wchodzi do tej komnaty po raz pierwszy w tej rundzie, odeślij go z powrotem do poprzedniej komnaty.",
             "isFancy": false
         },
         {
             "CARDTYPE": "DUNGEON",
-            "id": 27,
-            "name": "Skarbiec diabląt",
+            "id": 30,
+            "name": "Labirynt Minotaura",
             "type": "monsters",
-            "damage": 1,
+            "damage": 0,
             "treasure": {
-                "faith": 1
+                "strength": 1
             },
-            "mechanicType": "onePerRound",
-            "mechanicDescription": "Raz na rundę: kiedy przeciwnik odrzuca kartę, możesz ją umieścić na swojej ręce.",
+            "mechanicType": "everyGameAction",
+            "mechanicDescription": "Kiedy bohater wchodzi do tej komnaty po raz pierwszy w tej rundzie, odeślij go z powrotem do poprzedniej komnaty.",
+            "isFancy": false
+        },
+        {
+            "CARDTYPE": "DUNGEON",
+            "id": 31,
+            "name": "Labirynt Minotaura",
+            "type": "monsters",
+            "damage": 0,
+            "treasure": {
+                "strength": 1
+            },
+            "mechanicType": "everyGameAction",
+            "mechanicDescription": "Kiedy bohater wchodzi do tej komnaty po raz pierwszy w tej rundzie, odeślij go z powrotem do poprzedniej komnaty.",
             "isFancy": false
         }
     ],
