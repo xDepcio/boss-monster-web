@@ -44,32 +44,6 @@ class DungeonMechanic {
     }
 }
 
-// class DungeonMechanicOnBuild extends DungeonMechanic {
-//     constructor(dungeonCard, type, mechanicDescription) {
-//         super(dungeonCard, type, mechanicDescription)
-//     }
-// }
-
-// class DungeonMechanicOnDestory extends DungeonMechanic {
-//     constructor(dungeonCard, type, mechanicDescription) {
-//         super(dungeonCard, type, mechanicDescription)
-//         this.dungeonCard.setAllowDestroy(true)
-//     }
-// }
-
-// class DungeonMechanicAutomatic extends DungeonMechanic {
-//     constructor(dungeonCard, type, mechanicDescription) {
-//         super(dungeonCard, type, mechanicDescription)
-//     }
-// }
-
-// class DungeonMechanicOnUse extends DungeonMechanic {
-//     constructor(dungeonCard, type, mechanicDescription) {
-//         super(dungeonCard, type, mechanicDescription)
-//         this.dungeonCard.setAllowUse(true)
-//     }
-// }
-
 class EliminateHeroInDungeon extends DungeonMechanic {
     constructor(dungeonCard, type, mechanicDescription) {
         super(dungeonCard, type, mechanicDescription)
@@ -112,10 +86,6 @@ class DrawSpellWhenPlayedSpell extends DungeonMechanic { // "Raz na rundę: kied
         this.usedInRound = false
     }
 
-    setUsedInRound(bool) {
-        this.usedInRound = bool
-    }
-
     use() {
         if (this.usedInRound) {
             // TODO probably shouldn't throw an error because effect is triggered automatically
@@ -127,12 +97,15 @@ class DrawSpellWhenPlayedSpell extends DungeonMechanic { // "Raz na rundę: kied
     }
 
     handleGameEvent(event) {
-        if (!this.usedInRound) {
-            if (event.type === eventTypes.PLAYER_PLAYED_SPELL) {
-                if (event.player === this.dungeonCard.owner) {
+        if (event.type === eventTypes.PLAYER_PLAYED_SPELL) {
+            if (event.player === this.dungeonCard.owner) {
+                if (!this.usedInRound) {
                     this.use()
                 }
             }
+        }
+        else if (event.type === eventTypes.NEW_ROUND_BEGUN) {
+            this.usedInRound = false
         }
     }
 }
@@ -142,10 +115,6 @@ class Draw2GoldWhenAnyDungeonDestoryed extends DungeonMechanic {
     constructor(dungeonCard, type, mechanicDescription) {
         super(dungeonCard, type, mechanicDescription)
         this.usedInRound = false
-    }
-
-    setUsedInRound(bool) {
-        this.usedInRound = bool
     }
 
     use() {
@@ -159,10 +128,13 @@ class Draw2GoldWhenAnyDungeonDestoryed extends DungeonMechanic {
     }
 
     handleGameEvent(event) {
-        if (!this.usedInRound) {
-            if (event.type === eventTypes.PLAYER_DESTROYED_DUNGEON) {
+        if (event.type === eventTypes.PLAYER_DESTROYED_DUNGEON) {
+            if (!this.usedInRound) {
                 this.use()
             }
+        }
+        else if (event.type === eventTypes.NEW_ROUND_BEGUN) {
+            this.usedInRound = false
         }
     }
 }
@@ -217,10 +189,6 @@ class NegateSpellByRemovingYourSpell extends DungeonMechanic {
         this.dungeonCard.setAllowUse(true)
     }
 
-    setUsedInRound(bool) {
-        this.usedInRound = bool
-    }
-
     use() {
         if (this.checkMechanicUseValid()) {
             if (!this.selectedSpell) {
@@ -230,8 +198,6 @@ class NegateSpellByRemovingYourSpell extends DungeonMechanic {
                 const playedSpell = this.dungeonCard.trackedGame.getCurrentlyPlayedSpell()
                 playedSpell.completeUsage()
                 this.selectedSpell.owner.throwCardAway(this.selectedSpell)
-                // this.selectedSpell.owner.removeSpellFromHand(this.selectedSpell)
-                // this.selectedSpell.setOwner(null)
                 this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
                 this.selectedSpell = null
                 this.usedInRound = true
@@ -247,6 +213,12 @@ class NegateSpellByRemovingYourSpell extends DungeonMechanic {
             throw new DungeonMechanicUseConditionError("The isn't any spell currently at play.")
         }
         return true
+    }
+
+    handleGameEvent(event) {
+        if (event.type === eventTypes.NEW_ROUND_BEGUN) {
+            this.usedInRound = false
+        }
     }
 
     requestPlayerSelect() {
@@ -335,16 +307,12 @@ class TakeThrownAwayCardByOtherPlayer extends DungeonMechanic {
         this.usedInRound = false
     }
 
-    setUsedInRound(bool) {
-        this.usedInRound = bool
-    }
-
     use() {
         if (this.shouldGetCard === null) {
             this.requestPlayerSelect()
         }
         else {
-            this.setUsedInRound(true)
+            this.usedInRound = true
             if (this.shouldGetCard === 'tak') {
                 this.dungeonCard.owner.receiveCard(this.thrownAwayCard)
             }
@@ -359,6 +327,9 @@ class TakeThrownAwayCardByOtherPlayer extends DungeonMechanic {
                     this.use()
                 }
             }
+        }
+        else if (event.type === eventTypes.NEW_ROUND_BEGUN) {
+            this.usedInRound = false
         }
     }
 
@@ -409,6 +380,53 @@ class SendHeroBackToDungeonStart extends DungeonMechanic {
     }
 }
 
+class Pay1GoldToDrawSpellWhenAnyDungeonDestroyed extends DungeonMechanic {
+    constructor(dungeonCard, type, mechanicDescription) {
+        super(dungeonCard, type, mechanicDescription)
+        this.usedInRound = false
+        this.shouldDrawCard = null
+    }
+
+    use() {
+        if (this.shouldDrawCard === null) {
+            this.requestPlayerSelect()
+        }
+        else {
+            if (this.shouldDrawCard === 'tak') {
+                this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
+                this.dungeonCard.owner.payGold(1)
+                this.dungeonCard.owner.drawNotUsedSpellCard()
+                this.usedInRound = true
+                this.shouldDrawCard = null
+            }
+        }
+    }
+
+    requestPlayerSelect() {
+        this.dungeonCard.owner.setRequestedSelection(new SelectionRequestOneFromGivenList(
+            this.dungeonCard.owner,
+            `Przeciwnik zniszczył komnatę, czy chcesz zapłacić 1 golda aby dobrać czar? (Zdolność karty '${this.dungeonCard.name}')`,
+            ['tak', 'nie'],
+            this
+        ))
+    }
+
+    receiveSelectionData(data) {
+        this.shouldDrawCard = data[0]
+    }
+
+    handleGameEvent(event) {
+        if (event.type === eventTypes.PLAYER_DESTROYED_DUNGEON) {
+            if (!this.usedInRound) {
+                this.use()
+            }
+        }
+        else if (event.type === eventTypes.NEW_ROUND_BEGUN) {
+            this.usedInRound = false
+        }
+    }
+}
+
 
 const dungeonMechanicsMap = {
     'Bezdenna czeluść': EliminateHeroInDungeon,
@@ -420,7 +438,8 @@ const dungeonMechanicsMap = {
     'Nieprzebyty krużganek': add1TreasureToAnyDungeonForThisRoundOnDestory,
     'Kopiec doppelgangerów': getOneDamageForEveryLuredHero,
     'Skarbiec diabląt': TakeThrownAwayCardByOtherPlayer,
-    'Labirynt Minotaura': SendHeroBackToDungeonStart
+    'Labirynt Minotaura': SendHeroBackToDungeonStart,
+    'Czarny rynek': Pay1GoldToDrawSpellWhenAnyDungeonDestroyed
 }
 
 

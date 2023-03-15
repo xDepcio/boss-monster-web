@@ -285,41 +285,54 @@
         },
         {
             "CARDTYPE": "DUNGEON",
-            "id": 29,
-            "name": "Labirynt Minotaura",
+            "id": 32,
+            "name": "Czarny rynek",
             "type": "monsters",
-            "damage": 0,
+            "damage": 2,
             "treasure": {
-                "strength": 1
+                "magic": 1
             },
-            "mechanicType": "everyGameAction",
-            "mechanicDescription": "Kiedy bohater wchodzi do tej komnaty po raz pierwszy w tej rundzie, odeślij go z powrotem do poprzedniej komnaty.",
+            "mechanicType": "onePerRound",
+            "mechanicDescription": "Raz na rundę: kiedy zostanie zniszczona komnata w dowolnych podzimiach, możesz zapłacić 1 gold, aby dociągnąć kartę czaru.",
             "isFancy": false
         },
         {
             "CARDTYPE": "DUNGEON",
-            "id": 30,
-            "name": "Labirynt Minotaura",
+            "id": 33,
+            "name": "Czarny rynek",
             "type": "monsters",
-            "damage": 0,
+            "damage": 2,
             "treasure": {
-                "strength": 1
+                "magic": 1
             },
-            "mechanicType": "everyGameAction",
-            "mechanicDescription": "Kiedy bohater wchodzi do tej komnaty po raz pierwszy w tej rundzie, odeślij go z powrotem do poprzedniej komnaty.",
+            "mechanicType": "onePerRound",
+            "mechanicDescription": "Raz na rundę: kiedy zostanie zniszczona komnata w dowolnych podzimiach, możesz zapłacić 1 gold, aby dociągnąć kartę czaru.",
             "isFancy": false
         },
         {
             "CARDTYPE": "DUNGEON",
-            "id": 31,
-            "name": "Labirynt Minotaura",
+            "id": 34,
+            "name": "Czarny rynek",
             "type": "monsters",
-            "damage": 0,
+            "damage": 2,
             "treasure": {
-                "strength": 1
+                "magic": 1
             },
-            "mechanicType": "everyGameAction",
-            "mechanicDescription": "Kiedy bohater wchodzi do tej komnaty po raz pierwszy w tej rundzie, odeślij go z powrotem do poprzedniej komnaty.",
+            "mechanicType": "onePerRound",
+            "mechanicDescription": "Raz na rundę: kiedy zostanie zniszczona komnata w dowolnych podzimiach, możesz zapłacić 1 gold, aby dociągnąć kartę czaru.",
+            "isFancy": false
+        },
+        {
+            "CARDTYPE": "DUNGEON",
+            "id": 35,
+            "name": "Czarny rynek",
+            "type": "monsters",
+            "damage": 2,
+            "treasure": {
+                "magic": 1
+            },
+            "mechanicType": "onePerRound",
+            "mechanicDescription": "Raz na rundę: kiedy zostanie zniszczona komnata w dowolnych podzimiach, możesz zapłacić 1 gold, aby dociągnąć kartę czaru.",
             "isFancy": false
         }
     ],

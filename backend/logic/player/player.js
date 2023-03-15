@@ -20,7 +20,8 @@ const {
     OtherSpellCurrentlyAtPlay,
     PlayerAlreadyAcceptedSpellPlay,
     NoSpellCurrentylAtPlay,
-    DungeonEffectCannotBeUsed
+    DungeonEffectCannotBeUsed,
+    PlayerHasNotEnoughMoney
 } = require('../errors')
 const { feedback } = require('../game/actionFeedbacks')
 const { mechanicsTypes } = require('../game/unique_mechanics/dungeonMechanics')
@@ -73,6 +74,13 @@ class Player {
         this.acceptedSpellPlay = true
         this.trackedGame.saveGameAction(feedback.PLAYER_ACCEPTED_SPELL_PLAY(this, spell))
         spell.play()
+    }
+
+    payGold(amount) {
+        if (amount > this.money) {
+            throw new PlayerHasNotEnoughMoney("You don't have enough money.")
+        }
+        this.money -= amount
     }
 
     becomeNotReadyForSpellPlay() {

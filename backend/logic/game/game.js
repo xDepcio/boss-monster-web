@@ -123,23 +123,23 @@ class Game {
         this.players.forEach(player => player.drawNotUsedDungeonCard())
         this.roundPhase = phase.BUILD
         this.fillCityWithHeroes()
-        this.setOnePerRoundCardsBackToUsable()
+        // this.setOnePerRoundCardsBackToUsable()
         this.removeRoundModifiers()
     }
 
-    setOnePerRoundCardsBackToUsable() {
-        this.players.forEach(player => {
-            player.dungeon.forEach(dungCard => {
-                const cardsMechanic = dungCard.getMechanic()
-                if (cardsMechanic) {
-                    const mechanicType = cardsMechanic.getType()
-                    if (mechanicType === mechanicsTypes.ONE_PER_ROUND || mechanicType === mechanicsTypes.ON_USE_ONE_PER_ROUND) {
-                        cardsMechanic.setUsedInRound(false)
-                    }
-                }
-            })
-        })
-    }
+    // setOnePerRoundCardsBackToUsable() {
+    //     this.players.forEach(player => {
+    //         player.dungeon.forEach(dungCard => {
+    //             const cardsMechanic = dungCard.getMechanic()
+    //             if (cardsMechanic) {
+    //                 const mechanicType = cardsMechanic.getType()
+    //                 if (mechanicType === mechanicsTypes.ONE_PER_ROUND || mechanicType === mechanicsTypes.ON_USE_ONE_PER_ROUND) {
+    //                     cardsMechanic.setUsedInRound(false)
+    //                 }
+    //             }
+    //         })
+    //     })
+    // }
 
     addHeroToCity(hero) {
         this.city.push(hero)

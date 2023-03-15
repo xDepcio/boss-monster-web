@@ -140,6 +140,11 @@ class DungeonEffectCannotBeUsed extends Error {
     }
 }
 
+class PlayerHasNotEnoughMoney extends Error {
+    constructor(message) {
+        super(message)
+    }
+}
 
 // In Hero card
 class NotAllPlayersAcceptedHeroMove extends Error {
@@ -213,5 +218,6 @@ module.exports = {
     PlayerAlreadyAcceptedSpellPlay,
     DungeonEffectCannotBeUsed,
     DungeonMechanicUseConditionError,
-    InvalidTreasureType
+    InvalidTreasureType,
+    PlayerHasNotEnoughMoney
 }
