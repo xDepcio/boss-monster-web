@@ -126,6 +126,7 @@ class Player {
         }
         this.selectedBoss = foundBoss
         this.trackedGame.saveGameAction(feedback.PLAYER_SELECTED_BOSS(this, foundBoss))
+        this.selectedBoss.setOwner(this)
         this.updateCollectedTreasure()
         this.becomeReady()
     }

@@ -123,23 +123,8 @@ class Game {
         this.players.forEach(player => player.drawNotUsedDungeonCard())
         this.roundPhase = phase.BUILD
         this.fillCityWithHeroes()
-        // this.setOnePerRoundCardsBackToUsable()
         this.removeRoundModifiers()
     }
-
-    // setOnePerRoundCardsBackToUsable() {
-    //     this.players.forEach(player => {
-    //         player.dungeon.forEach(dungCard => {
-    //             const cardsMechanic = dungCard.getMechanic()
-    //             if (cardsMechanic) {
-    //                 const mechanicType = cardsMechanic.getType()
-    //                 if (mechanicType === mechanicsTypes.ONE_PER_ROUND || mechanicType === mechanicsTypes.ON_USE_ONE_PER_ROUND) {
-    //                     cardsMechanic.setUsedInRound(false)
-    //                 }
-    //             }
-    //         })
-    //     })
-    // }
 
     addHeroToCity(hero) {
         this.city.push(hero)
@@ -158,9 +143,6 @@ class Game {
             try {
                 this.heroToMove.moveToNextRoom()
                 this.players.forEach(player => player.becomeNotReadyForHeroMove())
-                // if (this.heroToMove.hasFinishedMoving()) {
-                //     this.selectNextHeroToMove()
-                // }
             } catch (error) {
                 if (error instanceof NotAllPlayersAcceptedHeroMove) {
                     console.log('Not all players ready for hero to move')
@@ -228,6 +210,9 @@ class Game {
     saveGameAction(feedbackObj) {
         this.players.forEach(player => {
             player.dungeon.forEach(dungeon => dungeon.handleGameEvent(feedbackObj))
+            if (player.selectedBoss) {
+                player.selectedBoss.handleGameEvent(feedbackObj)
+            }
         })
 
         this.movesHistory.push(feedbackObj)

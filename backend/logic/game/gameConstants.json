@@ -1,0 +1,7 @@
+{
+    "dungeonTypes": {
+        "monsters": "monsters",
+        "traps": "traps"
+    },
+    "dungeonsCountToRankUp": 1
+}

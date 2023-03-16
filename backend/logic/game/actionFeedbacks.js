@@ -23,7 +23,8 @@ const eventTypes = {
     PLAYER_ACCEPTED_SPELL_PLAY: 'PLAYER_ACCEPTED_SPELL_PLAY',
     PLAYER_THROWN_AWAY_CARD: 'PLAYER_THROWN_AWAY_CARD',
     HERO_ENTERED_ROOM: 'HERO_ENTERED_ROOM',
-    HERO_DIED_IN_ROOM: 'HERO_DIED_IN_ROOM'
+    HERO_DIED_IN_ROOM: 'HERO_DIED_IN_ROOM',
+    PLAYER_USED_BOSS_RANKUP_MECHANIC: 'PLAYER_USED_BOSS_RANKUP_MECHANIC'
 }
 
 const feedback = {
@@ -188,6 +189,15 @@ const feedback = {
             message: `hero ${hero.getName()} died in ${room.getName()} at ${room.owner.getName()}'s dungeon.`,
             hero,
             room,
+        }
+    },
+    PLAYER_USED_BOSS_RANKUP_MECHANIC: (player, boss, mechanic) => {
+        return {
+            type: eventTypes.PLAYER_USED_BOSS_RANKUP_MECHANIC,
+            message: `player ${player.getName()} used ${boss.getName()}'s '${mechanic.getDescription()}'`,
+            player,
+            boss,
+            mechanic
         }
     }
 }

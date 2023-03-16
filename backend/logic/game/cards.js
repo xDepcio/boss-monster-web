@@ -353,10 +353,43 @@ class SpellCard extends Card {
 
 
 class BossCard extends Card {
-    constructor(id, name, CARDTYPE, trackedGame, pd, treasure) {
+    static bosses = {}
+
+    constructor(id, name, CARDTYPE, trackedGame, pd, treasure, mechanic, mechanicDescription) {
         super(id, name, CARDTYPE, trackedGame)
         this.pd = pd
         this.treasure = treasure
+        this.rankedUp = false
+        this.owner = null
+        this.mechanic = mechanic ? new mechanic(this, mechanicDescription) : null
+        BossCard.bosses[id] = this
+    }
+
+    getMechanic() {
+        return this.mechanic
+    }
+
+    setOwner(player) {
+        this.owner = player
+    }
+
+    setRankedUp(bool) {
+        this.rankedUp = bool
+    }
+
+    hasRankedUp() {
+        return this.rankedUp
+    }
+
+    handleGameEvent(event) {
+        const mechanic = this.getMechanic()
+        if (mechanic) {
+            mechanic.handleGameEvent(event)
+        }
+    }
+
+    static getBoss(bossId) {
+        return BossCard.bosses[bossId]
     }
 }
 

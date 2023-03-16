@@ -464,7 +464,8 @@
             "pd": 255,
             "treasure": {
                 "strength": 1
-            }
+            },
+            "mechanicDescription": "Do końca gry: otrzymujesz 1 gold za każdym raze, kiedy zbudujesz komnatę potworów."
         },
         {
             "CARDTYPE": "BOSS",
