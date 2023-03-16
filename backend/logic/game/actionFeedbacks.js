@@ -22,7 +22,8 @@ const eventTypes = {
     PLAYER_BUILD_DUNGEON: 'PLAYER_BUILD_DUNGEON',
     PLAYER_ACCEPTED_SPELL_PLAY: 'PLAYER_ACCEPTED_SPELL_PLAY',
     PLAYER_THROWN_AWAY_CARD: 'PLAYER_THROWN_AWAY_CARD',
-    HERO_ENTERED_ROOM: 'HERO_ENTERED_ROOM'
+    HERO_ENTERED_ROOM: 'HERO_ENTERED_ROOM',
+    HERO_DIED_IN_ROOM: 'HERO_DIED_IN_ROOM'
 }
 
 const feedback = {
@@ -179,6 +180,14 @@ const feedback = {
             hero,
             dungeonCard,
             dungeonOwner
+        }
+    },
+    HERO_DIED_IN_ROOM: (hero, room) => {
+        return {
+            type: eventTypes.HERO_DIED_IN_ROOM,
+            message: `hero ${hero.getName()} died in ${room.getName()} at ${room.owner.getName()}'s dungeon.`,
+            hero,
+            room,
         }
     }
 }

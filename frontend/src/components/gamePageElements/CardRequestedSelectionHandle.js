@@ -25,7 +25,7 @@ function CardRequestedSelectionHandle({ card = null }) {
         if (requestedSelection.choiceScope !== "ANY") {
             switch (card?.CARDTYPE) {
                 case 'HERO':
-                    if (card.dungeonOwner.id === requestedSelection.choiceScope.id) {
+                    if (card.dungeonOwner?.id === requestedSelection.choiceScope.id) {
                         return true
                     }
                     break;

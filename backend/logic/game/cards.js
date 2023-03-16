@@ -242,7 +242,7 @@ class DungeonCard extends Card {
         this.trackedGame.saveGameAction(feedback.HERO_DAMAGED(hero, this, hero.dungeonOwner))
         if (hero.checkDeath()) {
             hero.die()
-            this.handleHeroDiedInRoom()
+            this.handleHeroDiedInRoom(hero)
         }
     }
 
@@ -262,8 +262,8 @@ class DungeonCard extends Card {
         return this.allowUse
     }
 
-    handleHeroDiedInRoom() {
-        // ...TODO something when hero died in this dungeon room
+    handleHeroDiedInRoom(killedHero) {
+        this.trackedGame.saveGameAction(feedback.HERO_DIED_IN_ROOM(killedHero, this))
     }
 
     setCardToBuildOn(dungeonCard) {
@@ -287,18 +287,6 @@ class DungeonCard extends Card {
         const dungeonMechanic = this.getMechanic()
         if (dungeonMechanic) {
             dungeonMechanic.handleGameEvent(event)
-            // const mechanicType = dungeonMechanic.getType()
-            // if (mechanicType === mechanicsTypes.ONE_PER_ROUND) {
-            //     dungeonMechanic.handleGameEvent(event)
-            // }
-            // else if (mechanicType === mechanicsTypes.EVERY_GAME_ACTION) {
-            //     dungeonMechanic.handleGameEvent(event)
-            // }
-            // else {
-            //     // TODO...
-            //     console.log('NOT HANDLED TODO... (maybe bigger refactor)')
-            //     // throw new Error("Not handled game event in dungeon")
-            // }
         }
     }
 

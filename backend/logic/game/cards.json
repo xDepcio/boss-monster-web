@@ -299,40 +299,14 @@
         {
             "CARDTYPE": "DUNGEON",
             "id": 33,
-            "name": "Czarny rynek",
+            "name": "Fabryka golemów",
             "type": "monsters",
             "damage": 2,
             "treasure": {
-                "magic": 1
+                "strength": 1
             },
             "mechanicType": "onePerRound",
-            "mechanicDescription": "Raz na rundę: kiedy zostanie zniszczona komnata w dowolnych podzimiach, możesz zapłacić 1 gold, aby dociągnąć kartę czaru.",
-            "isFancy": false
-        },
-        {
-            "CARDTYPE": "DUNGEON",
-            "id": 34,
-            "name": "Czarny rynek",
-            "type": "monsters",
-            "damage": 2,
-            "treasure": {
-                "magic": 1
-            },
-            "mechanicType": "onePerRound",
-            "mechanicDescription": "Raz na rundę: kiedy zostanie zniszczona komnata w dowolnych podzimiach, możesz zapłacić 1 gold, aby dociągnąć kartę czaru.",
-            "isFancy": false
-        },
-        {
-            "CARDTYPE": "DUNGEON",
-            "id": 35,
-            "name": "Czarny rynek",
-            "type": "monsters",
-            "damage": 2,
-            "treasure": {
-                "magic": 1
-            },
-            "mechanicType": "onePerRound",
-            "mechanicDescription": "Raz na rundę: kiedy zostanie zniszczona komnata w dowolnych podzimiach, możesz zapłacić 1 gold, aby dociągnąć kartę czaru.",
+            "mechanicDescription": "Raz na rundę: jeśli bohater zostanie wyeliminowany w tej komnacie, dociągnij kartę komnaty.",
             "isFancy": false
         }
     ],

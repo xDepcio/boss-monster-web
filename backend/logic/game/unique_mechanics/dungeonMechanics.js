@@ -162,11 +162,11 @@ class Draw2GoldWhenDungeonBuildNext extends DungeonMechanic {
     use() {
         const newLeft = this.getLeft()
         const newRight = this.getRight()
-        if (newLeft !== this.previousLeft) {
+        if (newLeft !== this.previousLeft && newLeft !== null) {
             this.dungeonCard.owner.addGold(2)
             this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
         }
-        if (newRight !== this.previousRight) {
+        if (newRight !== this.previousRight && newRight !== null) {
             this.dungeonCard.owner.addGold(2)
             this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
         }
@@ -176,7 +176,13 @@ class Draw2GoldWhenDungeonBuildNext extends DungeonMechanic {
 
     handleGameEvent(event) {
         if (event.type === eventTypes.PLAYER_BUILD_DUNGEON) {
-            this.use()
+            if (event.dungeon.id === this.dungeonCard.id) {
+                this.previousLeft = this.getLeft()
+                this.previousRight = this.getRight()
+            }
+            else {
+                this.use()
+            }
         }
     }
 }
@@ -427,6 +433,28 @@ class Pay1GoldToDrawSpellWhenAnyDungeonDestroyed extends DungeonMechanic {
     }
 }
 
+class DrawDungeonWhenHeroEliminatedInThisDungeon extends DungeonMechanic {
+    constructor(dungeonCard, type, mechanicDescription) {
+        super(dungeonCard, type, mechanicDescription)
+        this.usedInRound = false
+    }
+
+    use() {
+        this.dungeonCard.owner.drawNotUsedDungeonCard()
+        this.usedInRound = true
+    }
+
+    handleGameEvent(event) {
+        if (event.type === eventTypes.HERO_DIED_IN_ROOM) {
+            if (event.room === this.dungeonCard) {
+                this.use()
+            }
+        }
+        else if (event.type === eventTypes.NEW_ROUND_BEGUN) {
+            this.usedInRound = false
+        }
+    }
+}
 
 const dungeonMechanicsMap = {
     'Bezdenna czeluść': EliminateHeroInDungeon,
@@ -439,7 +467,8 @@ const dungeonMechanicsMap = {
     'Kopiec doppelgangerów': getOneDamageForEveryLuredHero,
     'Skarbiec diabląt': TakeThrownAwayCardByOtherPlayer,
     'Labirynt Minotaura': SendHeroBackToDungeonStart,
-    'Czarny rynek': Pay1GoldToDrawSpellWhenAnyDungeonDestroyed
+    'Czarny rynek': Pay1GoldToDrawSpellWhenAnyDungeonDestroyed,
+    'Fabryka golemów': DrawDungeonWhenHeroEliminatedInThisDungeon
 }
 
 
