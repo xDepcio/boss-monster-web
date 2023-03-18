@@ -11,6 +11,7 @@ const { updateLobbyPlayers } = require('../utils/socketsHelper');
 const { SelectionRequest, SelectionRequestOneFromGivenList } = require('../logic/game/playerRequestSelections');
 const { HeroCard, DungeonCard, SpellCard } = require('../logic/game/cards');
 const Player = require('../logic/player/player');
+const { CardAction } = require('../logic/game/unique_mechanics/customCardActions');
 
 
 // Get game info (players...)
@@ -196,6 +197,23 @@ router.post('/:lobbyId/use-dungeon', assignPlayer, (req, res, next) => {
 
     try {
         player.useDungeonEffect(req.body.dungeonId)
+        updateLobbyPlayers(req.params.lobbyId)
+    } catch (err) {
+        next(err)
+        return
+    }
+    return res.json({
+        success: true
+    })
+})
+
+// Use custom card action
+router.post('/:lobbyId/use-custom-action', assignPlayer, (req, res, next) => {
+    const player = req.player
+
+    try {
+        const cardAction = CardAction.getCardActionById(req.body.actionId)
+        cardAction.handleUsedByPlayer(req.player)
         updateLobbyPlayers(req.params.lobbyId)
     } catch (err) {
         next(err)

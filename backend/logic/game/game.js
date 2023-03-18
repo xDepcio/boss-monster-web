@@ -33,6 +33,15 @@ class Game {
         this.startGame()
     }
 
+    isModifierAcitve(modifier) {
+        for (activeModifier of this.roundModifiers) {
+            if (activeModifier === modifier) {
+                return true
+            }
+        }
+        return false
+    }
+
     setCurrentlyPlayedSpell(spell) {
         this.currentlyPlayedSpell = spell
     }

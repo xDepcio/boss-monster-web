@@ -1,4 +1,4 @@
-import { faGamepad, faPlay, faTrashCan } from '@fortawesome/free-solid-svg-icons'
+import { faGamepad, faMobileButton, faPlay, faTabletButton, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Cookies from 'js-cookie'
 import { useMemo, useState } from 'react'
@@ -21,6 +21,7 @@ function PlayerDungeon({ player, selectedDungCard, setSelectedDungCard }) {
     const dispatch = useDispatch()
 
     const [clickedCardId, setClickedCardId] = useState(null)
+    const [clickedBossCardId, setClickedBossCardId] = useState(null)
 
     function handleBuildNewDungeon(index = null) {
         console.log(index)
@@ -96,6 +97,20 @@ function PlayerDungeon({ player, selectedDungCard, setSelectedDungCard }) {
         saveResponseError(res, dispatch)
     }
 
+    function handleUseCutomCardAction(actionId) {
+        const res = fetch(`/game/${params.lobbyId}/use-custom-action`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                actionId: actionId,
+                userId: Cookies.get('user'),
+            })
+        })
+        saveResponseError(res, dispatch)
+    }
+
     return (
         <div className="single-player-dungeon">
             <div className='heroes-section'>
@@ -119,15 +134,15 @@ function PlayerDungeon({ player, selectedDungCard, setSelectedDungCard }) {
                     {player.dungeon.map((dungeon, i) => {
                         return (
                             <div key={i} className='single-player-dungeon-wrapper'>
-                                {(clickedCardId === dungeon.id && player.id === selfPlayer.id) && (
+                                {(clickedCardId === dungeon.id) && (
                                     <div className='clicked-dung-wrapper'>
-                                        {dungeon.allowDestroy && (
+                                        {(dungeon.allowDestroy && player.id === selfPlayer.id) && (
                                             <button onClick={() => handleDestroyDungeon(dungeon.id)} className='destroy-dung-btn'>
                                                 <FontAwesomeIcon icon={faTrashCan} />
                                                 <p>Zniszcz loch</p>
                                             </button>
                                         )}
-                                        {dungeon.allowUse && (
+                                        {(dungeon.allowUse && player.id === selfPlayer.id) && (
                                             <button onClick={() => handleUseDungeon(dungeon.id)} className='use-dung-btn'>
                                                 <FontAwesomeIcon icon={faGamepad} />
                                                 <p>Użyj lochu</p>
@@ -166,7 +181,33 @@ function PlayerDungeon({ player, selectedDungCard, setSelectedDungCard }) {
                     })}
                 </div>
                 <div className='player-boss-wrapper'>
+                    {(clickedBossCardId === player.selectedBoss?.id) && (
+                        <div className='clicked-dung-wrapper clicked-boss-wrapper'>
+                            {player.selectedBoss.customCardActions?.map((action, i) => {
+                                const isPlayerIn = action.allowUseFor.find(allowedPlayer => allowedPlayer.id === selfPlayer.id)
+                                if (!isPlayerIn || action.actionDisabled) {
+                                    return <></>
+                                }
+                                if (player.selectedBoss.customCardActions)
+                                    return (
+                                        <button key={i} onClick={() => handleUseCutomCardAction(action.id)} className='custom-action-btn'>
+                                            <FontAwesomeIcon icon={faGamepad} />
+                                            <p>{action.title}</p>
+                                        </button>
+                                    )
+                            })}
+                        </div>
+                    )}
                     <CardBoss
+                        _onClick={() => {
+                            if (clickedBossCardId === player.selectedBoss?.id) {
+                                setClickedBossCardId(null)
+                            }
+                            else {
+                                setClickedBossCardId(player.selectedBoss?.id)
+                            }
+                        }}
+                        _className={'selected-boss-helper'}
                         card={player.selectedBoss}
                         treasure={player.selectedBoss?.treasure}
                         width={220}

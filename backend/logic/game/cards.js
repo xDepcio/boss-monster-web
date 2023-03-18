@@ -10,6 +10,11 @@ class Card {
         this.name = name
         this.CARDTYPE = CARDTYPE
         this.trackedGame = trackedGame
+        this.customCardActions = []
+    }
+
+    addCustomCardAction(action) {
+        this.customCardActions.push(action)
     }
 
     getName() {

@@ -76,11 +76,15 @@ class Player {
         spell.play()
     }
 
-    payGold(amount) {
+    payGold(amount, toPlayer = null) {
         if (amount > this.money) {
             throw new PlayerHasNotEnoughMoney("You don't have enough money.")
         }
         this.money -= amount
+
+        if (toPlayer) {
+            toPlayer.addGold(amount)
+        }
     }
 
     becomeNotReadyForSpellPlay() {

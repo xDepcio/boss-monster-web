@@ -24,7 +24,8 @@ const eventTypes = {
     PLAYER_THROWN_AWAY_CARD: 'PLAYER_THROWN_AWAY_CARD',
     HERO_ENTERED_ROOM: 'HERO_ENTERED_ROOM',
     HERO_DIED_IN_ROOM: 'HERO_DIED_IN_ROOM',
-    PLAYER_USED_BOSS_RANKUP_MECHANIC: 'PLAYER_USED_BOSS_RANKUP_MECHANIC'
+    PLAYER_USED_BOSS_RANKUP_MECHANIC: 'PLAYER_USED_BOSS_RANKUP_MECHANIC',
+    PLAYER_USED_CUSTOM_CARD_ACTION: 'PLAYER_USED_CUSTOM_CARD_ACTION'
 }
 
 const feedback = {
@@ -198,6 +199,15 @@ const feedback = {
             player,
             boss,
             mechanic
+        }
+    },
+    PLAYER_USED_CUSTOM_CARD_ACTION: (player, card, actionTitle) => {
+        return {
+            type: eventTypes.PLAYER_USED_CUSTOM_CARD_ACTION,
+            message: `player ${player.getName()} used ${card.getName()}'s action '${actionTitle}'`,
+            player,
+            card,
+            actionTitle
         }
     }
 }

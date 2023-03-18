@@ -493,6 +493,16 @@
             "treasure": {
                 "magic": 1
             }
+        },
+        {
+            "CARDTYPE": "BOSS",
+            "id": 5,
+            "name": "Scott",
+            "pd": 780,
+            "treasure": {
+                "fortune": 1
+            },
+            "mechanicDescription": "Do końca gry: Twoje komnaty pułapek otrzymują +1 obrażeń. Dowonly przeciwnik może Ci dać 1 gold, aby do końca rundy zanegować ten efekt."
         }
     ]
 }
