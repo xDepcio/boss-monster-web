@@ -24,23 +24,9 @@
         {
             "CARDTYPE": "SPELL",
             "id": 4,
-            "name": "Przerażenie",
-            "playablePhase": "fight",
-            "description": "Wybierz bohatera w dowolonych podziemiach i odeślij go do miasta."
-        },
-        {
-            "CARDTYPE": "SPELL",
-            "id": 5,
-            "name": "Przerażenie",
-            "playablePhase": "fight",
-            "description": "Wybierz bohatera w dowolonych podziemiach i odeślij go do miasta."
-        },
-        {
-            "CARDTYPE": "SPELL",
-            "id": 6,
-            "name": "Przerażenie",
-            "playablePhase": "fight",
-            "description": "Wybierz bohatera w dowolonych podziemiach i odeślij go do miasta."
+            "name": "Atak żywych trupów",
+            "playablePhase": "build",
+            "description": "Wybierz wyeliminowanego bohatera na obszarze punktacji przeciwnika i odeślij go przed wejście do podziemi tego gracz. Do końca rundy otrzymuje on +2 hp."
         }
     ],
     "dungeons": [

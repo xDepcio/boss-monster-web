@@ -116,10 +116,41 @@ class PlaceHeroFromCityInOwnedDungeon extends SpellMechanic {
     }
 }
 
+// Atak żywych trupów
+class ReviveDeadHeroAndPlaceInFrontOfDungeonAndAdd2HpFoHim extends SpellMechanic {
+    constructor(spellCard, mechanicDescription) {
+        super(spellCard, mechanicDescription)
+        this.targetHero = null
+    }
+
+    use() {
+        if (!this.targetHero) {
+            this.requestPlayerSelect()
+        }
+        else {
+            this.targetHero.health = this.targetHero.baseHealth + 2
+            this.targetHero.finishedMoving = false
+            this.targetHero.dungeonRoom = null
+            this.spellCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.spellCard.owner, this))
+            this.spellCard.completeUsage()
+        }
+    }
+
+    requestPlayerSelect() {
+        const selectionReq = new SelectionRequest(this.spellCard.owner, SelectionRequest.requestItemTypes.HERO, 1, SelectionRequest.scopeDeadHeroes, this)
+        this.spellCard.owner.setRequestedSelection(selectionReq)
+    }
+
+    receiveSelectionData(data) {
+        this.targetHero = data[0]
+    }
+}
+
 const spellsMechanicsMap = {
     'Wyczerpanie': Exhaustion,
     'Przerażenie': Fear,
-    'Na ratunek': PlaceHeroFromCityInOwnedDungeon
+    'Na ratunek': PlaceHeroFromCityInOwnedDungeon,
+    'Atak żywych trupów': ReviveDeadHeroAndPlaceInFrontOfDungeonAndAdd2HpFoHim
 }
 
 module.exports = {

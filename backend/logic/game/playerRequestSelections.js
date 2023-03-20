@@ -10,6 +10,7 @@ class SelectionRequest {
     }
     static scopeAny = 'ANY'
     static scopeCity = 'CITY'
+    static scopeDeadHeroes = 'DEAD_HEROES'
 
     constructor(requestedPlayer, requestItemType, amount, choiceScope = 'ANY', target) {
         this.requestedPlayer = requestedPlayer
