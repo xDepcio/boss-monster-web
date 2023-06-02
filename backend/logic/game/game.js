@@ -1,6 +1,7 @@
 const Player = require('../player/player')
 const { getShuffledDungeonCards, getShuffledHeroCards, getShuffledSpellCards, getShuffledBossesCards } = require('./utils')
 const { PlayerAlreadyDeclaredBuild, HeroesCardsStackEmpty, NotAllPlayersAcceptedHeroMove } = require('../errors')
+const { getPrefabBossesCards, getPrefabDungeonCards, getPrefabHeroCards, getPrefabSpellCards } = require('../../utils/prefabs/gamePrefab')
 const { feedback } = require('./actionFeedbacks')
 const { mechanicsTypes } = require('./unique_mechanics/dungeonMechanics')
 
@@ -15,13 +16,13 @@ const phase = {
 class Game {
     static games = {}
 
-    constructor(id, players = null) {
+    constructor(id, players = null, prefab = null) {
         this.id = id
         this.players = players || []
-        this.notUsedSpellCardsStack = getShuffledSpellCards(this)
-        this.notUsedDungeonCardsStack = getShuffledDungeonCards(this)
-        this.notUsedHeroCardsStack = getShuffledHeroCards(this)
-        this.notUsedBossesStack = getShuffledBossesCards(this)
+        this.notUsedSpellCardsStack = prefab ? getPrefabSpellCards(this, prefab.spells) : getShuffledSpellCards(this)
+        this.notUsedDungeonCardsStack = prefab ? getPrefabDungeonCards(this, prefab.dungeons) : getShuffledDungeonCards(this)
+        this.notUsedHeroCardsStack = prefab ? getPrefabHeroCards(this, prefab.heroes) : getShuffledHeroCards(this)
+        this.notUsedBossesStack = prefab ? getPrefabBossesCards(this, prefab.bosses) : getShuffledBossesCards(this)
         this.usedCardsStack = []
         this.gameRound = 1
         this.roundPhase = phase.START

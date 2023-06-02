@@ -45,6 +45,12 @@ function LobbyPage() {
         })
     }
 
+    const handleStartPrefabGame = () => {
+        fetch(`/lobby/${params.lobbyId}/start-prefab`, {
+            method: 'POST'
+        })
+    }
+
     return (
         <div>
             <h2>Lobby {params.lobbyId}</h2>
@@ -57,6 +63,7 @@ function LobbyPage() {
                 )
             })}
             <button onClick={handleStartGame}>Rozpocznij grę</button>
+            <button onClick={handleStartPrefabGame}>Rozpocznij grę (suited for tests)</button>
         </div>
     )
 }

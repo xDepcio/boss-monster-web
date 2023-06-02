@@ -4,6 +4,7 @@ const uuid = require('uuid');
 const Lobby = require('../logic/lobby/lobby');
 const Player = require('../logic/player/player')
 const { Game } = require('../logic/game/game')
+const prefabs = require('../utils/prefabs/prefabs.json')
 const { flattenCircular } = require('../utils/responseFormat')
 
 
@@ -57,6 +58,20 @@ router.post('/:lobbyId/start', (req, res) => {
     const newPlayers = lobby.players.map((player) => new Player(player.id, 'olo'))
     // const game = new Game(uuid.v4(), lobby.players)
     const game = new Game(uuid.v4(), newPlayers)
+    lobby.trackGame(game)
+    console.log(lobby)
+    res.json(flattenCircular(lobby))
+})
+
+// Start game with preset data
+router.post('/:lobbyId/start-prefab', (req, res) => {
+    const lobby = Lobby.getLobby(req.params.lobbyId)
+    if (lobby.gameStarted) {
+        return next(new Error("Cannot start game 2nd time"))
+    }
+    const newPlayers = lobby.players.map((player) => new Player(player.id, 'olo'))
+    // const game = new Game(uuid.v4(), lobby.players)
+    const game = new Game(uuid.v4(), newPlayers, prefabs.first)
     lobby.trackGame(game)
     console.log(lobby)
     res.json(flattenCircular(lobby))
