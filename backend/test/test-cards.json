@@ -27,41 +27,13 @@
             "name": "Atak żywych trupów",
             "playablePhase": "build",
             "description": "Wybierz wyeliminowanego bohatera na obszarze punktacji przeciwnika i odeślij go przed wejście do podziemi tego gracz. Do końca rundy otrzymuje on +2 hp."
-        },
-        {
-            "CARDTYPE": "SPELL",
-            "id": 5,
-            "name": "Przerażenie",
-            "playablePhase": "fight",
-            "description": "Wybierz bohatera w dowolonych podziemiach i odeślij go do miasta."
-        },
-        {
-            "CARDTYPE": "SPELL",
-            "id": 6,
-            "name": "Przerażenie",
-            "playablePhase": "fight",
-            "description": "Wybierz bohatera w dowolonych podziemiach i odeślij go do miasta."
-        },
-        {
-            "CARDTYPE": "SPELL",
-            "id": 7,
-            "name": "Przerażenie",
-            "playablePhase": "fight",
-            "description": "Wybierz bohatera w dowolonych podziemiach i odeślij go do miasta."
-        },
-        {
-            "CARDTYPE": "SPELL",
-            "id": 8,
-            "name": "Przerażenie",
-            "playablePhase": "fight",
-            "description": "Wybierz bohatera w dowolonych podziemiach i odeślij go do miasta."
         }
     ],
     "dungeons": [
         {
             "CARDTYPE": "DUNGEON",
             "id": 1,
-            "name": "dungeon 1",
+            "name": "dung_monsters_2dmg_1faith",
             "type": "monsters",
             "damage": 2,
             "treasure": {
@@ -73,9 +45,9 @@
         {
             "CARDTYPE": "DUNGEON",
             "id": 2,
-            "name": "dungeon 2",
+            "name": "dung_traps_1dmg_2strength",
             "type": "traps",
-            "damage": 3,
+            "damage": 1,
             "treasure": {
                 "strength": 2
             },
@@ -416,17 +388,17 @@
         {
             "CARDTYPE": "HERO",
             "id": 9,
-            "name": "hero 2",
-            "health": 11,
+            "name": "hero_10hp_strength",
+            "health": 10,
             "treasure": "strength",
             "damageDealt": 1
         },
         {
             "CARDTYPE": "HERO",
             "id": 10,
-            "name": "hero 3",
-            "health": 8,
-            "treasure": "fortune",
+            "name": "hero_1hp_strength",
+            "health": 1,
+            "treasure": "strength",
             "damageDealt": 1
         },
         {
@@ -517,6 +489,15 @@
                 "fortune": 1
             },
             "mechanicDescription": "Do końca gry: Twoje komnaty pułapek otrzymują +1 obrażeń. Dowonly przeciwnik może Ci dać 1 gold, aby do końca rundy zanegować ten efekt."
+        },
+        {
+            "CARDTYPE": "BOSS",
+            "id": 5,
+            "name": "dummy_1fortune_580pd",
+            "pd": 580,
+            "treasure": {
+                "fortune": 1
+            }
         }
     ]
 }
