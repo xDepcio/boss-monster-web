@@ -1,4 +1,5 @@
 import { Player } from "../../player/player"
+import { Id } from "../cards"
 
 const { v4 } = require("uuid")
 
@@ -9,7 +10,7 @@ class CardAction {
     allowUseFor: Player[]
     onUse: Function
     actionDisabled: boolean
-    id: string | number
+    id: Id
 
     constructor(title: string, allowUseFor: Player[], onUse: Function) {
         this.title = title
@@ -52,4 +53,4 @@ module.exports = {
     CardAction
 }
 
-export { }
+export { CardAction }

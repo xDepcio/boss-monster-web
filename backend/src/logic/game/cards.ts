@@ -1,18 +1,21 @@
 import { Game } from "./game"
+import { CardAction } from "./unique_mechanics/customCardActions"
 
 const { NotAllPlayersAcceptedHeroMove, HeroAlreadyInCity } = require('../errors')
 const { feedback, eventTypes } = require('./actionFeedbacks')
 const { mechanicsTypes } = require('./unique_mechanics/dungeonMechanics')
 
+export type Id = string | number
+
 class Card {
 
-    id: string | number
+    id: Id
     name: string
     CARDTYPE: string
     trackedGame: Game
-    customCardActions
+    customCardActions: CardAction[]
 
-    constructor(id, name, CARDTYPE, trackedGame: Game) {
+    constructor(id: Id, name: string, CARDTYPE: string, trackedGame: Game) {
         this.id = id
         this.name = name
         this.CARDTYPE = CARDTYPE
