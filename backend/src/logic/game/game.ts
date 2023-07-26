@@ -19,7 +19,7 @@ const { mechanicsTypes } = require('./unique_mechanics/dungeonMechanics')
 
 
 class Game {
-    static games = {}
+    static games: { [id: Id]: Game } = {}
 
     id: Id
     players: Player[]
@@ -32,8 +32,8 @@ class Game {
     roundPhase: RoundPhase
     city: HeroCard[]
     movesHistory
-    heroToMove: HeroCard
-    currentlyPlayedSpell: SpellCard
+    heroToMove: HeroCard | null
+    currentlyPlayedSpell: SpellCard | null
     roundModifiers: RoundModifer[]
 
     constructor(id: Id, players: Player[] | null = null, prefab = null) {
@@ -63,7 +63,7 @@ class Game {
         return false
     }
 
-    setCurrentlyPlayedSpell(spell: SpellCard) {
+    setCurrentlyPlayedSpell(spell: SpellCard | null) {
         this.currentlyPlayedSpell = spell
     }
 
@@ -254,7 +254,7 @@ class Game {
         }
     }
 
-    getHeroToMove(): HeroCard {
+    getHeroToMove() {
         return this.heroToMove
     }
 

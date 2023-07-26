@@ -34,13 +34,13 @@ const { mechanicsTypes } = require('../game/unique_mechanics/dungeonMechanics')
 
 
 class Player {
-    static players = {}
+    static players: { [id: Id]: Player } = {}
 
     id: Id
     name: string
     dungeonCards: DungeonCard[]
     spellCards: SpellCard[]
-    trackedGame: Game
+    trackedGame: Game | null
     finishedPhase: boolean
     dungeon: DungeonCard[]
     dungeonEntranceHeroes: HeroCard[]
@@ -50,9 +50,9 @@ class Player {
     money: number
     defeatedHeroes: HeroCard[]
     drawnBosses: BossCard[]
-    selectedBoss: BossCard
+    selectedBoss: BossCard | null
     totalScore: number
-    declaredBuild: DungeonCard
+    declaredBuild: DungeonCard | null
     heroesThatDefeatedPlayer: HeroCard[]
     collectedTreasure: {
         faith: number,
@@ -60,7 +60,7 @@ class Player {
         magic: number,
         fortune: number
     }
-    requestedSelection: SelectionRequest
+    requestedSelection: SelectionRequest | null
 
     constructor(id: Id, name: string) {
         this.id = id
@@ -127,7 +127,7 @@ class Player {
         return this.name
     }
 
-    setRequestedSelection(selection: SelectionRequest) {
+    setRequestedSelection(selection: SelectionRequest | null) {
         this.requestedSelection = selection
     }
 

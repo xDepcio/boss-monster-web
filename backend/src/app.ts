@@ -1,6 +1,8 @@
 import path from "path";
+import express, { Request, Response, NextFunction } from "express"; 'express'
 
-const express = require('express');
+
+// const express = require('express');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 
@@ -50,7 +52,7 @@ app.use((_req, _res, next) => {
 })
 
 // Error formatter
-app.use((err, _req, res, _next) => {
+app.use((err: any, _req: Request, res: Response, _next: NextFunction): any => {
     res.status(err.status || 500);
     console.error(err);
     console.log('IS IN ERROR ROUTE')

@@ -1,26 +1,30 @@
+import { Player } from "../player/player"
+import { RequestItemType, SelectionChoiceScope } from "../types"
+import { BossCard, DungeonCard, HeroCard, SpellCard } from "./cards"
+
 const { HeroNotFoundInCity, InvalidTreasureType } = require("../errors")
 
+type SelectableItem = HeroCard | DungeonCard | SpellCard | BossCard | 'magic' | 'fortune' | 'strength' | 'faith'
 class SelectionRequest {
-    static requestItemTypes = {
-        HERO: 'hero',
-        DUNGEON: 'dungeon',
-        PLAYER: 'player',
-        SPELL: 'spell',
-        TREASURE: 'treasure'
-    }
-    static scopeAny = 'ANY'
-    static scopeCity = 'CITY'
-    static scopeDeadHeroes = 'DEAD_HEROES'
-
-    requestedPlayer
-    requestItemType
-    amount
-    choiceScope
-    selectedItems
+    // static requestItemTypes = {
+    //     HERO: 'hero',
+    //     DUNGEON: 'dungeon',
+    //     PLAYER: 'player',
+    //     SPELL: 'spell',
+    //     TREASURE: 'treasure'
+    // }
+    // static scopeAny = 'ANY'
+    // static scopeCity = 'CITY'
+    // static scopeDeadHeroes = 'DEAD_HEROES'
+    requestedPlayer: Player
+    requestItemType: RequestItemType
+    amount: number
+    choiceScope: SelectionChoiceScope
+    selectedItems: SelectableItem[]
     target
 
 
-    constructor(requestedPlayer, requestItemType, amount, choiceScope = 'ANY', target) {
+    constructor(requestedPlayer: Player, requestItemType: RequestItemType, amount: number, choiceScope: SelectionChoiceScope = 'ANY', target) {
         this.requestedPlayer = requestedPlayer
         this.requestItemType = requestItemType
         this.amount = amount
@@ -33,7 +37,7 @@ class SelectionRequest {
         return this.requestItemType
     }
 
-    selectItem(item) {
+    selectItem(item: SelectableItem) {
         if (this.isSelectionValid(item)) {
             this.selectedItems.push(item)
             if (this.isCompleted()) {
@@ -42,12 +46,12 @@ class SelectionRequest {
         }
     }
 
-    isSelectionValid(selectedItem) {
+    isSelectionValid(selectedItem: SelectableItem) {
         // Still TODO other variants...
-        if (this.choiceScope === SelectionRequest.scopeCity) {
+        if (this.choiceScope === "CITY") {
             switch (this.requestItemType) {
-                case SelectionRequest.requestItemTypes.HERO:
-                    const hero = this.requestedPlayer.trackedGame.city.find((hero) => hero.id === selectedItem.id)
+                case "hero":
+                    const hero = this.requestedPlayer.trackedGame.city.find((hero) => hero.id === (selectedItem as HeroCard).id)
                     if (!hero) {
                         throw new HeroNotFoundInCity("Selected hero isn't in city")
                     }
@@ -59,9 +63,9 @@ class SelectionRequest {
                     break;
             }
         }
-        else if (this.choiceScope === SelectionRequest.scopeAny) {
+        else if (this.choiceScope === "ANY") {
             switch (this.requestItemType) {
-                case SelectionRequest.requestItemTypes.TREASURE:
+                case "treasure":
                     if (!(selectedItem === 'magic' || selectedItem === 'fortune' || selectedItem === 'strength' || selectedItem === 'faith')) {
                         throw new InvalidTreasureType("Only 'fortune', 'magic', 'streangth' and 'faith' are valid treasure types.")
                     }
@@ -86,30 +90,30 @@ class SelectionRequest {
 }
 
 class SelectionRequestOneFromGivenList {
-    static chooseFromGivenListRequestType = 'CHOOSE_FROM_GIVEN_LIST'
+    // static chooseFromGivenListRequestType = 'CHOOSE_FROM_GIVEN_LIST'
 
-    requestedPlayer
-    selectionMessage
-    avalibleItemsForSelectArr
-    selectedItems
+    requestedPlayer: Player
+    selectionMessage: string
+    avalibleItemsForSelectArr: any[]
+    selectedItems: any[]
     target
-    requestItemType
+    requestItemType: 'CHOOSE_FROM_GIVEN_LIST'
 
 
-    constructor(requestedPlayer, selectionMessage, avalibleItemsForSelectArr, target) {
+    constructor(requestedPlayer: Player, selectionMessage: string, avalibleItemsForSelectArr: any[], target) {
         this.requestedPlayer = requestedPlayer
         this.selectionMessage = selectionMessage
         this.avalibleItemsForSelectArr = avalibleItemsForSelectArr
         this.selectedItems = []
         this.target = target
-        this.requestItemType = SelectionRequestOneFromGivenList.chooseFromGivenListRequestType
+        this.requestItemType = "CHOOSE_FROM_GIVEN_LIST"
     }
 
     getRequestItemType() {
         return this.requestItemType
     }
 
-    selectItem(item) {
+    selectItem(item: any) {
         if (this.isSelectionValid(item)) {
             this.selectedItems.push(item)
             if (this.isCompleted()) {
@@ -118,7 +122,7 @@ class SelectionRequestOneFromGivenList {
         }
     }
 
-    isSelectionValid(selectedItem) {
+    isSelectionValid(selectedItem: any) {
         let isItemIn = false
         for (const item of this.avalibleItemsForSelectArr) {
             if (selectedItem === item) {

@@ -4,7 +4,7 @@ import { Id } from "../../types"
 const { v4 } = require("uuid")
 
 class CardAction {
-    static cardActions = {}
+    static cardActions: { [id: Id]: CardAction } = {}
 
     title: string
     allowUseFor: Player[]

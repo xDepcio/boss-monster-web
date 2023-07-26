@@ -356,7 +356,7 @@ class DungeonCard extends Card {
 
 
 class SpellCard extends Card {
-    static spells = {}
+    static spells: { [id: Id]: SpellCard } = {}
 
     playablePhase: CardPlayPhase
     description: string | null
@@ -374,7 +374,7 @@ class SpellCard extends Card {
         SpellCard.spells[id] = this
     }
 
-    setOwner(player: Player) {
+    setOwner(player: Player | null) {
         this.owner = player
     }
 
