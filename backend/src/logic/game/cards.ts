@@ -65,11 +65,11 @@ class HeroCard extends Card {
         HeroCard.heroes[id] = this
     }
 
-    setDungeonOwner(player) {
+    setDungeonOwner(player: Player) {
         this.dungeonOwner = player
     }
 
-    setDungeonRoom(dungeonCard) {
+    setDungeonRoom(dungeonCard: DungeonCard) {
         this.dungeonRoom = dungeonCard
     }
 
@@ -84,16 +84,16 @@ class HeroCard extends Card {
         }
     }
 
-    goToPlayer(player) {
+    goToPlayer(player: Player) {
         this.trackedGame.saveGameAction(feedback.HERO_GOTO_PLAYER(this, player))
         this.removeSelfFromCity()
         player.addHeroToDungeonEntrance(this)
         this.setDungeonOwner(player)
     }
 
-    getMostValuablePlayer(players) {
+    getMostValuablePlayer(players: Player[]): Player | null {
         let choosen = null
-        let lastMaxPlayer
+        let lastMaxPlayer: Player
         for (let player of players) {
             if (!lastMaxPlayer) {
                 lastMaxPlayer = player
@@ -123,7 +123,7 @@ class HeroCard extends Card {
         this.finishMoving()
     }
 
-    isInCity() {
+    isInCity(): boolean {
         for (let hero of this.trackedGame.city) {
             if (hero.id === this.id) {
                 return true
@@ -169,7 +169,7 @@ class HeroCard extends Card {
         }
     }
 
-    hasFinishedMoving() {
+    hasFinishedMoving(): boolean {
         return this.finishedMoving
     }
 
@@ -183,11 +183,11 @@ class HeroCard extends Card {
         this.dungeonRoom.heroEnteredRoom(this)
     }
 
-    checkDeath() {
+    checkDeath(): boolean {
         return this.health <= 0
     }
 
-    getDamaged(amount) {
+    getDamaged(amount: number) {
         this.health -= amount
     }
 
@@ -211,7 +211,7 @@ class HeroCard extends Card {
         this.dungeonOwner.getDamage(this.damageDealt)
     }
 
-    checkAllPlayersAcceptedHeroEntrance() {
+    checkAllPlayersAcceptedHeroEntrance(): boolean {
         for (let player of this.trackedGame.players) {
             if (!player.hasAcceptedHeroEntrance()) {
                 return false
@@ -220,7 +220,7 @@ class HeroCard extends Card {
         return true
     }
 
-    static getHero(heroId) {
+    static getHero(heroId: Id): HeroCard | undefined {
         return HeroCard.heroes[heroId]
     }
 }
