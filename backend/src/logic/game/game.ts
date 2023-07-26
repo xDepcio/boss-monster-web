@@ -63,7 +63,7 @@ class Game {
         return false
     }
 
-    setCurrentlyPlayedSpell(spell) {
+    setCurrentlyPlayedSpell(spell: SpellCard) {
         this.currentlyPlayedSpell = spell
     }
 
@@ -71,7 +71,7 @@ class Game {
         return this.currentlyPlayedSpell
     }
 
-    addRoundModifier(modifer) {
+    addRoundModifier(modifer: RoundModifer) {
         this.roundModifiers.push(modifer)
     }
 
@@ -156,7 +156,7 @@ class Game {
         this.removeRoundModifiers()
     }
 
-    addHeroToCity(hero) {
+    addHeroToCity(hero: HeroCard) {
         this.city.push(hero)
     }
 
@@ -184,7 +184,7 @@ class Game {
         }
     }
 
-    getHeroAtNextPlayerDungeon() {
+    getHeroAtNextPlayerDungeon(): HeroCard | null {
         for (let player of this.players) {
             const hero = player.dungeonEntranceHeroes[player.dungeonEntranceHeroes.length - 1]
             if (hero) {
@@ -202,7 +202,7 @@ class Game {
         }
     }
 
-    drawHeroCard() {
+    drawHeroCard(): HeroCard {
         const card = this.notUsedHeroCardsStack.pop()
         if (!card) {
             throw new HeroesCardsStackEmpty("Can't draw from empty hero cards stack")
@@ -210,7 +210,7 @@ class Game {
         return card
     }
 
-    areAllPlayersReady() {
+    areAllPlayersReady(): boolean {
         for (const player of this.players) {
             if (!player.finishedPhase) {
                 return false
@@ -219,7 +219,7 @@ class Game {
         return true
     }
 
-    hasAllPlayersAcceptedHeroMove() {
+    hasAllPlayersAcceptedHeroMove(): boolean {
         for (const player of this.players) {
             if (!player.hasAcceptedHeroEntrance()) {
                 return false
@@ -228,7 +228,7 @@ class Game {
         return true
     }
 
-    hasAllPlayersAcceptedSpellPlay() {
+    hasAllPlayersAcceptedSpellPlay(): boolean {
         for (const player of this.players) {
             if (!player.hasAcceptedSpellPlay()) {
                 return false
@@ -254,11 +254,11 @@ class Game {
         }
     }
 
-    getHeroToMove() {
+    getHeroToMove(): HeroCard {
         return this.heroToMove
     }
 
-    static getGame(gameId) {
+    static getGame(gameId: Id): Game | undefined {
         return Game.games[gameId]
     }
 }
