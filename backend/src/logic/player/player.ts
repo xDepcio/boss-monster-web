@@ -1,4 +1,4 @@
-import { BossCard, DungeonCard, HeroCard, SpellCard } from "../game/cards"
+import { BossCard, Card, DungeonCard, HeroCard, SpellCard } from "../game/cards"
 import { Game } from "../game/game"
 import { SelectionRequest } from "../game/playerRequestSelections"
 import { Id } from "../types"
@@ -108,7 +108,7 @@ class Player {
         spell.play()
     }
 
-    payGold(amount, toPlayer = null) {
+    payGold(amount: number, toPlayer: Player | null = null) {
         if (amount > this.money) {
             throw new PlayerHasNotEnoughMoney("You don't have enough money.")
         }
@@ -127,7 +127,7 @@ class Player {
         return this.name
     }
 
-    setRequestedSelection(selection) {
+    setRequestedSelection(selection: SelectionRequest) {
         this.requestedSelection = selection
     }
 
@@ -139,11 +139,11 @@ class Player {
         this.drawNotUsedSpellCard()
     }
 
-    addHeroToDungeonEntrance(hero) {
+    addHeroToDungeonEntrance(hero: HeroCard) {
         this.dungeonEntranceHeroes.push(hero)
     }
 
-    trackGame(game) {
+    trackGame(game: Game) {
         this.trackedGame = game
     }
 
@@ -152,7 +152,7 @@ class Player {
         this.drawNotUsedBossCard()
     }
 
-    selectBoss(bossId) {
+    selectBoss(bossId: Id): void {
         if (this.selectedBoss) {
             throw new PlayerAlreadySelectedBoss("Cannot select another boss in the same game")
         }
@@ -167,7 +167,7 @@ class Player {
         this.becomeReady()
     }
 
-    drawNotUsedDungeonCard() {
+    drawNotUsedDungeonCard(): DungeonCard {
         const card = this.trackedGame.notUsedDungeonCardsStack.pop()
         if (!card) {
             throw new DungeonCardsStackEmpty("Can't draw from empty dungeon stack")
@@ -178,7 +178,7 @@ class Player {
         return card
     }
 
-    drawNotUsedSpellCard() {
+    drawNotUsedSpellCard(): SpellCard {
         const card = this.trackedGame.notUsedSpellCardsStack.pop()
         if (!card) {
             throw new SpellCardsStackEmpty("Can't draw from empty spell stack")
@@ -189,7 +189,7 @@ class Player {
         return card
     }
 
-    drawNotUsedBossCard() {
+    drawNotUsedBossCard(): void {
         const boss = this.trackedGame.notUsedBossesStack.pop()
         if (!boss) {
             throw new BossCardStackEmpty("Can't draw from empty boss stack")
@@ -197,7 +197,7 @@ class Player {
         this.drawnBosses.push(boss)
     }
 
-    declareBuild(card, index = null) {
+    declareBuild(card: DungeonCard, index: number | null = null) {
         if (this.checkIfDungeonBuildValid(card, index)) {
             if (index !== null) {
                 card.setCardToBuildOn(this.dungeon[index])
@@ -208,7 +208,7 @@ class Player {
         }
     }
 
-    checkIfDungeonBuildValid(card, index) {
+    checkIfDungeonBuildValid(card: DungeonCard, index: number | null): boolean {
         if (this.trackedGame.getCurrentlyPlayedSpell()) {
             throw new OtherSpellCurrentlyAtPlay("You have to wait for current spell play to end to build a dungeon.")
         }
@@ -240,7 +240,7 @@ class Player {
         return true
     }
 
-    useDungeonCard(card) {
+    useDungeonCard(card: DungeonCard) {
         for (let i = 0; i < this.dungeonCards.length; i++) {
             const posessedCard = this.dungeonCards[i]
             if (posessedCard.id === card.id) {
@@ -251,7 +251,7 @@ class Player {
         return false
     }
 
-    playSpell(spellId) {
+    playSpell(spellId: Id): void {
         const spell = this.getSpellInHandById(spellId)
         if (this.checkIfSpellPlayValid(spell)) {
             this.trackedGame.players.forEach(player => player.becomeNotReadyForSpellPlay())
@@ -259,12 +259,12 @@ class Player {
         }
     }
 
-    throwCardAway(card) {
-        if (card.CARDTYPE === 'SPELL') {
+    throwCardAway(card: DungeonCard | SpellCard) {
+        if (card instanceof SpellCard) {
             this.trackedGame.saveGameAction(feedback.PLAYER_THROWN_AWAY_CARD(this, card))
             this.removeSpellFromHand(card)
         }
-        else if (card.CARDTYPE === 'DUNGEON') {
+        else if (card instanceof DungeonCard) {
             // TODO...
             throw new Error('TODO when player throw away dung card')
         }
@@ -273,23 +273,23 @@ class Player {
         }
     }
 
-    receiveCard(card) {
-        if (card.CARDTYPE === 'SPELL') {
+    receiveCard(card: DungeonCard | SpellCard) {
+        if (card instanceof SpellCard) {
             this.spellCards.push(card)
         }
-        else if (card.CARDTYPE === 'DUNGEON') {
+        else if (card instanceof DungeonCard) {
             this.dungeonCards.push(card)
         }
         card.setOwner(this)
     }
 
-    removeSpellFromHand(spell) {
+    removeSpellFromHand(spell: SpellCard) {
         const spellIndex = this.spellCards.findIndex(spellCard => spellCard.id === spell.id)
         spell.setOwner(null)
         this.spellCards.splice(spellIndex, 1)
     }
 
-    checkIfSpellPlayValid(spellCard) {
+    checkIfSpellPlayValid(spellCard: SpellCard) {
         if (spellCard.playablePhase !== this.trackedGame.roundPhase) {
             throw new WrongRoundPhase(`${spellCard.name} can only be played during ${spellCard.playablePhase} phase. Current phase: ${this.trackedGame.roundPhase}`)
         }
@@ -313,7 +313,7 @@ class Player {
         this.declaredBuild = null
     }
 
-    destroyDungeonCard(cardId) {
+    destroyDungeonCard(cardId: Id) {
         const dungeonCard = this.getDungeonCardFromDungeon(cardId)
         if (this.checkIfDungeonDestoryValid(dungeonCard)) {
             dungeonCard.handleCardDestroyedMechanic()
@@ -322,7 +322,7 @@ class Player {
         }
     }
 
-    checkIfDungeonDestoryValid(dungeonCard) {
+    checkIfDungeonDestoryValid(dungeonCard: DungeonCard) {
         if (!dungeonCard.isDestroyable()) {
             throw new CardCannotBeDestroyed("This dungeon cannot be destroyed")
         }
@@ -332,7 +332,7 @@ class Player {
         return true
     }
 
-    deleteFromDungeon(dungeonCard) {
+    deleteFromDungeon(dungeonCard: DungeonCard) {
         const cardIndex = this.dungeon.findIndex(dungeon => dungeon.id === dungeonCard.id)
         if (!dungeonCard.belowDungeon) {
             this.dungeon.splice(cardIndex, 1)
@@ -343,7 +343,7 @@ class Player {
         this.updateCollectedTreasure()
     }
 
-    useDungeonEffect(dungeonId) {
+    useDungeonEffect(dungeonId: Id) {
         const dungeonCard = this.getDungeonCardFromDungeon(dungeonId)
         if (this.checkIfDungeonUseValid(dungeonCard)) {
             dungeonCard.handleDungeonUsed()
@@ -357,7 +357,7 @@ class Player {
         return true
     }
 
-    getDungeonCardFromDungeon(cardId) {
+    getDungeonCardFromDungeon(cardId: Id): DungeonCard {
         const dungeonCard = this.dungeon.find(dung => dung.id === cardId)
         if (!dungeonCard) {
             throw new NoSuchDungeonCardInPlayerDungeon(`Dungeon with id ${cardId} not found in player dungeon`)
@@ -365,7 +365,7 @@ class Player {
         return dungeonCard
     }
 
-    getDungeonCardInHand(cardId) {
+    getDungeonCardInHand(cardId: Id): DungeonCard {
         for (let dungeon of this.dungeonCards) {
             if (dungeon.id === cardId) {
                 return dungeon
@@ -374,7 +374,7 @@ class Player {
         throw new NoSuchDungeonInPlayerCards(`Dungeon with id ${cardId} not found in player cards`)
     }
 
-    getHeroFromDungeonEntranceById(heroId) {
+    getHeroFromDungeonEntranceById(heroId: Id): HeroCard {
         const hero = this.dungeonEntranceHeroes.find(hero => hero.id === heroId)
         if (!hero) {
             throw new NoSuchHeroAtDungeonEntrance(`Hero with id ${heroId} was not found in player dungeon`)
@@ -382,7 +382,7 @@ class Player {
         return hero
     }
 
-    getSpellInHandById(spellId) {
+    getSpellInHandById(spellId: Id): SpellCard {
         const spell = this.spellCards.find(spellCard => spellCard.id === spellId)
         if (!spell) {
             throw new NoSuchSpellInPlayerHand(`Player does not have spell with id ${spellId}`)
@@ -390,11 +390,11 @@ class Player {
         return spell
     }
 
-    addGold(amount) {
+    addGold(amount: number): void {
         this.money += amount
     }
 
-    updateCollectedTreasure() {
+    updateCollectedTreasure(): void {
         this.collectedTreasure = {
             faith: 0,
             strength: 0,
@@ -448,7 +448,7 @@ class Player {
         this.acceptedHeroMove = false
     }
 
-    getDamage(damageAmount) {
+    getDamage(damageAmount: number) {
         this.health -= damageAmount
         if (this.health <= 0) {
             this.die()
@@ -478,7 +478,7 @@ class Player {
         throw new Error("PLAYER HAS WON. TODO...")
     }
 
-    static getPlayer(playerId) {
+    static getPlayer(playerId: Id): Player | null {
         return Player.players[playerId]
     }
 }
