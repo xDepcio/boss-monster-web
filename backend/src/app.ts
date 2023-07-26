@@ -1,7 +1,8 @@
+import path from "path";
+
 const express = require('express');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
-
 
 const app = express();
 
@@ -34,7 +35,8 @@ module.exports = {
 }
 
 // serving static files
-app.use(express.static('public'))
+// app.use(express.static('public'))
+app.use(express.static(path.join(__dirname, 'public')))
 
 const routes = require('./routes')
 app.use(routes)

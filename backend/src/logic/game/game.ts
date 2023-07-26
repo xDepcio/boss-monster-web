@@ -258,9 +258,8 @@ class Game {
     }
 }
 
-
 module.exports = {
     Game,
 }
 
-export { }
+export { Game }

@@ -1,17 +1,18 @@
+import { Game } from "./game"
+
 const { NotAllPlayersAcceptedHeroMove, HeroAlreadyInCity } = require('../errors')
 const { feedback, eventTypes } = require('./actionFeedbacks')
 const { mechanicsTypes } = require('./unique_mechanics/dungeonMechanics')
 
-
 class Card {
 
-    id
-    name
-    CARDTYPE
-    trackedGame
+    id: string | number
+    name: string
+    CARDTYPE: string
+    public trackedGame: Game
     customCardActions
 
-    constructor(id, name, CARDTYPE, trackedGame) {
+    constructor(id, name, CARDTYPE, trackedGame: Game) {
         this.id = id
         this.name = name
         this.CARDTYPE = CARDTYPE
