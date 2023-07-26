@@ -348,7 +348,7 @@ class DungeonCard extends Card {
         return false
     }
 
-    static getDungeon(dungeonId: Id) {
+    static getDungeon(dungeonId: Id): DungeonCard | undefined {
         return DungeonCard.dungeons[dungeonId]
     }
 }
@@ -373,7 +373,7 @@ class SpellCard extends Card {
         SpellCard.spells[id] = this
     }
 
-    setOwner(player) {
+    setOwner(player: Player) {
         this.owner = player
     }
 
@@ -381,7 +381,7 @@ class SpellCard extends Card {
         return this.description
     }
 
-    setDescription(description) {
+    setDescription(description: string) {
         this.description = description
     }
 
@@ -399,7 +399,7 @@ class SpellCard extends Card {
         this.trackedGame.players.forEach(player => player.becomeNotReadyForSpellPlay())
     }
 
-    static getSpell(spellId) {
+    static getSpell(spellId: Id): SpellCard | undefined {
         return SpellCard.spells[spellId]
     }
 }
