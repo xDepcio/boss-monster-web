@@ -1,11 +1,11 @@
+import { Player } from "../player/player"
+import { Id, TreasureSign } from "../types"
 import { Game } from "./game"
 import { CardAction } from "./unique_mechanics/customCardActions"
 
 const { NotAllPlayersAcceptedHeroMove, HeroAlreadyInCity } = require('../errors')
 const { feedback, eventTypes } = require('./actionFeedbacks')
 const { mechanicsTypes } = require('./unique_mechanics/dungeonMechanics')
-
-export type Id = string | number
 
 class Card {
 
@@ -36,18 +36,21 @@ class Card {
 class HeroCard extends Card {
     static heroes = {}
 
-    health
-    baseHealth
-    treasureSign
-    damageDealt
-    description
-    specialName
-    typeName
-    dungeonRoom
-    dungeonOwner
-    finishedMoving
+    health: number
+    baseHealth: number
+    treasureSign: TreasureSign
+    damageDealt: number
+    description: string | null
+    specialName: string | null
+    typeName: string | null
+    dungeonRoom: DungeonCard
+    dungeonOwner: Player
+    finishedMoving: boolean
 
-    constructor(id, name, CARDTYPE, trackedGame, health, treasureSign, damageDealt, description = null, specialName = null, typeName = null) {
+    constructor(id: Id, name: string, CARDTYPE: string, trackedGame: Game, health: number,
+        treasureSign: TreasureSign, damageDealt: number, description: string | null = null,
+        specialName: string | null = null, typeName: string | null = null
+    ) {
         super(id, name, CARDTYPE, trackedGame)
         this.health = health
         this.baseHealth = health

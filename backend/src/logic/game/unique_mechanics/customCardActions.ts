@@ -1,5 +1,5 @@
 import { Player } from "../../player/player"
-import { Id } from "../cards"
+import { Id } from "../../types"
 
 const { v4 } = require("uuid")
 
