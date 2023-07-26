@@ -9,7 +9,7 @@ class Card {
     id: string | number
     name: string
     CARDTYPE: string
-    public trackedGame: Game
+    trackedGame: Game
     customCardActions
 
     constructor(id, name, CARDTYPE, trackedGame: Game) {

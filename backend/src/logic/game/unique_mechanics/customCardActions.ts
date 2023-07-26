@@ -1,15 +1,17 @@
+import { Player } from "../../player/player"
+
 const { v4 } = require("uuid")
 
 class CardAction {
     static cardActions = {}
 
-    title
-    allowUseFor
-    onUse
-    actionDisabled
-    id
+    title: string
+    allowUseFor: Player[]
+    onUse: Function
+    actionDisabled: boolean
+    id: string | number
 
-    constructor(title, allowUseFor, onUse) {
+    constructor(title: string, allowUseFor: Player[], onUse: Function) {
         this.title = title
         this.allowUseFor = allowUseFor // Array of all players allowed to use this
         this.onUse = onUse
@@ -19,11 +21,11 @@ class CardAction {
 
     }
 
-    setActionDisabled(bool) {
+    setActionDisabled(bool: boolean) {
         this.actionDisabled = bool
     }
 
-    canPlayerUse(player) {
+    canPlayerUse(player: Player) {
         if (this.actionDisabled) return false
 
         for (let allowedPlayer of this.allowUseFor) {
@@ -34,13 +36,13 @@ class CardAction {
         return false
     }
 
-    handleUsedByPlayer(player) {
+    handleUsedByPlayer(player: Player) {
         if (this.canPlayerUse(player)) {
             this.onUse(player)
         }
     }
 
-    static getCardActionById(id) {
+    static getCardActionById(id: string | number) {
         return CardAction.cardActions[id]
     }
 }

@@ -475,4 +475,4 @@ class Player {
 
 module.exports = Player
 
-export { }
+export { Player }

@@ -35,7 +35,6 @@ module.exports = {
 }
 
 // serving static files
-// app.use(express.static('public'))
 app.use(express.static(path.join(__dirname, 'public')))
 
 const routes = require('./routes')
