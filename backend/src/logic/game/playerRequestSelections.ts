@@ -145,4 +145,4 @@ module.exports = {
     SelectionRequestOneFromGivenList
 }
 
-export { }
+export { SelectionRequest }

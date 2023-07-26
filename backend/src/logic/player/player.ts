@@ -1,3 +1,8 @@
+import { BossCard, DungeonCard, HeroCard, SpellCard } from "../game/cards"
+import { Game } from "../game/game"
+import { SelectionRequest } from "../game/playerRequestSelections"
+import { Id } from "../types"
+
 const {
     PlayerAlreadyDeclaredBuild,
     DungeonCardsStackEmpty,
@@ -31,28 +36,33 @@ const { mechanicsTypes } = require('../game/unique_mechanics/dungeonMechanics')
 class Player {
     static players = {}
 
-    id
-    name
-    dungeonCards
-    spellCards
-    trackedGame
-    finishedPhase
-    dungeon
-    dungeonEntranceHeroes
-    acceptedHeroMove
-    acceptedSpellPlay
-    health
-    money
-    defeatedHeroes
-    drawnBosses
-    selectedBoss
-    totalScore
-    declaredBuild
-    heroesThatDefeatedPlayer
-    collectedTreasure
-    requestedSelection
+    id: Id
+    name: string
+    dungeonCards: DungeonCard[]
+    spellCards: SpellCard[]
+    trackedGame: Game
+    finishedPhase: boolean
+    dungeon: DungeonCard[]
+    dungeonEntranceHeroes: HeroCard[]
+    acceptedHeroMove: boolean
+    acceptedSpellPlay: boolean
+    health: number
+    money: number
+    defeatedHeroes: HeroCard[]
+    drawnBosses: BossCard[]
+    selectedBoss: BossCard
+    totalScore: number
+    declaredBuild: DungeonCard
+    heroesThatDefeatedPlayer: HeroCard[]
+    collectedTreasure: {
+        faith: number,
+        strength: number,
+        magic: number,
+        fortune: number
+    }
+    requestedSelection: SelectionRequest
 
-    constructor(id, name) {
+    constructor(id: Id, name: string) {
         this.id = id
         this.name = name
         this.dungeonCards = []
