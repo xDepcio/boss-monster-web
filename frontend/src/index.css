@@ -23,7 +23,8 @@ a {
 }
 
 body {
-  background-image: url('../../backend/public/images/bg/bg_scaled.png');
+  /* background-image: url('../../backend/public/images/bg/bg_scaled.png'); */
+  background-image: url('../../backend/src/public/images/bg/bg_scaled.png');
   /* background-size: cover; */
   /* background-size: contain; */
   /* background-repeat: repeat; */
