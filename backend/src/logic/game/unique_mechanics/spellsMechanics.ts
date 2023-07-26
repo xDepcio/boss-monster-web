@@ -1,13 +1,15 @@
+import { SpellCard } from "../cards"
+
 const { feedback } = require("../actionFeedbacks")
 const { SelectionRequest } = require("../playerRequestSelections")
 
 
 class SpellMechanic {
 
-    spellCard
-    mechanicDescription
+    spellCard: SpellCard
+    mechanicDescription: string
 
-    constructor(spellCard, mechanicDescription) {
+    constructor(spellCard: SpellCard, mechanicDescription: string) {
         this.spellCard = spellCard
         this.mechanicDescription = mechanicDescription
         if (!this.spellCard.getDescription()) {
@@ -17,6 +19,10 @@ class SpellMechanic {
 
     getDescription() {
         return this.mechanicDescription
+    }
+
+    use() {
+
     }
 }
 
@@ -173,4 +179,4 @@ module.exports = {
     spellsMechanicsMap,
 }
 
-export { }
+export { SpellMechanic }

@@ -1,8 +1,9 @@
 import { Player } from "../player/player"
-import { DungeonMechanicTypes, Id, TreasureSign } from "../types"
+import { CardPlayPhase, CardType, DungeonMechanicTypes, Id, RoundPhase, TreasureSign } from "../types"
 import { Game } from "./game"
 import { CardAction } from "./unique_mechanics/customCardActions"
 import { DungeonMechanic } from "./unique_mechanics/dungeonMechanics"
+import { SpellMechanic } from "./unique_mechanics/spellsMechanics"
 
 const { NotAllPlayersAcceptedHeroMove, HeroAlreadyInCity } = require('../errors')
 const { feedback, eventTypes } = require('./actionFeedbacks')
@@ -12,11 +13,11 @@ class Card {
 
     id: Id
     name: string
-    CARDTYPE: string
+    CARDTYPE: CardType
     trackedGame: Game
     customCardActions: CardAction[]
 
-    constructor(id: Id, name: string, CARDTYPE: string, trackedGame: Game) {
+    constructor(id: Id, name: string, CARDTYPE: CardType, trackedGame: Game) {
         this.id = id
         this.name = name
         this.CARDTYPE = CARDTYPE
@@ -48,7 +49,7 @@ class HeroCard extends Card {
     dungeonOwner: Player | null
     finishedMoving: boolean
 
-    constructor(id: Id, name: string, CARDTYPE: string, trackedGame: Game, health: number,
+    constructor(id: Id, name: string, CARDTYPE: CardType, trackedGame: Game, health: number,
         treasureSign: TreasureSign, damageDealt: number, description: string | null = null,
         specialName: string | null = null, typeName: string | null = null
     ) {
@@ -242,7 +243,7 @@ class DungeonCard extends Card {
     allowUse: boolean
     mechanic: DungeonMechanic | null
 
-    constructor(id: Id, name: string, CARDTYPE: string, trackedGame: Game,
+    constructor(id: Id, name: string, CARDTYPE: CardType, trackedGame: Game,
         damage: number, treasure: TreasureSign, type: string, isFancy: boolean,
         mechanic: typeof DungeonMechanic, mechanicType: DungeonMechanicTypes, mechanicDescription: string
     ) {
@@ -356,12 +357,14 @@ class DungeonCard extends Card {
 class SpellCard extends Card {
     static spells = {}
 
-    playablePhase
-    description
-    owner
-    mechanic
+    playablePhase: CardPlayPhase
+    description: string | null
+    owner: Player | null
+    mechanic: SpellMechanic | null
 
-    constructor(id, name, CARDTYPE, trackedGame, playablePhase, mechanic, mechanicDescription) {
+    constructor(id: Id, name: string, CARDTYPE: CardType, trackedGame: Game, playablePhase: CardPlayPhase,
+        mechanic: typeof SpellMechanic | null, mechanicDescription: string
+    ) {
         super(id, name, CARDTYPE, trackedGame)
         this.playablePhase = playablePhase
         this.description = null
@@ -458,4 +461,4 @@ module.exports = {
     BossCard
 }
 
-export { DungeonCard }
+export { DungeonCard, SpellCard }
