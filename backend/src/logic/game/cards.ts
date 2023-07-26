@@ -1,7 +1,8 @@
 import { Player } from "../player/player"
-import { Id, TreasureSign } from "../types"
+import { DungeonMechanicTypes, Id, TreasureSign } from "../types"
 import { Game } from "./game"
 import { CardAction } from "./unique_mechanics/customCardActions"
+import { DungeonMechanic } from "./unique_mechanics/dungeonMechanics"
 
 const { NotAllPlayersAcceptedHeroMove, HeroAlreadyInCity } = require('../errors')
 const { feedback, eventTypes } = require('./actionFeedbacks')
@@ -43,8 +44,8 @@ class HeroCard extends Card {
     description: string | null
     specialName: string | null
     typeName: string | null
-    dungeonRoom: DungeonCard
-    dungeonOwner: Player
+    dungeonRoom: DungeonCard | null
+    dungeonOwner: Player | null
     finishedMoving: boolean
 
     constructor(id: Id, name: string, CARDTYPE: string, trackedGame: Game, health: number,
@@ -229,19 +230,22 @@ class HeroCard extends Card {
 class DungeonCard extends Card {
     static dungeons = {}
 
-    damage
-    treasure
-    type
-    isFancy
-    description
-    belowDungeon
-    isActive
-    owner
-    allowDestroy
-    allowUse
-    mechanic
+    damage: number
+    treasure: TreasureSign
+    type: string
+    isFancy: boolean
+    description: string | null
+    belowDungeon: DungeonCard | null
+    isActive: boolean
+    owner: Player | null
+    allowDestroy: boolean
+    allowUse: boolean
+    mechanic: DungeonMechanic | null
 
-    constructor(id, name, CARDTYPE, trackedGame, damage, treasure, type, isFancy, mechanic, mechanicType, mechanicDescription) {
+    constructor(id: Id, name: string, CARDTYPE: string, trackedGame: Game,
+        damage: number, treasure: TreasureSign, type: string, isFancy: boolean,
+        mechanic: typeof DungeonMechanic, mechanicType: DungeonMechanicTypes, mechanicDescription: string
+    ) {
         super(id, name, CARDTYPE, trackedGame)
         this.damage = damage
         this.treasure = treasure
@@ -454,4 +458,4 @@ module.exports = {
     BossCard
 }
 
-export { }
+export { DungeonCard }

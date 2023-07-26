@@ -1,3 +1,6 @@
+import { DungeonMechanicTypes } from "../../types"
+import { DungeonCard } from "../cards"
+
 const { OncePerRoundMechanicUsedAlready, DungeonMechanicUseConditionError } = require("../../errors")
 const { feedback, eventTypes } = require("../actionFeedbacks")
 const { SelectionRequest, SelectionRequestOneFromGivenList } = require("../playerRequestSelections")
@@ -23,11 +26,11 @@ const mechanicsTypes = {
 
 class DungeonMechanic {
 
-    dungeonCard
-    type
-    mechanicDescription
+    dungeonCard: DungeonCard
+    type: DungeonMechanicTypes
+    mechanicDescription: string
 
-    constructor(dungeonCard, type, mechanicDescription) {
+    constructor(dungeonCard: DungeonCard, type: DungeonMechanicTypes, mechanicDescription: string) {
         this.dungeonCard = dungeonCard
         this.type = type
         this.mechanicDescription = mechanicDescription
@@ -45,6 +48,10 @@ class DungeonMechanic {
     }
 
     handleGameEvent(event) {
+
+    }
+
+    use() {
 
     }
 }
@@ -516,4 +523,4 @@ module.exports = {
     mechanicsTypes
 }
 
-export { }
+export { DungeonMechanic }
