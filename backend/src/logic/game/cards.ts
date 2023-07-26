@@ -261,7 +261,7 @@ class DungeonCard extends Card {
         DungeonCard.dungeons[id] = this
     }
 
-    setOwner(player) {
+    setOwner(player: Player) {
         this.owner = player
     }
 
@@ -273,16 +273,16 @@ class DungeonCard extends Card {
         return this.mechanic
     }
 
-    setDescription(description) {
+    setDescription(description: string) {
         this.description = description
     }
 
-    heroEnteredRoom(hero) {
+    heroEnteredRoom(hero: HeroCard) {
         this.trackedGame.saveGameAction(feedback.HERO_ENTERED_ROOM(hero, this, this.owner))
         this.damageHero(hero)
     }
 
-    damageHero(hero) {
+    damageHero(hero: HeroCard) {
         hero.getDamaged(this.damage)
         this.trackedGame.saveGameAction(feedback.HERO_DAMAGED(hero, this, hero.dungeonOwner))
         if (hero.checkDeath()) {
@@ -291,11 +291,11 @@ class DungeonCard extends Card {
         }
     }
 
-    setAllowDestroy(bool) {
+    setAllowDestroy(bool: boolean) {
         this.allowDestroy = bool
     }
 
-    setAllowUse(bool) {
+    setAllowUse(bool: boolean) {
         this.allowUse = bool
     }
 
@@ -307,11 +307,11 @@ class DungeonCard extends Card {
         return this.allowUse
     }
 
-    handleHeroDiedInRoom(killedHero) {
+    handleHeroDiedInRoom(killedHero: HeroCard) {
         this.trackedGame.saveGameAction(feedback.HERO_DIED_IN_ROOM(killedHero, this))
     }
 
-    setCardToBuildOn(dungeonCard) {
+    setCardToBuildOn(dungeonCard: DungeonCard) {
         this.belowDungeon = dungeonCard
         this.belowDungeon.isActive = false
     }
@@ -335,19 +335,19 @@ class DungeonCard extends Card {
         }
     }
 
-    canBeBuiltOn(cardToBuildOn) {
+    canBeBuiltOn(cardToBuildOn: DungeonCard) {
         if (!this.isFancy) return true
         if (this.matchesTreasureWith(cardToBuildOn)) return true
         return false
     }
 
-    matchesTreasureWith(anotherCard) {
+    matchesTreasureWith(anotherCard: DungeonCard) {
         if (Object.keys(anotherCard.treasure).length > 1) return false
         if (Object.keys(this.treasure)[0] === Object.keys(anotherCard.treasure)[0]) return true
         return false
     }
 
-    static getDungeon(dungeonId) {
+    static getDungeon(dungeonId: Id) {
         return DungeonCard.dungeons[dungeonId]
     }
 }
