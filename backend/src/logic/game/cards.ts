@@ -1,6 +1,7 @@
 import { Player } from "../player/player"
 import { CardPlayPhase, CardType, DungeonMechanicTypes, Id, RoundPhase, TreasureSign } from "../types"
 import { Game } from "./game"
+import { BossMechanic } from "./unique_mechanics/bossMecahnics"
 import { CardAction } from "./unique_mechanics/customCardActions"
 import { DungeonMechanic } from "./unique_mechanics/dungeonMechanics"
 import { SpellMechanic } from "./unique_mechanics/spellsMechanics"
@@ -408,13 +409,15 @@ class SpellCard extends Card {
 class BossCard extends Card {
     static bosses = {}
 
-    pd
-    treasure
-    rankedUp
-    owner
-    mechanic
+    pd: number
+    treasure: TreasureSign
+    rankedUp: boolean
+    owner: Player | null
+    mechanic: BossMechanic
 
-    constructor(id, name, CARDTYPE, trackedGame, pd, treasure, mechanic, mechanicDescription) {
+    constructor(id: Id, name: string, CARDTYPE: CardType, trackedGame: Game, pd: number,
+        treasure: TreasureSign, mechanic: typeof BossMechanic, mechanicDescription: string
+    ) {
         super(id, name, CARDTYPE, trackedGame)
         this.pd = pd
         this.treasure = treasure
@@ -428,11 +431,11 @@ class BossCard extends Card {
         return this.mechanic
     }
 
-    setOwner(player) {
+    setOwner(player: Player) {
         this.owner = player
     }
 
-    setRankedUp(bool) {
+    setRankedUp(bool: boolean) {
         this.rankedUp = bool
     }
 
@@ -447,7 +450,7 @@ class BossCard extends Card {
         }
     }
 
-    static getBoss(bossId) {
+    static getBoss(bossId: Id): BossCard | undefined {
         return BossCard.bosses[bossId]
     }
 }
@@ -461,4 +464,4 @@ module.exports = {
     BossCard
 }
 
-export { DungeonCard, SpellCard }
+export { DungeonCard, SpellCard, BossCard }

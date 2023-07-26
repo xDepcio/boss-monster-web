@@ -1,3 +1,5 @@
+import { BossCard } from "../cards"
+
 const { eventTypes, feedback } = require("../actionFeedbacks")
 const GAME_CONSTANTS = require('../gameConstants.json')
 const { CardAction } = require("./customCardActions")
@@ -5,10 +7,10 @@ const { RoundModifer } = require("./roundModifiers")
 
 class BossMechanic {
 
-    bossCard
-    mechanicDescription
+    bossCard: BossCard
+    mechanicDescription: string
 
-    constructor(bossCard, mechanicDescription) {
+    constructor(bossCard: BossCard, mechanicDescription: string) {
         this.bossCard = bossCard
         this.mechanicDescription = mechanicDescription
     }
@@ -146,4 +148,4 @@ module.exports = {
     bossesMechanicsMap
 }
 
-export { }
+export { BossMechanic }
