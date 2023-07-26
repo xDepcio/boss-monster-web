@@ -350,7 +350,7 @@ class Player {
         }
     }
 
-    checkIfDungeonUseValid(dungeonCard) {
+    checkIfDungeonUseValid(dungeonCard: DungeonCard) {
         if (!dungeonCard.isUsable()) {
             throw new DungeonEffectCannotBeUsed("This dungeons effect is not usable.")
         }
