@@ -1,4 +1,9 @@
-const Player = require('../player/player')
+import { Player } from "../player/player"
+import { Id, RoundPhase } from "../types"
+import { BossCard, DungeonCard, HeroCard, SpellCard } from "./cards"
+import { RoundModifer } from "./unique_mechanics/roundModifiers"
+
+// const Player = require('../player/player')
 const { getShuffledDungeonCards, getShuffledHeroCards, getShuffledSpellCards, getShuffledBossesCards } = require('./utils')
 const { PlayerAlreadyDeclaredBuild, HeroesCardsStackEmpty, NotAllPlayersAcceptedHeroMove } = require('../errors')
 const { getPrefabBossesCards, getPrefabDungeonCards, getPrefabHeroCards, getPrefabSpellCards } = require('../../utils/prefabs/gamePrefab')
@@ -6,32 +11,32 @@ const { feedback } = require('./actionFeedbacks')
 const { mechanicsTypes } = require('./unique_mechanics/dungeonMechanics')
 
 
-const phase = {
-    BUILD: 'build',
-    FIGHT: 'fight',
-    START: 'start'
-}
+// const phase = {
+//     BUILD: 'build',
+//     FIGHT: 'fight',
+//     START: 'start'
+// }
 
 
 class Game {
     static games = {}
 
-    id
-    players
-    notUsedSpellCardsStack
-    notUsedDungeonCardsStack
-    notUsedHeroCardsStack
-    notUsedBossesStack
-    usedCardsStack
-    gameRound
-    roundPhase
-    city
+    id: Id
+    players: Player[]
+    notUsedSpellCardsStack: SpellCard[]
+    notUsedDungeonCardsStack: DungeonCard[]
+    notUsedHeroCardsStack: HeroCard[]
+    notUsedBossesStack: BossCard[]
+    usedCardsStack: (BossCard | DungeonCard | HeroCard | SpellCard)[]
+    gameRound: number
+    roundPhase: RoundPhase
+    city: HeroCard[]
     movesHistory
-    heroToMove
-    currentlyPlayedSpell
-    roundModifiers
+    heroToMove: HeroCard
+    currentlyPlayedSpell: SpellCard
+    roundModifiers: RoundModifer[]
 
-    constructor(id, players = null, prefab = null) {
+    constructor(id: Id, players: Player[] | null = null, prefab = null) {
         this.id = id
         this.players = players || []
         this.notUsedSpellCardsStack = prefab ? getPrefabSpellCards(this, prefab.spells) : getShuffledSpellCards(this)
@@ -40,7 +45,7 @@ class Game {
         this.notUsedBossesStack = prefab ? getPrefabBossesCards(this, prefab.bosses) : getShuffledBossesCards(this)
         this.usedCardsStack = []
         this.gameRound = 1
-        this.roundPhase = phase.START
+        this.roundPhase = "start"
         this.city = []
         this.movesHistory = []
         this.heroToMove = null
@@ -49,7 +54,7 @@ class Game {
         this.startGame()
     }
 
-    isModifierAcitve(modifier) {
+    isModifierAcitve(modifier: RoundModifer) {
         for (let activeModifier of this.roundModifiers) {
             if (activeModifier === modifier) {
                 return true
@@ -83,7 +88,7 @@ class Game {
     }
 
     startFirstRound() {
-        this.roundPhase = phase.BUILD
+        this.roundPhase = "build"
         this.saveGameAction(feedback.START_FIRST_ROUND())
         this.players.forEach(player => {
             player.becomeNotReady()
@@ -99,16 +104,16 @@ class Game {
     checkForPhaseEnd() {
         if (this.areAllPlayersReady()) {
             switch (this.roundPhase) {
-                case phase.START: {
+                case "start": {
                     this.setPlayersOrder()
                     this.startFirstRound()
                     break
                 }
-                case phase.BUILD: {
+                case "build": {
                     this.startNewFightPhase()
                     break
                 }
-                case phase.FIGHT: {
+                case "fight": {
                     this.startNewBuildPhase()
                     break
                 }
@@ -119,7 +124,7 @@ class Game {
     startNewFightPhase() {
         this.saveGameAction(feedback.START_FIGHT_PHASE())
         this.players.forEach(player => player.becomeNotReady())
-        this.roundPhase = phase.FIGHT
+        this.roundPhase = "fight"
         this.players.forEach(player => player.buildDeclaredDungeon())
         // this.buildDeclaredCards()
         // this.city.forEach(hero => hero.goToLuredPlayer())
@@ -146,7 +151,7 @@ class Game {
         this.saveGameAction(feedback.START_BUILD_PHASE())
         this.players.forEach(player => player.becomeNotReady())
         this.players.forEach(player => player.drawNotUsedDungeonCard())
-        this.roundPhase = phase.BUILD
+        this.roundPhase = "build"
         this.fillCityWithHeroes()
         this.removeRoundModifiers()
     }

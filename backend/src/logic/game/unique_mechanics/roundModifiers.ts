@@ -24,4 +24,4 @@ module.exports = {
     RoundModifer
 }
 
-export { }
+export { RoundModifer }

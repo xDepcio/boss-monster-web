@@ -464,4 +464,4 @@ module.exports = {
     BossCard
 }
 
-export { DungeonCard, SpellCard, BossCard }
+export { DungeonCard, SpellCard, BossCard, HeroCard, Card }
