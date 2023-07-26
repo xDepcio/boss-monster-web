@@ -1,7 +1,9 @@
-import { SpellCard } from "../cards"
+import { feedback } from "../actionFeedbacks"
+import { HeroCard, SpellCard } from "../cards"
+import { SelectionRequest } from "../playerRequestSelections"
 
-const { feedback } = require("../actionFeedbacks")
-const { SelectionRequest } = require("../playerRequestSelections")
+// const { feedback } = require("../actionFeedbacks")
+// const { SelectionRequest } = require("../playerRequestSelections")
 
 
 class SpellMechanic {
@@ -30,9 +32,9 @@ class SpellMechanic {
 // Wyczerpanie
 class Exhaustion extends SpellMechanic {
 
-    targetHero
+    targetHero: HeroCard | null
 
-    constructor(spellCard, mechanicDescription, targetHero = null) {
+    constructor(spellCard: SpellCard, mechanicDescription: string, targetHero: HeroCard | null = null) {
         super(spellCard, mechanicDescription)
         this.targetHero = targetHero
     }
@@ -60,7 +62,7 @@ class Exhaustion extends SpellMechanic {
     }
 
     requestPlayerSelect() {
-        const selectionReq = new SelectionRequest(this.spellCard.owner, SelectionRequest.requestItemTypes.HERO, 1, this.spellCard.owner, this)
+        const selectionReq = new SelectionRequest(this.spellCard.owner, "hero", 1, this.spellCard.owner, this)
         this.spellCard.owner.setRequestedSelection(selectionReq)
     }
 
@@ -72,9 +74,9 @@ class Exhaustion extends SpellMechanic {
 // Przerażenie
 class Fear extends SpellMechanic {
 
-    targetHero
+    targetHero: HeroCard | null
 
-    constructor(spellCard, mechanicDescription, targetHero = null) {
+    constructor(spellCard: SpellCard, mechanicDescription: string, targetHero: HeroCard | null = null) {
         super(spellCard, mechanicDescription)
         this.targetHero = targetHero
     }
@@ -94,7 +96,7 @@ class Fear extends SpellMechanic {
     }
 
     requestPlayerSelect() {
-        const selectionReq = new SelectionRequest(this.spellCard.owner, SelectionRequest.requestItemTypes.HERO, 1, SelectionRequest.scopeAny, this)
+        const selectionReq = new SelectionRequest(this.spellCard.owner, "hero", 1, "ANY", this)
         this.spellCard.owner.setRequestedSelection(selectionReq)
     }
 
@@ -107,9 +109,9 @@ class Fear extends SpellMechanic {
 // Na ratuenk
 class PlaceHeroFromCityInOwnedDungeon extends SpellMechanic {
 
-    targetHero
+    targetHero: HeroCard | null
 
-    constructor(spellCard, mechanicDescription, targetHero = null) {
+    constructor(spellCard: SpellCard, mechanicDescription: string, targetHero: HeroCard | null = null) {
         super(spellCard, mechanicDescription)
         this.targetHero = targetHero
     }
@@ -126,7 +128,7 @@ class PlaceHeroFromCityInOwnedDungeon extends SpellMechanic {
     }
 
     requestPlayerSelect() {
-        const selectionReq = new SelectionRequest(this.spellCard.owner, SelectionRequest.requestItemTypes.HERO, 1, SelectionRequest.scopeAny, this)
+        const selectionReq = new SelectionRequest(this.spellCard.owner, "hero", 1, "ANY", this)
         this.spellCard.owner.setRequestedSelection(selectionReq)
     }
 
@@ -138,9 +140,9 @@ class PlaceHeroFromCityInOwnedDungeon extends SpellMechanic {
 // Atak żywych trupów
 class ReviveDeadHeroAndPlaceInFrontOfDungeonAndAdd2HpFoHim extends SpellMechanic {
 
-    targetHero
+    targetHero: HeroCard | null
 
-    constructor(spellCard, mechanicDescription) {
+    constructor(spellCard: SpellCard, mechanicDescription: string) {
         super(spellCard, mechanicDescription)
         this.targetHero = null
     }
@@ -159,7 +161,7 @@ class ReviveDeadHeroAndPlaceInFrontOfDungeonAndAdd2HpFoHim extends SpellMechanic
     }
 
     requestPlayerSelect() {
-        const selectionReq = new SelectionRequest(this.spellCard.owner, SelectionRequest.requestItemTypes.HERO, 1, SelectionRequest.scopeDeadHeroes, this)
+        const selectionReq = new SelectionRequest(this.spellCard.owner, "hero", 1, "DEAD_HEROES", this)
         this.spellCard.owner.setRequestedSelection(selectionReq)
     }
 
