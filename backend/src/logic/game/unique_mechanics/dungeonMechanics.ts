@@ -1,12 +1,12 @@
 import { Player } from "../../player/player"
 import { DungeonMechanicTypes, TreasureSign } from "../../types"
-import { GameEvent } from "../actionFeedbacks"
+import { GameEvent, feedback } from "../actionFeedbacks"
 import { DungeonCard, SpellCard } from "../cards"
 import { SelectableItem, SelectionRequest, SelectionRequestOneFromGivenList } from "../playerRequestSelections"
 import { RoundModifer } from "./roundModifiers"
 
 const { OncePerRoundMechanicUsedAlready, DungeonMechanicUseConditionError } = require("../../errors")
-const { feedback, eventTypes } = require("../actionFeedbacks")
+// const { feedback, eventTypes } = require("../actionFeedbacks")
 // const { SelectionRequest, SelectionRequestOneFromGivenList } = require("../playerRequestSelections")
 
 // const { RoundModifer } = require("./roundModifiers")
@@ -124,7 +124,7 @@ class DrawSpellWhenPlayedSpell extends DungeonMechanic { // "Raz na rundę: kied
                 }
             }
         }
-        else if (event.type === eventTypes.NEW_ROUND_BEGUN) {
+        else if (event.type === "NEW_ROUND_BEGUN") {
             this.usedInRound = false
         }
     }
@@ -375,7 +375,7 @@ class TakeThrownAwayCardByOtherPlayer extends DungeonMechanic {
                 }
             }
         }
-        else if (event.type === eventTypes.NEW_ROUND_BEGUN) {
+        else if (event.type === "NEW_ROUND_BEGUN") {
             this.usedInRound = false
         }
     }
@@ -429,10 +429,10 @@ class SendHeroBackToDungeonStart extends DungeonMechanic {
     }
 
     handleGameEvent(event: GameEvent) {
-        if (event.type === eventTypes.NEW_ROUND_BEGUN) {
+        if (event.type === "NEW_ROUND_BEGUN") {
             this.heroesThatEnteredInRound = []
         }
-        else if (event.type === eventTypes.HERO_ENTERED_ROOM) {
+        else if (event.type === "HERO_ENTERED_ROOM") {
             this.use()
         }
     }
@@ -469,6 +469,7 @@ class Pay1GoldToDrawSpellWhenAnyDungeonDestroyed extends DungeonMechanic {
             avalibleItemsForSelectArr: ["nie", "tak"],
             onRecieveSelectionData: (data) => {
                 this.shouldDrawCard = data[0]
+                this.use()
             },
             requestedPlayer: this.dungeonCard.owner,
             selectionMessage: `Przeciwnik zniszczył komnatę, czy chcesz zapłacić 1 golda aby dobrać czar? (Zdolność karty '${this.dungeonCard.name}')`,
@@ -485,12 +486,12 @@ class Pay1GoldToDrawSpellWhenAnyDungeonDestroyed extends DungeonMechanic {
     // }
 
     handleGameEvent(event: GameEvent) {
-        if (event.type === eventTypes.PLAYER_DESTROYED_DUNGEON) {
+        if (event.type === "PLAYER_DESTROYED_DUNGEON") {
             if (!this.usedInRound) {
                 this.use()
             }
         }
-        else if (event.type === eventTypes.NEW_ROUND_BEGUN) {
+        else if (event.type === "NEW_ROUND_BEGUN") {
             this.usedInRound = false
         }
     }
@@ -516,7 +517,7 @@ class DrawDungeonWhenHeroEliminatedInThisDungeon extends DungeonMechanic {
                 this.use()
             }
         }
-        else if (event.type === eventTypes.NEW_ROUND_BEGUN) {
+        else if (event.type === "NEW_ROUND_BEGUN") {
             this.usedInRound = false
         }
     }

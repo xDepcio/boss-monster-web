@@ -9,7 +9,7 @@ import { SpellMechanic } from "./unique_mechanics/spellsMechanics"
 
 const { NotAllPlayersAcceptedHeroMove, HeroAlreadyInCity } = require('../errors')
 // const { feedback, eventTypes } = require('./actionFeedbacks')
-const { mechanicsTypes } = require('./unique_mechanics/dungeonMechanics')
+// const { mechanicsTypes } = require('./unique_mechanics/dungeonMechanics')
 
 class Card {
 
@@ -320,13 +320,13 @@ class DungeonCard extends Card {
     }
 
     handleCardDestroyedMechanic() {
-        if (this.mechanic.getType() === mechanicsTypes.ON_DESTORY) {
+        if (this.mechanic.getType() === "onDestroy") {
             this.mechanic.use()
         }
     }
 
     handleDungeonUsed() {
-        if (this.mechanic.getType() === mechanicsTypes.ON_USE_ONE_PER_ROUND) {
+        if (this.mechanic.getType() === "onUseOnePerRound") {
             this.mechanic.use()
         }
     }

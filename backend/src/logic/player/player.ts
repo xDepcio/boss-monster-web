@@ -1,3 +1,4 @@
+import { feedback } from "../game/actionFeedbacks"
 import { BossCard, Card, DungeonCard, HeroCard, SpellCard } from "../game/cards"
 import { Game } from "../game/game"
 import { SelectionRequest, SelectionRequestOneFromGivenList } from "../game/playerRequestSelections"
@@ -29,8 +30,8 @@ const {
     PlayerHasNotEnoughMoney,
     NoSuchHeroAtDungeonEntrance
 } = require('../errors')
-const { feedback } = require('../game/actionFeedbacks')
-const { mechanicsTypes } = require('../game/unique_mechanics/dungeonMechanics')
+// const { feedback } = require('../game/actionFeedbacks')
+// const { mechanicsTypes } = require('../game/unique_mechanics/dungeonMechanics')
 
 
 class Player {
@@ -60,7 +61,7 @@ class Player {
         magic: number,
         fortune: number
     }
-    requestedSelection: SelectionRequest | null
+    requestedSelection: SelectionRequest | SelectionRequestOneFromGivenList<any> | null
 
     constructor(id: Id, name: string) {
         this.id = id
@@ -483,6 +484,6 @@ class Player {
     }
 }
 
-module.exports = Player
+// module.exports = Player
 
 export { Player }

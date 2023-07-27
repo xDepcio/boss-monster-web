@@ -1,9 +1,10 @@
 import express from "express";
+import { Player } from "../logic/player/player";
 // const express = require('express');
 const router = express.Router();
 const uuid = require('uuid');
 const Lobby = require('../logic/lobby/lobby');
-const Player = require('../logic/player/player')
+// const Player = require('../logic/player/player')
 const { Game } = require('../logic/game/game')
 const prefabs = require('../utils/prefabs/prefabs.json')
 const { flattenCircular } = require('../utils/responseFormat')
@@ -36,7 +37,7 @@ router.post('/:lobbyId/join', (req, res, next) => {
 
     let player = Player.getPlayer(userId)
     if (!player) {
-        player = new Player(userId)
+        player = new Player(userId, 'olo')
     }
 
     if (!lobby.isPlayerIn(player)) {

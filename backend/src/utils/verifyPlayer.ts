@@ -1,4 +1,6 @@
-const Player = require("../logic/player/player")
+import { Player } from "../logic/player/player"
+
+// const Player = require("../logic/player/player")
 
 function assignPlayer(req, res, next) {
     const userId = req.body.userId

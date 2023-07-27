@@ -1,3 +1,6 @@
+import { DungeonCard, HeroCard, SpellCard } from "../logic/game/cards";
+import { Player } from "../logic/player/player";
+
 const express = require('express');
 const router = express.Router();
 // const uuid = require('uuid');
@@ -9,8 +12,8 @@ const { assignPlayer } = require('../utils/verifyPlayer')
 const { parse, stringify, toJSON, fromJSON } = require('flatted');
 const { updateLobbyPlayers } = require('../utils/socketsHelper');
 const { SelectionRequest, SelectionRequestOneFromGivenList } = require('../logic/game/playerRequestSelections');
-const { HeroCard, DungeonCard, SpellCard } = require('../logic/game/cards');
-const Player = require('../logic/player/player');
+// const { HeroCard, DungeonCard, SpellCard } = require('../logic/game/cards');
+// const Player = require('../logic/player/player');
 const { CardAction } = require('../logic/game/unique_mechanics/customCardActions');
 
 
@@ -88,30 +91,30 @@ router.post('/:lobbyId/play-spell', assignPlayer, (req, res, next) => {
 router.post('/:lobbyId/select-item', assignPlayer, (req, res, next) => {
 
     try {
-        const player = req.player
+        const player: Player = req.player
         let selectedItem
         switch (player.requestedSelection.getRequestItemType()) {
-            case SelectionRequest.requestItemTypes.HERO: {
+            case "hero": {
                 selectedItem = HeroCard.getHero(req.body.itemId)
                 break
             }
-            case SelectionRequest.requestItemTypes.PLAYER: {
+            case "player": {
                 selectedItem = Player.getPlayer(req.body.itemId)
                 break
             }
-            case SelectionRequest.requestItemTypes.DUNGEON: {
+            case "dungeon": {
                 selectedItem = DungeonCard.getDungeon(req.body.itemId)
                 break
             }
-            case SelectionRequest.requestItemTypes.SPELL: {
+            case "spell": {
                 selectedItem = SpellCard.getSpell(req.body.itemId)
                 break
             }
-            case SelectionRequest.requestItemTypes.TREASURE: {
+            case "treasure": {
                 selectedItem = req.body.treasureSymbol
                 break
             }
-            case SelectionRequestOneFromGivenList.chooseFromGivenListRequestType: {
+            case "CHOOSE_FROM_GIVEN_LIST": {
                 selectedItem = req.body.selectedItem
                 break
             }
