@@ -1,10 +1,10 @@
 class RoundModifer {
 
     // onModifierUsed: () => void
-    onModifierUsed
-    onRoundEnd
+    onModifierUsed: () => void
+    onRoundEnd: () => void
 
-    constructor(onModifierUsed, onRoundEnd) {
+    constructor(onModifierUsed: () => void, onRoundEnd: () => void) {
         this.onModifierUsed = onModifierUsed
         this.onRoundEnd = onRoundEnd
         this.handleModifierused()

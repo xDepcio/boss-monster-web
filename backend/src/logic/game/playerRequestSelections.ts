@@ -1,10 +1,10 @@
 import { Player } from "../player/player"
-import { RequestItemType, SelectionChoiceScope } from "../types"
+import { RequestItemType, SelectionChoiceScope, TreasureSign } from "../types"
 import { BossCard, DungeonCard, HeroCard, SpellCard } from "./cards"
 
 const { HeroNotFoundInCity, InvalidTreasureType } = require("../errors")
 
-type SelectableItem = HeroCard | DungeonCard | SpellCard | BossCard | 'magic' | 'fortune' | 'strength' | 'faith'
+export type SelectableItem = Player | HeroCard | DungeonCard | SpellCard | BossCard | TreasureSign
 class SelectionRequest {
     // static requestItemTypes = {
     //     HERO: 'hero',
@@ -89,23 +89,34 @@ class SelectionRequest {
     }
 }
 
-class SelectionRequestOneFromGivenList {
+class SelectionRequestOneFromGivenList<SelectableType> {
     // static chooseFromGivenListRequestType = 'CHOOSE_FROM_GIVEN_LIST'
 
     requestedPlayer: Player
     selectionMessage: string
-    avalibleItemsForSelectArr: any[]
-    selectedItems: any[]
+    avalibleItemsForSelectArr: SelectableType[]
+    selectedItems: SelectableType[]
     target
     requestItemType: 'CHOOSE_FROM_GIVEN_LIST'
+    onRecieveSelectionData: (data: SelectableType[]) => void
 
 
-    constructor(requestedPlayer: Player, selectionMessage: string, avalibleItemsForSelectArr: any[], target) {
+    constructor({
+        requestedPlayer,
+        selectionMessage,
+        avalibleItemsForSelectArr,
+        onRecieveSelectionData
+    }: {
+        requestedPlayer: Player,
+        selectionMessage: string,
+        avalibleItemsForSelectArr: SelectableType[],
+        onRecieveSelectionData: (data: SelectableType[]) => void
+    }) {
         this.requestedPlayer = requestedPlayer
         this.selectionMessage = selectionMessage
         this.avalibleItemsForSelectArr = avalibleItemsForSelectArr
         this.selectedItems = []
-        this.target = target
+        this.onRecieveSelectionData = onRecieveSelectionData
         this.requestItemType = "CHOOSE_FROM_GIVEN_LIST"
     }
 
@@ -113,7 +124,7 @@ class SelectionRequestOneFromGivenList {
         return this.requestItemType
     }
 
-    selectItem(item: any) {
+    selectItem(item: SelectableType) {
         if (this.isSelectionValid(item)) {
             this.selectedItems.push(item)
             if (this.isCompleted()) {
@@ -122,7 +133,7 @@ class SelectionRequestOneFromGivenList {
         }
     }
 
-    isSelectionValid(selectedItem: any) {
+    isSelectionValid(selectedItem: SelectableType) {
         let isItemIn = false
         for (const item of this.avalibleItemsForSelectArr) {
             if (selectedItem === item) {
@@ -138,10 +149,28 @@ class SelectionRequestOneFromGivenList {
 
     resolveTarget() {
         this.requestedPlayer.setRequestedSelection(null)
-        this.target.receiveSelectionData(this.selectedItems)
-        this.target.use()
+        this.onRecieveSelectionData(this.selectedItems)
+        // this.target.receiveSelectionData(this.selectedItems)
+        // this.target.use()
     }
 }
+
+
+// class Class1<T> {
+//     avalibleItemsForSelectArr: T[]
+//     selectedItems: T[]
+//     constructor(a: number, avalibleItemsForSelectArr: T[]) {
+//         this.avalibleItemsForSelectArr = avalibleItemsForSelectArr
+//         this.selectedItems = []
+//     }
+
+//     resolve() {
+//         return this.selectedItems
+//     }
+// }
+
+// const a = new Class1<"tak" | "nie">(1, ['tak', "nie"])
+// let xd = a.resolve()
 
 
 module.exports = {
@@ -149,4 +178,4 @@ module.exports = {
     SelectionRequestOneFromGivenList
 }
 
-export { SelectionRequest }
+export { SelectionRequest, SelectionRequestOneFromGivenList }

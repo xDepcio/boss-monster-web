@@ -1,6 +1,6 @@
 import { BossCard, Card, DungeonCard, HeroCard, SpellCard } from "../game/cards"
 import { Game } from "../game/game"
-import { SelectionRequest } from "../game/playerRequestSelections"
+import { SelectionRequest, SelectionRequestOneFromGivenList } from "../game/playerRequestSelections"
 import { Id } from "../types"
 
 const {
@@ -127,7 +127,7 @@ class Player {
         return this.name
     }
 
-    setRequestedSelection(selection: SelectionRequest | null) {
+    setRequestedSelection(selection: SelectionRequest | SelectionRequestOneFromGivenList<any> | null) {
         this.requestedSelection = selection
     }
 

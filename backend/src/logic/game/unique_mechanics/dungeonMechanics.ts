@@ -1,10 +1,15 @@
-import { DungeonMechanicTypes } from "../../types"
-import { DungeonCard } from "../cards"
+import { Player } from "../../player/player"
+import { DungeonMechanicTypes, TreasureSign } from "../../types"
+import { GameEvent } from "../actionFeedbacks"
+import { DungeonCard, SpellCard } from "../cards"
+import { SelectableItem, SelectionRequest, SelectionRequestOneFromGivenList } from "../playerRequestSelections"
+import { RoundModifer } from "./roundModifiers"
 
 const { OncePerRoundMechanicUsedAlready, DungeonMechanicUseConditionError } = require("../../errors")
 const { feedback, eventTypes } = require("../actionFeedbacks")
-const { SelectionRequest, SelectionRequestOneFromGivenList } = require("../playerRequestSelections")
-const { RoundModifer } = require("./roundModifiers")
+// const { SelectionRequest, SelectionRequestOneFromGivenList } = require("../playerRequestSelections")
+
+// const { RoundModifer } = require("./roundModifiers")
 
 // Inheritance Scheme
 // DungeonMechanic --|-- DungeonMechanicOnBuild
@@ -15,13 +20,13 @@ const { RoundModifer } = require("./roundModifiers")
 //                   |
 //                   |-- DungeonMechanicOnUse ------|-- DungeonMechanicOnUseOnePerRound
 
-const mechanicsTypes = {
-    ON_DESTORY: 'onDestroy',
-    ON_BUILD: 'onBuild',
-    ONE_PER_ROUND: 'onePerRound',
-    EVERY_GAME_ACTION: 'everyGameAction',
-    ON_USE_ONE_PER_ROUND: 'onUseOnePerRound'
-}
+// const mechanicsTypes = {
+//     ON_DESTORY: 'onDestroy',
+//     ON_BUILD: 'onBuild',
+//     ONE_PER_ROUND: 'onePerRound',
+//     EVERY_GAME_ACTION: 'everyGameAction',
+//     ON_USE_ONE_PER_ROUND: 'onUseOnePerRound'
+// }
 
 
 class DungeonMechanic {
@@ -47,7 +52,7 @@ class DungeonMechanic {
         return this.mechanicDescription
     }
 
-    handleGameEvent(event) {
+    handleGameEvent(event: GameEvent) {
 
     }
 
@@ -57,7 +62,7 @@ class DungeonMechanic {
 }
 
 class EliminateHeroInDungeon extends DungeonMechanic {
-    constructor(dungeonCard, type, mechanicDescription) {
+    constructor(dungeonCard: DungeonCard, type: DungeonMechanicTypes, mechanicDescription: string) {
         super(dungeonCard, type, mechanicDescription)
         dungeonCard.setAllowDestroy(true)
     }
@@ -79,7 +84,7 @@ class EliminateHeroInDungeon extends DungeonMechanic {
 
 
 class Get3MoneyOnDestroy extends DungeonMechanic {
-    constructor(dungeonCard, type, mechanicDescription) {
+    constructor(dungeonCard: DungeonCard, type: DungeonMechanicTypes, mechanicDescription: string) {
         super(dungeonCard, type, mechanicDescription)
         dungeonCard.setAllowDestroy(true)
     }
@@ -96,7 +101,7 @@ class DrawSpellWhenPlayedSpell extends DungeonMechanic { // "Raz na rundę: kied
 
     usedInRound
 
-    constructor(dungeonCard, type, mechanicDescription) {
+    constructor(dungeonCard: DungeonCard, type: DungeonMechanicTypes, mechanicDescription: string) {
         super(dungeonCard, type, mechanicDescription)
         this.usedInRound = false
     }
@@ -111,8 +116,8 @@ class DrawSpellWhenPlayedSpell extends DungeonMechanic { // "Raz na rundę: kied
         this.usedInRound = true
     }
 
-    handleGameEvent(event) {
-        if (event.type === eventTypes.PLAYER_PLAYED_SPELL) {
+    handleGameEvent(event: GameEvent) {
+        if (event.type === "PLAYER_PLAYED_SPELL") {
             if (event.player === this.dungeonCard.owner) {
                 if (!this.usedInRound) {
                     this.use()
@@ -128,9 +133,9 @@ class DrawSpellWhenPlayedSpell extends DungeonMechanic { // "Raz na rundę: kied
 
 class Draw2GoldWhenAnyDungeonDestoryed extends DungeonMechanic {
 
-    usedInRound
+    usedInRound: boolean
 
-    constructor(dungeonCard, type, mechanicDescription) {
+    constructor(dungeonCard: DungeonCard, type: DungeonMechanicTypes, mechanicDescription: string) {
         super(dungeonCard, type, mechanicDescription)
         this.usedInRound = false
     }
@@ -145,13 +150,13 @@ class Draw2GoldWhenAnyDungeonDestoryed extends DungeonMechanic {
         this.usedInRound = true
     }
 
-    handleGameEvent(event) {
-        if (event.type === eventTypes.PLAYER_DESTROYED_DUNGEON) {
+    handleGameEvent(event: GameEvent) {
+        if (event.type === "PLAYER_DESTROYED_DUNGEON") {
             if (!this.usedInRound) {
                 this.use()
             }
         }
-        else if (event.type === eventTypes.NEW_ROUND_BEGUN) {
+        else if (event.type === "NEW_ROUND_BEGUN") {
             this.usedInRound = false
         }
     }
@@ -160,10 +165,10 @@ class Draw2GoldWhenAnyDungeonDestoryed extends DungeonMechanic {
 
 class Draw2GoldWhenDungeonBuildNext extends DungeonMechanic {
 
-    previousLeft
-    previousRight
+    previousLeft: DungeonCard | null
+    previousRight: DungeonCard | null
 
-    constructor(dungeonCard, type, mechanicDescription) {
+    constructor(dungeonCard: DungeonCard, type: DungeonMechanicTypes, mechanicDescription: string) {
         super(dungeonCard, type, mechanicDescription)
         this.previousLeft = null
         this.previousRight = null
@@ -196,8 +201,8 @@ class Draw2GoldWhenDungeonBuildNext extends DungeonMechanic {
         this.previousRight = newRight
     }
 
-    handleGameEvent(event) {
-        if (event.type === eventTypes.PLAYER_BUILD_DUNGEON) {
+    handleGameEvent(event: GameEvent) {
+        if (event.type === "PLAYER_BUILD_DUNGEON") {
             if (event.dungeon.id === this.dungeonCard.id) {
                 this.previousLeft = this.getLeft()
                 this.previousRight = this.getRight()
@@ -211,10 +216,10 @@ class Draw2GoldWhenDungeonBuildNext extends DungeonMechanic {
 
 class NegateSpellByRemovingYourSpell extends DungeonMechanic {
 
-    usedInRound
-    selectedSpell
+    usedInRound: boolean
+    selectedSpell: SpellCard | null
 
-    constructor(dungeonCard, type, mechanicDescription) {
+    constructor(dungeonCard: DungeonCard, type: DungeonMechanicTypes, mechanicDescription: string) {
         super(dungeonCard, type, mechanicDescription)
         this.usedInRound = false
         this.selectedSpell = null
@@ -247,14 +252,14 @@ class NegateSpellByRemovingYourSpell extends DungeonMechanic {
         return true
     }
 
-    handleGameEvent(event) {
-        if (event.type === eventTypes.NEW_ROUND_BEGUN) {
+    handleGameEvent(event: GameEvent) {
+        if (event.type === "NEW_ROUND_BEGUN") {
             this.usedInRound = false
         }
     }
 
     requestPlayerSelect() {
-        const selectionReq = new SelectionRequest(this.dungeonCard.owner, SelectionRequest.requestItemTypes.SPELL, 1, this.dungeonCard.owner, this)
+        const selectionReq = new SelectionRequest(this.dungeonCard.owner, "spell", 1, this.dungeonCard.owner, this)
         this.dungeonCard.owner.setRequestedSelection(selectionReq)
     }
 
@@ -265,11 +270,11 @@ class NegateSpellByRemovingYourSpell extends DungeonMechanic {
 
 class add1TreasureToAnyDungeonForThisRoundOnDestory extends DungeonMechanic {
 
-    selectedTreasure
-    selectedPlayer
-    requestedSelection
+    selectedTreasure: TreasureSign | null
+    selectedPlayer: Player | null
+    requestedSelection: "TREASURE" | "PLAYER" | null
 
-    constructor(dungeonCard, type, mechanicDescription) {
+    constructor(dungeonCard: DungeonCard, type: DungeonMechanicTypes, mechanicDescription: string) {
         super(dungeonCard, type, mechanicDescription)
         this.dungeonCard.setAllowDestroy(true)
         this.selectedTreasure = null
@@ -295,28 +300,28 @@ class add1TreasureToAnyDungeonForThisRoundOnDestory extends DungeonMechanic {
 
     requestPlayerSelectTreasure() {
         this.requestedSelection = 'TREASURE'
-        const selectionReq = new SelectionRequest(this.dungeonCard.owner, SelectionRequest.requestItemTypes.TREASURE, 1, SelectionRequest.scopeAny, this)
+        const selectionReq = new SelectionRequest(this.dungeonCard.owner, "treasure", 1, "ANY", this)
         this.dungeonCard.owner.setRequestedSelection(selectionReq)
     }
 
     requestPlayerSelectPlayer() {
         this.requestedSelection = 'PLAYER'
-        const selectionReq = new SelectionRequest(this.dungeonCard.owner, SelectionRequest.requestItemTypes.PLAYER, 1, SelectionRequest.scopeAny, this)
+        const selectionReq = new SelectionRequest(this.dungeonCard.owner, "player", 1, "ANY", this)
         this.dungeonCard.owner.setRequestedSelection(selectionReq)
     }
 
-    receiveSelectionData(data) {
+    receiveSelectionData(data: SelectableItem[]) {
         if (this.requestedSelection === 'TREASURE') {
-            this.selectedTreasure = data[0]
+            this.selectedTreasure = data[0] as TreasureSign
         }
         else if (this.requestedSelection === 'PLAYER') {
-            this.selectedPlayer = data[0]
+            this.selectedPlayer = data[0] as Player
         }
     }
 }
 
 class getOneDamageForEveryLuredHero extends DungeonMechanic {
-    constructor(dungeonCard, type, mechanicDescription) {
+    constructor(dungeonCard: DungeonCard, type: DungeonMechanicTypes, mechanicDescription: string) {
         super(dungeonCard, type, mechanicDescription)
     }
 
@@ -327,8 +332,8 @@ class getOneDamageForEveryLuredHero extends DungeonMechanic {
         ))
     }
 
-    handleGameEvent(event) {
-        if (event.type === eventTypes.HERO_GOTO_PLAYER) {
+    handleGameEvent(event: GameEvent) {
+        if (event.type === "HERO_LURED") {
             if (event.player.id === this.dungeonCard.owner.id) {
                 this.use()
             }
@@ -338,11 +343,11 @@ class getOneDamageForEveryLuredHero extends DungeonMechanic {
 
 class TakeThrownAwayCardByOtherPlayer extends DungeonMechanic {
 
-    thrownAwayCard
-    shouldGetCard
-    usedInRound
+    thrownAwayCard: DungeonCard | SpellCard | null
+    shouldGetCard: "tak" | "nie" | null
+    usedInRound: boolean
 
-    constructor(dungeonCard, type, mechanicDescription) {
+    constructor(dungeonCard: DungeonCard, type: DungeonMechanicTypes, mechanicDescription: string) {
         super(dungeonCard, type, mechanicDescription)
         this.thrownAwayCard = null
         this.shouldGetCard = null
@@ -361,8 +366,8 @@ class TakeThrownAwayCardByOtherPlayer extends DungeonMechanic {
         }
     }
 
-    handleGameEvent(event) {
-        if (event.type === eventTypes.PLAYER_THROWN_AWAY_CARD) {
+    handleGameEvent(event: GameEvent) {
+        if (event.type === "PLAYER_THROWN_AWAY_CARD") {
             if (event.player.id !== this.dungeonCard.owner.id) {
                 this.thrownAwayCard = event.card
                 if (!this.usedInRound) {
@@ -376,13 +381,21 @@ class TakeThrownAwayCardByOtherPlayer extends DungeonMechanic {
     }
 
     requestPlayerSelect() {
-        const requestedSelection = new SelectionRequestOneFromGivenList(this.dungeonCard.owner, 'Czy chcesz wziąść odrzuconą przez przeciwnika kartę?', ['tak', 'nie'], this)
+        const requestedSelection = new SelectionRequestOneFromGivenList<"tak" | "nie">({
+            avalibleItemsForSelectArr: ["tak", "nie"],
+            onRecieveSelectionData: (data) => {
+                this.shouldGetCard = data[0]
+            },
+            requestedPlayer: this.dungeonCard.owner,
+            selectionMessage: "Czy chcesz wziąść odrzuconą przez przeciwnika kartę?",
+            // this.dungeonCard.owner, 'Czy chcesz wziąść odrzuconą przez przeciwnika kartę?', ["tak", 'nie'], this
+        })
         this.dungeonCard.owner.setRequestedSelection(requestedSelection)
     }
 
-    receiveSelectionData(data) {
-        this.shouldGetCard = data[0]
-    }
+    // receiveSelectionData(data) {
+    //     this.shouldGetCard = data[0]
+    // }
 }
 
 class SendHeroBackToDungeonStart extends DungeonMechanic {
@@ -415,7 +428,7 @@ class SendHeroBackToDungeonStart extends DungeonMechanic {
         return hero
     }
 
-    handleGameEvent(event) {
+    handleGameEvent(event: GameEvent) {
         if (event.type === eventTypes.NEW_ROUND_BEGUN) {
             this.heroesThatEnteredInRound = []
         }
@@ -452,19 +465,26 @@ class Pay1GoldToDrawSpellWhenAnyDungeonDestroyed extends DungeonMechanic {
     }
 
     requestPlayerSelect() {
-        this.dungeonCard.owner.setRequestedSelection(new SelectionRequestOneFromGivenList(
-            this.dungeonCard.owner,
-            `Przeciwnik zniszczył komnatę, czy chcesz zapłacić 1 golda aby dobrać czar? (Zdolność karty '${this.dungeonCard.name}')`,
-            ['tak', 'nie'],
-            this
+        this.dungeonCard.owner.setRequestedSelection(new SelectionRequestOneFromGivenList<"tak" | "nie">({
+            avalibleItemsForSelectArr: ["nie", "tak"],
+            onRecieveSelectionData: (data) => {
+                this.shouldDrawCard = data[0]
+            },
+            requestedPlayer: this.dungeonCard.owner,
+            selectionMessage: `Przeciwnik zniszczył komnatę, czy chcesz zapłacić 1 golda aby dobrać czar? (Zdolność karty '${this.dungeonCard.name}')`,
+        }
+            // this.dungeonCard.owner,
+            // `Przeciwnik zniszczył komnatę, czy chcesz zapłacić 1 golda aby dobrać czar? (Zdolność karty '${this.dungeonCard.name}')`,
+            // ['tak', 'nie'],
+            // this
         ))
     }
 
-    receiveSelectionData(data) {
-        this.shouldDrawCard = data[0]
-    }
+    // receiveSelectionData(data) {
+    //     this.shouldDrawCard = data[0]
+    // }
 
-    handleGameEvent(event) {
+    handleGameEvent(event: GameEvent) {
         if (event.type === eventTypes.PLAYER_DESTROYED_DUNGEON) {
             if (!this.usedInRound) {
                 this.use()
@@ -478,9 +498,9 @@ class Pay1GoldToDrawSpellWhenAnyDungeonDestroyed extends DungeonMechanic {
 
 class DrawDungeonWhenHeroEliminatedInThisDungeon extends DungeonMechanic {
 
-    usedInRound
+    usedInRound: boolean
 
-    constructor(dungeonCard, type, mechanicDescription) {
+    constructor(dungeonCard: DungeonCard, type: DungeonMechanicTypes, mechanicDescription: string) {
         super(dungeonCard, type, mechanicDescription)
         this.usedInRound = false
     }
@@ -490,8 +510,8 @@ class DrawDungeonWhenHeroEliminatedInThisDungeon extends DungeonMechanic {
         this.usedInRound = true
     }
 
-    handleGameEvent(event) {
-        if (event.type === eventTypes.HERO_DIED_IN_ROOM) {
+    handleGameEvent(event: GameEvent) {
+        if (event.type === "HERO_DIED_IN_ROOM") {
             if (event.room === this.dungeonCard) {
                 this.use()
             }
@@ -520,7 +540,7 @@ const dungeonMechanicsMap = {
 
 module.exports = {
     dungeonMechanicsMap,
-    mechanicsTypes
+    // mechanicsTypes
 }
 
 export { DungeonMechanic }

@@ -178,7 +178,7 @@ type EventSchema = {
     },
 }
 
-type GameEvent = EventSchema[keyof EventSchema]
+export type GameEvent = EventSchema[keyof EventSchema]
 
 
 // export type FeedbackEventType = typeof eventTypes[keyof typeof eventTypes]
