@@ -178,7 +178,7 @@ type EventSchema = {
     },
 }
 
-type Event = EventSchema[keyof EventSchema]
+type GameEvent = EventSchema[keyof EventSchema]
 
 
 // export type FeedbackEventType = typeof eventTypes[keyof typeof eventTypes]
@@ -188,25 +188,25 @@ type Event = EventSchema[keyof EventSchema]
 // }
 
 export const feedback = {
-    PLAYER_DECLARED_BUILD: (player: Player): Event => {
+    PLAYER_DECLARED_BUILD: (player: Player): GameEvent => {
         return {
             type: "BUILD",
             message: `player with id ${player.id} declared building an dungeon`,
         }
     },
-    PLAYER_BECOME_READY: (player: Player): Event => {
+    PLAYER_BECOME_READY: (player: Player): GameEvent => {
         return {
             type: "READY",
             message: `player with id ${player.id} is ready now`
         }
     },
-    START_FIGHT_PHASE: (): Event => {
+    START_FIGHT_PHASE: (): GameEvent => {
         return {
             type: "START_FIGHT",
             message: `build phase has ended and new fight phase has started`
         }
     },
-    HERO_GOTO_PLAYER: (hero: HeroCard, player: Player): Event => {
+    HERO_GOTO_PLAYER: (hero: HeroCard, player: Player): GameEvent => {
         return {
             type: "HERO_LURED",
             message: `hero ${hero.getName()} went to ${player.getName()}`,
@@ -214,67 +214,67 @@ export const feedback = {
             player
         }
     },
-    PLAYER_KILLED_HERO: (player: Player, hero: HeroCard): Event => {
+    PLAYER_KILLED_HERO: (player: Player, hero: HeroCard): GameEvent => {
         return {
             type: "HERO_KILLED",
             message: `player ${player.getName()} killed hero ${hero.getName()}`
         }
     },
-    HERO_ATTACKED_PLAYER: (hero: HeroCard, player: Player): Event => {
+    HERO_ATTACKED_PLAYER: (hero: HeroCard, player: Player): GameEvent => {
         return {
             type: "PLAYER_DAMAGED",
             message: `hero ${hero.getName()} damaged player ${player.getName()} for ${hero.damageDealt} hp`
         }
     },
-    PLAYER_SELECTED_BOSS: (player: Player, boss: BossCard): Event => {
+    PLAYER_SELECTED_BOSS: (player: Player, boss: BossCard): GameEvent => {
         return {
             type: "PLAYER_SELECTED_BOSS",
             message: `player ${player.getName()} selected boss ${boss.getName()}`
         }
     },
-    START_FIRST_ROUND: (): Event => {
+    START_FIRST_ROUND: (): GameEvent => {
         return {
             type: "START_FIRST_ROUND",
             message: `All players chose their bosses and first round has started`
         }
     },
-    HERO_DAMAGED: (hero: HeroCard, dungeon: DungeonCard, player: Player): Event => {
+    HERO_DAMAGED: (hero: HeroCard, dungeon: DungeonCard, player: Player): GameEvent => {
         return {
             type: "HERO_DAMAGED",
             message: `Hero ${hero.getName()} got damaged for ${dungeon.damage} hp in ${player.getName()}'s dungeon. Hp left: ${hero.health}`
         }
     },
-    PLAYER_ACCEPTED_HERO_MOVE: (player: Player): Event => {
+    PLAYER_ACCEPTED_HERO_MOVE: (player: Player): GameEvent => {
         return {
             type: "PLAYER_ACCEPTED_HERO_MOVE",
             message: `Player ${player.getName()} accepted hero move`
         }
     },
-    NO_MORE_HEROES_IN_FIGHT_PHASE: (): Event => {
+    NO_MORE_HEROES_IN_FIGHT_PHASE: (): GameEvent => {
         return {
             type: "NO_MORE_HEROES_IN_FIGHT_PHASE",
             message: `All heroes completed their movement. Waiting for players to become ready for round end`
         }
     },
-    NEW_ROUND_BEGUN: (game: Game): Event => {
+    NEW_ROUND_BEGUN: (game: Game): GameEvent => {
         return {
             type: "NEW_ROUND_BEGUN",
             message: `===== Round ${game.gameRound} has started =====`
         }
     },
-    START_BUILD_PHASE: (): Event => {
+    START_BUILD_PHASE: (): GameEvent => {
         return {
             type: "START_BUILD_PHASE",
             message: `New build phase has started`
         }
     },
-    PLAYER_DESTROYED_DUNGEON: (player: Player, dungeon: DungeonCard): Event => {
+    PLAYER_DESTROYED_DUNGEON: (player: Player, dungeon: DungeonCard): GameEvent => {
         return {
             type: "PLAYER_DESTROYED_DUNGEON",
             message: `player ${player.getName()} destroyed dungeon ${dungeon.getName()}`
         }
     },
-    PLAYER_PLAYED_SPELL: (player: Player, spell: SpellCard): Event => {
+    PLAYER_PLAYED_SPELL: (player: Player, spell: SpellCard): GameEvent => {
         return {
             type: "PLAYER_PLAYED_SPELL",
             message: `player ${player.getName()} used spell: '${spell.getName()}'`,
@@ -283,13 +283,13 @@ export const feedback = {
         }
     },
     /** Deprecated. Too ambigious, use PLAYER_USED_SPELL_MECHANIC or PLAYER_USED_DUNGEON_MECHANIC instead.*/
-    PLAYER_USED_MECHANIC: (player: Player, mechanic: DungeonMechanic | SpellMechanic): Event => {
+    PLAYER_USED_MECHANIC: (player: Player, mechanic: DungeonMechanic | SpellMechanic): GameEvent => {
         return {
             type: "PLAYER_USED_MECHANIC",
             message: `player ${player.getName()} used '${mechanic.getDescription()}'`
         }
     },
-    PLAYER_USED_SPELL_MECHANIC: (player: Player, spell: SpellCard, mechanic: SpellMechanic): Event => {
+    PLAYER_USED_SPELL_MECHANIC: (player: Player, spell: SpellCard, mechanic: SpellMechanic): GameEvent => {
         return {
             type: "PLAYER_USED_SPELL_MECHANIC",
             message: `player ${player.getName()} used '${mechanic.getDescription()}' of spell '${spell.getName()}'`,
@@ -297,7 +297,7 @@ export const feedback = {
             mechanic
         }
     },
-    PLAYER_USED_DUNGEON_MECHANIC: (player: Player, dungeon: DungeonCard, mechanic: DungeonMechanic): Event => {
+    PLAYER_USED_DUNGEON_MECHANIC: (player: Player, dungeon: DungeonCard, mechanic: DungeonMechanic): GameEvent => {
         return {
             type: "PLAYER_USED_DUNGEON_MECHANIC",
             message: `player ${player.getName()} used '${mechanic.getDescription()}' of dungeon '${dungeon.getName()}'`,
@@ -305,31 +305,31 @@ export const feedback = {
             mechanic
         }
     },
-    HERO_DAMAGED_BY_SPELL: (hero: HeroCard, spellDamageAmount: number, spellName: string, player: Player): Event => {
+    HERO_DAMAGED_BY_SPELL: (hero: HeroCard, spellDamageAmount: number, spellName: string, player: Player): GameEvent => {
         return {
             type: "HERO_DAMAGED_BY_SPELL",
             message: `player ${player.getName()} damaged hero ${hero.getName()} for ${spellDamageAmount} with ${spellName}`
         }
     },
-    HERO_WENT_BACK_TO_CITY: (hero: HeroCard): Event => {
+    HERO_WENT_BACK_TO_CITY: (hero: HeroCard): GameEvent => {
         return {
             type: "HERO_WENT_BACK_TO_CITY",
             message: `hero ${hero.getName()} went back to the city`
         }
     },
-    PLAYER_DRAWNED_SPELL_CARD: (player: Player): Event => {
+    PLAYER_DRAWNED_SPELL_CARD: (player: Player): GameEvent => {
         return {
             type: "PLAYER_DRAWNED_SPELL_CARD",
             message: `player ${player.getName()} drawned new spell card`
         }
     },
-    PLAYER_DRAWNED_DUNGEON_CARD: (player: Player): Event => {
+    PLAYER_DRAWNED_DUNGEON_CARD: (player: Player): GameEvent => {
         return {
             type: "PLAYER_DRAWNED_DUNGEON_CARD",
             message: `player ${player.getName()} drawned new dungeon card`
         }
     },
-    PLAYER_BUILD_DUNGEON: (player: Player, dungeon: DungeonCard): Event => {
+    PLAYER_BUILD_DUNGEON: (player: Player, dungeon: DungeonCard): GameEvent => {
         return {
             type: "PLAYER_BUILD_DUNGEON",
             message: `player ${player.getName()} build ${dungeon.getName()}.`,
@@ -337,13 +337,13 @@ export const feedback = {
             dungeon
         }
     },
-    PLAYER_ACCEPTED_SPELL_PLAY: (player: Player, spell: SpellCard): Event => {
+    PLAYER_ACCEPTED_SPELL_PLAY: (player: Player, spell: SpellCard): GameEvent => {
         return {
             type: "PLAYER_ACCEPTED_SPELL_PLAY",
             message: `player ${player.getName()} accepted play of '${spell.getName()}' by ${spell.owner.getName()}.`,
         }
     },
-    PLAYER_THROWN_AWAY_CARD: (player: Player, card: SpellCard | DungeonCard): Event => {
+    PLAYER_THROWN_AWAY_CARD: (player: Player, card: SpellCard | DungeonCard): GameEvent => {
         return {
             type: "PLAYER_THROWN_AWAY_CARD",
             message: `player ${player.getName()} thrown away card '${card.getName()}'.`,
@@ -351,7 +351,7 @@ export const feedback = {
             card
         }
     },
-    HERO_ENTERED_ROOM: (hero: HeroCard, dungeonCard: DungeonCard, dungeonOwner: Player): Event => {
+    HERO_ENTERED_ROOM: (hero: HeroCard, dungeonCard: DungeonCard, dungeonOwner: Player): GameEvent => {
         return {
             type: "HERO_ENTERED_ROOM",
             message: `hero ${hero.getName()} entered ${dungeonCard.getName()} at ${dungeonOwner.getName()}'s dungeon.`,
@@ -360,7 +360,7 @@ export const feedback = {
             dungeonOwner
         }
     },
-    HERO_DIED_IN_ROOM: (hero: HeroCard, room: DungeonCard): Event => {
+    HERO_DIED_IN_ROOM: (hero: HeroCard, room: DungeonCard): GameEvent => {
         return {
             type: "HERO_DIED_IN_ROOM",
             message: `hero ${hero.getName()} died in ${room.getName()} at ${room.owner.getName()}'s dungeon.`,
@@ -368,7 +368,7 @@ export const feedback = {
             room,
         }
     },
-    PLAYER_USED_BOSS_RANKUP_MECHANIC: (player: Player, boss: BossCard, mechanic: BossMechanic): Event => {
+    PLAYER_USED_BOSS_RANKUP_MECHANIC: (player: Player, boss: BossCard, mechanic: BossMechanic): GameEvent => {
         return {
             type: "PLAYER_USED_BOSS_RANKUP_MECHANIC",
             message: `player ${player.getName()} used ${boss.getName()}'s '${mechanic.getDescription()}'`,
@@ -377,7 +377,7 @@ export const feedback = {
             mechanic
         }
     },
-    PLAYER_USED_CUSTOM_CARD_ACTION: (player: Player, card: DungeonCard | HeroCard | BossCard | SpellCard, actionTitle: string): Event => {
+    PLAYER_USED_CUSTOM_CARD_ACTION: (player: Player, card: DungeonCard | HeroCard | BossCard | SpellCard, actionTitle: string): GameEvent => {
         return {
             type: "PLAYER_USED_CUSTOM_CARD_ACTION",
             message: `player ${player.getName()} used ${card.getName()}'s action '${actionTitle}'`,
