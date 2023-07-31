@@ -1,3 +1,4 @@
+import { GameEvent } from "../actionFeedbacks"
 import { BossCard } from "../cards"
 
 const { eventTypes, feedback } = require("../actionFeedbacks")
@@ -19,7 +20,7 @@ class BossMechanic {
         return this.mechanicDescription
     }
 
-    handleGameEvent(event): any {
+    handleGameEvent(event: GameEvent): any {
         if (!this.bossCard.owner) return false
 
         if (!this.bossCard.hasRankedUp()) {
@@ -43,10 +44,10 @@ class GainOneGoldEveryTimeMonsterDungeonIsBuild extends BossMechanic {
         this.bossCard.trackedGame.saveGameAction(feedback.PLAYER_USED_BOSS_RANKUP_MECHANIC(this.bossCard.owner, this.bossCard, this))
     }
 
-    handleGameEvent(event) {
+    handleGameEvent(event: GameEvent) {
         if (!super.handleGameEvent(event)) return
 
-        if (event.type === eventTypes.PLAYER_BUILD_DUNGEON) {
+        if (event.type === "PLAYER_BUILD_DUNGEON") {
             if (this.bossCard.owner.id === event.player.id && event.dungeon.type === GAME_CONSTANTS.dungeonTypes.monsters) {
                 this.use()
             }
@@ -104,14 +105,14 @@ class BoostEveryTrapDungeonFor1EnemiesCanPay1GoldToDeactivate extends BossMechan
         )
     }
 
-    handleGameEvent(event) {
+    handleGameEvent(event: GameEvent) {
         if (!super.handleGameEvent(event)) return
 
         if (!this.handledRankUp) {
             this.handleRankUp()
         }
 
-        if (event.type === eventTypes.PLAYER_BUILD_DUNGEON) {
+        if (event.type === "PLAYER_BUILD_DUNGEON") {
             if (this.appliedModifer === null) {
                 const modifer = new RoundModifer(
                     () => {
