@@ -17,6 +17,11 @@ class RoundModifer {
     handleRoundEnded() {
         this.onRoundEnd()
     }
+
+    endManually() {
+        this.handleRoundEnded()
+        this.handleRoundEnded = () => { }
+    }
 }
 
 

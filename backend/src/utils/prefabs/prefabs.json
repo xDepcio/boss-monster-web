@@ -137,19 +137,6 @@
             },
             {
                 "CARDTYPE": "DUNGEON",
-                "id": 19,
-                "name": "Wszystkowidzące Oko",
-                "type": "traps",
-                "damage": 3,
-                "treasure": {
-                    "magic": 1
-                },
-                "mechanicType": "onUseOnePerRound",
-                "mechanicDescription": "Raz na rundę: kiedy przeciwnik zagra kartę czaru, możesz odrzucić z ręki kartę czaru, aby zanegować efekty właśnie zagranej przez przeciwnika karty.",
-                "isFancy": false
-            },
-            {
-                "CARDTYPE": "DUNGEON",
                 "id": 22,
                 "name": "Nieprzebyty krużganek",
                 "type": "traps",
@@ -224,6 +211,19 @@
                 },
                 "mechanicType": "onePerRound",
                 "mechanicDescription": "Raz na rundę: jeśli bohater zostanie wyeliminowany w tej komnacie, dociągnij kartę komnaty.",
+                "isFancy": false
+            },
+            {
+                "CARDTYPE": "DUNGEON",
+                "id": 19,
+                "name": "Wszystkowidzące Oko",
+                "type": "traps",
+                "damage": 3,
+                "treasure": {
+                    "magic": 1
+                },
+                "mechanicType": "onUseOnePerRound",
+                "mechanicDescription": "Raz na rundę: kiedy przeciwnik zagra kartę czaru, możesz odrzucić z ręki kartę czaru, aby zanegować efekty właśnie zagranej przez przeciwnika karty.",
                 "isFancy": false
             }
         ],

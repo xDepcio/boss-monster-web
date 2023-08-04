@@ -1,10 +1,12 @@
 import { GameEvent } from "../actionFeedbacks"
 import { BossCard } from "../cards"
+import { CardAction } from "./customCardActions"
+import { RoundModifer } from "./roundModifiers"
 
 const { eventTypes, feedback } = require("../actionFeedbacks")
 const GAME_CONSTANTS = require('../gameConstants.json')
-const { CardAction } = require("./customCardActions")
-const { RoundModifer } = require("./roundModifiers")
+// const { CardAction } = require("./customCardActions")
+// const { RoundModifer } = require("./roundModifiers")
 
 class BossMechanic {
 
@@ -20,17 +22,20 @@ class BossMechanic {
         return this.mechanicDescription
     }
 
-    handleGameEvent(event: GameEvent): any {
+    validate(): boolean {
         if (!this.bossCard.owner) return false
 
         if (!this.bossCard.hasRankedUp()) {
             if (this.bossCard.owner.dungeon.length >= GAME_CONSTANTS.dungeonsCountToRankUp) {
                 this.bossCard.setRankedUp(true)
-                return true
+                return false
             }
             return false
         }
         return true
+    }
+
+    handleGameEvent(event: GameEvent): any {
     }
 }
 
@@ -45,7 +50,8 @@ class GainOneGoldEveryTimeMonsterDungeonIsBuild extends BossMechanic {
     }
 
     handleGameEvent(event: GameEvent) {
-        if (!super.handleGameEvent(event)) return
+        if (!super.validate()) return
+        // if (!super.handleGameEvent(event)) return
 
         if (event.type === "PLAYER_BUILD_DUNGEON") {
             if (this.bossCard.owner.id === event.player.id && event.dungeon.type === "monsters") {
@@ -57,15 +63,17 @@ class GainOneGoldEveryTimeMonsterDungeonIsBuild extends BossMechanic {
 
 class BoostEveryTrapDungeonFor1EnemiesCanPay1GoldToDeactivate extends BossMechanic {
 
-    appliedModifer
-    handledRankUp
-    addedCardAction
+    appliedModifer: RoundModifer
+    // handledRankUp: boolean
+    disabled: boolean
+    addedCardAction: CardAction
 
-    constructor(bossCard, mechanicDescription) {
+    constructor(bossCard: BossCard, mechanicDescription: string) {
         super(bossCard, mechanicDescription)
         this.appliedModifer = null
-        this.handledRankUp = false
+        // this.handledRankUp = false
         this.addedCardAction = null
+        this.disabled = false
     }
 
     handleRankUp() {
@@ -80,69 +88,80 @@ class BoostEveryTrapDungeonFor1EnemiesCanPay1GoldToDeactivate extends BossMechan
         )
         this.addedCardAction = cardAction
         this.bossCard.addCustomCardAction(cardAction)
-        this.handledRankUp = true
+        // this.handledRankUp = true
     }
 
     disableForRound() {
         this.addedCardAction.setActionDisabled(true)
-        this.bossCard.trackedGame.addRoundModifier(
-            new RoundModifer(
-                () => {
-                    this.bossCard.owner.dungeon.forEach((dungeonCard) => {
-                        if (dungeonCard.type === GAME_CONSTANTS.dungeonTypes.traps) {
-                            dungeonCard.damage -= 1
-                        }
-                    })
-                },
-                () => {
-                    this.bossCard.owner.dungeon.forEach((dungeonCard) => {
-                        if (dungeonCard.type === GAME_CONSTANTS.dungeonTypes.traps) {
-                            dungeonCard.damage += 1
-                        }
-                    })
-                },
-            )
+        this.appliedModifer.endManually()
+        this.disabled = true
+    }
+
+    applyModifier() {
+        const existingCards = [...this.bossCard.owner.dungeon]
+        const modifer = new RoundModifer(
+            () => {
+                this.addedCardAction.setActionDisabled(false)
+                existingCards.forEach((dungeonCard) => {
+                    if (dungeonCard.type === "traps") {
+                        dungeonCard.damage += 1
+                    }
+                })
+            },
+            () => {
+                existingCards.forEach((dungeonCard) => {
+                    if (dungeonCard.type === "traps") {
+                        dungeonCard.damage -= 1
+                    }
+                })
+                this.appliedModifer = null
+            },
         )
+
+        this.appliedModifer = modifer
+        this.bossCard.trackedGame.addRoundModifier(modifer)
+    }
+
+    reApplayModifier() {
+        if (this.appliedModifer) {
+            this.appliedModifer.endManually()
+        }
+        this.applyModifier()
     }
 
     handleGameEvent(event: GameEvent) {
-        if (!super.handleGameEvent(event)) return
+        if (!super.validate()) return
 
-        if (!this.handledRankUp) {
+        if (event.type === "PLAYER_RANKED_UP_BOSS" && event.player.id === this.bossCard.owner.id) {
             this.handleRankUp()
         }
 
-        if (event.type === "PLAYER_BUILD_DUNGEON") {
-            if (this.appliedModifer === null) {
-                const modifer = new RoundModifer(
-                    () => {
-                        this.addedCardAction.setActionDisabled(false)
-                        this.bossCard.owner.dungeon.forEach((dungeonCard) => {
-                            if (dungeonCard.type === "traps") {
-                                dungeonCard.damage += 1
-                            }
-                        })
-                    },
-                    () => {
-                        this.bossCard.owner.dungeon.forEach((dungeonCard) => {
-                            if (dungeonCard.type === "traps") {
-                                dungeonCard.damage -= 1
-                            }
-                        })
-                        this.appliedModifer = null
-                    },
-                )
-
-                this.appliedModifer = modifer
-                this.bossCard.trackedGame.addRoundModifier(modifer)
-            }
+        if (event.type === "NEW_ROUND_BEGUN") {
+            this.disabled = false
         }
+
+        if (!this.disabled) {
+            this.reApplayModifier()
+        }
+
+        // if (event.type === "START_BUILD_PHASE" || event.type === "START_FIGHT" || (event.type === "PLAYER_RANKED_UP_BOSS" && event.player.id === this.bossCard.owner.id) || (event.type === 'PLAYER_BUILD_DUNGEON' && event.dungeon.type === "traps")) {
+        // if (
+        //     (this.appliedModifer === null && event.type === "START_FIGHT") ||
+        //     (this.appliedModifer === null && event.type === "PLAYER_RANKED_UP_BOSS" && event.player.id === this.bossCard.owner.id)2
+        // ) {
+        //     this.applyModifier()
+        // }
+        // else if (event.type === 'PLAYER_BUILD_DUNGEON' && event.dungeon.type === "traps" && event.dungeon.owner.id === this.bossCard.owner.id && this.appliedModifer !== null && !this.disabled) {
+        //     this.reApplayModifier()
+        // }
     }
 }
 
+class MakeEveryOpponentDestroyOneDungeon extends BossMechanic { }
+
 const bossesMechanicsMap = {
     'Lamia': GainOneGoldEveryTimeMonsterDungeonIsBuild,
-    'Scott': BoostEveryTrapDungeonFor1EnemiesCanPay1GoldToDeactivate
+    'Scott': BoostEveryTrapDungeonFor1EnemiesCanPay1GoldToDeactivate,
 }
 
 module.exports = {

@@ -8,11 +8,11 @@ class CardAction {
 
     title: string
     allowUseFor: Player[]
-    onUse: Function
+    onUse: (player: Player) => void
     actionDisabled: boolean
     id: Id
 
-    constructor(title: string, allowUseFor: Player[], onUse: Function) {
+    constructor(title: string, allowUseFor: Player[], onUse: (player: Player) => void) {
         this.title = title
         this.allowUseFor = allowUseFor // Array of all players allowed to use this
         this.onUse = onUse

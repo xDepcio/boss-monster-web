@@ -27,7 +27,7 @@ class Card {
         this.customCardActions = []
     }
 
-    addCustomCardAction(action) {
+    addCustomCardAction(action: CardAction) {
         this.customCardActions.push(action)
     }
 
