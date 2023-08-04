@@ -138,6 +138,7 @@ function PlayerCards({ setSelectedDungCard, selectedDungCard }) {
                         key={i}
                         id={dungeon.id}
                         card={dungeon}
+                        baseDamage={dungeon.baseDamage}
                     />)}
                     {selfPlayer?.spellCards.map((spell, i) => <CardSpell
                         _onClick={(e) => handleSelectSpellToPlay(spell, e)}

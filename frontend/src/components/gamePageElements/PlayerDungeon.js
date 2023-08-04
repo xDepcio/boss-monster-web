@@ -153,6 +153,7 @@ function PlayerDungeon({ player, selectedDungCard, setSelectedDungCard }) {
                                 {player.declaredBuild?.belowDungeon?.id === dungeon.id ?
                                     <CardBack width={220} text={'TALIA KOMNAT'} /> :
                                     <CardDungeon
+                                        baseDamage={dungeon.baseDamage}
                                         _onClick={() => {
                                             handleBuildNewDungeon(i)
                                             if (clickedCardId === dungeon.id) {

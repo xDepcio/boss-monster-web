@@ -247,11 +247,12 @@ class DungeonCard extends Card {
     mechanic: DungeonMechanic | null
 
     constructor(id: Id, name: string, CARDTYPE: CardType, trackedGame: Game,
-        damage: number, treasure: TreasureSign, type: 'monsters' | 'traps', isFancy: boolean,
+        baseDamage: number, treasure: TreasureSign, type: 'monsters' | 'traps', isFancy: boolean,
         mechanic: typeof DungeonMechanic, mechanicType: DungeonMechanicTypes, mechanicDescription: string
     ) {
         super(id, name, CARDTYPE, trackedGame)
-        this.damage = damage
+        this.baseDamage = baseDamage
+        this.damage = baseDamage
         this.treasure = treasure
         this.type = type
         this.isFancy = isFancy

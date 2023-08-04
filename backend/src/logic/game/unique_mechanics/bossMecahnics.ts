@@ -118,14 +118,14 @@ class BoostEveryTrapDungeonFor1EnemiesCanPay1GoldToDeactivate extends BossMechan
                     () => {
                         this.addedCardAction.setActionDisabled(false)
                         this.bossCard.owner.dungeon.forEach((dungeonCard) => {
-                            if (dungeonCard.type === GAME_CONSTANTS.dungeonTypes.traps) {
+                            if (dungeonCard.type === "traps") {
                                 dungeonCard.damage += 1
                             }
                         })
                     },
                     () => {
                         this.bossCard.owner.dungeon.forEach((dungeonCard) => {
-                            if (dungeonCard.type === GAME_CONSTANTS.dungeonTypes.traps) {
+                            if (dungeonCard.type === "traps") {
                                 dungeonCard.damage -= 1
                             }
                         })
