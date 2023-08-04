@@ -395,15 +395,6 @@
             },
             {
                 "CARDTYPE": "BOSS",
-                "id": 3,
-                "name": "ROBOBO",
-                "pd": 400,
-                "treasure": {
-                    "strength": 1
-                }
-            },
-            {
-                "CARDTYPE": "BOSS",
                 "id": 4,
                 "name": "gała",
                 "pd": 630,

@@ -233,9 +233,10 @@ class HeroCard extends Card {
 class DungeonCard extends Card {
     static dungeons = {}
 
+    baseDamage: number
     damage: number
     treasure: TreasureSign
-    type: string
+    type: 'monsters' | 'traps'
     isFancy: boolean
     description: string | null
     belowDungeon: DungeonCard | null
@@ -246,7 +247,7 @@ class DungeonCard extends Card {
     mechanic: DungeonMechanic | null
 
     constructor(id: Id, name: string, CARDTYPE: CardType, trackedGame: Game,
-        damage: number, treasure: TreasureSign, type: string, isFancy: boolean,
+        damage: number, treasure: TreasureSign, type: 'monsters' | 'traps', isFancy: boolean,
         mechanic: typeof DungeonMechanic, mechanicType: DungeonMechanicTypes, mechanicDescription: string
     ) {
         super(id, name, CARDTYPE, trackedGame)
@@ -438,6 +439,7 @@ class BossCard extends Card {
 
     setRankedUp(bool: boolean) {
         this.rankedUp = bool
+        this.trackedGame.saveGameAction(feedback.PLAYER_RANKED_UP_BOSS(this.owner, this))
     }
 
     hasRankedUp() {

@@ -67,6 +67,12 @@ type EventSchema = {
         type: "PLAYER_SELECTED_BOSS",
         message: string
     },
+    PLAYER_RANKED_UP_BOSS: {
+        type: "PLAYER_RANKED_UP_BOSS",
+        message: string,
+        player: Player,
+        boss: BossCard,
+    },
     START_FIRST_ROUND: {
         type: "START_FIRST_ROUND",
         message: string
@@ -384,6 +390,14 @@ export const feedback = {
             player,
             card,
             actionTitle
+        }
+    },
+    PLAYER_RANKED_UP_BOSS: (player: Player, boss: BossCard): GameEvent => {
+        return {
+            type: "PLAYER_RANKED_UP_BOSS",
+            message: `player ${player.getName()} ranked up ${boss.getName()}`,
+            player,
+            boss
         }
     }
 }

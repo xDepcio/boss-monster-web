@@ -48,7 +48,7 @@ class GainOneGoldEveryTimeMonsterDungeonIsBuild extends BossMechanic {
         if (!super.handleGameEvent(event)) return
 
         if (event.type === "PLAYER_BUILD_DUNGEON") {
-            if (this.bossCard.owner.id === event.player.id && event.dungeon.type === GAME_CONSTANTS.dungeonTypes.monsters) {
+            if (this.bossCard.owner.id === event.player.id && event.dungeon.type === "monsters") {
                 this.use()
             }
         }

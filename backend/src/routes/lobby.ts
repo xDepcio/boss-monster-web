@@ -6,7 +6,8 @@ const uuid = require('uuid');
 const Lobby = require('../logic/lobby/lobby');
 // const Player = require('../logic/player/player')
 const { Game } = require('../logic/game/game')
-const prefabs = require('../utils/prefabs/prefabs.json')
+// const prefabs = require('../utils/prefabs/prefabs.json')
+import prefabs from '../utils/prefabs/prefabs.json'
 const { flattenCircular } = require('../utils/responseFormat')
 
 // const lobbies = {}
