@@ -1,6 +1,6 @@
 import { Player } from "../player/player"
 import { CardPlayPhase, CardType, DungeonMechanicTypes, Id, RoundPhase, TreasureSign } from "../types"
-import { feedback } from "./actionFeedbacks"
+import { GameEvent, feedback } from "./actionFeedbacks"
 import { Game } from "./game"
 import { BossMechanic } from "./unique_mechanics/bossMecahnics"
 import { CardAction } from "./unique_mechanics/customCardActions"
@@ -444,7 +444,7 @@ class BossCard extends Card {
         return this.rankedUp
     }
 
-    handleGameEvent(event) {
+    handleGameEvent(event: GameEvent) {
         const mechanic = this.getMechanic()
         if (mechanic) {
             mechanic.handleGameEvent(event)
