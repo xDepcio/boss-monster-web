@@ -4,6 +4,7 @@ import SelectionCompOneFromList from './SelectionCompOneFromList'
 import SelectionCompPlayers from './SelectionCompPlayers'
 import SelectionCompTreasure from './SelectionCompTreasure'
 import './SelectionRequestsComp.css'
+import SelectionCompMessage from './SelectionCompMessage'
 
 
 function SelectionRequestsComp() {
@@ -22,7 +23,7 @@ function SelectionRequestsComp() {
                 setDisplayedSelectionComp('oneFromList')
                 break;
             default:
-                setDisplayedSelectionComp(null)
+                setDisplayedSelectionComp(true)
                 break;
         }
     }, [requestedSelectionType])
@@ -36,6 +37,7 @@ function SelectionRequestsComp() {
                 {displayedSelectionComp === 'treasure' && <SelectionCompTreasure />}
                 {displayedSelectionComp === 'player' && <SelectionCompPlayers />}
                 {displayedSelectionComp === 'oneFromList' && <SelectionCompOneFromList />}
+                <SelectionCompMessage />
             </>
         )
     }

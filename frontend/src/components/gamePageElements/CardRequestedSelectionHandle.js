@@ -19,6 +19,7 @@ function CardRequestedSelectionHandle({ card = null }) {
     }
 
     function isSelectionValid(clickedCard) {
+        return true
         if (requestedSelection.requestItemType.toLowerCase() !== clickedCard.CARDTYPE.toLowerCase()) {
             return false
         }
