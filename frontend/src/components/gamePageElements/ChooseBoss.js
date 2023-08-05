@@ -29,7 +29,15 @@ function ChooseBoss() {
         <div className='choose-boss-wrapper'>
             <h3 className='choose-boss-header'>WYBIERZ BOSSA:</h3>
             <div className='choose-boss-holder'>
-                {selfPlayer?.drawnBosses.map((boss, i) => <CardBoss _onClick={() => handleBossSelect(boss)} _className={'choose-boss'} treasure={boss.treasure} name={boss.name} pd={boss.pd} width={300} />)}
+                {selfPlayer?.drawnBosses.map((boss, i) => <CardBoss
+                    _onClick={() => handleBossSelect(boss)}
+                    _className={'choose-boss'}
+                    treasure={boss.treasure}
+                    name={boss.name}
+                    pd={boss.pd}
+                    width={300}
+                    description={boss?.mechanic?.mechanicDescription}
+                />)}
             </div>
         </div>
     )

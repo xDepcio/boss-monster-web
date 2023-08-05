@@ -214,6 +214,7 @@ function PlayerDungeon({ player, selectedDungCard, setSelectedDungCard }) {
                         width={220}
                         pd={player.selectedBoss?.pd}
                         name={player.selectedBoss?.name}
+                        description={player.selectedBoss?.mechanic?.mechanicDescription}
                     />
                 </div>
             </div>
