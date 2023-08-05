@@ -102,7 +102,11 @@ router.post('/:lobbyId/select-item', assignPlayer, (req, res, next) => {
                 selectedItem = Player.getPlayer(req.body.itemId)
                 break
             }
-            case "dungeon": {
+            case "builtDungeon": {
+                selectedItem = DungeonCard.getDungeon(req.body.itemId)
+                break
+            }
+            case "dungeonCard": {
                 selectedItem = DungeonCard.getDungeon(req.body.itemId)
                 break
             }

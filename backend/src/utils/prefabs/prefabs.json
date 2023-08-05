@@ -411,6 +411,16 @@
                     "fortune": 1
                 },
                 "mechanicDescription": "Do końca gry: Twoje komnaty pułapek otrzymują +1 obrażeń. Dowonly przeciwnik może Ci dać 1 gold, aby do końca rundy zanegować ten efekt."
+            },
+            {
+                "CARDTYPE": "BOSS",
+                "id": 6,
+                "name": "ROBOBO",
+                "pd": 400,
+                "treasure": {
+                    "strength": 1
+                },
+                "mechanicDescription": "Każdy przeciwnik musi wybrać i zniszczyć komnatę w swoich podziemiach."
             }
         ]
     },

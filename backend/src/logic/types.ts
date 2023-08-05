@@ -6,5 +6,5 @@ export type DungeonMechanicTypes = 'onDestroy' | 'onBuild' | 'onePerRound' | 'ev
 export type RoundPhase = 'fight' | 'build' | 'start'
 export type CardPlayPhase = 'fight' | 'build' | 'both'
 export type CardType = "HERO" | "BOSS" | "DUNGEON" | "SPELL"
-export type RequestItemType = 'hero' | 'dungeon' | 'player' | 'spell' | 'treasure'
+export type RequestItemType = 'hero' | 'dungeonCard' | 'builtDungeon' | 'player' | 'spell' | 'treasure'
 export type SelectionChoiceScope = 'ANY' | 'CITY' | 'DEAD_HEROES' | Player

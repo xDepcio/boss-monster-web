@@ -1,7 +1,7 @@
 import { feedback } from "../game/actionFeedbacks"
 import { BossCard, Card, DungeonCard, HeroCard, SpellCard } from "../game/cards"
 import { Game } from "../game/game"
-import { SelectionRequest, SelectionRequestOneFromGivenList } from "../game/playerRequestSelections"
+import { SelectionRequest, SelectionRequestNEW, SelectionRequestOneFromGivenList } from "../game/playerRequestSelections"
 import { Id } from "../types"
 
 const {
@@ -61,7 +61,7 @@ class Player {
         magic: number,
         fortune: number
     }
-    requestedSelection: SelectionRequest | SelectionRequestOneFromGivenList<any> | null
+    requestedSelection: SelectionRequest | SelectionRequestOneFromGivenList<any> | null | SelectionRequestNEW
 
     constructor(id: Id, name: string) {
         this.id = id
@@ -128,7 +128,7 @@ class Player {
         return this.name
     }
 
-    setRequestedSelection(selection: SelectionRequest | SelectionRequestOneFromGivenList<any> | null) {
+    setRequestedSelection(selection: SelectionRequest | SelectionRequestOneFromGivenList<any> | null | SelectionRequestNEW) {
         this.requestedSelection = selection
     }
 

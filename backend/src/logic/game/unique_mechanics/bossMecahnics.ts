@@ -1,5 +1,6 @@
 import { GameEvent } from "../actionFeedbacks"
-import { BossCard } from "../cards"
+import { BossCard, DungeonCard } from "../cards"
+import { SelectionRequest, SelectionRequestNEW } from "../playerRequestSelections"
 import { CardAction } from "./customCardActions"
 import { RoundModifer } from "./roundModifiers"
 
@@ -64,14 +65,12 @@ class GainOneGoldEveryTimeMonsterDungeonIsBuild extends BossMechanic {
 class BoostEveryTrapDungeonFor1EnemiesCanPay1GoldToDeactivate extends BossMechanic {
 
     appliedModifer: RoundModifer
-    // handledRankUp: boolean
     disabled: boolean
     addedCardAction: CardAction
 
     constructor(bossCard: BossCard, mechanicDescription: string) {
         super(bossCard, mechanicDescription)
         this.appliedModifer = null
-        // this.handledRankUp = false
         this.addedCardAction = null
         this.disabled = false
     }
@@ -88,7 +87,6 @@ class BoostEveryTrapDungeonFor1EnemiesCanPay1GoldToDeactivate extends BossMechan
         )
         this.addedCardAction = cardAction
         this.bossCard.addCustomCardAction(cardAction)
-        // this.handledRankUp = true
     }
 
     disableForRound() {
@@ -143,25 +141,67 @@ class BoostEveryTrapDungeonFor1EnemiesCanPay1GoldToDeactivate extends BossMechan
         if (!this.disabled) {
             this.reApplayModifier()
         }
-
-        // if (event.type === "START_BUILD_PHASE" || event.type === "START_FIGHT" || (event.type === "PLAYER_RANKED_UP_BOSS" && event.player.id === this.bossCard.owner.id) || (event.type === 'PLAYER_BUILD_DUNGEON' && event.dungeon.type === "traps")) {
-        // if (
-        //     (this.appliedModifer === null && event.type === "START_FIGHT") ||
-        //     (this.appliedModifer === null && event.type === "PLAYER_RANKED_UP_BOSS" && event.player.id === this.bossCard.owner.id)2
-        // ) {
-        //     this.applyModifier()
-        // }
-        // else if (event.type === 'PLAYER_BUILD_DUNGEON' && event.dungeon.type === "traps" && event.dungeon.owner.id === this.bossCard.owner.id && this.appliedModifer !== null && !this.disabled) {
-        //     this.reApplayModifier()
-        // }
     }
 }
 
-class MakeEveryOpponentDestroyOneDungeon extends BossMechanic { }
+class MakeEveryOpponentDestroyOneDungeon extends BossMechanic {
+
+    constructor(bossCard: BossCard, mechanicDescription: string) {
+        super(bossCard, mechanicDescription)
+    }
+
+    handleRankUp() {
+        const targetPlayers = [...this.bossCard.trackedGame.players].filter(player => player.id !== this.bossCard.owner.id)
+        targetPlayers.forEach((player) => {
+            if (player.dungeon.length === 0) return
+
+            // const selection = new SelectionRequest(
+            //     player,
+            //     "player",
+            //     1,
+            //     player,
+            //     this
+            // )
+
+            // const selection = new SelectionRequestNEW({
+            //     amount: 1,
+            //     choiceScope: player,
+            //     requestedPlayer: player,
+            //     requestItemType: "builtDungeon",
+            //     onFinish: () => { }
+            // })
+
+            // this.bossCard.owner.setRequestedSelection(selection)
+            const selection = new SelectionRequestNEW({
+                amount: 1,
+                choiceScope: player,
+                requestedPlayer: player,
+                requestItemType: "builtDungeon",
+                onFinish: (items) => {
+                    items.forEach((dungeonCard: DungeonCard) => {
+                        dungeonCard.setAllowDestroy(true)
+                        player.destroyDungeonCard(dungeonCard.id)
+                    })
+                },
+                message: "Wybierz swój loch do znieszczenia."
+            })
+            player.setRequestedSelection(selection);
+        })
+    }
+
+    handleGameEvent(event: GameEvent) {
+        if (!super.validate()) return
+
+        if (event.type === "PLAYER_RANKED_UP_BOSS" && event.player.id === this.bossCard.owner.id) {
+            this.handleRankUp()
+        }
+    }
+}
 
 const bossesMechanicsMap = {
     'Lamia': GainOneGoldEveryTimeMonsterDungeonIsBuild,
     'Scott': BoostEveryTrapDungeonFor1EnemiesCanPay1GoldToDeactivate,
+    'ROBOBO': MakeEveryOpponentDestroyOneDungeon
 }
 
 module.exports = {

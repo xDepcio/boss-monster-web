@@ -89,6 +89,106 @@ class SelectionRequest {
     }
 }
 
+type TSelectionRequestNEWConstructor = {
+    requestedPlayer: Player
+    requestItemType: RequestItemType
+    amount: number
+    choiceScope: SelectionChoiceScope
+    onFinish: (data: SelectableItem[]) => void
+    message?: string
+}
+class SelectionRequestNEW {
+    requestedPlayer: Player
+    requestItemType: RequestItemType
+    amount: number
+    choiceScope: SelectionChoiceScope
+    selectedItems: SelectableItem[]
+    onFinish: (data: SelectableItem[]) => void
+    message: string
+
+    constructor({ requestedPlayer, requestItemType, amount, choiceScope, onFinish, message = '' }: TSelectionRequestNEWConstructor) {
+        this.requestedPlayer = requestedPlayer
+        this.requestItemType = requestItemType
+        this.amount = amount
+        this.choiceScope = choiceScope // player object to hace acces to
+        this.selectedItems = []
+        this.message = message
+        this.onFinish = onFinish
+    }
+
+    getRequestItemType() {
+        return this.requestItemType
+    }
+
+    selectItem(item: SelectableItem) {
+        if (this.isSelectionValid(item)) {
+            this.selectedItems.push(item)
+            if (this.isCompleted()) {
+                this.resolveTarget()
+            }
+        }
+    }
+
+    isSelectionValid(selectedItem: SelectableItem) {
+        // Still TODO other variants...
+        if (this.choiceScope === "CITY") {
+            switch (this.requestItemType) {
+                case "hero":
+                    const hero = this.requestedPlayer.trackedGame.city.find((hero) => hero.id === (selectedItem as HeroCard).id)
+                    if (!hero) {
+                        throw new HeroNotFoundInCity("Selected hero isn't in city")
+                    }
+                    break;
+
+                default:
+                    // TODO...
+                    throw new Error("Unhandled check. TODO...")
+                    break;
+            }
+        }
+        else if (this.choiceScope === "ANY") {
+            switch (this.requestItemType) {
+                case "treasure":
+                    if (!(selectedItem === 'magic' || selectedItem === 'fortune' || selectedItem === 'strength' || selectedItem === 'faith')) {
+                        throw new InvalidTreasureType("Only 'fortune', 'magic', 'streangth' and 'faith' are valid treasure types.")
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+        }
+        else if (this.choiceScope instanceof Player) {
+            if ((selectedItem as DungeonCard).owner.id !== (this.choiceScope as Player).id) {
+                throw new Error("Selected dungeon isn't owned by avalible player.")
+            }
+            switch (this.requestItemType) {
+                case "builtDungeon":
+                    if (!(selectedItem instanceof DungeonCard)) {
+                        throw new Error("Selected item isn't a dungeon.")
+                    }
+                    const dungeon = this.requestedPlayer.dungeon.find((dungeon) => dungeon.id === (selectedItem as DungeonCard).id)
+                    if (!dungeon) {
+                        throw new Error("Selected dungeon isn't in player's dungeon")
+                    }
+                    break
+                default:
+                    break;
+            }
+        }
+        return true
+    }
+
+    isCompleted() {
+        return this.amount === this.selectedItems.length
+    }
+
+    resolveTarget() {
+        this.requestedPlayer.setRequestedSelection(null)
+        this.onFinish(this.selectedItems)
+    }
+}
+
 class SelectionRequestOneFromGivenList<SelectableType> {
     // static chooseFromGivenListRequestType = 'CHOOSE_FROM_GIVEN_LIST'
 
@@ -175,7 +275,8 @@ class SelectionRequestOneFromGivenList<SelectableType> {
 
 module.exports = {
     SelectionRequest,
-    SelectionRequestOneFromGivenList
+    SelectionRequestOneFromGivenList,
+    SelectionRequestNEW
 }
 
-export { SelectionRequest, SelectionRequestOneFromGivenList }
+export { SelectionRequest, SelectionRequestOneFromGivenList, SelectionRequestNEW }
