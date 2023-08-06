@@ -431,6 +431,16 @@
                     "strength": 1
                 },
                 "mechanicDescription": "Przejrzyj talię komnat lub stos odrzuconych kart w poszukiwaniu wypaśnej komnaty potworów. Możesz natychmiast zbudować tę komnatę. (Na wierzchu komnaty z pasującym rodzajem skarbu)."
+            },
+            {
+                "CARDTYPE": "BOSS",
+                "id": 6,
+                "name": "KLEOPATRA",
+                "pd": 850,
+                "treasure": {
+                    "fortune": 1
+                },
+                "mechanicDescription": "Przejrzyj talię komnat lub stos odrzuconych kart w poszukiwaniu wypaśnej komnaty pułapek. Możesz ją natychmiast zbudować. (Na wierzchu komnaty z pasującym rodzajem skarbu)."
             }
         ]
     },
