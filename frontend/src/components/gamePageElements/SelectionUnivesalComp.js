@@ -1,4 +1,4 @@
-import { faUser } from '@fortawesome/free-solid-svg-icons'
+import { faCaretDown, faCaretUp, faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { stringify } from 'flatted'
 import Cookies from 'js-cookie'
@@ -9,6 +9,7 @@ import CardSpell from './CardSpell'
 import './SelectionUnivesalComp.css'
 import { saveResponseError } from '../utils'
 import CardHero from './CardHero'
+import { useState } from 'react'
 
 export default function SelectionUnivesalComp() {
     const avalibleItemsForSelectArr = useSelector(state => state.game?.selfPlayer?.requestedSelection?.avalibleItemsForSelectArr)
@@ -16,6 +17,7 @@ export default function SelectionUnivesalComp() {
     const metadata = useSelector(state => state.game?.selfPlayer?.requestedSelection?.metadata)
     const dispatch = useDispatch()
     const params = useParams()
+    const [minimized, setMinimized] = useState(false)
 
     function handleSelectItem(item) {
         const res = fetch(`/game/${params.lobbyId}/select-item`, {
@@ -99,8 +101,13 @@ export default function SelectionUnivesalComp() {
 
     if (metadata?.displayType === 'mixed') {
         return (
-            <div className='treasure-selection-wrapper universal-selection-wrapper'>
-                <h3 className='treasure-selection-header'>{selectionMessage}</h3>
+            <div className={`treasure-selection-wrapper universal-selection-wrapper ${minimized ? 'hidden-universal-selection' : ''}`}>
+                <div className='uni-selection-header'>
+                    <h3 className='treasure-selection-header'>{selectionMessage}</h3>
+                    <div onClick={() => setMinimized(!minimized)}>
+                        {minimized ? <FontAwesomeIcon className='uni-header-icon' icon={faCaretUp} /> : <FontAwesomeIcon className='uni-header-icon' icon={faCaretDown} />}
+                    </div>
+                </div>
                 <div className='treasure-sumbol-holder universal-selection-choices-holder'>
                     {avalibleItemsForSelectArr?.map((item, i) => {
                         if (typeof item === 'string') return (

@@ -31,4 +31,32 @@
     border-radius: 3rem;
     max-height: 70vh;
     height: 100%;
+    transition-duration: 0.3s;
+}
+
+.hidden-universal-selection {
+    /* bottom: 1rem; */
+    /* position: fixed; */
+    transform: translateY(55%) translateX(-50%);
+}
+
+.uni-selection-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.uni-header-icon {
+    font-size: 2rem;
+    color: whitesmoke;
+    cursor: pointer;
+    padding: 1rem;
+    border-radius: 9999px;
+    aspect-ratio: 1/1;
+    transition-duration: 0.2s;
+}
+
+.uni-header-icon:hover {
+    background-color: rgb(58, 58, 58);
 }
