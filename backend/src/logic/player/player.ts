@@ -1,7 +1,7 @@
 import { feedback } from "../game/actionFeedbacks"
 import { BossCard, Card, DungeonCard, HeroCard, SpellCard } from "../game/cards"
 import { Game } from "../game/game"
-import { SelectionRequest, SelectionRequestNEW, SelectionRequestOneFromGivenList } from "../game/playerRequestSelections"
+import { SelectionRequest, SelectionRequestNEW, SelectionRequestOneFromGivenList, SelectionRequestUniversal } from "../game/playerRequestSelections"
 import { Id } from "../types"
 
 const {
@@ -32,7 +32,9 @@ const {
 } = require('../errors')
 // const { feedback } = require('../game/actionFeedbacks')
 // const { mechanicsTypes } = require('../game/unique_mechanics/dungeonMechanics')
-
+export type BuildOptions = {
+    ignoreRoundPhase?: boolean
+}
 
 class Player {
     static players: { [id: Id]: Player } = {}
@@ -61,7 +63,7 @@ class Player {
         magic: number,
         fortune: number
     }
-    requestedSelection: SelectionRequest | SelectionRequestOneFromGivenList<any> | null | SelectionRequestNEW
+    requestedSelection: SelectionRequest | SelectionRequestOneFromGivenList<any> | null | SelectionRequestNEW | SelectionRequestUniversal<any>
 
     constructor(id: Id, name: string) {
         this.id = id
@@ -128,7 +130,7 @@ class Player {
         return this.name
     }
 
-    setRequestedSelection(selection: SelectionRequest | SelectionRequestOneFromGivenList<any> | null | SelectionRequestNEW) {
+    setRequestedSelection(selection: SelectionRequest | SelectionRequestOneFromGivenList<any> | null | SelectionRequestNEW | SelectionRequestUniversal<any>) {
         this.requestedSelection = selection
     }
 
@@ -138,6 +140,17 @@ class Player {
         this.drawNotUsedDungeonCard()
         this.drawNotUsedSpellCard()
         this.drawNotUsedSpellCard()
+    }
+
+    drawSpecificDungeonCard(dungeonId: Id) {
+        const card = this.trackedGame.notUsedDungeonCardsStack.find(card => card.id === dungeonId)
+        if (!card) {
+            throw new Error("No such dungeon in not used cards stack.")
+        }
+        this.trackedGame.notUsedDungeonCardsStack.splice(this.trackedGame.notUsedDungeonCardsStack.findIndex(card => card.id === dungeonId), 1)
+        this.dungeonCards.push(card)
+        card.setOwner(this)
+        this.trackedGame.saveGameAction(feedback.PLAYER_DRAWNED_DUNGEON_CARD(this))
     }
 
     addHeroToDungeonEntrance(hero: HeroCard) {
@@ -151,6 +164,16 @@ class Player {
     drawStartingBosses() {
         this.drawNotUsedBossCard()
         this.drawNotUsedBossCard()
+    }
+
+    drawDungeonFromUsedCardsStack(dungeonId: Id) {
+        const card = this.trackedGame.usedCardsStack.find(card => card.id === dungeonId && card instanceof DungeonCard) as DungeonCard || undefined
+        if (!card) {
+            throw new Error("No such dungeon in used cards stack.")
+        }
+        this.trackedGame.usedCardsStack.splice(this.trackedGame.usedCardsStack.findIndex(card => card.id === dungeonId && card instanceof DungeonCard), 1)
+        this.dungeonCards.push(card)
+        this.trackedGame.saveGameAction(feedback.PLAYER_DRAWNED_DUNGEON_CARD(this))
     }
 
     selectBoss(bossId: Id): void {
@@ -198,8 +221,8 @@ class Player {
         this.drawnBosses.push(boss)
     }
 
-    declareBuild(card: DungeonCard, index: number | null = null) {
-        if (this.checkIfDungeonBuildValid(card, index)) {
+    declareBuild(card: DungeonCard, index: number | null = null, options?: BuildOptions) {
+        if (this.checkIfDungeonBuildValid(card, index, options)) {
             if (index !== null) {
                 card.setCardToBuildOn(this.dungeon[index])
             }
@@ -209,11 +232,11 @@ class Player {
         }
     }
 
-    checkIfDungeonBuildValid(card: DungeonCard, index: number | null): boolean {
+    checkIfDungeonBuildValid(card: DungeonCard, index: number | null, buildOptions?: BuildOptions): boolean {
         if (this.trackedGame.getCurrentlyPlayedSpell()) {
             throw new OtherSpellCurrentlyAtPlay("You have to wait for current spell play to end to build a dungeon.")
         }
-        if (this.trackedGame.roundPhase !== 'build') {
+        if (this.trackedGame.roundPhase !== 'build' && !buildOptions?.ignoreRoundPhase) {
             throw new WrongPhaseToBuild("Cards can only be build during bild phase")
         }
         if (this.declaredBuild) {

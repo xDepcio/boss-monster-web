@@ -421,6 +421,16 @@
                     "strength": 1
                 },
                 "mechanicDescription": "Każdy przeciwnik musi wybrać i zniszczyć komnatę w swoich podziemiach."
+            },
+            {
+                "CARDTYPE": "BOSS",
+                "id": 6,
+                "name": "KRÓL ROPUCH",
+                "pd": 800,
+                "treasure": {
+                    "strength": 1
+                },
+                "mechanicDescription": "Przejrzyj talię komnat lub stos odrzuconych kart w poszukiwaniu wypaśnej komnaty potworów. Możesz natychmiast zbudować tę komnatę. (Na wierzchu komnaty z pasującym rodzajem skarbu)."
             }
         ]
     },

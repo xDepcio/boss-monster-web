@@ -1,10 +1,10 @@
-import { GameEvent } from "../actionFeedbacks"
+import { GameEvent, feedback } from "../actionFeedbacks"
 import { BossCard, DungeonCard } from "../cards"
-import { SelectionRequest, SelectionRequestNEW } from "../playerRequestSelections"
+import { SelectionRequest, SelectionRequestNEW, SelectionRequestUniversal } from "../playerRequestSelections"
 import { CardAction } from "./customCardActions"
 import { RoundModifer } from "./roundModifiers"
 
-const { eventTypes, feedback } = require("../actionFeedbacks")
+// const { eventTypes, feedback } = require("../actionFeedbacks")
 const GAME_CONSTANTS = require('../gameConstants.json')
 // const { CardAction } = require("./customCardActions")
 // const { RoundModifer } = require("./roundModifiers")
@@ -155,23 +155,6 @@ class MakeEveryOpponentDestroyOneDungeon extends BossMechanic {
         targetPlayers.forEach((player) => {
             if (player.dungeon.length === 0) return
 
-            // const selection = new SelectionRequest(
-            //     player,
-            //     "player",
-            //     1,
-            //     player,
-            //     this
-            // )
-
-            // const selection = new SelectionRequestNEW({
-            //     amount: 1,
-            //     choiceScope: player,
-            //     requestedPlayer: player,
-            //     requestItemType: "builtDungeon",
-            //     onFinish: () => { }
-            // })
-
-            // this.bossCard.owner.setRequestedSelection(selection)
             const selection = new SelectionRequestNEW({
                 amount: 1,
                 choiceScope: player,
@@ -187,6 +170,69 @@ class MakeEveryOpponentDestroyOneDungeon extends BossMechanic {
             })
             player.setRequestedSelection(selection);
         })
+        this.bossCard.trackedGame.saveGameAction(feedback.PLAYER_USED_BOSS_RANKUP_MECHANIC(this.bossCard.owner, this.bossCard, this))
+    }
+
+    handleGameEvent(event: GameEvent) {
+        if (!super.validate()) return
+
+        if (event.type === "PLAYER_RANKED_UP_BOSS" && event.player.id === this.bossCard.owner.id) {
+            this.handleRankUp()
+        }
+    }
+}
+
+class DrawFancyDungeonFromDiscardedOrDeck extends BossMechanic {
+
+    constructor(bossCard: BossCard, mechanicDescription: string) {
+        super(bossCard, mechanicDescription)
+    }
+
+    handleRankUp() {
+        new SelectionRequestUniversal<DungeonCard>({
+            amount: 1,
+            requestedPlayer: this.bossCard.owner,
+            avalibleItemsForSelectArr: [
+                ...this.bossCard.trackedGame.notUsedDungeonCardsStack,
+                ...this.bossCard.trackedGame.usedCardsStack.filter(card => card instanceof DungeonCard) as DungeonCard[]
+            ],
+            metadata: {
+                displayType: 'dungeonCard',
+            },
+            selectionMessage: "Wybierz loch do dodania do ręki.",
+            onFinish: (items) => {
+                if (this.bossCard.trackedGame.notUsedDungeonCardsStack.includes(items[0])) {
+                    this.bossCard.owner.drawSpecificDungeonCard(items[0].id)
+                } else {
+                    this.bossCard.owner.drawDungeonFromUsedCardsStack(items[0].id)
+                }
+
+                const avalibleToBuildOn = this.bossCard.owner.dungeon.filter((dungeonCard, index) => {
+                    try {
+                        return this.bossCard.owner.checkIfDungeonBuildValid(items[0], index, { ignoreRoundPhase: true })
+                    } catch (err) {
+                        return false
+                    }
+                })
+                if (avalibleToBuildOn.length > 0) {
+                    new SelectionRequestUniversal({
+                        amount: 1,
+                        avalibleItemsForSelectArr: avalibleToBuildOn,
+                        metadata: {
+                            displayType: 'dungeonCard',
+                        },
+                        requestedPlayer: this.bossCard.owner,
+                        selectionMessage: "Wybierz gdzie wybudować loch.",
+                        onFinish: ([toBuildOn]) => {
+                            this.bossCard.owner.declareBuild(items[0], this.bossCard.owner.dungeon.indexOf(toBuildOn), { ignoreRoundPhase: true })
+                            this.bossCard.owner.buildDeclaredDungeon()
+                        }
+                    })
+                }
+            },
+            additonalValidation: (item) => item.isFancy,
+        })
+        this.bossCard.trackedGame.saveGameAction(feedback.PLAYER_USED_BOSS_RANKUP_MECHANIC(this.bossCard.owner, this.bossCard, this))
     }
 
     handleGameEvent(event: GameEvent) {
@@ -201,7 +247,8 @@ class MakeEveryOpponentDestroyOneDungeon extends BossMechanic {
 const bossesMechanicsMap = {
     'Lamia': GainOneGoldEveryTimeMonsterDungeonIsBuild,
     'Scott': BoostEveryTrapDungeonFor1EnemiesCanPay1GoldToDeactivate,
-    'ROBOBO': MakeEveryOpponentDestroyOneDungeon
+    'ROBOBO': MakeEveryOpponentDestroyOneDungeon,
+    'KRÓL ROPUCH': DrawFancyDungeonFromDiscardedOrDeck,
 }
 
 module.exports = {

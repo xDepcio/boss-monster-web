@@ -5,6 +5,7 @@ import SelectionCompPlayers from './SelectionCompPlayers'
 import SelectionCompTreasure from './SelectionCompTreasure'
 import './SelectionRequestsComp.css'
 import SelectionCompMessage from './SelectionCompMessage'
+import SelectionUnivesalComp from './SelectionUnivesalComp'
 
 
 function SelectionRequestsComp() {
@@ -22,6 +23,9 @@ function SelectionRequestsComp() {
             case 'CHOOSE_FROM_GIVEN_LIST':
                 setDisplayedSelectionComp('oneFromList')
                 break;
+            case 'UNIVERSAL_SELECTION':
+                setDisplayedSelectionComp('universalSelection')
+                break
             default:
                 setDisplayedSelectionComp(true)
                 break;
@@ -38,6 +42,7 @@ function SelectionRequestsComp() {
                 {displayedSelectionComp === 'player' && <SelectionCompPlayers />}
                 {displayedSelectionComp === 'oneFromList' && <SelectionCompOneFromList />}
                 <SelectionCompMessage />
+                {displayedSelectionComp === 'universalSelection' && <SelectionUnivesalComp />}
             </>
         )
     }

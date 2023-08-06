@@ -1,4 +1,5 @@
 import { DungeonCard, HeroCard, SpellCard } from "../logic/game/cards";
+import { SelectionRequestUniversal } from "../logic/game/playerRequestSelections";
 import { Player } from "../logic/player/player";
 
 const express = require('express');
@@ -121,6 +122,12 @@ router.post('/:lobbyId/select-item', assignPlayer, (req, res, next) => {
             case "CHOOSE_FROM_GIVEN_LIST": {
                 selectedItem = req.body.selectedItem
                 break
+            }
+            case "UNIVERSAL_SELECTION": {
+                const displayType = (player.requestedSelection as SelectionRequestUniversal<any>).metadata.displayType
+                if (displayType === 'dungeonCard') {
+                    selectedItem = DungeonCard.getDungeon(req.body.itemId)
+                }
             }
         }
         player.requestedSelection.selectItem(selectedItem)

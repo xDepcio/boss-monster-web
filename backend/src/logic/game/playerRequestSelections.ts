@@ -196,22 +196,10 @@ class SelectionRequestOneFromGivenList<SelectableType> {
     selectionMessage: string
     avalibleItemsForSelectArr: SelectableType[]
     selectedItems: SelectableType[]
-    target
     requestItemType: 'CHOOSE_FROM_GIVEN_LIST'
     onRecieveSelectionData: (data: SelectableType[]) => void
 
-
-    constructor({
-        requestedPlayer,
-        selectionMessage,
-        avalibleItemsForSelectArr,
-        onRecieveSelectionData
-    }: {
-        requestedPlayer: Player,
-        selectionMessage: string,
-        avalibleItemsForSelectArr: SelectableType[],
-        onRecieveSelectionData: (data: SelectableType[]) => void
-    }) {
+    constructor({ requestedPlayer, selectionMessage, avalibleItemsForSelectArr, onRecieveSelectionData }: { requestedPlayer: Player, selectionMessage: string, avalibleItemsForSelectArr: SelectableType[], onRecieveSelectionData: (data: SelectableType[]) => void }) {
         this.requestedPlayer = requestedPlayer
         this.selectionMessage = selectionMessage
         this.avalibleItemsForSelectArr = avalibleItemsForSelectArr
@@ -255,6 +243,73 @@ class SelectionRequestOneFromGivenList<SelectableType> {
     }
 }
 
+/**
+ * Allows for selecting any type of item without type constraints. On frontend by deafult displays a list of choices, but this can be contolled utilizing metdata property.
+ */
+class SelectionRequestUniversal<SelectableType> {
+
+    requestedPlayer: Player
+    selectionMessage: string
+    avalibleItemsForSelectArr: SelectableType[]
+    selectedItems: SelectableType[]
+    requestItemType: 'UNIVERSAL_SELECTION'
+    onFinish: (data: SelectableType[]) => void
+    onSingleSelect?: (data: SelectableType) => void
+    additonalValidation?: (selectedItem: SelectableType) => boolean
+    metadata: { displayType: 'dungeonCard' }
+    amount: number
+
+    constructor({ requestedPlayer, selectionMessage, avalibleItemsForSelectArr, onFinish, metadata, amount, additonalValidation = () => true, onSingleSelect = () => { } }: { onSingleSelect?: (data: SelectableType) => void, additonalValidation?: (selectedItem: SelectableType) => boolean, amount: number, metadata: { displayType: 'dungeonCard' }, requestedPlayer: Player, selectionMessage: string, avalibleItemsForSelectArr: SelectableType[], onFinish: (data: SelectableType[]) => void }) {
+        this.requestedPlayer = requestedPlayer
+        this.selectionMessage = selectionMessage
+        this.avalibleItemsForSelectArr = avalibleItemsForSelectArr
+        this.selectedItems = []
+        this.onFinish = onFinish
+        this.requestItemType = "UNIVERSAL_SELECTION"
+        this.amount = amount
+        this.additonalValidation = additonalValidation
+        this.onSingleSelect = onSingleSelect
+        this.metadata = metadata
+
+        requestedPlayer.setRequestedSelection(this);
+    }
+
+    getRequestItemType() {
+        return this.requestItemType
+    }
+
+    selectItem(item: SelectableType) {
+        if (this.isSelectionValid(item)) {
+            this.selectedItems.push(item)
+            this.onSingleSelect(item)
+            if (this.isCompleted()) {
+                this.resolveTarget()
+            }
+        }
+    }
+
+    isSelectionValid(selectedItem: SelectableType) {
+        let isItemIn = false
+        for (const item of this.avalibleItemsForSelectArr) {
+            if (selectedItem === item) {
+                isItemIn = true
+            }
+        }
+        const additionalValidation = this.additonalValidation(selectedItem)
+        return isItemIn && additionalValidation
+    }
+
+    isCompleted() {
+        return this.selectedItems.length === this.amount
+    }
+
+    resolveTarget() {
+        this.requestedPlayer.setRequestedSelection(null)
+        this.onFinish(this.selectedItems)
+        // this.target.receiveSelectionData(this.selectedItems)
+        // this.target.use()
+    }
+}
 
 // class Class1<T> {
 //     avalibleItemsForSelectArr: T[]
@@ -276,7 +331,8 @@ class SelectionRequestOneFromGivenList<SelectableType> {
 module.exports = {
     SelectionRequest,
     SelectionRequestOneFromGivenList,
-    SelectionRequestNEW
+    SelectionRequestNEW,
+    SelectionRequestUniversal
 }
 
-export { SelectionRequest, SelectionRequestOneFromGivenList, SelectionRequestNEW }
+export { SelectionRequest, SelectionRequestOneFromGivenList, SelectionRequestNEW, SelectionRequestUniversal }

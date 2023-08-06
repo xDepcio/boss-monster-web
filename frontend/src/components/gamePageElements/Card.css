@@ -45,6 +45,7 @@
     /* font-size: 100%; */
     font-size: 1em;
     aspect-ratio: unset;
+    white-space: nowrap;
 }
 
 .card-subname {
