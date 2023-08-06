@@ -39,6 +39,7 @@ export type BuildOptions = {
 class Player {
     static players: { [id: Id]: Player } = {}
 
+    objectType: 'PLAYER_OBJECT' = 'PLAYER_OBJECT'
     id: Id
     name: string
     dungeonCards: DungeonCard[]
@@ -66,6 +67,7 @@ class Player {
     requestedSelection: SelectionRequest | SelectionRequestOneFromGivenList<any> | null | SelectionRequestNEW | SelectionRequestUniversal<any>
 
     constructor(id: Id, name: string) {
+        this.objectType = "PLAYER_OBJECT"
         this.id = id
         this.name = name
         this.dungeonCards = []

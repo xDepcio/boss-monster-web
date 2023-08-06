@@ -1,10 +1,13 @@
+import { faUser } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { stringify } from 'flatted'
+import Cookies from 'js-cookie'
 import { useDispatch, useSelector } from 'react-redux'
-import './SelectionUnivesalComp.css'
 import { useParams } from 'react-router-dom'
 import CardDungeon from './CardDungeon'
-import { saveResponseError } from '../utils'
-import Cookies from 'js-cookie'
 import CardSpell from './CardSpell'
+import './SelectionUnivesalComp.css'
+import { saveResponseError } from '../utils'
 
 export default function SelectionUnivesalComp() {
     const avalibleItemsForSelectArr = useSelector(state => state.game?.selfPlayer?.requestedSelection?.avalibleItemsForSelectArr)
@@ -21,7 +24,8 @@ export default function SelectionUnivesalComp() {
             },
             body: JSON.stringify({
                 userId: Cookies.get('user'),
-                selectedItem: item
+                selectedItem: stringify(item),
+                displayType: metadata?.displayType
             })
         })
         saveResponseError(res, dispatch)
@@ -36,6 +40,7 @@ export default function SelectionUnivesalComp() {
                         <CardDungeon
                             baseDamage={dungeon.baseDamage}
                             _onClick={() => {
+                                console.log('dungeon')
                                 handleSelectItem(dungeon)
                             }}
                             damage={dungeon.damage} width={150}
@@ -86,6 +91,58 @@ export default function SelectionUnivesalComp() {
                             <p className='text-choice' key={i} onClick={() => handleSelectItem(text)}>{text}</p>
                         </div>
                     ))}
+                </div>
+            </div>
+        )
+    }
+
+    if (metadata?.displayType === 'mixed') {
+        return (
+            <div className='treasure-selection-wrapper'>
+                <h3 className='treasure-selection-header'>{selectionMessage}</h3>
+                <div className='treasure-sumbol-holder'>
+                    {avalibleItemsForSelectArr?.map((item, i) => {
+                        if (typeof item === 'string') return (
+                            <div className='text-choice-holder'>
+                                <p className='text-choice' key={i} onClick={() => handleSelectItem(item)}>{item}</p>
+                            </div>
+                        )
+                        if (item?.CARDTYPE === 'DUNGEON') return (
+                            <CardDungeon
+                                baseDamage={item.baseDamage}
+                                _onClick={() => {
+                                    handleSelectItem(item)
+                                }}
+                                damage={item.damage} width={150}
+                                treasure={item.treasure}
+                                type={item.type}
+                                name={item.name}
+                                id={item.id}
+                                description={item.description}
+                                isFancy={item.isFancy}
+                                _className={'built-dung'}
+                                card={item}
+                            />
+                        )
+                        if (item?.CARDTYPE === 'SPELL') return (
+                            <CardSpell
+                                _onClick={() => handleSelectItem(item)}
+                                width={150}
+                                name={item.name}
+                                description={item.description}
+                                key={i}
+                                phase={item.playablePhase}
+                                _className={'player-card-in-inv'}
+                                card={item}
+                            />
+                        )
+                        if (item?.objectType === 'PLAYER_OBJECT') return (
+                            <div key={i} onClick={() => handleSelectItem(item)} className='player-selection-single-player df'>
+                                <p className='single-treasure-name'>{item.name}</p>
+                                <FontAwesomeIcon className='player-selection-single-player-icon' icon={faUser} />
+                            </div>
+                        )
+                    })}
                 </div>
             </div>
         )

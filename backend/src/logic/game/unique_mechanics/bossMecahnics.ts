@@ -1,5 +1,5 @@
 import { GameEvent, feedback } from "../actionFeedbacks"
-import { BossCard, DungeonCard } from "../cards"
+import { BossCard, Card, DungeonCard, SpellCard } from "../cards"
 import { SelectionRequest, SelectionRequestNEW, SelectionRequestUniversal } from "../playerRequestSelections"
 import { CardAction } from "./customCardActions"
 import { RoundModifer } from "./roundModifiers"
@@ -76,15 +76,15 @@ class BoostEveryTrapDungeonFor1EnemiesCanPay1GoldToDeactivate extends BossMechan
     }
 
     handleRankUp() {
-        const cardAction = new CardAction(
-            "Zapłać 1 gold",
-            [...this.bossCard.trackedGame.players].filter(player => player.id !== this.bossCard.owner.id),
-            (playerThatUsed) => {
+        const cardAction = new CardAction({
+            allowUseFor: [...this.bossCard.trackedGame.players].filter(player => player.id !== this.bossCard.owner.id),
+            title: "Zapłać 1 gold",
+            onUse: (playerThatUsed) => {
                 this.bossCard.trackedGame.saveGameAction(feedback.PLAYER_USED_CUSTOM_CARD_ACTION(this.bossCard.owner, this.bossCard, "Zapłać 1 gold"))
                 playerThatUsed.payGold(1, this.bossCard.owner)
                 this.disableForRound()
             }
-        )
+        })
         this.addedCardAction = cardAction
         this.bossCard.addCustomCardAction(cardAction)
     }
@@ -189,61 +189,65 @@ class DrawFancyMonsterDungeonFromDiscardedOrDeck extends BossMechanic {
     }
 
     handleRankUp() {
-        new SelectionRequestUniversal<DungeonCard>({
-            amount: 1,
-            requestedPlayer: this.bossCard.owner,
-            avalibleItemsForSelectArr: [
-                ...this.bossCard.trackedGame.notUsedDungeonCardsStack.filter(card => card.isFancy && card.type === 'monsters'),
-                ...this.bossCard.trackedGame.usedCardsStack.filter(card => card instanceof DungeonCard && card.isFancy && card.type === 'monsters') as DungeonCard[]
-            ],
-            metadata: {
-                displayType: 'dungeonCard',
-            },
-            selectionMessage: "Wybierz loch do dodania do ręki.",
-            onFinish: (items) => {
-                if (this.bossCard.trackedGame.notUsedDungeonCardsStack.includes(items[0])) {
-                    this.bossCard.owner.drawSpecificDungeonCard(items[0].id)
-                } else {
-                    this.bossCard.owner.drawDungeonFromUsedCardsStack(items[0].id)
-                }
-
-                const avalibleToBuildOn = this.bossCard.owner.dungeon.filter((dungeonCard, index) => {
-                    try {
-                        return this.bossCard.owner.checkIfDungeonBuildValid(items[0], index, { ignoreRoundPhase: true })
-                    } catch (err) {
-                        return false
+        const avalibleItems = [
+            ...this.bossCard.trackedGame.notUsedDungeonCardsStack.filter(card => card.isFancy && card.type === 'monsters'),
+            ...this.bossCard.trackedGame.usedCardsStack.filter(card => card instanceof DungeonCard && card.isFancy && card.type === 'monsters') as DungeonCard[]
+        ]
+        if (avalibleItems.length > 0) {
+            new SelectionRequestUniversal<DungeonCard>({
+                amount: 1,
+                requestedPlayer: this.bossCard.owner,
+                avalibleItemsForSelectArr: avalibleItems,
+                metadata: {
+                    displayType: 'dungeonCard',
+                },
+                selectionMessage: "Wybierz loch do dodania do ręki.",
+                onFinish: (items) => {
+                    if (this.bossCard.trackedGame.notUsedDungeonCardsStack.includes(items[0])) {
+                        this.bossCard.owner.drawSpecificDungeonCard(items[0].id)
+                    } else {
+                        this.bossCard.owner.drawDungeonFromUsedCardsStack(items[0].id)
                     }
-                })
-                if (avalibleToBuildOn.length > 0) {
-                    new SelectionRequestUniversal<'tak' | 'nie'>({
-                        amount: 1,
-                        avalibleItemsForSelectArr: ['tak', 'nie'],
-                        metadata: {
-                            displayType: "text"
-                        },
-                        requestedPlayer: this.bossCard.owner,
-                        selectionMessage: "Czy chcesz wybudować ten loch?",
-                        onFinish: ([answer]) => {
-                            if (answer === 'tak') {
-                                new SelectionRequestUniversal({
-                                    amount: 1,
-                                    avalibleItemsForSelectArr: avalibleToBuildOn,
-                                    metadata: {
-                                        displayType: 'dungeonCard',
-                                    },
-                                    requestedPlayer: this.bossCard.owner,
-                                    selectionMessage: "Wybierz gdzie wybudować loch.",
-                                    onFinish: ([toBuildOn]) => {
-                                        this.bossCard.owner.declareBuild(items[0], this.bossCard.owner.dungeon.indexOf(toBuildOn), { ignoreRoundPhase: true })
-                                        this.bossCard.owner.buildDeclaredDungeon()
-                                    }
-                                })
-                            }
+
+                    const avalibleToBuildOn = this.bossCard.owner.dungeon.filter((dungeonCard, index) => {
+                        try {
+                            return this.bossCard.owner.checkIfDungeonBuildValid(items[0], index, { ignoreRoundPhase: true })
+                        } catch (err) {
+                            return false
                         }
                     })
-                }
-            },
-        })
+                    if (avalibleToBuildOn.length > 0) {
+                        new SelectionRequestUniversal<'tak' | 'nie'>({
+                            amount: 1,
+                            avalibleItemsForSelectArr: ['tak', 'nie'],
+                            metadata: {
+                                displayType: "text"
+                            },
+                            requestedPlayer: this.bossCard.owner,
+                            selectionMessage: "Czy chcesz wybudować ten loch?",
+                            onFinish: ([answer]) => {
+                                if (answer === 'tak') {
+                                    new SelectionRequestUniversal({
+                                        amount: 1,
+                                        avalibleItemsForSelectArr: avalibleToBuildOn,
+                                        metadata: {
+                                            displayType: 'dungeonCard',
+                                        },
+                                        requestedPlayer: this.bossCard.owner,
+                                        selectionMessage: "Wybierz gdzie wybudować loch.",
+                                        onFinish: ([toBuildOn]) => {
+                                            this.bossCard.owner.declareBuild(items[0], this.bossCard.owner.dungeon.indexOf(toBuildOn), { ignoreRoundPhase: true })
+                                            this.bossCard.owner.buildDeclaredDungeon()
+                                        }
+                                    })
+                                }
+                            }
+                        })
+                    }
+                },
+            })
+        }
+
         this.bossCard.trackedGame.saveGameAction(feedback.PLAYER_USED_BOSS_RANKUP_MECHANIC(this.bossCard.owner, this.bossCard, this))
     }
 
@@ -263,61 +267,65 @@ class DrawFancyTrapsDungeonFromDiscardedOrDeck extends BossMechanic {
     }
 
     handleRankUp() {
-        new SelectionRequestUniversal<DungeonCard>({
-            amount: 1,
-            requestedPlayer: this.bossCard.owner,
-            avalibleItemsForSelectArr: [
-                ...this.bossCard.trackedGame.notUsedDungeonCardsStack.filter(card => card.isFancy && card.type === 'traps'),
-                ...this.bossCard.trackedGame.usedCardsStack.filter(card => card instanceof DungeonCard && card.isFancy && card.type === 'traps') as DungeonCard[]
-            ],
-            metadata: {
-                displayType: 'dungeonCard',
-            },
-            selectionMessage: "Wybierz loch do dodania do ręki.",
-            onFinish: (items) => {
-                if (this.bossCard.trackedGame.notUsedDungeonCardsStack.includes(items[0])) {
-                    this.bossCard.owner.drawSpecificDungeonCard(items[0].id)
-                } else {
-                    this.bossCard.owner.drawDungeonFromUsedCardsStack(items[0].id)
-                }
-
-                const avalibleToBuildOn = this.bossCard.owner.dungeon.filter((dungeonCard, index) => {
-                    try {
-                        return this.bossCard.owner.checkIfDungeonBuildValid(items[0], index, { ignoreRoundPhase: true })
-                    } catch (err) {
-                        return false
+        const avalibleItems = [
+            ...this.bossCard.trackedGame.notUsedDungeonCardsStack.filter(card => card.isFancy && card.type === 'traps'),
+            ...this.bossCard.trackedGame.usedCardsStack.filter(card => card instanceof DungeonCard && card.isFancy && card.type === 'traps') as DungeonCard[]
+        ]
+        if (avalibleItems.length > 0) {
+            new SelectionRequestUniversal<DungeonCard>({
+                amount: 1,
+                requestedPlayer: this.bossCard.owner,
+                avalibleItemsForSelectArr: avalibleItems,
+                metadata: {
+                    displayType: 'dungeonCard',
+                },
+                selectionMessage: "Wybierz loch do dodania do ręki.",
+                onFinish: (items) => {
+                    if (this.bossCard.trackedGame.notUsedDungeonCardsStack.includes(items[0])) {
+                        this.bossCard.owner.drawSpecificDungeonCard(items[0].id)
+                    } else {
+                        this.bossCard.owner.drawDungeonFromUsedCardsStack(items[0].id)
                     }
-                })
-                if (avalibleToBuildOn.length > 0) {
-                    new SelectionRequestUniversal<'tak' | 'nie'>({
-                        amount: 1,
-                        avalibleItemsForSelectArr: ['tak', 'nie'],
-                        metadata: {
-                            displayType: "text"
-                        },
-                        requestedPlayer: this.bossCard.owner,
-                        selectionMessage: "Czy chcesz wybudować ten loch?",
-                        onFinish: ([answer]) => {
-                            if (answer === 'tak') {
-                                new SelectionRequestUniversal({
-                                    amount: 1,
-                                    avalibleItemsForSelectArr: avalibleToBuildOn,
-                                    metadata: {
-                                        displayType: 'dungeonCard',
-                                    },
-                                    requestedPlayer: this.bossCard.owner,
-                                    selectionMessage: "Wybierz gdzie wybudować loch.",
-                                    onFinish: ([toBuildOn]) => {
-                                        this.bossCard.owner.declareBuild(items[0], this.bossCard.owner.dungeon.indexOf(toBuildOn), { ignoreRoundPhase: true })
-                                        this.bossCard.owner.buildDeclaredDungeon()
-                                    }
-                                })
-                            }
+
+                    const avalibleToBuildOn = this.bossCard.owner.dungeon.filter((dungeonCard, index) => {
+                        try {
+                            return this.bossCard.owner.checkIfDungeonBuildValid(items[0], index, { ignoreRoundPhase: true })
+                        } catch (err) {
+                            return false
                         }
                     })
-                }
-            },
-        })
+                    if (avalibleToBuildOn.length > 0) {
+                        new SelectionRequestUniversal<'tak' | 'nie'>({
+                            amount: 1,
+                            avalibleItemsForSelectArr: ['tak', 'nie'],
+                            metadata: {
+                                displayType: "text"
+                            },
+                            requestedPlayer: this.bossCard.owner,
+                            selectionMessage: "Czy chcesz wybudować ten loch?",
+                            onFinish: ([answer]) => {
+                                if (answer === 'tak') {
+                                    new SelectionRequestUniversal({
+                                        amount: 1,
+                                        avalibleItemsForSelectArr: avalibleToBuildOn,
+                                        metadata: {
+                                            displayType: 'dungeonCard',
+                                        },
+                                        requestedPlayer: this.bossCard.owner,
+                                        selectionMessage: "Wybierz gdzie wybudować loch.",
+                                        onFinish: ([toBuildOn]) => {
+                                            this.bossCard.owner.declareBuild(items[0], this.bossCard.owner.dungeon.indexOf(toBuildOn), { ignoreRoundPhase: true })
+                                            this.bossCard.owner.buildDeclaredDungeon()
+                                        }
+                                    })
+                                }
+                            }
+                        })
+                    }
+                },
+            })
+        }
+
         this.bossCard.trackedGame.saveGameAction(feedback.PLAYER_USED_BOSS_RANKUP_MECHANIC(this.bossCard.owner, this.bossCard, this))
     }
 
@@ -341,19 +349,75 @@ class Draw3SpellsAndDiscard1 extends BossMechanic {
         this.bossCard.owner.drawNotUsedSpellCard()
 
         new SelectionRequestUniversal({
-            amount: 2,
+            amount: 1,
             avalibleItemsForSelectArr: this.bossCard.owner.spellCards,
             metadata: {
                 displayType: 'spellCard',
             },
             requestedPlayer: this.bossCard.owner,
             selectionMessage: "Wybierz jedno zaklęcie do odrzucenia.",
-            onFinish: (spellCards) => {
-                this.bossCard.owner.throwCardAway(spellCards[0])
-                this.bossCard.owner.throwCardAway(spellCards[1])
+            onFinish: ([spellCard]) => {
+                this.bossCard.owner.throwCardAway(spellCard)
             }
         })
         this.bossCard.trackedGame.saveGameAction(feedback.PLAYER_USED_BOSS_RANKUP_MECHANIC(this.bossCard.owner, this.bossCard, this))
+    }
+
+    handleGameEvent(event: GameEvent) {
+        if (!super.validate()) return
+
+        if (event.type === "PLAYER_RANKED_UP_BOSS" && event.player.id === this.bossCard.owner.id) {
+            this.handleRankUp()
+        }
+    }
+}
+
+class TakeOneCardFromOpponent extends BossMechanic {
+    constructor(bossCard: BossCard, mechanicDescription: string) {
+        super(bossCard, mechanicDescription)
+    }
+
+    handleRankUp() {
+        const cardAction = new CardAction({
+            title: "Użyj.",
+            allowUseFor: [this.bossCard.owner],
+            onUse: (abilityOwner) => {
+                const targetPlayers = [...this.bossCard.trackedGame.players].filter(player => player.id !== abilityOwner.id)
+                new SelectionRequestUniversal({
+                    amount: 1,
+                    avalibleItemsForSelectArr: targetPlayers,
+                    metadata: {
+                        displayType: 'mixed',
+                    },
+                    requestedPlayer: abilityOwner,
+                    selectionMessage: "Wybierz gracza od którego chcesz zabrać kartę.",
+                    onFinish: ([player]) => {
+                        new SelectionRequestUniversal<SpellCard | DungeonCard>({
+                            amount: 1,
+                            avalibleItemsForSelectArr: [...player.dungeonCards, ...player.spellCards],
+                            metadata: {
+                                displayType: 'mixed',
+                            },
+                            requestedPlayer: abilityOwner,
+                            selectionMessage: "Wybierz kartę do zabrania.",
+                            onFinish: ([card]) => {
+                                if (card instanceof SpellCard) {
+                                    player.spellCards.splice(player.spellCards.indexOf(card), 1)
+                                    abilityOwner.spellCards.push(card)
+                                }
+                                else if (card instanceof DungeonCard) {
+                                    player.dungeonCards.splice(player.dungeonCards.indexOf(card), 1)
+                                    abilityOwner.dungeonCards.push(card)
+                                }
+                            }
+                        })
+                    }
+                })
+                this.bossCard.trackedGame.saveGameAction(feedback.PLAYER_USED_BOSS_RANKUP_MECHANIC(abilityOwner, this.bossCard, this))
+                cardAction.setActionDisabled(true)
+            }
+        })
+        this.bossCard.addCustomCardAction(cardAction)
     }
 
     handleGameEvent(event: GameEvent) {
@@ -371,7 +435,8 @@ const bossesMechanicsMap = {
     'ROBOBO': MakeEveryOpponentDestroyOneDungeon,
     'KRÓL ROPUCH': DrawFancyMonsterDungeonFromDiscardedOrDeck,
     "KLEOPATRA": DrawFancyTrapsDungeonFromDiscardedOrDeck,
-    "CEREBELLUS": Draw3SpellsAndDiscard1
+    "CEREBELLUS": Draw3SpellsAndDiscard1,
+    "DRAKULORD": TakeOneCardFromOpponent
 }
 
 module.exports = {

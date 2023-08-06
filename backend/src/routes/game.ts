@@ -1,5 +1,6 @@
 import { DungeonCard, HeroCard, SpellCard } from "../logic/game/cards";
 import { SelectionRequestUniversal } from "../logic/game/playerRequestSelections";
+import { CardAction } from "../logic/game/unique_mechanics/customCardActions";
 import { Player } from "../logic/player/player";
 
 const express = require('express');
@@ -15,7 +16,7 @@ const { updateLobbyPlayers } = require('../utils/socketsHelper');
 const { SelectionRequest, SelectionRequestOneFromGivenList } = require('../logic/game/playerRequestSelections');
 // const { HeroCard, DungeonCard, SpellCard } = require('../logic/game/cards');
 // const Player = require('../logic/player/player');
-const { CardAction } = require('../logic/game/unique_mechanics/customCardActions');
+// const { CardAction } = require('../logic/game/unique_mechanics/customCardActions');
 
 
 // Get game info (players...)
@@ -94,6 +95,7 @@ router.post('/:lobbyId/select-item', assignPlayer, (req, res, next) => {
     try {
         const player: Player = req.player
         let selectedItem
+        req.body.selectedItem = parse(req.body.selectedItem)
         switch (player.requestedSelection.getRequestItemType()) {
             case "hero": {
                 selectedItem = HeroCard.getHero(req.body.itemId)
@@ -137,6 +139,18 @@ router.post('/:lobbyId/select-item', assignPlayer, (req, res, next) => {
                     case "spellCard": {
                         selectedItem = SpellCard.getSpell(req.body.itemId)
                         break
+                    }
+                    case "mixed": {
+                        const item = req.body.selectedItem
+                        if (item?.CARDTYPE === 'DUNGEON') {
+                            selectedItem = DungeonCard.getDungeon(item.id)
+                        } else if (item?.CARDTYPE === 'SPELL') {
+                            selectedItem = SpellCard.getSpell(item.id)
+                        } else if (typeof item === 'string') {
+                            selectedItem = item
+                        } else if (item?.objectType === 'PLAYER_OBJECT') {
+                            selectedItem = Player.getPlayer(item.id)
+                        }
                     }
                 }
             }
@@ -238,7 +252,7 @@ router.post('/:lobbyId/use-custom-action', assignPlayer, (req, res, next) => {
 
     try {
         const cardAction = CardAction.getCardActionById(req.body.actionId)
-        cardAction.handleUsedByPlayer(req.player)
+        cardAction.handleUsedByPlayer(Player.getPlayer(req.player.id))
         updateLobbyPlayers(req.params.lobbyId)
     } catch (err) {
         next(err)

@@ -424,7 +424,7 @@
             },
             {
                 "CARDTYPE": "BOSS",
-                "id": 6,
+                "id": 7,
                 "name": "KRÓL ROPUCH",
                 "pd": 800,
                 "treasure": {
@@ -434,7 +434,7 @@
             },
             {
                 "CARDTYPE": "BOSS",
-                "id": 6,
+                "id": 8,
                 "name": "KLEOPATRA",
                 "pd": 850,
                 "treasure": {
@@ -444,13 +444,23 @@
             },
             {
                 "CARDTYPE": "BOSS",
-                "id": 6,
+                "id": 9,
                 "name": "CEREBELLUS",
                 "pd": 650,
                 "treasure": {
                     "magic": 1
                 },
                 "mechanicDescription": "Dobierz 3 karty czarów i odrzuć jedną."
+            },
+            {
+                "CARDTYPE": "BOSS",
+                "id": 10,
+                "name": "DRAKULORD",
+                "pd": 900,
+                "treasure": {
+                    "faith": 1
+                },
+                "mechanicDescription": "Wybrany przeciwnik odkrywa przed Tobą karty ze swojej ręki. Zabierz mu jedną kartę i weź ją na swoją rękę."
             }
         ]
     },

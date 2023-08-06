@@ -18,6 +18,10 @@ function CardRequestedSelectionHandle({ card = null }) {
         return (<></>)
     }
 
+    if (selfPlayer?.requestedSelection?.requestItemType === "UNIVERSAL_SELECTION") {
+        return <></>
+    }
+
     function isSelectionValid(clickedCard) {
         return true
         if (requestedSelection.requestItemType.toLowerCase() !== clickedCard.CARDTYPE.toLowerCase()) {
