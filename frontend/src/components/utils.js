@@ -94,6 +94,9 @@ export function getBossDescEm(textLength) {
     if (!textLength) {
         return '0.5em'
     }
+    if (textLength <= 50) {
+        return '0.9em'
+    }
     if (textLength <= 100) {
         return '0.8em'
     }
@@ -104,6 +107,22 @@ export function getBossDescEm(textLength) {
         return '0.65em'
     }
     return '0.5em'
+}
+
+export function getSpellNameEm(textLength) {
+    if (!textLength) {
+        return '0.6em'
+    }
+    if (textLength <= 11) {
+        return '1em'
+    }
+    if (textLength <= 15) {
+        return '0.9em'
+    }
+    if (textLength <= 20) {
+        return '0.63em'
+    }
+    return '0.6em'
 }
 
 export function saveResponseError(response, dispatch) {

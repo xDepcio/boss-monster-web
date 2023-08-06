@@ -330,12 +330,48 @@ class DrawFancyTrapsDungeonFromDiscardedOrDeck extends BossMechanic {
     }
 }
 
+class Draw3SpellsAndDiscard1 extends BossMechanic {
+    constructor(bossCard: BossCard, mechanicDescription: string) {
+        super(bossCard, mechanicDescription)
+    }
+
+    handleRankUp() {
+        this.bossCard.owner.drawNotUsedSpellCard()
+        this.bossCard.owner.drawNotUsedSpellCard()
+        this.bossCard.owner.drawNotUsedSpellCard()
+
+        new SelectionRequestUniversal({
+            amount: 2,
+            avalibleItemsForSelectArr: this.bossCard.owner.spellCards,
+            metadata: {
+                displayType: 'spellCard',
+            },
+            requestedPlayer: this.bossCard.owner,
+            selectionMessage: "Wybierz jedno zaklęcie do odrzucenia.",
+            onFinish: (spellCards) => {
+                this.bossCard.owner.throwCardAway(spellCards[0])
+                this.bossCard.owner.throwCardAway(spellCards[1])
+            }
+        })
+        this.bossCard.trackedGame.saveGameAction(feedback.PLAYER_USED_BOSS_RANKUP_MECHANIC(this.bossCard.owner, this.bossCard, this))
+    }
+
+    handleGameEvent(event: GameEvent) {
+        if (!super.validate()) return
+
+        if (event.type === "PLAYER_RANKED_UP_BOSS" && event.player.id === this.bossCard.owner.id) {
+            this.handleRankUp()
+        }
+    }
+}
+
 const bossesMechanicsMap = {
     'Lamia': GainOneGoldEveryTimeMonsterDungeonIsBuild,
     'Scott': BoostEveryTrapDungeonFor1EnemiesCanPay1GoldToDeactivate,
     'ROBOBO': MakeEveryOpponentDestroyOneDungeon,
     'KRÓL ROPUCH': DrawFancyMonsterDungeonFromDiscardedOrDeck,
     "KLEOPATRA": DrawFancyTrapsDungeonFromDiscardedOrDeck,
+    "CEREBELLUS": Draw3SpellsAndDiscard1
 }
 
 module.exports = {

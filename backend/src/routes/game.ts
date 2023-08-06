@@ -134,6 +134,10 @@ router.post('/:lobbyId/select-item', assignPlayer, (req, res, next) => {
                         selectedItem = req.body.selectedItem
                         break
                     }
+                    case "spellCard": {
+                        selectedItem = SpellCard.getSpell(req.body.itemId)
+                        break
+                    }
                 }
             }
         }

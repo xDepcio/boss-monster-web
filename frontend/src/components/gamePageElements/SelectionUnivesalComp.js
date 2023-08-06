@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom'
 import CardDungeon from './CardDungeon'
 import { saveResponseError } from '../utils'
 import Cookies from 'js-cookie'
+import CardSpell from './CardSpell'
 
 export default function SelectionUnivesalComp() {
     const avalibleItemsForSelectArr = useSelector(state => state.game?.selfPlayer?.requestedSelection?.avalibleItemsForSelectArr)
@@ -47,9 +48,28 @@ export default function SelectionUnivesalComp() {
                             _className={'built-dung'}
                             card={dungeon}
                         />
-                        // <div onClick={() => handleSelectItem(item)} className='single-item-holder' key={i}>
-                        // <p className='single-item-value'>{item}</p>
-                        // </div>
+                    ))}
+                </div>
+            </div>
+        )
+    }
+
+    if (metadata?.displayType === 'spellCard') {
+        return (
+            <div className='treasure-selection-wrapper'>
+                <h3 className='treasure-selection-header'>{selectionMessage}</h3>
+                <div className='treasure-sumbol-holder'>
+                    {avalibleItemsForSelectArr?.map((spell, i) => (
+                        <CardSpell
+                            _onClick={() => handleSelectItem(spell)}
+                            width={150}
+                            name={spell.name}
+                            description={spell.description}
+                            key={i}
+                            phase={spell.playablePhase}
+                            _className={'player-card-in-inv'}
+                            card={spell}
+                        />
                     ))}
                 </div>
             </div>

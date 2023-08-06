@@ -33,7 +33,7 @@ function CardBoss({ width, _className, bgImage, description = '', mainImg, treas
         }} style={{
             width: typeof width === 'string' ? width : width + 'px',
             fontSize: typeof width === 'string' ? fontHelp : `${width / 18}px`,
-            transform: enhance ? 'scale(2) translate(-50%, 50%)' : '',
+            transform: enhance ? 'scale(2)' : '',
             zIndex: enhance ? '100' : '1'
         }} className={`main-card-wrapper card-comp ${_className}`}>
             {selfPlayer?.requestedSelection && <CardRequestedSelectionHandle card={card} />}
@@ -41,7 +41,7 @@ function CardBoss({ width, _className, bgImage, description = '', mainImg, treas
             <p className='card-info-comp card-subname boss-card-subname'>{subName || 'Boss subname destr'}</p>
             <p className='card-info-comp boss-card-pd'>{pd} PD</p>
             <p className='card-info-comp card-comp card-desc-header'>Awans:</p>
-            <p className='card-info-comp card-comp boss-card-desc' style={{ fontSize: getBossDescEm(description ?? '') }} >{description ?? ''}</p>
+            <p className='card-info-comp card-comp boss-card-desc' style={{ fontSize: getBossDescEm(description?.length ?? '') }} >{description ?? ''}</p>
             <img className='card-info-comp card-img-comp card-comp card-type-comp' src={'/images/dungeon_types/monsters_symbol.png'} />
             <img className='card-info-comp card-img-comp card-comp card-bg-comp' src={bgUrl || '/images/red_bg_canvas.png'} />
             <img className='card-info-comp card-img-comp card-comp card-main-img-comp' src={mainImg || '/images/bosses/boss_ROBOBO.png'} />

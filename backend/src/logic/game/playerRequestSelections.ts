@@ -256,10 +256,10 @@ class SelectionRequestUniversal<SelectableType> {
     onFinish: (data: SelectableType[]) => void
     onSingleSelect?: (data: SelectableType) => void
     additonalValidation?: (selectedItem: SelectableType) => boolean
-    metadata: { displayType: 'dungeonCard' | 'text' | 'mixed' }
+    metadata: { displayType: 'dungeonCard' | 'text' | 'mixed' | 'spellCard' }
     amount: number
 
-    constructor({ requestedPlayer, selectionMessage, avalibleItemsForSelectArr, onFinish, metadata, amount, additonalValidation = () => true, onSingleSelect = () => { } }: { onSingleSelect?: (data: SelectableType) => void, additonalValidation?: (selectedItem: SelectableType) => boolean, amount: number, metadata: { displayType: 'dungeonCard' | 'text' | 'mixed' }, requestedPlayer: Player, selectionMessage: string, avalibleItemsForSelectArr: SelectableType[], onFinish: (data: SelectableType[]) => void }) {
+    constructor({ requestedPlayer, selectionMessage, avalibleItemsForSelectArr, onFinish, metadata, amount, additonalValidation = () => true, onSingleSelect = () => { } }: { onSingleSelect?: (data: SelectableType) => void, additonalValidation?: (selectedItem: SelectableType) => boolean, amount: number, metadata: { displayType: 'dungeonCard' | 'text' | 'mixed' | 'spellCard' }, requestedPlayer: Player, selectionMessage: string, avalibleItemsForSelectArr: SelectableType[], onFinish: (data: SelectableType[]) => void }) {
         this.requestedPlayer = requestedPlayer
         this.selectionMessage = selectionMessage
         this.avalibleItemsForSelectArr = avalibleItemsForSelectArr
@@ -279,6 +279,10 @@ class SelectionRequestUniversal<SelectableType> {
     }
 
     selectItem(item: SelectableType) {
+        if (this.isAreadySelected(item)) {
+            this.deselectItem(item)
+            return
+        }
         if (this.isSelectionValid(item)) {
             this.selectedItems.push(item)
             this.onSingleSelect(item)
@@ -299,6 +303,14 @@ class SelectionRequestUniversal<SelectableType> {
         return isItemIn && additionalValidation
     }
 
+    isAreadySelected(selectedItem: SelectableType): boolean {
+        return this.selectedItems.includes(selectedItem)
+    }
+
+    deselectItem(item: SelectableType) {
+        this.selectedItems = this.selectedItems.filter((selectedItem) => selectedItem !== item)
+    }
+
     isCompleted() {
         return this.selectedItems.length === this.amount
     }
@@ -306,8 +318,6 @@ class SelectionRequestUniversal<SelectableType> {
     resolveTarget() {
         this.requestedPlayer.setRequestedSelection(null)
         this.onFinish(this.selectedItems)
-        // this.target.receiveSelectionData(this.selectedItems)
-        // this.target.use()
     }
 }
 
