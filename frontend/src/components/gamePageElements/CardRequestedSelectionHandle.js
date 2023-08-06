@@ -23,7 +23,6 @@ function CardRequestedSelectionHandle({ card = null }) {
     }
 
     function isSelectionValid(clickedCard) {
-        return true
         if (requestedSelection.requestItemType.toLowerCase() !== clickedCard.CARDTYPE.toLowerCase()) {
             return false
         }
@@ -78,7 +77,6 @@ function CardRequestedSelectionHandle({ card = null }) {
             saveResponseError(res, dispatch)
         }
     }
-
 
     return (
         <div onClick={(e) => handleSelectableCardClick(e)} className={`player-item-selectable ${isSelected(card) ? 'card-item-selected' : ''} ${isSelectionValid(card) ? 'item-selection-valid' : 'item-selection-not-valid'}`}></div>

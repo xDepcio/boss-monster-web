@@ -25,6 +25,8 @@
     display: flex;
     flex-wrap: wrap;
     overflow-y: scroll;
+    width: 100%;
+    flex-grow: 1;
 }
 
 .universal-selection-wrapper {

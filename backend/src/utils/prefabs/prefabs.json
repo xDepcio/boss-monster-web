@@ -471,6 +471,16 @@
                     "magic": 1
                 },
                 "mechanicDescription": "Możesz przejrzeć miasto lub talie bohaterów, wybrać jednego z bohaterów i położyć go przed wejściem do twoich podziemi."
+            },
+            {
+                "CARDTYPE": "BOSS",
+                "id": 10,
+                "name": "XYZAX",
+                "pd": 750,
+                "treasure": {
+                    "faith": 1
+                },
+                "mechanicDescription": "Wybierz dwie karty ze stosu odrzuconych kart i weź je na swoją rękę."
             }
         ]
     },
