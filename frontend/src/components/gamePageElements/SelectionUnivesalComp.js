@@ -8,6 +8,7 @@ import CardDungeon from './CardDungeon'
 import CardSpell from './CardSpell'
 import './SelectionUnivesalComp.css'
 import { saveResponseError } from '../utils'
+import CardHero from './CardHero'
 
 export default function SelectionUnivesalComp() {
     const avalibleItemsForSelectArr = useSelector(state => state.game?.selfPlayer?.requestedSelection?.avalibleItemsForSelectArr)
@@ -25,7 +26,7 @@ export default function SelectionUnivesalComp() {
             body: JSON.stringify({
                 userId: Cookies.get('user'),
                 selectedItem: stringify(item),
-                displayType: metadata?.displayType
+                // displayType: metadata?.displayType
             })
         })
         saveResponseError(res, dispatch)
@@ -98,9 +99,9 @@ export default function SelectionUnivesalComp() {
 
     if (metadata?.displayType === 'mixed') {
         return (
-            <div className='treasure-selection-wrapper'>
+            <div className='treasure-selection-wrapper universal-selection-wrapper'>
                 <h3 className='treasure-selection-header'>{selectionMessage}</h3>
-                <div className='treasure-sumbol-holder'>
+                <div className='treasure-sumbol-holder universal-selection-choices-holder'>
                     {avalibleItemsForSelectArr?.map((item, i) => {
                         if (typeof item === 'string') return (
                             <div className='text-choice-holder'>
@@ -134,6 +135,23 @@ export default function SelectionUnivesalComp() {
                                 phase={item.playablePhase}
                                 _className={'player-card-in-inv'}
                                 card={item}
+                            />
+                        )
+                        if (item?.CARDTYPE === 'HERO') return (
+                            <CardHero
+                                card={item}
+                                id={item.id}
+                                baseHealth={item.baseHealth}
+                                health={item.health}
+                                name={item.name}
+                                treasure={item.treasureSign}
+                                width={150}
+                                key={i}
+                                _className={''}
+                                description={item.description}
+                                typeName={item.typeName}
+                                specialName={item.specialName}
+                                _onClick={() => handleSelectItem(item)}
                             />
                         )
                         if (item?.objectType === 'PLAYER_OBJECT') return (

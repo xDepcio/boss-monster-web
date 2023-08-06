@@ -1,5 +1,5 @@
 import { GameEvent, feedback } from "../actionFeedbacks"
-import { BossCard, Card, DungeonCard, SpellCard } from "../cards"
+import { BossCard, Card, DungeonCard, HeroCard, SpellCard } from "../cards"
 import { SelectionRequest, SelectionRequestNEW, SelectionRequestUniversal } from "../playerRequestSelections"
 import { CardAction } from "./customCardActions"
 import { RoundModifer } from "./roundModifiers"
@@ -413,8 +413,58 @@ class TakeOneCardFromOpponent extends BossMechanic {
                         })
                     }
                 })
-                this.bossCard.trackedGame.saveGameAction(feedback.PLAYER_USED_BOSS_RANKUP_MECHANIC(abilityOwner, this.bossCard, this))
                 cardAction.setActionDisabled(true)
+                this.bossCard.trackedGame.saveGameAction(feedback.PLAYER_USED_BOSS_RANKUP_MECHANIC(abilityOwner, this.bossCard, this))
+            }
+        })
+        this.bossCard.addCustomCardAction(cardAction)
+    }
+
+    handleGameEvent(event: GameEvent) {
+        if (!super.validate()) return
+
+        if (event.type === "PLAYER_RANKED_UP_BOSS" && event.player.id === this.bossCard.owner.id) {
+            this.handleRankUp()
+        }
+    }
+}
+
+class Put1HeroFromCityOrHeroesStackAtYourDungeonEntrance extends BossMechanic {
+    constructor(bossCard: BossCard, mechanicDescription: string) {
+        super(bossCard, mechanicDescription)
+    }
+
+    handleRankUp() {
+        const cardAction = new CardAction({
+            allowUseFor: [this.bossCard.owner],
+            title: "Użyj.",
+            onUse: (bossOwner) => {
+                const avalibleItems = [
+                    ...this.bossCard.trackedGame.notUsedHeroCardsStack,
+                    ...this.bossCard.trackedGame.city
+                ]
+                if (avalibleItems.length > 0) {
+                    new SelectionRequestUniversal<HeroCard>({
+                        amount: 1,
+                        avalibleItemsForSelectArr: avalibleItems,
+                        metadata: {
+                            displayType: 'mixed',
+                        },
+                        requestedPlayer: bossOwner,
+                        selectionMessage: "Wybierz bohatera do dodania do wejścia do lochu.",
+                        onFinish: ([hero]) => {
+                            if (this.bossCard.trackedGame.notUsedHeroCardsStack.includes(hero)) {
+                                this.bossCard.trackedGame.notUsedHeroCardsStack.splice(this.bossCard.trackedGame.notUsedHeroCardsStack.indexOf(hero), 1)
+                            } else {
+                                this.bossCard.trackedGame.city.splice(this.bossCard.trackedGame.city.indexOf(hero), 1)
+                            }
+                            bossOwner.addHeroToDungeonEntrance(hero)
+                            hero.setDungeonOwner(bossOwner)
+                        }
+                    })
+                }
+                cardAction.setActionDisabled(true)
+                this.bossCard.trackedGame.saveGameAction(feedback.PLAYER_USED_BOSS_RANKUP_MECHANIC(bossOwner, this.bossCard, this))
             }
         })
         this.bossCard.addCustomCardAction(cardAction)
@@ -436,7 +486,8 @@ const bossesMechanicsMap = {
     'KRÓL ROPUCH': DrawFancyMonsterDungeonFromDiscardedOrDeck,
     "KLEOPATRA": DrawFancyTrapsDungeonFromDiscardedOrDeck,
     "CEREBELLUS": Draw3SpellsAndDiscard1,
-    "DRAKULORD": TakeOneCardFromOpponent
+    "DRAKULORD": TakeOneCardFromOpponent,
+    "BAŁAMUTIA": Put1HeroFromCityOrHeroesStackAtYourDungeonEntrance,
 }
 
 module.exports = {

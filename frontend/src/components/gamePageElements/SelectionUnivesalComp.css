@@ -20,3 +20,15 @@
     color: whitesmoke;
     font-family: 'Press Start 2P', cursive;
 }
+
+.universal-selection-choices-holder {
+    display: flex;
+    flex-wrap: wrap;
+    overflow-y: scroll;
+}
+
+.universal-selection-wrapper {
+    border-radius: 3rem;
+    max-height: 70vh;
+    height: 100%;
+}

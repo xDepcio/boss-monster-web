@@ -129,7 +129,7 @@ router.post('/:lobbyId/select-item', assignPlayer, (req, res, next) => {
                 const displayType = (player.requestedSelection as SelectionRequestUniversal<any>).metadata.displayType
                 switch (displayType) {
                     case 'dungeonCard': {
-                        selectedItem = DungeonCard.getDungeon(req.body.itemId)
+                        selectedItem = DungeonCard.getDungeon(req.body.selectedItem.id)
                         break
                     }
                     case 'text': {
@@ -137,7 +137,7 @@ router.post('/:lobbyId/select-item', assignPlayer, (req, res, next) => {
                         break
                     }
                     case "spellCard": {
-                        selectedItem = SpellCard.getSpell(req.body.itemId)
+                        selectedItem = SpellCard.getSpell(req.body.selectedItem.id)
                         break
                     }
                     case "mixed": {
@@ -150,6 +150,8 @@ router.post('/:lobbyId/select-item', assignPlayer, (req, res, next) => {
                             selectedItem = item
                         } else if (item?.objectType === 'PLAYER_OBJECT') {
                             selectedItem = Player.getPlayer(item.id)
+                        } else if (item?.CARDTYPE === 'HERO') {
+                            selectedItem = HeroCard.getHero(item.id)
                         }
                     }
                 }
