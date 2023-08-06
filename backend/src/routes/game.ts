@@ -125,8 +125,15 @@ router.post('/:lobbyId/select-item', assignPlayer, (req, res, next) => {
             }
             case "UNIVERSAL_SELECTION": {
                 const displayType = (player.requestedSelection as SelectionRequestUniversal<any>).metadata.displayType
-                if (displayType === 'dungeonCard') {
-                    selectedItem = DungeonCard.getDungeon(req.body.itemId)
+                switch (displayType) {
+                    case 'dungeonCard': {
+                        selectedItem = DungeonCard.getDungeon(req.body.itemId)
+                        break
+                    }
+                    case 'text': {
+                        selectedItem = req.body.selectedItem
+                        break
+                    }
                 }
             }
         }

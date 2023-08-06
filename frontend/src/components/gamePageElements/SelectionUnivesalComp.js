@@ -56,16 +56,20 @@ export default function SelectionUnivesalComp() {
         )
     }
 
-    return (
-        <div className='treasure-selection-wrapper'>
-            <h3 className='treasure-selection-header'>{selectionMessage}</h3>
-            <div className='treasure-sumbol-holder'>
-                {avalibleItemsForSelectArr?.map((item, i) => (
-                    <div onClick={() => handleSelectItem(item)} className='single-item-holder' key={i}>
-                        <p className='single-item-value'>{item}</p>
-                    </div>
-                ))}
+    if (metadata?.displayType === 'text') {
+        return (
+            <div className='treasure-selection-wrapper'>
+                <h3 className='treasure-selection-header'>{selectionMessage}</h3>
+                <div className='treasure-sumbol-holder'>
+                    {avalibleItemsForSelectArr?.map((text, i) => (
+                        <div className='text-choice-holder'>
+                            <p className='text-choice' key={i} onClick={() => handleSelectItem(text)}>{text}</p>
+                        </div>
+                    ))}
+                </div>
             </div>
-        </div>
-    )
+        )
+    }
+
+    return <></>
 }

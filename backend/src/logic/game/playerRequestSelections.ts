@@ -256,10 +256,10 @@ class SelectionRequestUniversal<SelectableType> {
     onFinish: (data: SelectableType[]) => void
     onSingleSelect?: (data: SelectableType) => void
     additonalValidation?: (selectedItem: SelectableType) => boolean
-    metadata: { displayType: 'dungeonCard' }
+    metadata: { displayType: 'dungeonCard' | 'text' }
     amount: number
 
-    constructor({ requestedPlayer, selectionMessage, avalibleItemsForSelectArr, onFinish, metadata, amount, additonalValidation = () => true, onSingleSelect = () => { } }: { onSingleSelect?: (data: SelectableType) => void, additonalValidation?: (selectedItem: SelectableType) => boolean, amount: number, metadata: { displayType: 'dungeonCard' }, requestedPlayer: Player, selectionMessage: string, avalibleItemsForSelectArr: SelectableType[], onFinish: (data: SelectableType[]) => void }) {
+    constructor({ requestedPlayer, selectionMessage, avalibleItemsForSelectArr, onFinish, metadata, amount, additonalValidation = () => true, onSingleSelect = () => { } }: { onSingleSelect?: (data: SelectableType) => void, additonalValidation?: (selectedItem: SelectableType) => boolean, amount: number, metadata: { displayType: 'dungeonCard' | 'text' }, requestedPlayer: Player, selectionMessage: string, avalibleItemsForSelectArr: SelectableType[], onFinish: (data: SelectableType[]) => void }) {
         this.requestedPlayer = requestedPlayer
         this.selectionMessage = selectionMessage
         this.avalibleItemsForSelectArr = avalibleItemsForSelectArr

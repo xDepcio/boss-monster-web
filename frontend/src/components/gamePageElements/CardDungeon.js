@@ -15,6 +15,7 @@ function CardDungeon({ width, _className, bgImage, isFancy = false, description 
     const bgUrl = useMemo(() => getBgColor(treasure), [treasure])
     const heroToMove = useSelector(state => state.game?.game.heroToMove)
     const selfPlayer = useSelector(state => state.game?.selfPlayer)
+    const [enhance, setEnhance] = useState(false)
 
     useEffect(() => {
         switch (type) {
@@ -62,9 +63,15 @@ function CardDungeon({ width, _className, bgImage, isFancy = false, description 
         <div onClick={_onClick}
             style={{
                 width: typeof width === 'string' ? width : width + 'px',
-                fontSize: typeof width === 'string' ? fontHelp : `${width / 18}px`
+                fontSize: typeof width === 'string' ? fontHelp : `${width / 18}px`,
+                transform: enhance ? 'scale(2) translate(0%, 0%)' : '',
+                zIndex: enhance ? '100' : '1',
             }}
             className={`main-card-wrapper card-comp ${_className}`}
+            onContextMenu={(e) => {
+                e.preventDefault()
+                setEnhance(!enhance)
+            }}
         >
             {selfPlayer?.requestedSelection && <CardRequestedSelectionHandle card={card} />}
             {(heroToMove && heroToMove?.dungeonRoom?.id === id) && <HeroToMoveMarker />}

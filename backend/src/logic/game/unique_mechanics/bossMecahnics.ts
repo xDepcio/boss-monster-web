@@ -193,8 +193,8 @@ class DrawFancyDungeonFromDiscardedOrDeck extends BossMechanic {
             amount: 1,
             requestedPlayer: this.bossCard.owner,
             avalibleItemsForSelectArr: [
-                ...this.bossCard.trackedGame.notUsedDungeonCardsStack,
-                ...this.bossCard.trackedGame.usedCardsStack.filter(card => card instanceof DungeonCard) as DungeonCard[]
+                ...this.bossCard.trackedGame.notUsedDungeonCardsStack.filter(card => card.isFancy),
+                ...this.bossCard.trackedGame.usedCardsStack.filter(card => card instanceof DungeonCard && card.isFancy) as DungeonCard[]
             ],
             metadata: {
                 displayType: 'dungeonCard',
@@ -215,17 +215,30 @@ class DrawFancyDungeonFromDiscardedOrDeck extends BossMechanic {
                     }
                 })
                 if (avalibleToBuildOn.length > 0) {
-                    new SelectionRequestUniversal({
+                    new SelectionRequestUniversal<'tak' | 'nie'>({
                         amount: 1,
-                        avalibleItemsForSelectArr: avalibleToBuildOn,
+                        avalibleItemsForSelectArr: ['tak', 'nie'],
                         metadata: {
-                            displayType: 'dungeonCard',
+                            displayType: "text"
                         },
                         requestedPlayer: this.bossCard.owner,
-                        selectionMessage: "Wybierz gdzie wybudować loch.",
-                        onFinish: ([toBuildOn]) => {
-                            this.bossCard.owner.declareBuild(items[0], this.bossCard.owner.dungeon.indexOf(toBuildOn), { ignoreRoundPhase: true })
-                            this.bossCard.owner.buildDeclaredDungeon()
+                        selectionMessage: "Czy chcesz wybudować ten loch?",
+                        onFinish: ([answer]) => {
+                            if (answer === 'tak') {
+                                new SelectionRequestUniversal({
+                                    amount: 1,
+                                    avalibleItemsForSelectArr: avalibleToBuildOn,
+                                    metadata: {
+                                        displayType: 'dungeonCard',
+                                    },
+                                    requestedPlayer: this.bossCard.owner,
+                                    selectionMessage: "Wybierz gdzie wybudować loch.",
+                                    onFinish: ([toBuildOn]) => {
+                                        this.bossCard.owner.declareBuild(items[0], this.bossCard.owner.dungeon.indexOf(toBuildOn), { ignoreRoundPhase: true })
+                                        this.bossCard.owner.buildDeclaredDungeon()
+                                    }
+                                })
+                            }
                         }
                     })
                 }
