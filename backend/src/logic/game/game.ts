@@ -27,7 +27,8 @@ class Game {
     notUsedDungeonCardsStack: DungeonCard[]
     notUsedHeroCardsStack: HeroCard[]
     notUsedBossesStack: BossCard[]
-    usedCardsStack: (BossCard | DungeonCard | HeroCard | SpellCard)[]
+    discardedDungeonCardsStack: DungeonCard[]
+    discardedSpellCardsStack: SpellCard[]
     gameRound: number
     roundPhase: RoundPhase
     city: HeroCard[]
@@ -43,7 +44,8 @@ class Game {
         this.notUsedDungeonCardsStack = prefab ? getPrefabDungeonCards(this, prefab.dungeons) : getShuffledDungeonCards(this)
         this.notUsedHeroCardsStack = prefab ? getPrefabHeroCards(this, prefab.heroes) : getShuffledHeroCards(this)
         this.notUsedBossesStack = prefab ? getPrefabBossesCards(this, prefab.bosses) : getShuffledBossesCards(this)
-        this.usedCardsStack = []
+        this.discardedDungeonCardsStack = []
+        this.discardedSpellCardsStack = []
         this.gameRound = 1
         this.roundPhase = "start"
         this.city = []

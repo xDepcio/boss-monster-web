@@ -234,7 +234,8 @@ class NegateSpellByRemovingYourSpell extends DungeonMechanic {
             else {
                 const playedSpell = this.dungeonCard.trackedGame.getCurrentlyPlayedSpell()
                 playedSpell.completeUsage()
-                this.selectedSpell.owner.throwCardAway(this.selectedSpell)
+                this.selectedSpell.owner.discardSpellCard(this.selectedSpell)
+                // this.selectedSpell.owner.throwCardAway(this.selectedSpell)
                 this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
                 this.selectedSpell = null
                 this.usedInRound = true
@@ -367,9 +368,17 @@ class TakeThrownAwayCardByOtherPlayer extends DungeonMechanic {
     }
 
     handleGameEvent(event: GameEvent) {
-        if (event.type === "PLAYER_THROWN_AWAY_CARD") {
+        if (event.type === "PLAYER_THROWN_AWAY_SPELL_CARD") {
             if (event.player.id !== this.dungeonCard.owner.id) {
-                this.thrownAwayCard = event.card
+                this.thrownAwayCard = event.spell
+                if (!this.usedInRound) {
+                    this.use()
+                }
+            }
+        }
+        else if (event.type === "PLAYER_THROWN_AWAY_DUNGEON_CARD") {
+            if (event.player.id !== this.dungeonCard.owner.id) {
+                this.thrownAwayCard = event.dungeon
                 if (!this.usedInRound) {
                     this.use()
                 }

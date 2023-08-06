@@ -191,7 +191,7 @@ class DrawFancyMonsterDungeonFromDiscardedOrDeck extends BossMechanic {
     handleRankUp() {
         const avalibleItems = [
             ...this.bossCard.trackedGame.notUsedDungeonCardsStack.filter(card => card.isFancy && card.type === 'monsters'),
-            ...this.bossCard.trackedGame.usedCardsStack.filter(card => card instanceof DungeonCard && card.isFancy && card.type === 'monsters') as DungeonCard[]
+            ...this.bossCard.trackedGame.discardedDungeonCardsStack.filter(card => card instanceof DungeonCard && card.isFancy && card.type === 'monsters') as DungeonCard[]
         ]
         if (avalibleItems.length > 0) {
             new SelectionRequestUniversal<DungeonCard>({
@@ -269,7 +269,7 @@ class DrawFancyTrapsDungeonFromDiscardedOrDeck extends BossMechanic {
     handleRankUp() {
         const avalibleItems = [
             ...this.bossCard.trackedGame.notUsedDungeonCardsStack.filter(card => card.isFancy && card.type === 'traps'),
-            ...this.bossCard.trackedGame.usedCardsStack.filter(card => card instanceof DungeonCard && card.isFancy && card.type === 'traps') as DungeonCard[]
+            ...this.bossCard.trackedGame.discardedDungeonCardsStack.filter(card => card instanceof DungeonCard && card.isFancy && card.type === 'traps') as DungeonCard[]
         ]
         if (avalibleItems.length > 0) {
             new SelectionRequestUniversal<DungeonCard>({
@@ -357,7 +357,7 @@ class Draw3SpellsAndDiscard1 extends BossMechanic {
             requestedPlayer: this.bossCard.owner,
             selectionMessage: "Wybierz jedno zaklęcie do odrzucenia.",
             onFinish: ([spellCard]) => {
-                this.bossCard.owner.throwCardAway(spellCard)
+                this.bossCard.owner.discardSpellCard(spellCard)
             }
         })
         this.bossCard.trackedGame.saveGameAction(feedback.PLAYER_USED_BOSS_RANKUP_MECHANIC(this.bossCard.owner, this.bossCard, this))
@@ -478,6 +478,63 @@ class Put1HeroFromCityOrHeroesStackAtYourDungeonEntrance extends BossMechanic {
         }
     }
 }
+
+// class TakeTwoCardFromDiscardedCardsStack extends BossMechanic {
+//     constructor(bossCard: BossCard, mechanicDescription: string) {
+//         super(bossCard, mechanicDescription)
+//     }
+
+//     handleRankUp() {
+//         const cardAction = new CardAction({
+//             allowUseFor: [this.bossCard.owner],
+//             title: "Użyj.",
+//             onUse: (bossOwner) => {
+//                 const avalibleItems = this.bossCard.trackedGame.usedCardsStack.filter(card => card instanceof SpellCard || card instanceof DungeonCard) as (DungeonCard | SpellCard)[]
+//                 if (avalibleItems.length > 0) {
+//                     new SelectionRequestUniversal<DungeonCard | SpellCard>({
+//                         amount: 2,
+//                         avalibleItemsForSelectArr: avalibleItems,
+//                         metadata: {
+//                             displayType: 'mixed',
+//                         },
+//                         requestedPlayer: bossOwner,
+//                         selectionMessage: "Wybierz dwie karty do wzięcia.",
+//                         onFinish: ([cardFirst, cardSecond]) => {
+//                             if (cardFirst instanceof SpellCard) {
+//                                 this.bossCard.trackedGame.usedCardsStack.splice(this.bossCard.trackedGame.usedCardsStack.indexOf(cardFirst), 1)
+//                                 bossOwner.spellCards.push(cardFirst)
+//                             }
+//                             else if (cardFirst instanceof DungeonCard) {
+//                                 this.bossCard.trackedGame.usedCardsStack.splice(this.bossCard.trackedGame.usedCardsStack.indexOf(cardFirst), 1)
+//                                 bossOwner.dungeonCards.push(cardFirst)
+//                             }
+
+//                             if (cardSecond instanceof SpellCard) {
+//                                 this.bossCard.trackedGame.usedCardsStack.splice(this.bossCard.trackedGame.usedCardsStack.indexOf(cardSecond), 1)
+//                                 bossOwner.spellCards.push(cardSecond)
+//                             }
+//                             else if (cardSecond instanceof DungeonCard) {
+//                                 this.bossCard.trackedGame.usedCardsStack.splice(this.bossCard.trackedGame.usedCardsStack.indexOf(cardSecond), 1)
+//                                 bossOwner.dungeonCards.push(cardSecond)
+//                             }
+//                         }
+//                     })
+//                 }
+//                 cardAction.setActionDisabled(true)
+//                 this.bossCard.trackedGame.saveGameAction(feedback.PLAYER_USED_BOSS_RANKUP_MECHANIC(bossOwner, this.bossCard, this))
+//             }
+//         })
+//         this.bossCard.addCustomCardAction(cardAction)
+//     }
+
+//     handleGameEvent(event: GameEvent) {
+//         if (!super.validate()) return
+
+//         if (event.type === "PLAYER_RANKED_UP_BOSS" && event.player.id === this.bossCard.owner.id) {
+//             this.handleRankUp()
+//         }
+//     }
+// }
 
 const bossesMechanicsMap = {
     'Lamia': GainOneGoldEveryTimeMonsterDungeonIsBuild,

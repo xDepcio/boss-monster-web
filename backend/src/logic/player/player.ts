@@ -168,12 +168,34 @@ class Player {
         this.drawNotUsedBossCard()
     }
 
+    drawDungeonFromDiscardedCardsStack(dungeonId: Id) {
+        const cardIndex = this.trackedGame.discardedDungeonCardsStack.findIndex(card => card.id === dungeonId)
+        if (cardIndex === -1) {
+            throw new Error("No such dungeon in discarded cards stack.")
+        }
+        const [card] = this.trackedGame.discardedDungeonCardsStack.splice(cardIndex, 1)
+        this.dungeonCards.push(card)
+        card.setOwner(this)
+        this.trackedGame.saveGameAction(feedback.PLAYER_DRAWNED_DUNGEON_CARD(this))
+    }
+
+    drawSpellFromDiscardedCardsStack(spellId: Id) {
+        const cardIndex = this.trackedGame.discardedSpellCardsStack.findIndex(card => card.id === spellId)
+        if (cardIndex === -1) {
+            throw new Error("No such spell in discarded cards stack.")
+        }
+        const [card] = this.trackedGame.discardedSpellCardsStack.splice(cardIndex, 1)
+        this.spellCards.push(card)
+        card.setOwner(this)
+        this.trackedGame.saveGameAction(feedback.PLAYER_DRAWNED_SPELL_CARD(this))
+    }
+
     drawDungeonFromUsedCardsStack(dungeonId: Id) {
-        const card = this.trackedGame.usedCardsStack.find(card => card.id === dungeonId && card instanceof DungeonCard) as DungeonCard || undefined
+        const card = this.trackedGame.discardedDungeonCardsStack.find(card => card.id === dungeonId && card instanceof DungeonCard) as DungeonCard || undefined
         if (!card) {
             throw new Error("No such dungeon in used cards stack.")
         }
-        this.trackedGame.usedCardsStack.splice(this.trackedGame.usedCardsStack.findIndex(card => card.id === dungeonId && card instanceof DungeonCard), 1)
+        this.trackedGame.discardedDungeonCardsStack.splice(this.trackedGame.discardedDungeonCardsStack.findIndex(card => card.id === dungeonId && card instanceof DungeonCard), 1)
         this.dungeonCards.push(card)
         this.trackedGame.saveGameAction(feedback.PLAYER_DRAWNED_DUNGEON_CARD(this))
     }
@@ -285,18 +307,34 @@ class Player {
         }
     }
 
-    throwCardAway(card: DungeonCard | SpellCard) {
-        if (card instanceof SpellCard) {
-            this.trackedGame.saveGameAction(feedback.PLAYER_THROWN_AWAY_CARD(this, card))
-            this.removeSpellFromHand(card)
-        }
-        else if (card instanceof DungeonCard) {
-            // TODO...
-            throw new Error('TODO when player throw away dung card')
-        }
-        else {
-            throw new Error('cardtype doesnnot exists proly TODO...')
-        }
+    // throwCardAway(card: DungeonCard | SpellCard) {
+    //     if (card instanceof SpellCard) {
+    //         this.trackedGame.saveGameAction(feedback.PLAYER_THROWN_AWAY_CARD(this, card))
+    //         this.discardSpellCard(card)
+    //     }
+    //     else if (card instanceof DungeonCard) {
+    //         // TODO...
+    //         throw new Error('TODO when player throw away dung card')
+    //     }
+    //     else {
+    //         throw new Error('cardtype doesnnot exists proly TODO...')
+    //     }
+    // }
+
+    discardSpellCard(spell: SpellCard) {
+        const spellIndex = this.spellCards.findIndex(spellCard => spellCard.id === spell.id)
+        spell.setOwner(null)
+        this.spellCards.splice(spellIndex, 1)
+        this.trackedGame.discardedSpellCardsStack.push(spell)
+        this.trackedGame.saveGameAction(feedback.PLAYER_THROWN_AWAY_SPELL_CARD(this, spell))
+    }
+
+    discardDungeonCard(dungeon: DungeonCard) {
+        const dungeonIndex = this.spellCards.findIndex(spellCard => spellCard.id === dungeon.id)
+        dungeon.setOwner(null)
+        this.spellCards.splice(dungeonIndex, 1)
+        this.trackedGame.discardedDungeonCardsStack.push(dungeon)
+        this.trackedGame.saveGameAction(feedback.PLAYER_THROWN_AWAY_DUNGEON_CARD(this, dungeon))
     }
 
     receiveCard(card: DungeonCard | SpellCard) {
@@ -307,12 +345,6 @@ class Player {
             this.dungeonCards.push(card)
         }
         card.setOwner(this)
-    }
-
-    removeSpellFromHand(spell: SpellCard) {
-        const spellIndex = this.spellCards.findIndex(spellCard => spellCard.id === spell.id)
-        spell.setOwner(null)
-        this.spellCards.splice(spellIndex, 1)
     }
 
     checkIfSpellPlayValid(spellCard: SpellCard) {

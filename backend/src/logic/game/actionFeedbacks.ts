@@ -137,11 +137,23 @@ type EventSchema = {
         type: "PLAYER_ACCEPTED_SPELL_PLAY",
         message: string
     },
-    PLAYER_THROWN_AWAY_CARD: {
-        type: "PLAYER_THROWN_AWAY_CARD",
+    // PLAYER_THROWN_AWAY_CARD: {
+    //     type: "PLAYER_THROWN_AWAY_CARD",
+    //     message: string,
+    //     player: Player,
+    //     card: SpellCard | DungeonCard
+    // },
+    PLAYER_THROWN_AWAY_SPELL_CARD: {
+        type: "PLAYER_THROWN_AWAY_SPELL_CARD",
         message: string,
         player: Player,
-        card: SpellCard | DungeonCard
+        spell: SpellCard
+    },
+    PLAYER_THROWN_AWAY_DUNGEON_CARD: {
+        type: "PLAYER_THROWN_AWAY_DUNGEON_CARD",
+        message: string,
+        player: Player,
+        dungeon: DungeonCard
     },
     HERO_ENTERED_ROOM: {
         type: "HERO_ENTERED_ROOM",
@@ -349,12 +361,28 @@ export const feedback = {
             message: `player ${player.getName()} accepted play of '${spell.getName()}' by ${spell.owner.getName()}.`,
         }
     },
-    PLAYER_THROWN_AWAY_CARD: (player: Player, card: SpellCard | DungeonCard): GameEvent => {
+    // PLAYER_THROWN_AWAY_CARD: (player: Player, card: SpellCard | DungeonCard): GameEvent => {
+    //     return {
+    //         type: "PLAYER_THROWN_AWAY_CARD",
+    //         message: `player ${player.getName()} thrown away card '${card.getName()}'.`,
+    //         player,
+    //         card
+    //     }
+    // },
+    PLAYER_THROWN_AWAY_SPELL_CARD: (player: Player, spell: SpellCard): GameEvent => {
         return {
-            type: "PLAYER_THROWN_AWAY_CARD",
-            message: `player ${player.getName()} thrown away card '${card.getName()}'.`,
+            type: "PLAYER_THROWN_AWAY_SPELL_CARD",
+            message: `player ${player.getName()} thrown away spell '${spell.getName()}'.`,
             player,
-            card
+            spell
+        }
+    },
+    PLAYER_THROWN_AWAY_DUNGEON_CARD: (player: Player, dungeon: DungeonCard): GameEvent => {
+        return {
+            type: "PLAYER_THROWN_AWAY_DUNGEON_CARD",
+            message: `player ${player.getName()} thrown away dungeon '${dungeon.getName()}'.`,
+            player,
+            dungeon
         }
     },
     HERO_ENTERED_ROOM: (hero: HeroCard, dungeonCard: DungeonCard, dungeonOwner: Player): GameEvent => {
