@@ -606,6 +606,44 @@ class DestroyOtherRoomToDeal5DamageToHeroOnThisRoom extends DungeonMechanic {
     }
 }
 
+class MayDrawSpellWhenHeroDiedInRoomOncePerTurn extends DungeonMechanic {
+    usedInRound: boolean
+
+    constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
+        super(dungeonCard, mechanicDescription)
+        this.usedInRound = false
+    }
+
+    use() {
+        new SelectionRequestUniversal<'tak' | 'nie'>({
+            amount: 1,
+            avalibleItemsForSelectArr: ['tak', 'nie'],
+            metadata: {
+                displayType: 'mixed'
+            },
+            requestedPlayer: this.dungeonCard.owner,
+            selectionMessage: "Czy chcesz dobrać kartę czaru?",
+            onFinish: ([selectedOption]) => {
+                if (selectedOption === 'tak') {
+                    this.dungeonCard.owner.drawNotUsedSpellCard()
+                }
+                this.usedInRound = true
+            }
+        })
+    }
+
+    handleGameEvent(event: GameEvent) {
+        if (event.type === "HERO_DIED_IN_ROOM") {
+            if (event.room === this.dungeonCard && !this.usedInRound) {
+                this.use()
+            }
+        }
+        else if (event.type === "NEW_ROUND_BEGUN") {
+            this.usedInRound = false
+        }
+    }
+}
+
 const dungeonMechanicsMap = {
     'Bezdenna czeluść': EliminateHeroInDungeon,
     'Niestabilna kopalnia': Get3MoneyOnDestroy,
@@ -620,7 +658,8 @@ const dungeonMechanicsMap = {
     'Czarny rynek': Pay1GoldToDrawSpellWhenAnyDungeonDestroyed,
     'Fabryka golemów': DrawDungeonWhenHeroEliminatedInThisDungeon,
     'Beast Menagerie': DrawDungeonCardWhenYouBuildMonsterDungeonOncePerRound,
-    'Boulder Ramp': DestroyOtherRoomToDeal5DamageToHeroOnThisRoom
+    'Boulder Ramp': DestroyOtherRoomToDeal5DamageToHeroOnThisRoom,
+    'Brainsucker Hive': MayDrawSpellWhenHeroDiedInRoomOncePerTurn,
 }
 
 

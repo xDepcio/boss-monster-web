@@ -61,7 +61,7 @@
         "dungeons": [
             {
                 "CARDTYPE": "DUNGEON",
-                "id": 13,
+                "id": 1,
                 "name": "Bezdenna czeluść",
                 "type": "traps",
                 "damage": 1,
@@ -74,7 +74,7 @@
             },
             {
                 "CARDTYPE": "DUNGEON",
-                "id": 14,
+                "id": 2,
                 "name": "Diabliczki w spa",
                 "type": "monsters",
                 "damage": 1,
@@ -85,7 +85,7 @@
             },
             {
                 "CARDTYPE": "DUNGEON",
-                "id": 15,
+                "id": 3,
                 "name": "Niestabilna kopalnia",
                 "type": "traps",
                 "damage": 2,
@@ -98,7 +98,7 @@
             },
             {
                 "CARDTYPE": "DUNGEON",
-                "id": 16,
+                "id": 4,
                 "name": "Norka kocicy",
                 "type": "monsters",
                 "damage": 2,
@@ -111,7 +111,7 @@
             },
             {
                 "CARDTYPE": "DUNGEON",
-                "id": 17,
+                "id": 5,
                 "name": "Zgniatarka odpadów",
                 "type": "traps",
                 "damage": 1,
@@ -124,7 +124,7 @@
             },
             {
                 "CARDTYPE": "DUNGEON",
-                "id": 18,
+                "id": 6,
                 "name": "Targowisko goblinów",
                 "type": "monsters",
                 "damage": 1,
@@ -137,7 +137,7 @@
             },
             {
                 "CARDTYPE": "DUNGEON",
-                "id": 23,
+                "id": 7,
                 "name": "Kopiec doppelgangerów",
                 "type": "monsters",
                 "damage": 2,
@@ -150,7 +150,7 @@
             },
             {
                 "CARDTYPE": "DUNGEON",
-                "id": 24,
+                "id": 8,
                 "name": "Skarbiec diabląt",
                 "type": "monsters",
                 "damage": 1,
@@ -163,7 +163,7 @@
             },
             {
                 "CARDTYPE": "DUNGEON",
-                "id": 28,
+                "id": 9,
                 "name": "Labirynt Minotaura",
                 "type": "monsters",
                 "damage": 0,
@@ -176,7 +176,7 @@
             },
             {
                 "CARDTYPE": "DUNGEON",
-                "id": 32,
+                "id": 10,
                 "name": "Czarny rynek",
                 "type": "monsters",
                 "damage": 2,
@@ -189,7 +189,7 @@
             },
             {
                 "CARDTYPE": "DUNGEON",
-                "id": 33,
+                "id": 11,
                 "name": "Fabryka golemów",
                 "type": "monsters",
                 "damage": 2,
@@ -202,7 +202,7 @@
             },
             {
                 "CARDTYPE": "DUNGEON",
-                "id": 19,
+                "id": 12,
                 "name": "Wszystkowidzące Oko",
                 "type": "traps",
                 "damage": 3,
@@ -215,7 +215,7 @@
             },
             {
                 "CARDTYPE": "DUNGEON",
-                "id": 20,
+                "id": 13,
                 "name": "Beast Menagerie",
                 "type": "monsters",
                 "damage": 4,
@@ -228,7 +228,7 @@
             },
             {
                 "CARDTYPE": "DUNGEON",
-                "id": 22,
+                "id": 14,
                 "name": "Nieprzebyty krużganek",
                 "type": "traps",
                 "damage": 2,
@@ -241,7 +241,7 @@
             },
             {
                 "CARDTYPE": "DUNGEON",
-                "id": 21,
+                "id": 15,
                 "name": "Boulder Ramp",
                 "type": "traps",
                 "damage": 1,
@@ -251,6 +251,19 @@
                 "mechanicType": null,
                 "mechanicDescription": "Destroy another Room in your dungeon: Deal +5 damage to a Hero in this Room.",
                 "isFancy": true
+            },
+            {
+                "CARDTYPE": "DUNGEON",
+                "id": 16,
+                "name": "Brainsucker Hive",
+                "type": "monsters",
+                "damage": 2,
+                "treasure": {
+                    "magic": 1
+                },
+                "mechanicType": null,
+                "mechanicDescription": "Once per turn, if a Hero dies in this Room, you may draw a Spell card.",
+                "isFancy": false
             }
         ],
         "heroes": [
