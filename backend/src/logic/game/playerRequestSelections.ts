@@ -318,9 +318,11 @@ class SelectionRequestUniversal<SelectableType> {
     }
 
     resolveTarget() {
-        this.requestedPlayer.setRequestedSelection(null)
         try {
             this.onFinish(this.selectedItems)
+            if (this.requestedPlayer.requestedSelection === this) {
+                this.requestedPlayer.setRequestedSelection(null)
+            }
         } catch (error) {
             this.selectedItems = []
             this.requestedPlayer.setRequestedSelection(this)

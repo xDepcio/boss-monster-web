@@ -189,19 +189,6 @@
             },
             {
                 "CARDTYPE": "DUNGEON",
-                "id": 11,
-                "name": "Fabryka golemów",
-                "type": "monsters",
-                "damage": 2,
-                "treasure": {
-                    "strength": 1
-                },
-                "mechanicType": "onePerRound",
-                "mechanicDescription": "Raz na rundę: jeśli bohater zostanie wyeliminowany w tej komnacie, dociągnij kartę komnaty.",
-                "isFancy": false
-            },
-            {
-                "CARDTYPE": "DUNGEON",
                 "id": 12,
                 "name": "Wszystkowidzące Oko",
                 "type": "traps",
@@ -306,6 +293,32 @@
                 "mechanicType": null,
                 "mechanicDescription": "When you build this Room, choose one ordinary Hero in town and place it at the entrance to your dungeon.",
                 "isFancy": false
+            },
+            {
+                "CARDTYPE": "DUNGEON",
+                "id": 11,
+                "name": "Fabryka golemów",
+                "type": "monsters",
+                "damage": 2,
+                "treasure": {
+                    "strength": 1
+                },
+                "mechanicType": "onePerRound",
+                "mechanicDescription": "Raz na rundę: jeśli bohater zostanie wyeliminowany w tej komnacie, dociągnij kartę komnaty.",
+                "isFancy": false
+            },
+            {
+                "CARDTYPE": "DUNGEON",
+                "id": 20,
+                "name": "Monster's Ballroom",
+                "type": "monsters",
+                "damage": 0,
+                "treasure": {
+                    "strength": 1
+                },
+                "mechanicType": null,
+                "mechanicDescription": "This Room's damage is equal to the number of Monster Rooms in your dungeon.",
+                "isFancy": true
             }
         ],
         "heroes": [

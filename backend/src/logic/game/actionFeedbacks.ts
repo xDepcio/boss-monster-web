@@ -103,7 +103,9 @@ type EventSchema = {
     },
     PLAYER_DESTROYED_DUNGEON: {
         type: "PLAYER_DESTROYED_DUNGEON",
-        message: string
+        message: string,
+        player: Player,
+        dungeon: DungeonCard
     },
     PLAYER_USED_MECHANIC: {
         type: "PLAYER_USED_MECHANIC",
@@ -299,7 +301,9 @@ export const feedback = {
     PLAYER_DESTROYED_DUNGEON: (player: Player, dungeon: DungeonCard): GameEvent => {
         return {
             type: "PLAYER_DESTROYED_DUNGEON",
-            message: `player ${player.getName()} destroyed dungeon ${dungeon.getName()}`
+            message: `player ${player.getName()} destroyed dungeon ${dungeon.getName()}`,
+            player,
+            dungeon
         }
     },
     PLAYER_PLAYED_SPELL: (player: Player, spell: SpellCard): GameEvent => {

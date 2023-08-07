@@ -804,6 +804,21 @@ class PlaceHeroFromCityAtEntranceAtBuild extends DungeonMechanic {
     }
 }
 
+class DamageEqualToNumberOfMonsterDungeonsInDungeon extends DungeonMechanic {
+    constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
+        super(dungeonCard, mechanicDescription)
+    }
+
+    use() {
+        const numberOfMonsterDungeons = this.dungeonCard.owner.dungeon.filter(dungeon => dungeon.type === "monsters").length
+        this.dungeonCard.damage = numberOfMonsterDungeons
+    }
+
+    handleGameEvent(event: GameEvent) {
+        this.use()
+    }
+}
+
 const dungeonMechanicsMap = {
     'Bezdenna czeluść': EliminateHeroInDungeon,
     'Niestabilna kopalnia': Get3MoneyOnDestroy,
@@ -823,6 +838,7 @@ const dungeonMechanicsMap = {
     'Centipede Tunnel': SwapAnyTwoRoomsOnBuild,
     'Construction Zone': BuildAnotherDungeonWhenThisDungeonBuild,
     'Mimic Vault': PlaceHeroFromCityAtEntranceAtBuild,
+    "Monster's Ballroom": DamageEqualToNumberOfMonsterDungeonsInDungeon,
 }
 
 
