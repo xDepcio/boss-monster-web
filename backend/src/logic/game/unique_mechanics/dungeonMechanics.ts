@@ -822,7 +822,7 @@ const dungeonMechanicsMap = {
     'Brainsucker Hive': MayDrawSpellWhenHeroDiedInRoomOncePerTurn,
     'Centipede Tunnel': SwapAnyTwoRoomsOnBuild,
     'Construction Zone': BuildAnotherDungeonWhenThisDungeonBuild,
-    'Mimic Vault': PlaceHeroFromCityAtEntranceAtBuild,
+    // 'Mimic Vault': PlaceHeroFromCityAtEntranceAtBuild,
 }
 
 
