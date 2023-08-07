@@ -7,19 +7,25 @@ class CardAction {
     static cardActions: { [id: Id]: CardAction } = {}
 
     title: string
-    allowUseFor: Player[]
+    allowUseFor: Player[] | (() => Player[])
     onUse: (player: Player) => void
     actionDisabled: boolean
     id: Id
+    additionalUseValidation?: (player: Player) => boolean
 
-    constructor({ title, allowUseFor, onUse }: { title: string, allowUseFor: Player[], onUse: (player: Player) => void }) {
+    constructor({ title, allowUseFor, onUse, additionalUseValidation = () => true }: { title: string, allowUseFor: Player[] | (() => Player[]), onUse: (player: Player) => void, additionalUseValidation?: (player: Player) => boolean }) {
         this.title = title
         this.allowUseFor = allowUseFor // Array of all players allowed to use this
         this.onUse = onUse
+        this.additionalUseValidation = additionalUseValidation
         this.actionDisabled = false
         this.id = v4()
         CardAction.cardActions[this.id] = this
 
+    }
+
+    isDisabled(): boolean {
+        return this.actionDisabled
     }
 
     setActionDisabled(bool: boolean) {
@@ -27,14 +33,24 @@ class CardAction {
     }
 
     canPlayerUse(player: Player) {
-        if (this.actionDisabled) return false
+        if (this.actionDisabled) {
+            throw new Error("This action is disabled.")
+        }
 
-        for (let allowedPlayer of this.allowUseFor) {
+        let allowUseFor: Player[] = []
+        if (typeof this.allowUseFor === "function") {
+            allowUseFor = this.allowUseFor()
+        }
+        else {
+            allowUseFor = this.allowUseFor
+        }
+
+        for (let allowedPlayer of allowUseFor) {
             if (player.id === allowedPlayer.id) {
                 return true
             }
         }
-        return false
+        return this.additionalUseValidation(player)
     }
 
     handleUsedByPlayer(player: Player) {

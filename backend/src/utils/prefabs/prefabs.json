@@ -137,19 +137,6 @@
             },
             {
                 "CARDTYPE": "DUNGEON",
-                "id": 22,
-                "name": "Nieprzebyty krużganek",
-                "type": "traps",
-                "damage": 2,
-                "treasure": {
-                    "fortune": 1
-                },
-                "mechanicType": "onDestroy",
-                "mechanicDescription": "Możesz zniszczyć tę komnatę, aby do końca rundy dodać jeden symbol dowolnego skarbu do podziemi dowolnego gracza.",
-                "isFancy": false
-            },
-            {
-                "CARDTYPE": "DUNGEON",
                 "id": 23,
                 "name": "Kopiec doppelgangerów",
                 "type": "monsters",
@@ -237,6 +224,32 @@
                 },
                 "mechanicType": null,
                 "mechanicDescription": "Once per turn when you build another Monster Room, draw a Room card.",
+                "isFancy": true
+            },
+            {
+                "CARDTYPE": "DUNGEON",
+                "id": 22,
+                "name": "Nieprzebyty krużganek",
+                "type": "traps",
+                "damage": 2,
+                "treasure": {
+                    "fortune": 1
+                },
+                "mechanicType": "onDestroy",
+                "mechanicDescription": "Możesz zniszczyć tę komnatę, aby do końca rundy dodać jeden symbol dowolnego skarbu do podziemi dowolnego gracza.",
+                "isFancy": false
+            },
+            {
+                "CARDTYPE": "DUNGEON",
+                "id": 21,
+                "name": "Boulder Ramp",
+                "type": "traps",
+                "damage": 1,
+                "treasure": {
+                    "fortune": 1
+                },
+                "mechanicType": null,
+                "mechanicDescription": "Destroy another Room in your dungeon: Deal +5 damage to a Hero in this Room.",
                 "isFancy": true
             }
         ],

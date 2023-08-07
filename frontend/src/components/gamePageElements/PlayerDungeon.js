@@ -135,20 +135,39 @@ function PlayerDungeon({ player, selectedDungCard, setSelectedDungCard }) {
                         return (
                             <div key={i} className='single-player-dungeon-wrapper'>
                                 {(clickedCardId === dungeon.id) && (
-                                    <div className='clicked-dung-wrapper'>
-                                        {(dungeon.allowDestroy && player.id === selfPlayer.id) && (
-                                            <button onClick={() => handleDestroyDungeon(dungeon.id)} className='destroy-dung-btn'>
-                                                <FontAwesomeIcon icon={faTrashCan} />
-                                                <p>Zniszcz loch</p>
-                                            </button>
+                                    <>
+                                        <div className='clicked-dung-wrapper'>
+                                            {(dungeon.allowDestroy && player.id === selfPlayer.id) && (
+                                                <button onClick={() => handleDestroyDungeon(dungeon.id)} className='destroy-dung-btn'>
+                                                    <FontAwesomeIcon icon={faTrashCan} />
+                                                    <p>Zniszcz loch</p>
+                                                </button>
+                                            )}
+                                            {(dungeon.allowUse && player.id === selfPlayer.id) && (
+                                                <button onClick={() => handleUseDungeon(dungeon.id)} className='use-dung-btn'>
+                                                    <FontAwesomeIcon icon={faGamepad} />
+                                                    <p>Użyj lochu</p>
+                                                </button>
+                                            )}
+                                        </div>
+                                        {(true) && (
+                                            <div className='clicked-dung-wrapper'>
+                                                {dungeon.customCardActions?.map((action, i) => {
+                                                    // const isPlayerIn = action.allowUseFor.find(allowedPlayer => allowedPlayer.id === selfPlayer.id)
+                                                    if (false) {
+                                                        return <></>
+                                                    }
+                                                    if (dungeon.customCardActions)
+                                                        return (
+                                                            <button key={i} onClick={() => handleUseCutomCardAction(action.id)} className='custom-action-btn'>
+                                                                <FontAwesomeIcon icon={faGamepad} />
+                                                                <p>{action.title}</p>
+                                                            </button>
+                                                        )
+                                                })}
+                                            </div>
                                         )}
-                                        {(dungeon.allowUse && player.id === selfPlayer.id) && (
-                                            <button onClick={() => handleUseDungeon(dungeon.id)} className='use-dung-btn'>
-                                                <FontAwesomeIcon icon={faGamepad} />
-                                                <p>Użyj lochu</p>
-                                            </button>
-                                        )}
-                                    </div>
+                                    </>
                                 )}
                                 {player.declaredBuild?.belowDungeon?.id === dungeon.id ?
                                     <CardBack width={220} text={'TALIA KOMNAT'} /> :

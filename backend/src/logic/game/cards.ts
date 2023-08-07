@@ -193,6 +193,13 @@ class HeroCard extends Card {
 
     getDamaged(amount: number) {
         this.health -= amount
+        this.trackedGame.saveGameAction(feedback.HERO_DAMAGED(this, amount, this.dungeonOwner))
+        if (this.checkDeath()) {
+            if (this.dungeonRoom) {
+                this.trackedGame.saveGameAction(feedback.HERO_DIED_IN_ROOM(this, this.dungeonRoom))
+            }
+            this.die()
+        }
     }
 
     die() {
@@ -282,6 +289,17 @@ class DungeonCard extends Card {
         this.description = description
     }
 
+    getHeroOnThisDungeon(): HeroCard | null {
+        if (this.owner) {
+            for (let hero of this.owner.dungeonEntranceHeroes) {
+                if (hero.dungeonRoom?.id === this.id) {
+                    return hero
+                }
+            }
+        }
+        return null
+    }
+
     heroEnteredRoom(hero: HeroCard) {
         this.trackedGame.saveGameAction(feedback.HERO_ENTERED_ROOM(hero, this, this.owner))
         this.damageHero(hero)
@@ -289,11 +307,11 @@ class DungeonCard extends Card {
 
     damageHero(hero: HeroCard) {
         hero.getDamaged(this.damage)
-        this.trackedGame.saveGameAction(feedback.HERO_DAMAGED(hero, this, hero.dungeonOwner))
-        if (hero.checkDeath()) {
-            hero.die()
-            this.handleHeroDiedInRoom(hero)
-        }
+        // this.trackedGame.saveGameAction(feedback.HERO_DAMAGED(hero, this, hero.dungeonOwner))
+        // if (hero.checkDeath()) {
+        //     hero.die()
+        //     this.handleHeroDiedInRoom(hero)
+        // }
     }
 
     setAllowDestroy(bool: boolean) {
@@ -312,9 +330,9 @@ class DungeonCard extends Card {
         return this.allowUse
     }
 
-    handleHeroDiedInRoom(killedHero: HeroCard) {
-        this.trackedGame.saveGameAction(feedback.HERO_DIED_IN_ROOM(killedHero, this))
-    }
+    // handleHeroDiedInRoom(killedHero: HeroCard) {
+    //     this.trackedGame.saveGameAction(feedback.HERO_DIED_IN_ROOM(killedHero, this))
+    // }
 
     setCardToBuildOn(dungeonCard: DungeonCard) {
         this.belowDungeon = dungeonCard

@@ -256,10 +256,10 @@ export const feedback = {
             message: `All players chose their bosses and first round has started`
         }
     },
-    HERO_DAMAGED: (hero: HeroCard, dungeon: DungeonCard, player: Player): GameEvent => {
+    HERO_DAMAGED: (hero: HeroCard, amount: number, player: Player): GameEvent => {
         return {
             type: "HERO_DAMAGED",
-            message: `Hero ${hero.getName()} got damaged for ${dungeon.damage} hp in ${player.getName()}'s dungeon. Hp left: ${hero.health}`
+            message: `Hero ${hero.getName()} got damaged for ${amount} hp in ${player.getName()}'s dungeon. Hp left: ${hero.health}`
         }
     },
     PLAYER_ACCEPTED_HERO_MOVE: (player: Player): GameEvent => {

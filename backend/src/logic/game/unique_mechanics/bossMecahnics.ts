@@ -164,6 +164,7 @@ class MakeEveryOpponentDestroyOneDungeon extends BossMechanic {
                     items.forEach((dungeonCard: DungeonCard) => {
                         dungeonCard.setAllowDestroy(true)
                         player.destroyDungeonCard(dungeonCard.id)
+                        dungeonCard.setAllowDestroy(false)
                     })
                 },
                 message: "Wybierz swój loch do znieszczenia."

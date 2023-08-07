@@ -95,7 +95,6 @@ router.post('/:lobbyId/select-item', assignPlayer, (req, res, next) => {
     try {
         const player: Player = req.player
         let selectedItem
-        req.body.selectedItem = parse(req.body.selectedItem)
         switch (player.requestedSelection.getRequestItemType()) {
             case "hero": {
                 selectedItem = HeroCard.getHero(req.body.itemId)
@@ -126,6 +125,7 @@ router.post('/:lobbyId/select-item', assignPlayer, (req, res, next) => {
                 break
             }
             case "UNIVERSAL_SELECTION": {
+                req.body.selectedItem = parse(req.body.selectedItem)
                 const displayType = (player.requestedSelection as SelectionRequestUniversal<any>).metadata.displayType
                 switch (displayType) {
                     case 'dungeonCard': {

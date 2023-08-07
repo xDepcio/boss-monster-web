@@ -2,7 +2,8 @@ import { Player } from "../../player/player"
 import { DungeonMechanicTypes, TreasureSign } from "../../types"
 import { GameEvent, feedback } from "../actionFeedbacks"
 import { DungeonCard, SpellCard } from "../cards"
-import { SelectableItem, SelectionRequest, SelectionRequestOneFromGivenList } from "../playerRequestSelections"
+import { SelectableItem, SelectionRequest, SelectionRequestOneFromGivenList, SelectionRequestUniversal } from "../playerRequestSelections"
+import { CardAction } from "./customCardActions"
 import { RoundModifer } from "./roundModifiers"
 
 const { OncePerRoundMechanicUsedAlready, DungeonMechanicUseConditionError } = require("../../errors")
@@ -558,6 +559,53 @@ class DrawDungeonCardWhenYouBuildMonsterDungeonOncePerRound extends DungeonMecha
     }
 }
 
+class DestroyOtherRoomToDeal5DamageToHeroOnThisRoom extends DungeonMechanic {
+    cardAction: CardAction
+
+    constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
+        super(dungeonCard, mechanicDescription)
+
+        this.cardAction = new CardAction({
+            title: "Użyj",
+            allowUseFor: () => [this.dungeonCard.owner],
+            additionalUseValidation: (mechanicUser) => {
+                if (this.cardAction.isDisabled()) {
+                    throw new OncePerRoundMechanicUsedAlready("This card was already used in this round.")
+                }
+                if (mechanicUser.dungeon.length === 1) {
+                    throw new DungeonMechanicUseConditionError("You can't use this card because there is no Room to destroy.")
+                }
+                return true
+            },
+            onUse: (mechanicUser) => {
+                new SelectionRequestUniversal<DungeonCard>({
+                    amount: 1,
+                    avalibleItemsForSelectArr: mechanicUser.dungeon.filter(dungeon => dungeon.id !== this.dungeonCard.id),
+                    onFinish: ([selectedDungeon]) => {
+                        selectedDungeon.setAllowDestroy(true)
+                        mechanicUser.destroyDungeonCard(selectedDungeon.id)
+                        selectedDungeon.setAllowDestroy(false)
+                        this.dungeonCard.getHeroOnThisDungeon()?.getDamaged(5)
+                        this.cardAction.setActionDisabled(true)
+                    },
+                    metadata: {
+                        displayType: "mixed",
+                    },
+                    requestedPlayer: mechanicUser,
+                    selectionMessage: "Wybierz komnatę do zniszczenia",
+                })
+            }
+        })
+        dungeonCard.addCustomCardAction(this.cardAction)
+    }
+
+    handleGameEvent(event: GameEvent) {
+        if (event.type === "NEW_ROUND_BEGUN") {
+            this.cardAction.setActionDisabled(false)
+        }
+    }
+}
+
 const dungeonMechanicsMap = {
     'Bezdenna czeluść': EliminateHeroInDungeon,
     'Niestabilna kopalnia': Get3MoneyOnDestroy,
@@ -571,7 +619,8 @@ const dungeonMechanicsMap = {
     'Labirynt Minotaura': SendHeroBackToDungeonStart,
     'Czarny rynek': Pay1GoldToDrawSpellWhenAnyDungeonDestroyed,
     'Fabryka golemów': DrawDungeonWhenHeroEliminatedInThisDungeon,
-    'Beast Menagerie': DrawDungeonCardWhenYouBuildMonsterDungeonOncePerRound
+    'Beast Menagerie': DrawDungeonCardWhenYouBuildMonsterDungeonOncePerRound,
+    'Boulder Ramp': DestroyOtherRoomToDeal5DamageToHeroOnThisRoom
 }
 
 
