@@ -262,7 +262,7 @@ class DungeonCard extends Card {
         this.owner = null
         this.allowDestroy = false
         this.allowUse = false
-        this.mechanic = mechanic ? new mechanic(this, mechanicType, mechanicDescription) : null
+        this.mechanic = mechanic ? new mechanic(this, mechanicDescription, mechanicType) : null
         DungeonCard.dungeons[id] = this
     }
 

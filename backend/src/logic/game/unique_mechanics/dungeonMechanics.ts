@@ -32,10 +32,10 @@ const { OncePerRoundMechanicUsedAlready, DungeonMechanicUseConditionError } = re
 class DungeonMechanic {
 
     dungeonCard: DungeonCard
-    type: DungeonMechanicTypes
+    type?: DungeonMechanicTypes
     mechanicDescription: string
 
-    constructor(dungeonCard: DungeonCard, type: DungeonMechanicTypes, mechanicDescription: string) {
+    constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
         this.dungeonCard = dungeonCard
         this.type = type
         this.mechanicDescription = mechanicDescription
@@ -62,8 +62,8 @@ class DungeonMechanic {
 }
 
 class EliminateHeroInDungeon extends DungeonMechanic {
-    constructor(dungeonCard: DungeonCard, type: DungeonMechanicTypes, mechanicDescription: string) {
-        super(dungeonCard, type, mechanicDescription)
+    constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
+        super(dungeonCard, mechanicDescription, type)
         dungeonCard.setAllowDestroy(true)
     }
 
@@ -84,8 +84,8 @@ class EliminateHeroInDungeon extends DungeonMechanic {
 
 
 class Get3MoneyOnDestroy extends DungeonMechanic {
-    constructor(dungeonCard: DungeonCard, type: DungeonMechanicTypes, mechanicDescription: string) {
-        super(dungeonCard, type, mechanicDescription)
+    constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
+        super(dungeonCard, mechanicDescription, type)
         dungeonCard.setAllowDestroy(true)
     }
 
@@ -101,8 +101,8 @@ class DrawSpellWhenPlayedSpell extends DungeonMechanic { // "Raz na rundę: kied
 
     usedInRound
 
-    constructor(dungeonCard: DungeonCard, type: DungeonMechanicTypes, mechanicDescription: string) {
-        super(dungeonCard, type, mechanicDescription)
+    constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
+        super(dungeonCard, mechanicDescription, type)
         this.usedInRound = false
     }
 
@@ -135,8 +135,8 @@ class Draw2GoldWhenAnyDungeonDestoryed extends DungeonMechanic {
 
     usedInRound: boolean
 
-    constructor(dungeonCard: DungeonCard, type: DungeonMechanicTypes, mechanicDescription: string) {
-        super(dungeonCard, type, mechanicDescription)
+    constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
+        super(dungeonCard, mechanicDescription, type)
         this.usedInRound = false
     }
 
@@ -168,8 +168,8 @@ class Draw2GoldWhenDungeonBuildNext extends DungeonMechanic {
     previousLeft: DungeonCard | null
     previousRight: DungeonCard | null
 
-    constructor(dungeonCard: DungeonCard, type: DungeonMechanicTypes, mechanicDescription: string) {
-        super(dungeonCard, type, mechanicDescription)
+    constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
+        super(dungeonCard, mechanicDescription, type)
         this.previousLeft = null
         this.previousRight = null
     }
@@ -219,8 +219,8 @@ class NegateSpellByRemovingYourSpell extends DungeonMechanic {
     usedInRound: boolean
     selectedSpell: SpellCard | null
 
-    constructor(dungeonCard: DungeonCard, type: DungeonMechanicTypes, mechanicDescription: string) {
-        super(dungeonCard, type, mechanicDescription)
+    constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
+        super(dungeonCard, mechanicDescription, type)
         this.usedInRound = false
         this.selectedSpell = null
         this.dungeonCard.setAllowUse(true)
@@ -275,8 +275,8 @@ class add1TreasureToAnyDungeonForThisRoundOnDestory extends DungeonMechanic {
     selectedPlayer: Player | null
     requestedSelection: "TREASURE" | "PLAYER" | null
 
-    constructor(dungeonCard: DungeonCard, type: DungeonMechanicTypes, mechanicDescription: string) {
-        super(dungeonCard, type, mechanicDescription)
+    constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
+        super(dungeonCard, mechanicDescription, type)
         this.dungeonCard.setAllowDestroy(true)
         this.selectedTreasure = null
         this.selectedPlayer = null
@@ -322,8 +322,8 @@ class add1TreasureToAnyDungeonForThisRoundOnDestory extends DungeonMechanic {
 }
 
 class getOneDamageForEveryLuredHero extends DungeonMechanic {
-    constructor(dungeonCard: DungeonCard, type: DungeonMechanicTypes, mechanicDescription: string) {
-        super(dungeonCard, type, mechanicDescription)
+    constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
+        super(dungeonCard, mechanicDescription, type)
     }
 
     use() {
@@ -348,8 +348,8 @@ class TakeThrownAwayCardByOtherPlayer extends DungeonMechanic {
     shouldGetCard: "tak" | "nie" | null
     usedInRound: boolean
 
-    constructor(dungeonCard: DungeonCard, type: DungeonMechanicTypes, mechanicDescription: string) {
-        super(dungeonCard, type, mechanicDescription)
+    constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
+        super(dungeonCard, mechanicDescription, type)
         this.thrownAwayCard = null
         this.shouldGetCard = null
         this.usedInRound = false
@@ -411,8 +411,8 @@ class SendHeroBackToDungeonStart extends DungeonMechanic {
 
     heroesThatEnteredInRound
 
-    constructor(dungeonCard, type, mechanicDescription) {
-        super(dungeonCard, type, mechanicDescription)
+    constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
+        super(dungeonCard, mechanicDescription, type)
         this.heroesThatEnteredInRound = []
     }
 
@@ -452,8 +452,8 @@ class Pay1GoldToDrawSpellWhenAnyDungeonDestroyed extends DungeonMechanic {
     usedInRound
     shouldDrawCard
 
-    constructor(dungeonCard, type, mechanicDescription) {
-        super(dungeonCard, type, mechanicDescription)
+    constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
+        super(dungeonCard, mechanicDescription, type)
         this.usedInRound = false
         this.shouldDrawCard = null
     }
@@ -510,8 +510,8 @@ class DrawDungeonWhenHeroEliminatedInThisDungeon extends DungeonMechanic {
 
     usedInRound: boolean
 
-    constructor(dungeonCard: DungeonCard, type: DungeonMechanicTypes, mechanicDescription: string) {
-        super(dungeonCard, type, mechanicDescription)
+    constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
+        super(dungeonCard, mechanicDescription, type)
         this.usedInRound = false
     }
 
@@ -531,6 +531,33 @@ class DrawDungeonWhenHeroEliminatedInThisDungeon extends DungeonMechanic {
         }
     }
 }
+
+// class DrawDungeonCardWhenYouBuildDungeonOncePerRound extends DungeonMechanic {
+
+//     usedInRound: boolean
+
+//     constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
+//         super(dungeonCard, mechanicDescription)
+//         this.usedInRound = false
+//     }
+
+//     use() {
+//         this.dungeonCard.owner.drawNotUsedDungeonCard()
+//         this.usedInRound = true
+//     }
+
+//     handleGameEvent(event: GameEvent) {
+//         if (event.type === "PLAYER_BUILD_DUNGEON") {
+//             if (event.player === this.dungeonCard.owner) {
+//                 this.use()
+//             }
+//         }
+//         else if (event.type === "NEW_ROUND_BEGUN") {
+//             this.usedInRound = false
+//         }
+//     }
+
+// }
 
 const dungeonMechanicsMap = {
     'Bezdenna czeluść': EliminateHeroInDungeon,
