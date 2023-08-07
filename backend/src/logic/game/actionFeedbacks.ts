@@ -97,6 +97,10 @@ type EventSchema = {
         type: "START_BUILD_PHASE",
         message: string
     },
+    START_POST_BUILD_PHASE: {
+        type: "START_POST_BUILD_PHASE",
+        message: string
+    },
     PLAYER_DESTROYED_DUNGEON: {
         type: "PLAYER_DESTROYED_DUNGEON",
         message: string
@@ -284,6 +288,12 @@ export const feedback = {
         return {
             type: "START_BUILD_PHASE",
             message: `New build phase has started`
+        }
+    },
+    START_POST_BUILD_PHASE: (): GameEvent => {
+        return {
+            type: "START_POST_BUILD_PHASE",
+            message: `New post build phase has started`
         }
     },
     PLAYER_DESTROYED_DUNGEON: (player: Player, dungeon: DungeonCard): GameEvent => {

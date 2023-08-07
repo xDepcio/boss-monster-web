@@ -134,6 +134,9 @@ class Player {
 
     setRequestedSelection(selection: SelectionRequest | SelectionRequestOneFromGivenList<any> | null | SelectionRequestNEW | SelectionRequestUniversal<any>) {
         this.requestedSelection = selection
+        if (this.trackedGame.roundPhase === 'postBuild' && selection === null) {
+            this.trackedGame.checkForPhaseEnd()
+        }
     }
 
     drawStartCards() {

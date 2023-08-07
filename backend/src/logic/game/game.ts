@@ -1,5 +1,6 @@
 import { Player } from "../player/player"
 import { Id, RoundPhase } from "../types"
+import { feedback } from "./actionFeedbacks"
 import { BossCard, DungeonCard, HeroCard, SpellCard } from "./cards"
 import { RoundModifer } from "./unique_mechanics/roundModifiers"
 
@@ -7,7 +8,7 @@ import { RoundModifer } from "./unique_mechanics/roundModifiers"
 const { getShuffledDungeonCards, getShuffledHeroCards, getShuffledSpellCards, getShuffledBossesCards } = require('./utils')
 const { PlayerAlreadyDeclaredBuild, HeroesCardsStackEmpty, NotAllPlayersAcceptedHeroMove } = require('../errors')
 const { getPrefabBossesCards, getPrefabDungeonCards, getPrefabHeroCards, getPrefabSpellCards } = require('../../utils/prefabs/gamePrefab')
-const { feedback } = require('./actionFeedbacks')
+// const { feedback } = require('./actionFeedbacks')
 const { mechanicsTypes } = require('./unique_mechanics/dungeonMechanics')
 
 
@@ -112,7 +113,14 @@ class Game {
                     break
                 }
                 case "build": {
-                    this.startNewFightPhase()
+                    // this.startNewFightPhase()
+                    this.startNewPostBuildPhase()
+                    break
+                }
+                case "postBuild": {
+                    if (this.arePostBuildActionsFinished()) {
+                        this.startNewFightPhase()
+                    }
                     break
                 }
                 case "fight": {
@@ -123,11 +131,27 @@ class Game {
         }
     }
 
+    startNewPostBuildPhase() {
+        this.saveGameAction(feedback.START_POST_BUILD_PHASE())
+        this.roundPhase = 'postBuild'
+        this.players.forEach(player => player.buildDeclaredDungeon())
+        this.checkForPhaseEnd()
+    }
+
+    arePostBuildActionsFinished() {
+        for (let player of this.players) {
+            if (player.requestedSelection) {
+                return false
+            }
+        }
+        return true
+    }
+
     startNewFightPhase() {
         this.saveGameAction(feedback.START_FIGHT_PHASE())
         this.players.forEach(player => player.becomeNotReady())
         this.roundPhase = "fight"
-        this.players.forEach(player => player.buildDeclaredDungeon())
+        // this.players.forEach(player => player.buildDeclaredDungeon())
         // this.buildDeclaredCards()
         // this.city.forEach(hero => hero.goToLuredPlayer())
         // not elegeant fix below
