@@ -225,6 +225,19 @@
                 "mechanicType": "onUseOnePerRound",
                 "mechanicDescription": "Raz na rundę: kiedy przeciwnik zagra kartę czaru, możesz odrzucić z ręki kartę czaru, aby zanegować efekty właśnie zagranej przez przeciwnika karty.",
                 "isFancy": true
+            },
+            {
+                "CARDTYPE": "DUNGEON",
+                "id": 20,
+                "name": "Beast Menagerie",
+                "type": "monsters",
+                "damage": 4,
+                "treasure": {
+                    "strength": 1
+                },
+                "mechanicType": null,
+                "mechanicDescription": "Once per turn when you build another Monster Room, draw a Room card.",
+                "isFancy": true
             }
         ],
         "heroes": [

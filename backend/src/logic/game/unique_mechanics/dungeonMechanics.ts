@@ -532,32 +532,31 @@ class DrawDungeonWhenHeroEliminatedInThisDungeon extends DungeonMechanic {
     }
 }
 
-// class DrawDungeonCardWhenYouBuildDungeonOncePerRound extends DungeonMechanic {
+class DrawDungeonCardWhenYouBuildMonsterDungeonOncePerRound extends DungeonMechanic {
 
-//     usedInRound: boolean
+    usedInRound: boolean
 
-//     constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
-//         super(dungeonCard, mechanicDescription)
-//         this.usedInRound = false
-//     }
+    constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
+        super(dungeonCard, mechanicDescription)
+        this.usedInRound = false
+    }
 
-//     use() {
-//         this.dungeonCard.owner.drawNotUsedDungeonCard()
-//         this.usedInRound = true
-//     }
+    use() {
+        this.dungeonCard.owner.drawNotUsedDungeonCard()
+        this.usedInRound = true
+    }
 
-//     handleGameEvent(event: GameEvent) {
-//         if (event.type === "PLAYER_BUILD_DUNGEON") {
-//             if (event.player === this.dungeonCard.owner) {
-//                 this.use()
-//             }
-//         }
-//         else if (event.type === "NEW_ROUND_BEGUN") {
-//             this.usedInRound = false
-//         }
-//     }
-
-// }
+    handleGameEvent(event: GameEvent) {
+        if (event.type === "PLAYER_BUILD_DUNGEON") {
+            if (event.player === this.dungeonCard.owner && event.dungeon.type === "monsters" && !this.usedInRound) {
+                this.use()
+            }
+        }
+        else if (event.type === "NEW_ROUND_BEGUN") {
+            this.usedInRound = false
+        }
+    }
+}
 
 const dungeonMechanicsMap = {
     'Bezdenna czeluść': EliminateHeroInDungeon,
@@ -571,7 +570,8 @@ const dungeonMechanicsMap = {
     'Skarbiec diabląt': TakeThrownAwayCardByOtherPlayer,
     'Labirynt Minotaura': SendHeroBackToDungeonStart,
     'Czarny rynek': Pay1GoldToDrawSpellWhenAnyDungeonDestroyed,
-    'Fabryka golemów': DrawDungeonWhenHeroEliminatedInThisDungeon
+    'Fabryka golemów': DrawDungeonWhenHeroEliminatedInThisDungeon,
+    'Beast Menagerie': DrawDungeonCardWhenYouBuildMonsterDungeonOncePerRound
 }
 
 
