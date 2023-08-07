@@ -457,10 +457,11 @@ class Put1HeroFromCityOrHeroesStackAtYourDungeonEntrance extends BossMechanic {
                             if (this.bossCard.trackedGame.notUsedHeroCardsStack.includes(hero)) {
                                 this.bossCard.trackedGame.notUsedHeroCardsStack.splice(this.bossCard.trackedGame.notUsedHeroCardsStack.indexOf(hero), 1)
                             } else {
-                                this.bossCard.trackedGame.city.splice(this.bossCard.trackedGame.city.indexOf(hero), 1)
+                                hero.removeSelfFromCity()
+                                // this.bossCard.trackedGame.city.splice(this.bossCard.trackedGame.city.indexOf(hero), 1)
                             }
                             bossOwner.addHeroToDungeonEntrance(hero)
-                            hero.setDungeonOwner(bossOwner)
+                            // hero.setDungeonOwner(bossOwner)
                         }
                     })
                 }

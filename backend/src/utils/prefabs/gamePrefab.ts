@@ -43,11 +43,11 @@ function getPrefabHeroCards(game, cards) {
     let dungeonCards = []
     for (let card of cards) {
         if (card.CARDTYPE === "HERO") {
-            const { CARDTYPE, damageDealt, health, id, name, treasure, description, specialName, typeName, skip } = card
+            const { CARDTYPE, damageDealt, health, id, name, treasure, description, specialName, typeName, skip, isLegendary } = card
             if (skip) {
                 continue
             }
-            const createdCardObj = new HeroCard(id, name, CARDTYPE, game, health, treasure, damageDealt, description || null, specialName || null, typeName || null)
+            const createdCardObj = new HeroCard(id, name, CARDTYPE, game, health, treasure, damageDealt, description || null, specialName || null, typeName || null, isLegendary)
             dungeonCards.push(createdCardObj)
         }
     }

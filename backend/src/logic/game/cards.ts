@@ -50,10 +50,11 @@ class HeroCard extends Card {
     dungeonRoom: DungeonCard | null
     dungeonOwner: Player | null
     finishedMoving: boolean
+    isLegendary: boolean
 
     constructor(id: Id, name: string, CARDTYPE: CardType, trackedGame: Game, health: number,
         treasureSign: TreasureSign, damageDealt: number, description: string | null = null,
-        specialName: string | null = null, typeName: string | null = null
+        specialName: string | null = null, typeName: string | null = null, isLegendary: boolean = false
     ) {
         super(id, name, CARDTYPE, trackedGame)
         this.health = health
@@ -66,6 +67,7 @@ class HeroCard extends Card {
         this.dungeonRoom = null
         this.dungeonOwner = null
         this.finishedMoving = false
+        this.isLegendary = isLegendary
         HeroCard.heroes[id] = this
     }
 

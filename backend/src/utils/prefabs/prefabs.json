@@ -292,6 +292,20 @@
                 "mechanicType": null,
                 "mechanicDescription": "When you build this Room, you may immiedatly build an additional Room.",
                 "isFancy": false
+            },
+            {
+                "CARDTYPE": "DUNGEON",
+                "id": 19,
+                "name": "Mimic Vault",
+                "type": "traps",
+                "damage": 1,
+                "treasure": {
+                    "fortune": 1,
+                    "magic": 1
+                },
+                "mechanicType": null,
+                "mechanicDescription": "When you build this Room, choose one ordinary Hero in town and place it at the entrance to your dungeon.",
+                "isFancy": false
             }
         ],
         "heroes": [
@@ -421,7 +435,8 @@
                 "name": "Najemnik",
                 "health": 6,
                 "treasure": "strength",
-                "damageDealt": 1
+                "damageDealt": 1,
+                "isLegendary": false
             },
             {
                 "CARDTYPE": "HERO",

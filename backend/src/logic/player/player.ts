@@ -157,6 +157,7 @@ class Player {
 
     addHeroToDungeonEntrance(hero: HeroCard) {
         this.dungeonEntranceHeroes.push(hero)
+        hero.setDungeonOwner(this)
     }
 
     trackGame(game: Game) {

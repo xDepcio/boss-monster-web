@@ -1,7 +1,7 @@
 import { Player } from "../../player/player"
 import { DungeonMechanicTypes, TreasureSign } from "../../types"
 import { GameEvent, feedback } from "../actionFeedbacks"
-import { DungeonCard, SpellCard } from "../cards"
+import { DungeonCard, HeroCard, SpellCard } from "../cards"
 import { SelectableItem, SelectionRequest, SelectionRequestOneFromGivenList, SelectionRequestUniversal } from "../playerRequestSelections"
 import { CardAction } from "./customCardActions"
 import { RoundModifer } from "./roundModifiers"
@@ -771,6 +771,39 @@ class BuildAnotherDungeonWhenThisDungeonBuild extends DungeonMechanic {
     }
 }
 
+// class PlaceHeroFromCityAtEntranceAtBuild extends DungeonMechanic {
+//     constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
+//         super(dungeonCard, mechanicDescription)
+//     }
+
+//     use() {
+//         if (this.dungeonCard.trackedGame.city.length === 0) return
+
+//         new SelectionRequestUniversal<HeroCard>({
+//             amount: 1,
+//             avalibleItemsForSelectArr: [...this.dungeonCard.trackedGame.city.filter(hero => !hero.isLegendary)],
+//             metadata: {
+//                 displayType: "mixed"
+//             },
+//             requestedPlayer: this.dungeonCard.owner,
+//             selectionMessage: "Wybierz bohatera do umieszczenia na wejściu do twojego lochu.",
+//             onFinish: ([selectedHero]) => {
+//                 selectedHero.removeSelfFromCity()
+//                 this.dungeonCard.owner.addHeroToDungeonEntrance(selectedHero)
+//                 this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
+//             },
+//         })
+//     }
+
+//     handleGameEvent(event: GameEvent) {
+//         if (event.type === "PLAYER_BUILD_DUNGEON") {
+//             if (event.player === this.dungeonCard.owner && event.dungeon === this.dungeonCard) {
+//                 this.use()
+//             }
+//         }
+//     }
+// }
+
 const dungeonMechanicsMap = {
     'Bezdenna czeluść': EliminateHeroInDungeon,
     'Niestabilna kopalnia': Get3MoneyOnDestroy,
@@ -789,6 +822,7 @@ const dungeonMechanicsMap = {
     'Brainsucker Hive': MayDrawSpellWhenHeroDiedInRoomOncePerTurn,
     'Centipede Tunnel': SwapAnyTwoRoomsOnBuild,
     'Construction Zone': BuildAnotherDungeonWhenThisDungeonBuild,
+    'Mimic Vault': PlaceHeroFromCityAtEntranceAtBuild,
 }
 
 
