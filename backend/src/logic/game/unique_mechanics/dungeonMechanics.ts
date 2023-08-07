@@ -711,6 +711,66 @@ class SwapAnyTwoRoomsOnBuild extends DungeonMechanic {
     }
 }
 
+class BuildAnotherDungeonWhenThisDungeonBuild extends DungeonMechanic {
+    constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
+        super(dungeonCard, mechanicDescription)
+    }
+
+    use() {
+        const request = new SelectionRequestUniversal<DungeonCard | 'Anuluj'>({
+            amount: 1,
+            avalibleItemsForSelectArr: [...this.dungeonCard.owner.dungeonCards, 'Anuluj'],
+            metadata: {
+                displayType: "mixed"
+            },
+            selectionMessage: "Który loch chcesz wybudować?",
+            requestedPlayer: this.dungeonCard.owner,
+            onFinish: ([selectedDungeon]: DungeonCard[]) => {
+                new SelectionRequestUniversal<DungeonCard | 'Nowy' | 'Anuluj'>({
+                    avalibleItemsForSelectArr: this.dungeonCard.owner.dungeon.length === 5 ?
+                        [...this.dungeonCard.owner.dungeon, 'Anuluj'] :
+                        [...this.dungeonCard.owner.dungeon, 'Nowy', 'Anuluj'],
+                    amount: 1,
+                    metadata: {
+                        displayType: "mixed"
+                    },
+                    requestedPlayer: this.dungeonCard.owner,
+                    selectionMessage: "Gdzie chcesz wybudować nowy loch?",
+                    onFinish: ([selectedPlace]: (DungeonCard | 'Nowy')[]) => {
+                        if (selectedPlace === 'Nowy') {
+                            this.dungeonCard.owner.declareBuild(selectedDungeon, null, { ignoreRoundPhase: true })
+                            this.dungeonCard.owner.buildDeclaredDungeon()
+                        }
+                        else {
+                            this.dungeonCard.owner.declareBuild(selectedDungeon, this.dungeonCard.owner.dungeon.findIndex((dung) => dung === selectedPlace), { ignoreRoundPhase: true })
+                            this.dungeonCard.owner.buildDeclaredDungeon()
+                        }
+                        this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
+                    },
+                    onSingleSelect: (selection) => {
+                        if (selection === 'Anuluj') {
+                            request.cancel()
+                        }
+                    }
+                })
+            },
+            onSingleSelect: (selection) => {
+                if (selection === 'Anuluj') {
+                    request.cancel()
+                }
+            }
+        })
+    }
+
+    handleGameEvent(event: GameEvent) {
+        if (event.type === "PLAYER_BUILD_DUNGEON") {
+            if (event.player === this.dungeonCard.owner && event.dungeon === this.dungeonCard) {
+                this.use()
+            }
+        }
+    }
+}
+
 const dungeonMechanicsMap = {
     'Bezdenna czeluść': EliminateHeroInDungeon,
     'Niestabilna kopalnia': Get3MoneyOnDestroy,
@@ -728,6 +788,7 @@ const dungeonMechanicsMap = {
     'Boulder Ramp': DestroyOtherRoomToDeal5DamageToHeroOnThisRoom,
     'Brainsucker Hive': MayDrawSpellWhenHeroDiedInRoomOncePerTurn,
     'Centipede Tunnel': SwapAnyTwoRoomsOnBuild,
+    'Construction Zone': BuildAnotherDungeonWhenThisDungeonBuild,
 }
 
 

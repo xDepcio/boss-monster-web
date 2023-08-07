@@ -278,6 +278,20 @@
                 "mechanicType": null,
                 "mechanicDescription": "When you build this Room, you may swap the placement of two Rooms in any one dungeon.",
                 "isFancy": false
+            },
+            {
+                "CARDTYPE": "DUNGEON",
+                "id": 18,
+                "name": "Construction Zone",
+                "type": "traps",
+                "damage": 1,
+                "treasure": {
+                    "fortune": 1,
+                    "strength": 1
+                },
+                "mechanicType": null,
+                "mechanicDescription": "When you build this Room, you may immiedatly build an additional Room.",
+                "isFancy": false
             }
         ],
         "heroes": [
