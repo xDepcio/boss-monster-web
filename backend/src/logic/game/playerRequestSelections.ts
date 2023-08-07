@@ -258,6 +258,7 @@ class SelectionRequestUniversal<SelectableType> {
     additonalValidation?: (selectedItem: SelectableType) => boolean
     metadata: { displayType: 'dungeonCard' | 'text' | 'mixed' | 'spellCard' | 'player' }
     amount: number
+    canceled: boolean
 
     constructor({ requestedPlayer, selectionMessage, avalibleItemsForSelectArr, onFinish, metadata, amount, additonalValidation = () => true, onSingleSelect = () => { } }: { onSingleSelect?: (data: SelectableType) => void, additonalValidation?: (selectedItem: SelectableType) => boolean, amount: number, metadata: { displayType: 'dungeonCard' | 'text' | 'mixed' | 'spellCard' | 'player' }, requestedPlayer: Player, selectionMessage: string, avalibleItemsForSelectArr: SelectableType[], onFinish: (data: SelectableType[]) => void }) {
         this.requestedPlayer = requestedPlayer
@@ -270,6 +271,7 @@ class SelectionRequestUniversal<SelectableType> {
         this.additonalValidation = additonalValidation
         this.onSingleSelect = onSingleSelect
         this.metadata = metadata
+        this.canceled = false
 
         requestedPlayer.setRequestedSelection(this);
     }
@@ -286,7 +288,7 @@ class SelectionRequestUniversal<SelectableType> {
         if (this.isSelectionValid(item)) {
             this.selectedItems.push(item)
             this.onSingleSelect(item)
-            if (this.isCompleted()) {
+            if (this.isCompleted() && !this.canceled) {
                 this.resolveTarget()
             }
         }
@@ -318,6 +320,11 @@ class SelectionRequestUniversal<SelectableType> {
     resolveTarget() {
         this.requestedPlayer.setRequestedSelection(null)
         this.onFinish(this.selectedItems)
+    }
+
+    cancel() {
+        this.requestedPlayer.setRequestedSelection(null)
+        this.canceled = true
     }
 }
 

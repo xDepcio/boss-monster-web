@@ -519,6 +519,7 @@ class DrawDungeonWhenHeroEliminatedInThisDungeon extends DungeonMechanic {
     use() {
         this.dungeonCard.owner.drawNotUsedDungeonCard()
         this.usedInRound = true
+        this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
     }
 
     handleGameEvent(event: GameEvent) {
@@ -545,6 +546,7 @@ class DrawDungeonCardWhenYouBuildMonsterDungeonOncePerRound extends DungeonMecha
     use() {
         this.dungeonCard.owner.drawNotUsedDungeonCard()
         this.usedInRound = true
+        this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
     }
 
     handleGameEvent(event: GameEvent) {
@@ -587,6 +589,7 @@ class DestroyOtherRoomToDeal5DamageToHeroOnThisRoom extends DungeonMechanic {
                         selectedDungeon.setAllowDestroy(false)
                         this.dungeonCard.getHeroOnThisDungeon()?.getDamaged(5)
                         this.cardAction.setActionDisabled(true)
+                        this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
                     },
                     metadata: {
                         displayType: "mixed",
@@ -626,6 +629,7 @@ class MayDrawSpellWhenHeroDiedInRoomOncePerTurn extends DungeonMechanic {
             onFinish: ([selectedOption]) => {
                 if (selectedOption === 'tak') {
                     this.dungeonCard.owner.drawNotUsedSpellCard()
+                    this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
                 }
                 this.usedInRound = true
             }
@@ -640,6 +644,69 @@ class MayDrawSpellWhenHeroDiedInRoomOncePerTurn extends DungeonMechanic {
         }
         else if (event.type === "NEW_ROUND_BEGUN") {
             this.usedInRound = false
+        }
+    }
+}
+
+class SwapAnyTwoRoomsOnBuild extends DungeonMechanic {
+    constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
+        super(dungeonCard, mechanicDescription)
+    }
+
+    use() {
+        new SelectionRequestUniversal<'tak' | 'nie'>({
+            amount: 1,
+            avalibleItemsForSelectArr: ['tak', 'nie'],
+            metadata: {
+                displayType: "mixed"
+            },
+            selectionMessage: "Czy chcesz zamienić miejscami dwie komnaty?",
+            requestedPlayer: this.dungeonCard.owner,
+            onFinish: ([selectedOption]) => {
+                if (selectedOption === 'tak') {
+                    new SelectionRequestUniversal<Player>({
+                        amount: 1,
+                        avalibleItemsForSelectArr: this.dungeonCard.trackedGame.players,
+                        metadata: {
+                            displayType: "mixed"
+                        },
+                        requestedPlayer: this.dungeonCard.owner,
+                        selectionMessage: "Wybierz gracza, którego komnaty chcesz zamienić miejscami",
+                        onFinish: ([selectedPlayer]) => {
+                            const dungeonSelection = new SelectionRequestUniversal<DungeonCard | 'Anuluj'>({
+                                amount: 2,
+                                avalibleItemsForSelectArr: [...selectedPlayer.dungeon, 'Anuluj'],
+                                metadata: {
+                                    displayType: 'mixed'
+                                },
+                                requestedPlayer: this.dungeonCard.owner,
+                                selectionMessage: "Wybierz dwie komnaty do zamiany miejscami",
+                                onFinish: ([dungeon1, dungeon2]: DungeonCard[]) => {
+                                    const dungeon1Index = selectedPlayer.dungeon.findIndex(dungeon => dungeon.id === dungeon1.id)
+                                    const dungeon2Index = selectedPlayer.dungeon.findIndex(dungeon => dungeon.id === dungeon2.id)
+                                    const temp = selectedPlayer.dungeon[dungeon1Index]
+                                    selectedPlayer.dungeon[dungeon1Index] = selectedPlayer.dungeon[dungeon2Index]
+                                    selectedPlayer.dungeon[dungeon2Index] = temp
+                                    this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
+                                },
+                                onSingleSelect: (selection) => {
+                                    if (selection === 'Anuluj') {
+                                        dungeonSelection.cancel()
+                                    }
+                                }
+                            })
+                        }
+                    })
+                }
+            }
+        })
+    }
+
+    handleGameEvent(event: GameEvent) {
+        if (event.type === "PLAYER_BUILD_DUNGEON") {
+            if (event.player === this.dungeonCard.owner && event.dungeon === this.dungeonCard) {
+                this.use()
+            }
         }
     }
 }
@@ -660,6 +727,7 @@ const dungeonMechanicsMap = {
     'Beast Menagerie': DrawDungeonCardWhenYouBuildMonsterDungeonOncePerRound,
     'Boulder Ramp': DestroyOtherRoomToDeal5DamageToHeroOnThisRoom,
     'Brainsucker Hive': MayDrawSpellWhenHeroDiedInRoomOncePerTurn,
+    'Centipede Tunnel': SwapAnyTwoRoomsOnBuild,
 }
 
 

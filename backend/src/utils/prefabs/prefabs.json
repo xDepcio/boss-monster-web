@@ -264,6 +264,20 @@
                 "mechanicType": null,
                 "mechanicDescription": "Once per turn, if a Hero dies in this Room, you may draw a Spell card.",
                 "isFancy": false
+            },
+            {
+                "CARDTYPE": "DUNGEON",
+                "id": 17,
+                "name": "Centipede Tunnel",
+                "type": "monsters",
+                "damage": 1,
+                "treasure": {
+                    "magic": 1,
+                    "strength": 1
+                },
+                "mechanicType": null,
+                "mechanicDescription": "When you build this Room, you may swap the placement of two Rooms in any one dungeon.",
+                "isFancy": false
             }
         ],
         "heroes": [
