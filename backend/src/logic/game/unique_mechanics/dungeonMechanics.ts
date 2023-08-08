@@ -863,6 +863,43 @@ class DisableBuildOfFancyDungeonOnTopOfThisDungeon extends DungeonMechanic {
     }
 }
 
+class ChooseDungeonCardFromDiscardedDungeonPileWhenHeroDiesInThisDungeonRoomOncePerRound extends DungeonMechanic {
+    usedInRound: boolean
+
+    constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
+        super(dungeonCard, mechanicDescription)
+        this.usedInRound = false
+    }
+
+    use() {
+        new SelectionRequestUniversal<DungeonCard>({
+            amount: 1,
+            avalibleItemsForSelectArr: this.dungeonCard.trackedGame.discardedDungeonCardsStack,
+            metadata: {
+                displayType: "mixed"
+            },
+            requestedPlayer: this.dungeonCard.owner,
+            selectionMessage: "Wybierz loch do wzięcia.",
+            onFinish: ([selectedDungeon]) => {
+                this.dungeonCard.owner.drawDungeonFromDiscardedCardsStack(selectedDungeon.id)
+                this.usedInRound = true
+                this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
+            },
+        })
+    }
+
+    handleGameEvent(event: GameEvent) {
+        if (event.type === "HERO_DIED_IN_ROOM") {
+            if (event.room === this.dungeonCard && !this.usedInRound) {
+                this.use()
+            }
+        }
+        else if (event.type === "NEW_ROUND_BEGUN") {
+            this.usedInRound = false
+        }
+    }
+}
+
 const dungeonMechanicsMap = {
     'Bezdenna czeluść': EliminateHeroInDungeon,
     'Niestabilna kopalnia': Get3MoneyOnDestroy,
@@ -885,6 +922,7 @@ const dungeonMechanicsMap = {
     "Monster's Ballroom": DamageEqualToNumberOfMonsterDungeonsInDungeon,
     'Monstrous Monument': DrawMonsterRoomFromDiscardedPileOnBuild,
     'Neanderthal Cave': DisableBuildOfFancyDungeonOnTopOfThisDungeon,
+    "Open Grave": ChooseDungeonCardFromDiscardedDungeonPileWhenHeroDiesInThisDungeonRoomOncePerRound,
 }
 
 

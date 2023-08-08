@@ -125,6 +125,8 @@ class HeroCard extends Card {
         this.trackedGame.addHeroToCity(this)
         this.removeSelfFromDungeonEntrance()
         this.setDungeonOwner(null)
+        this.dungeonRoom = null
+        this.health = this.baseHealth
         this.trackedGame.saveGameAction(feedback.HERO_WENT_BACK_TO_CITY(this))
         this.finishMoving()
     }
