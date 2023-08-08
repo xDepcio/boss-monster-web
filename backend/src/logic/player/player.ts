@@ -285,7 +285,8 @@ class Player {
             const cardToBuildOn = this.dungeon[index]
             if (card.isFancy) {
                 if (!card.canBeBuiltOn(cardToBuildOn)) {
-                    throw new InvalidFancyDungeonBuild("Fancy dungeon can only be built on top of normal dungeon with matching type")
+                    return false
+                    // throw new InvalidFancyDungeonBuild("Fancy dungeon can only be built on top of normal dungeon with matching type")
                 }
             }
         }

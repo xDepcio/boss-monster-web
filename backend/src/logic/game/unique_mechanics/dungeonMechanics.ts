@@ -856,6 +856,13 @@ class DrawMonsterRoomFromDiscardedPileOnBuild extends DungeonMechanic {
     }
 }
 
+class DisableBuildOfFancyDungeonOnTopOfThisDungeon extends DungeonMechanic {
+    constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
+        super(dungeonCard, mechanicDescription)
+        this.dungeonCard.setDisableFancyBuildOnTop(true)
+    }
+}
+
 const dungeonMechanicsMap = {
     'Bezdenna czeluść': EliminateHeroInDungeon,
     'Niestabilna kopalnia': Get3MoneyOnDestroy,
@@ -877,6 +884,7 @@ const dungeonMechanicsMap = {
     'Mimic Vault': PlaceHeroFromCityAtEntranceAtBuild,
     "Monster's Ballroom": DamageEqualToNumberOfMonsterDungeonsInDungeon,
     'Monstrous Monument': DrawMonsterRoomFromDiscardedPileOnBuild,
+    'Neanderthal Cave': DisableBuildOfFancyDungeonOnTopOfThisDungeon,
 }
 
 

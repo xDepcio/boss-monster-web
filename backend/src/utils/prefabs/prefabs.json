@@ -333,6 +333,19 @@
                 "mechanicType": null,
                 "mechanicDescription": "When you build this Room, choose one Monster Room from the discard pile and pit it in your hand.",
                 "isFancy": false
+            },
+            {
+                "CARDTYPE": "DUNGEON",
+                "id": 22,
+                "name": "Neanderthal Cave",
+                "type": "monsters",
+                "damage": 3,
+                "treasure": {
+                    "strength": 1
+                },
+                "mechanicType": null,
+                "mechanicDescription": "You cannot build an Advanced Room on Neanderthal Cave.",
+                "isFancy": false
             }
         ],
         "heroes": [

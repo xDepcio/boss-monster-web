@@ -254,6 +254,7 @@ class DungeonCard extends Card {
     allowDestroy: boolean
     allowUse: boolean
     mechanic: DungeonMechanic | null
+    disableFancyBuildOnTop: boolean
 
     constructor(id: Id, name: string, CARDTYPE: CardType, trackedGame: Game,
         baseDamage: number, treasure: TreasureSign, type: 'monsters' | 'traps', isFancy: boolean,
@@ -271,6 +272,7 @@ class DungeonCard extends Card {
         this.owner = null
         this.allowDestroy = false
         this.allowUse = false
+        this.disableFancyBuildOnTop = false
         this.mechanic = mechanic ? new mechanic(this, mechanicDescription, mechanicType) : null
         DungeonCard.dungeons[id] = this
     }
@@ -289,6 +291,10 @@ class DungeonCard extends Card {
 
     setDescription(description: string) {
         this.description = description
+    }
+
+    setDisableFancyBuildOnTop(bool: boolean) {
+        this.disableFancyBuildOnTop = bool
     }
 
     getHeroOnThisDungeon(): HeroCard | null {
@@ -360,10 +366,21 @@ class DungeonCard extends Card {
         }
     }
 
-    canBeBuiltOn(cardToBuildOn: DungeonCard) {
-        if (!this.isFancy) return true
-        if (this.matchesTreasureWith(cardToBuildOn)) return true
-        return false
+    canBeBuiltOn(cardToBuildOn: DungeonCard): boolean {
+        if (this.isFancy) {
+            if (cardToBuildOn.disableFancyBuildOnTop) {
+                throw Error("You can't build fancy dungeon on top of this card.")
+            }
+            if (!this.matchesTreasureWith(cardToBuildOn)) {
+                throw Error("Fancy dungeon can only be built on top of an another dungeon with matching treasure.")
+            }
+        }
+        else {
+
+        }
+        // if (!this.isFancy) return true
+        // if (this.matchesTreasureWith(cardToBuildOn)) return true
+        return true
     }
 
     matchesTreasureWith(anotherCard: DungeonCard) {
