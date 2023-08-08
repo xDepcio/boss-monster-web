@@ -8,6 +8,10 @@
     border-radius: 3%;
 }
 
+.any-card-outer-wrapper:hover {
+    z-index: 10 !important;
+}
+
 .card-info-comp {
     position: absolute;
 }

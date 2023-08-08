@@ -839,7 +839,7 @@ class DrawMonsterRoomFromDiscardedPileOnBuild extends DungeonMechanic {
                 displayType: "mixed"
             },
             requestedPlayer: this.dungeonCard.owner,
-            selectionMessage: "Wybierz loch do wybudowania",
+            selectionMessage: "Wybierz loch do wzięcia.",
             onFinish: ([selectedDungeon]) => {
                 this.dungeonCard.owner.drawDungeonFromDiscardedCardsStack(selectedDungeon.id)
                 this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))

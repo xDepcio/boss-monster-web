@@ -67,7 +67,7 @@ function CardDungeon({ width, _className, bgImage, isFancy = false, description 
                 transform: enhance ? 'scale(2) translate(0%, 0%)' : '',
                 zIndex: enhance ? '100' : '1',
             }}
-            className={`main-card-wrapper card-comp ${_className}`}
+            className={`main-card-wrapper card-comp any-card-outer-wrapper ${_className}`}
             onContextMenu={(e) => {
                 e.preventDefault()
                 setEnhance(!enhance)

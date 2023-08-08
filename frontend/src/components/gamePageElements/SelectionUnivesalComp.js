@@ -101,7 +101,7 @@ export default function SelectionUnivesalComp() {
 
     if (metadata?.displayType === 'mixed') {
         return (
-            <div className={`treasure-selection-wrapper universal-selection-wrapper ${minimized ? 'hidden-universal-selection' : ''}`}>
+            <div className={`universal-selection-wrapper ${minimized ? 'hidden-universal-selection' : ''}`}>
                 <div className='uni-selection-header'>
                     <h3 className='treasure-selection-header'>{selectionMessage}</h3>
                     <div onClick={() => setMinimized(!minimized)}>
