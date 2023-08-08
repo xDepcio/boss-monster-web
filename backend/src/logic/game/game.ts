@@ -1,3 +1,4 @@
+import { getPrefabBossesCards, getPrefabDiscardedDungeonCard, getPrefabDiscardedSpells, getPrefabDungeonCards, getPrefabHeroCards, getPrefabSpellCards } from "../../utils/prefabs/gamePrefab"
 import { Player } from "../player/player"
 import { Id, RoundPhase } from "../types"
 import { feedback } from "./actionFeedbacks"
@@ -7,7 +8,7 @@ import { RoundModifer } from "./unique_mechanics/roundModifiers"
 // const Player = require('../player/player')
 const { getShuffledDungeonCards, getShuffledHeroCards, getShuffledSpellCards, getShuffledBossesCards } = require('./utils')
 const { PlayerAlreadyDeclaredBuild, HeroesCardsStackEmpty, NotAllPlayersAcceptedHeroMove } = require('../errors')
-const { getPrefabBossesCards, getPrefabDungeonCards, getPrefabHeroCards, getPrefabSpellCards } = require('../../utils/prefabs/gamePrefab')
+// const { getPrefabBossesCards, getPrefabDungeonCards, getPrefabHeroCards, getPrefabSpellCards } = require('../../utils/prefabs/gamePrefab')
 // const { feedback } = require('./actionFeedbacks')
 const { mechanicsTypes } = require('./unique_mechanics/dungeonMechanics')
 
@@ -45,8 +46,8 @@ class Game {
         this.notUsedDungeonCardsStack = prefab ? getPrefabDungeonCards(this, prefab.dungeons) : getShuffledDungeonCards(this)
         this.notUsedHeroCardsStack = prefab ? getPrefabHeroCards(this, prefab.heroes) : getShuffledHeroCards(this)
         this.notUsedBossesStack = prefab ? getPrefabBossesCards(this, prefab.bosses) : getShuffledBossesCards(this)
-        this.discardedDungeonCardsStack = []
-        this.discardedSpellCardsStack = []
+        this.discardedDungeonCardsStack = prefab ? getPrefabDiscardedDungeonCard(this, prefab.discardedDungeons) : []
+        this.discardedSpellCardsStack = prefab ? getPrefabDiscardedSpells(this, prefab.discardedSpells) : []
         this.gameRound = 1
         this.roundPhase = "start"
         this.city = []

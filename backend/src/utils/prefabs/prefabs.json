@@ -319,6 +319,20 @@
                 "mechanicType": null,
                 "mechanicDescription": "This Room's damage is equal to the number of Monster Rooms in your dungeon.",
                 "isFancy": true
+            },
+            {
+                "CARDTYPE": "DUNGEON",
+                "id": 21,
+                "name": "Monstrous Monument",
+                "type": "traps",
+                "damage": 1,
+                "treasure": {
+                    "strength": 1,
+                    "faith": 1
+                },
+                "mechanicType": null,
+                "mechanicDescription": "When you build this Room, choose one Monster Room from the discard pile and pit it in your hand.",
+                "isFancy": false
             }
         ],
         "heroes": [
@@ -576,6 +590,74 @@
                     "faith": 1
                 },
                 "mechanicDescription": "Wybierz dwie karty ze stosu odrzuconych kart i weź je na swoją rękę."
+            }
+        ],
+        "discardedSpells": [
+            {
+                "CARDTYPE": "SPELL",
+                "id": 1001,
+                "name": "Wyczerpanie",
+                "playablePhase": "fight",
+                "description": "Zadaj X obrażeń jednemu bohaterowi w Twoich podziemiach, gdzie X jest równy liczbie widocznych komnat w Twoich podziemiach."
+            },
+            {
+                "CARDTYPE": "SPELL",
+                "id": 1002,
+                "name": "Przerażenie",
+                "playablePhase": "fight",
+                "description": "Wybierz bohatera w dowolonych podziemiach i odeślij go do miasta."
+            }
+        ],
+        "discardedDungeons": [
+            {
+                "CARDTYPE": "DUNGEON",
+                "id": 1001,
+                "name": "Bezdenna czeluść",
+                "type": "traps",
+                "damage": 1,
+                "treasure": {
+                    "fortune": 1
+                },
+                "isFancy": false,
+                "mechanicType": "onDestroy",
+                "mechanicDescription": "Zniszcz tę komnatę: wyeliminuj bohatera w tej komnacie."
+            },
+            {
+                "CARDTYPE": "DUNGEON",
+                "id": 1002,
+                "name": "Diabliczki w spa",
+                "type": "monsters",
+                "damage": 1,
+                "treasure": {
+                    "faith": 1
+                },
+                "isFancy": false
+            },
+            {
+                "CARDTYPE": "DUNGEON",
+                "id": 1003,
+                "name": "Niestabilna kopalnia",
+                "type": "traps",
+                "damage": 2,
+                "treasure": {
+                    "fortune": 1
+                },
+                "mechanicType": "onDestroy",
+                "mechanicDescription": "Możesz zniszczyć tę komnatę aby otrzymać 3 golda.",
+                "isFancy": false
+            },
+            {
+                "CARDTYPE": "DUNGEON",
+                "id": 1004,
+                "name": "Norka kocicy",
+                "type": "monsters",
+                "damage": 2,
+                "treasure": {
+                    "magic": 1
+                },
+                "mechanicType": "onePerRound",
+                "mechanicDescription": "Raz na rundę: kiedy zagrasz kartę czaru, dociągnij kartę czaru.",
+                "isFancy": true
             }
         ]
     },

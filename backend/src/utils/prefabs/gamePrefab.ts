@@ -1,5 +1,8 @@
-const { Game } = require('../../logic/game/game')
-const { DungeonCard, HeroCard, SpellCard, BossCard } = require('../../logic/game/cards')
+import { BossCard, DungeonCard, HeroCard, SpellCard } from "../../logic/game/cards"
+import { Game } from "../../logic/game/game"
+
+// const { Game } = require('../../logic/game/game')
+// const { DungeonCard, HeroCard, SpellCard, BossCard } = require('../../logic/game/cards')
 const { bossesMechanicsMap } = require('../../logic/game/unique_mechanics/bossMecahnics')
 const { dungeonMechanicsMap } = require('../../logic/game/unique_mechanics/dungeonMechanics')
 const { spellsMechanicsMap } = require('../../logic/game/unique_mechanics/spellsMechanics')
@@ -69,11 +72,48 @@ function getPrefabBossesCards(game, cards) {
     return bossCards
 }
 
-module.exports = {
+function getPrefabDiscardedSpells(game: Game, cards): SpellCard[] {
+    let discardedSpells = []
+    for (let card of cards) {
+        const { CARDTYPE, id, name, playablePhase, description, skip } = card
+        if (skip) {
+            continue
+        }
+        const spellMechanic = spellsMechanicsMap[name]
+
+        const createdCardObj = new SpellCard(id, name, CARDTYPE, game, playablePhase, spellMechanic, description)
+        discardedSpells.push(createdCardObj)
+    }
+    return discardedSpells
+}
+
+function getPrefabDiscardedDungeonCard(game: Game, cards): DungeonCard[] {
+    let discardedDungeons = []
+    for (let card of cards) {
+        const { id, name, CARDTYPE, damage, isFancy, treasure, type, mechanicType, mechanicDescription, skip } = card
+        if (skip) {
+            continue
+        }
+        const cardMechanic = dungeonMechanicsMap[name]
+
+        const createdCardObj = new DungeonCard(id, name, CARDTYPE, game, damage, treasure, type, isFancy, cardMechanic, mechanicType, mechanicDescription)
+        discardedDungeons.push(createdCardObj)
+    }
+    return discardedDungeons
+}
+
+// module.exports = {
+//     getPrefabBossesCards,
+//     getPrefabDungeonCards,
+//     getPrefabHeroCards,
+//     getPrefabSpellCards
+// }
+
+export {
     getPrefabBossesCards,
     getPrefabDungeonCards,
     getPrefabHeroCards,
-    getPrefabSpellCards
+    getPrefabSpellCards,
+    getPrefabDiscardedDungeonCard,
+    getPrefabDiscardedSpells
 }
-
-export { }

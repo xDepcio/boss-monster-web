@@ -256,11 +256,12 @@ class SelectionRequestUniversal<SelectableType> {
     onFinish: (data: SelectableType[]) => void
     onSingleSelect?: (data: SelectableType) => void
     additonalValidation?: (selectedItem: SelectableType) => boolean
+    onFinishError?: (error: Error) => void
     metadata: { displayType: 'dungeonCard' | 'text' | 'mixed' | 'spellCard' | 'player' }
     amount: number
     canceled: boolean
 
-    constructor({ requestedPlayer, selectionMessage, avalibleItemsForSelectArr, onFinish, metadata, amount, additonalValidation = () => true, onSingleSelect = () => { } }: { onSingleSelect?: (data: SelectableType) => void, additonalValidation?: (selectedItem: SelectableType) => boolean, amount: number, metadata: { displayType: 'dungeonCard' | 'text' | 'mixed' | 'spellCard' | 'player' }, requestedPlayer: Player, selectionMessage: string, avalibleItemsForSelectArr: SelectableType[], onFinish: (data: SelectableType[]) => void }) {
+    constructor({ requestedPlayer, selectionMessage, avalibleItemsForSelectArr, onFinish, metadata, amount, additonalValidation = () => true, onSingleSelect = () => { }, onFinishError = () => { } }: { onSingleSelect?: (data: SelectableType) => void, additonalValidation?: (selectedItem: SelectableType) => boolean, amount: number, metadata: { displayType: 'dungeonCard' | 'text' | 'mixed' | 'spellCard' | 'player' }, requestedPlayer: Player, selectionMessage: string, avalibleItemsForSelectArr: SelectableType[], onFinish: (data: SelectableType[]) => void, onFinishError?: (error: Error) => void }) {
         this.requestedPlayer = requestedPlayer
         this.selectionMessage = selectionMessage
         this.avalibleItemsForSelectArr = avalibleItemsForSelectArr
@@ -270,6 +271,7 @@ class SelectionRequestUniversal<SelectableType> {
         this.amount = amount
         this.additonalValidation = additonalValidation
         this.onSingleSelect = onSingleSelect
+        this.onFinishError = onFinishError
         this.metadata = metadata
         this.canceled = false
 
@@ -324,9 +326,16 @@ class SelectionRequestUniversal<SelectableType> {
                 this.requestedPlayer.setRequestedSelection(null)
             }
         } catch (error) {
-            this.selectedItems = []
-            this.requestedPlayer.setRequestedSelection(this)
+            this.reset()
+            // this.requestedPlayer.setRequestedSelection(this)
+            this.onFinishError(error)
+            throw error
         }
+    }
+
+    reset() {
+        this.selectedItems = []
+        this.canceled = false
     }
 
     cancel() {

@@ -5,9 +5,10 @@ const router = express.Router();
 const uuid = require('uuid');
 const Lobby = require('../logic/lobby/lobby');
 // const Player = require('../logic/player/player')
-const { Game } = require('../logic/game/game')
+// const { Game } = require('../logic/game/game')
 // const prefabs = require('../utils/prefabs/prefabs.json')
 import prefabs from '../utils/prefabs/prefabs.json'
+import { Game } from "../logic/game/game";
 const { flattenCircular } = require('../utils/responseFormat')
 
 // const lobbies = {}

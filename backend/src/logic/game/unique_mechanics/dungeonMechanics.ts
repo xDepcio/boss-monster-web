@@ -747,6 +747,10 @@ class BuildAnotherDungeonWhenThisDungeonBuild extends DungeonMechanic {
                         }
                         this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
                     },
+                    onFinishError: (err) => {
+                        request.reset()
+                        this.dungeonCard.owner.setRequestedSelection(request)
+                    },
                     onSingleSelect: (selection) => {
                         if (selection === 'Anuluj') {
                             request.cancel()
@@ -819,6 +823,39 @@ class DamageEqualToNumberOfMonsterDungeonsInDungeon extends DungeonMechanic {
     }
 }
 
+class DrawMonsterRoomFromDiscardedPileOnBuild extends DungeonMechanic {
+    constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
+        super(dungeonCard, mechanicDescription)
+    }
+
+    use() {
+        const discardedMonsterDungeons = this.dungeonCard.trackedGame.discardedDungeonCardsStack.filter(dungeon => dungeon.type === "monsters")
+        if (discardedMonsterDungeons.length === 0) return
+
+        new SelectionRequestUniversal<DungeonCard>({
+            amount: 1,
+            avalibleItemsForSelectArr: discardedMonsterDungeons,
+            metadata: {
+                displayType: "mixed"
+            },
+            requestedPlayer: this.dungeonCard.owner,
+            selectionMessage: "Wybierz loch do wybudowania",
+            onFinish: ([selectedDungeon]) => {
+                this.dungeonCard.owner.drawDungeonFromDiscardedCardsStack(selectedDungeon.id)
+                this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
+            },
+        })
+    }
+
+    handleGameEvent(event: GameEvent) {
+        if (event.type === "PLAYER_BUILD_DUNGEON") {
+            if (event.player === this.dungeonCard.owner && event.dungeon === this.dungeonCard) {
+                this.use()
+            }
+        }
+    }
+}
+
 const dungeonMechanicsMap = {
     'Bezdenna czeluść': EliminateHeroInDungeon,
     'Niestabilna kopalnia': Get3MoneyOnDestroy,
@@ -839,6 +876,7 @@ const dungeonMechanicsMap = {
     'Construction Zone': BuildAnotherDungeonWhenThisDungeonBuild,
     'Mimic Vault': PlaceHeroFromCityAtEntranceAtBuild,
     "Monster's Ballroom": DamageEqualToNumberOfMonsterDungeonsInDungeon,
+    'Monstrous Monument': DrawMonsterRoomFromDiscardedPileOnBuild,
 }
 
 
