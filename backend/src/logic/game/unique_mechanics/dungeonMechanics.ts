@@ -1,7 +1,7 @@
 import { Player } from "../../player/player"
 import { DungeonMechanicTypes, TreasureSign } from "../../types"
 import { GameEvent, feedback } from "../actionFeedbacks"
-import { DungeonCard, HeroCard, SpellCard } from "../cards"
+import { Card, DungeonCard, HeroCard, SpellCard } from "../cards"
 import { SelectableItem, SelectionRequest, SelectionRequestOneFromGivenList, SelectionRequestUniversal } from "../playerRequestSelections"
 import { CardAction } from "./customCardActions"
 import { RoundModifer } from "./roundModifiers"
@@ -69,7 +69,7 @@ class EliminateHeroInDungeon extends DungeonMechanic {
     }
 
     use() {
-        this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
+        this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_DUNGEON_MECHANIC(this.dungeonCard.owner, this.dungeonCard, this))
         const hero = this.getHeroOnThisDungeon()
         if (hero) {
             hero.die()
@@ -91,7 +91,7 @@ class Get3MoneyOnDestroy extends DungeonMechanic {
     }
 
     use() {
-        this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
+        this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_DUNGEON_MECHANIC(this.dungeonCard.owner, this.dungeonCard, this))
         this.dungeonCard.owner.addGold(3)
         // this.dungeonCard.owner.deleteFromDungeon(this)
     }
@@ -112,7 +112,7 @@ class DrawSpellWhenPlayedSpell extends DungeonMechanic { // "Raz na rundę: kied
             // TODO probably shouldn't throw an error because effect is triggered automatically
             throw new OncePerRoundMechanicUsedAlready("This card was already used in this round")
         }
-        this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
+        this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_DUNGEON_MECHANIC(this.dungeonCard.owner, this.dungeonCard, this))
         this.dungeonCard.owner.drawNotUsedSpellCard()
         this.usedInRound = true
     }
@@ -146,7 +146,7 @@ class Draw2GoldWhenAnyDungeonDestoryed extends DungeonMechanic {
             // TODO probably shouldn't throw an error because effect is triggered automatically
             throw new OncePerRoundMechanicUsedAlready("This card was already used in this round")
         }
-        this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
+        this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_DUNGEON_MECHANIC(this.dungeonCard.owner, this.dungeonCard, this))
         this.dungeonCard.owner.addGold(2)
         this.usedInRound = true
     }
@@ -192,11 +192,11 @@ class Draw2GoldWhenDungeonBuildNext extends DungeonMechanic {
         const newRight = this.getRight()
         if (newLeft !== this.previousLeft && newLeft !== null) {
             this.dungeonCard.owner.addGold(2)
-            this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
+            this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_DUNGEON_MECHANIC(this.dungeonCard.owner, this.dungeonCard, this))
         }
         if (newRight !== this.previousRight && newRight !== null) {
             this.dungeonCard.owner.addGold(2)
-            this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
+            this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_DUNGEON_MECHANIC(this.dungeonCard.owner, this.dungeonCard, this))
         }
         this.previousLeft = newLeft
         this.previousRight = newRight
@@ -237,7 +237,7 @@ class NegateSpellByRemovingYourSpell extends DungeonMechanic {
                 playedSpell.completeUsage()
                 this.selectedSpell.owner.discardSpellCard(this.selectedSpell)
                 // this.selectedSpell.owner.throwCardAway(this.selectedSpell)
-                this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
+                this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_DUNGEON_MECHANIC(this.dungeonCard.owner, this.dungeonCard, this))
                 this.selectedSpell = null
                 this.usedInRound = true
             }
@@ -296,7 +296,7 @@ class add1TreasureToAnyDungeonForThisRoundOnDestory extends DungeonMechanic {
                 () => this.selectedPlayer.collectedTreasure[this.selectedTreasure] += 1, // TODO... add method on player to do this and this method should save new gameAction
                 () => this.selectedPlayer.collectedTreasure[this.selectedTreasure] -= 1 // TODO... add method on player to do this and this method should save new gameAction
             ))
-            this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
+            this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_DUNGEON_MECHANIC(this.dungeonCard.owner, this.dungeonCard, this))
         }
     }
 
@@ -426,7 +426,7 @@ class SendHeroBackToDungeonStart extends DungeonMechanic {
         const hero = this.getHeroOnThisDungeon()
         if (hero) {
             if (!this.hasHeroEnteredThisRound(hero)) {
-                this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
+                this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_DUNGEON_MECHANIC(this.dungeonCard.owner, this.dungeonCard, this))
                 hero.setDungeonRoom(null)
                 this.heroesThatEnteredInRound.push(hero)
             }
@@ -465,7 +465,7 @@ class Pay1GoldToDrawSpellWhenAnyDungeonDestroyed extends DungeonMechanic {
         }
         else {
             if (this.shouldDrawCard === 'tak') {
-                this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
+                this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_DUNGEON_MECHANIC(this.dungeonCard.owner, this.dungeonCard, this))
                 this.dungeonCard.owner.payGold(1)
                 this.dungeonCard.owner.drawNotUsedSpellCard()
                 this.usedInRound = true
@@ -519,7 +519,7 @@ class DrawDungeonWhenHeroEliminatedInThisDungeon extends DungeonMechanic {
     use() {
         this.dungeonCard.owner.drawNotUsedDungeonCard()
         this.usedInRound = true
-        this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
+        this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_DUNGEON_MECHANIC(this.dungeonCard.owner, this.dungeonCard, this))
     }
 
     handleGameEvent(event: GameEvent) {
@@ -546,7 +546,7 @@ class DrawDungeonCardWhenYouBuildMonsterDungeonOncePerRound extends DungeonMecha
     use() {
         this.dungeonCard.owner.drawNotUsedDungeonCard()
         this.usedInRound = true
-        this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
+        this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_DUNGEON_MECHANIC(this.dungeonCard.owner, this.dungeonCard, this))
     }
 
     handleGameEvent(event: GameEvent) {
@@ -568,6 +568,7 @@ class DestroyOtherRoomToDeal5DamageToHeroOnThisRoom extends DungeonMechanic {
         super(dungeonCard, mechanicDescription)
 
         this.cardAction = new CardAction({
+            assignTo: this.dungeonCard,
             title: "Użyj",
             allowUseFor: () => [this.dungeonCard.owner],
             additionalUseValidation: (mechanicUser) => {
@@ -589,7 +590,7 @@ class DestroyOtherRoomToDeal5DamageToHeroOnThisRoom extends DungeonMechanic {
                         selectedDungeon.setAllowDestroy(false)
                         this.dungeonCard.getHeroOnThisDungeon()?.getDamaged(5)
                         this.cardAction.setActionDisabled(true)
-                        this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
+                        this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_DUNGEON_MECHANIC(mechanicUser, this.dungeonCard, this))
                     },
                     metadata: {
                         displayType: "mixed",
@@ -597,9 +598,10 @@ class DestroyOtherRoomToDeal5DamageToHeroOnThisRoom extends DungeonMechanic {
                     requestedPlayer: mechanicUser,
                     selectionMessage: "Wybierz komnatę do zniszczenia",
                 })
+                // mechanicUser.trackedGame.saveGameAction(feedback.PLAYER_USED_CUSTOM_CARD_ACTION(mechanicUser, this.dungeonCard, this.cardAction))
             }
         })
-        dungeonCard.addCustomCardAction(this.cardAction)
+        // this.dungeonCard.addCustomCardAction(this.cardAction)
     }
 
     handleGameEvent(event: GameEvent) {
@@ -629,7 +631,7 @@ class MayDrawSpellWhenHeroDiedInRoomOncePerTurn extends DungeonMechanic {
             onFinish: ([selectedOption]) => {
                 if (selectedOption === 'tak') {
                     this.dungeonCard.owner.drawNotUsedSpellCard()
-                    this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
+                    this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_DUNGEON_MECHANIC(this.dungeonCard.owner, this.dungeonCard, this))
                 }
                 this.usedInRound = true
             }
@@ -687,7 +689,7 @@ class SwapAnyTwoRoomsOnBuild extends DungeonMechanic {
                                     const temp = selectedPlayer.dungeon[dungeon1Index]
                                     selectedPlayer.dungeon[dungeon1Index] = selectedPlayer.dungeon[dungeon2Index]
                                     selectedPlayer.dungeon[dungeon2Index] = temp
-                                    this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
+                                    this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_DUNGEON_MECHANIC(this.dungeonCard.owner, this.dungeonCard, this))
                                 },
                                 onSingleSelect: (selection) => {
                                     if (selection === 'Anuluj') {
@@ -745,7 +747,7 @@ class BuildAnotherDungeonWhenThisDungeonBuild extends DungeonMechanic {
                             this.dungeonCard.owner.declareBuild(selectedDungeon, this.dungeonCard.owner.dungeon.findIndex((dung) => dung === selectedPlace), { ignoreRoundPhase: true })
                             this.dungeonCard.owner.buildDeclaredDungeon()
                         }
-                        this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
+                        this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_DUNGEON_MECHANIC(this.dungeonCard.owner, this.dungeonCard, this))
                     },
                     onFinishError: (err) => {
                         request.reset()
@@ -794,7 +796,7 @@ class PlaceHeroFromCityAtEntranceAtBuild extends DungeonMechanic {
             onFinish: ([selectedHero]) => {
                 selectedHero.removeSelfFromCity()
                 this.dungeonCard.owner.addHeroToDungeonEntrance(selectedHero)
-                this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
+                this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_DUNGEON_MECHANIC(this.dungeonCard.owner, this.dungeonCard, this))
             },
         })
     }
@@ -842,7 +844,7 @@ class DrawMonsterRoomFromDiscardedPileOnBuild extends DungeonMechanic {
             selectionMessage: "Wybierz loch do wzięcia.",
             onFinish: ([selectedDungeon]) => {
                 this.dungeonCard.owner.drawDungeonFromDiscardedCardsStack(selectedDungeon.id)
-                this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
+                this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_DUNGEON_MECHANIC(this.dungeonCard.owner, this.dungeonCard, this))
             },
         })
     }
@@ -883,7 +885,7 @@ class ChooseDungeonCardFromDiscardedDungeonPileWhenHeroDiesInThisDungeonRoomOnce
             onFinish: ([selectedDungeon]) => {
                 this.dungeonCard.owner.drawDungeonFromDiscardedCardsStack(selectedDungeon.id)
                 this.usedInRound = true
-                this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.dungeonCard.owner, this))
+                this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_DUNGEON_MECHANIC(this.dungeonCard.owner, this.dungeonCard, this))
             },
         })
     }
@@ -897,6 +899,49 @@ class ChooseDungeonCardFromDiscardedDungeonPileWhenHeroDiesInThisDungeonRoomOnce
         else if (event.type === "NEW_ROUND_BEGUN") {
             this.usedInRound = false
         }
+    }
+}
+
+class DestroyDungeonToTakeOneCardFromDiscardedPile extends DungeonMechanic {
+    constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
+        super(dungeonCard, mechanicDescription)
+
+        new CardAction({
+            assignTo: this.dungeonCard,
+            allowUseFor: () => [this.dungeonCard.owner],
+            title: "Zniszcz loch",
+            onUse: (mechanicUser) => {
+                const items = [
+                    ...this.dungeonCard.trackedGame.discardedDungeonCardsStack,
+                    ...this.dungeonCard.trackedGame.discardedSpellCardsStack
+                ]
+                if (items.length === 0) return
+
+                this.dungeonCard.setAllowDestroy(true)
+                mechanicUser.destroyDungeonCard(this.dungeonCard.id)
+                this.dungeonCard.setAllowDestroy(false)
+
+                new SelectionRequestUniversal({
+                    amount: 1,
+                    avalibleItemsForSelectArr: items,
+                    onFinish: ([selectedItem]) => {
+                        if (selectedItem instanceof DungeonCard) {
+                            mechanicUser.drawDungeonFromDiscardedCardsStack(selectedItem.id)
+                        }
+                        else if (selectedItem instanceof SpellCard) {
+                            mechanicUser.drawSpellFromDiscardedCardsStack(selectedItem.id)
+                        }
+                        this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_DUNGEON_MECHANIC(mechanicUser, this.dungeonCard, this))
+                    },
+                    metadata: {
+                        displayType: "mixed"
+                    },
+                    requestedPlayer: mechanicUser,
+                    selectionMessage: "Wybierz kartę do wzięcia.",
+                })
+                // this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_CUSTOM_CARD_ACTION(mechanicUser, this.dungeonCard, cardAction))
+            },
+        })
     }
 }
 
@@ -923,6 +968,7 @@ const dungeonMechanicsMap = {
     'Monstrous Monument': DrawMonsterRoomFromDiscardedPileOnBuild,
     'Neanderthal Cave': DisableBuildOfFancyDungeonOnTopOfThisDungeon,
     "Open Grave": ChooseDungeonCardFromDiscardedDungeonPileWhenHeroDiesInThisDungeonRoomOncePerRound,
+    'Dark Altar': DestroyDungeonToTakeOneCardFromDiscardedPile,
 }
 
 

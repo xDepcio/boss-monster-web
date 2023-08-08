@@ -359,6 +359,19 @@
                 "mechanicType": null,
                 "mechanicDescription": "Once per turn, if a Hero dies in this Room, choose one Room card from the discarded pile and put it into your hand.",
                 "isFancy": false
+            },
+            {
+                "CARDTYPE": "DUNGEON",
+                "id": 24,
+                "name": "Dark Altar",
+                "type": "traps",
+                "damage": 1,
+                "treasure": {
+                    "faith": 2
+                },
+                "mechanicType": null,
+                "mechanicDescription": "Destroy this Room: Choose one card from the discarded pile and put it into your hand.",
+                "isFancy": false
             }
         ],
         "heroes": [

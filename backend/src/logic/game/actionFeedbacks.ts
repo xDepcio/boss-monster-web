@@ -2,6 +2,7 @@ import { Player } from "../player/player"
 import { BossCard, DungeonCard, HeroCard, SpellCard } from "./cards"
 import { Game } from "./game"
 import { BossMechanic } from "./unique_mechanics/bossMecahnics"
+import { CardAction } from "./unique_mechanics/customCardActions"
 import { DungeonMechanic } from "./unique_mechanics/dungeonMechanics"
 import { SpellMechanic } from "./unique_mechanics/spellsMechanics"
 
@@ -186,7 +187,7 @@ type EventSchema = {
         message: string,
         player: Player,
         card: DungeonCard | HeroCard | BossCard | SpellCard,
-        actionTitle: string
+        action: CardAction
     },
     PLAYER_USED_SPELL_MECHANIC: {
         type: "PLAYER_USED_SPELL_MECHANIC",
@@ -425,13 +426,13 @@ export const feedback = {
             mechanic
         }
     },
-    PLAYER_USED_CUSTOM_CARD_ACTION: (player: Player, card: DungeonCard | HeroCard | BossCard | SpellCard, actionTitle: string): GameEvent => {
+    PLAYER_USED_CUSTOM_CARD_ACTION: (player: Player, card: DungeonCard | HeroCard | BossCard | SpellCard, action: CardAction): GameEvent => {
         return {
             type: "PLAYER_USED_CUSTOM_CARD_ACTION",
-            message: `player ${player.getName()} used ${card.getName()}'s action '${actionTitle}'`,
+            message: `player ${player.getName()} used ${card.getName()}'s action '${action.title}'`,
             player,
             card,
-            actionTitle
+            action
         }
     },
     PLAYER_RANKED_UP_BOSS: (player: Player, boss: BossCard): GameEvent => {

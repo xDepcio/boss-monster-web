@@ -77,16 +77,17 @@ class BoostEveryTrapDungeonFor1EnemiesCanPay1GoldToDeactivate extends BossMechan
 
     handleRankUp() {
         const cardAction = new CardAction({
+            assignTo: this.bossCard,
             allowUseFor: [...this.bossCard.trackedGame.players].filter(player => player.id !== this.bossCard.owner.id),
             title: "Zapłać 1 gold",
             onUse: (playerThatUsed) => {
-                this.bossCard.trackedGame.saveGameAction(feedback.PLAYER_USED_CUSTOM_CARD_ACTION(this.bossCard.owner, this.bossCard, "Zapłać 1 gold"))
                 playerThatUsed.payGold(1, this.bossCard.owner)
                 this.disableForRound()
+                // this.bossCard.trackedGame.saveGameAction(feedback.PLAYER_USED_CUSTOM_CARD_ACTION(this.bossCard.owner, this.bossCard, cardAction))
             }
         })
         this.addedCardAction = cardAction
-        this.bossCard.addCustomCardAction(cardAction)
+        // this.bossCard.addCustomCardAction(cardAction)
     }
 
     disableForRound() {
@@ -380,6 +381,7 @@ class TakeOneCardFromOpponent extends BossMechanic {
 
     handleRankUp() {
         const cardAction = new CardAction({
+            assignTo: this.bossCard,
             title: "Użyj.",
             allowUseFor: [this.bossCard.owner],
             onUse: (abilityOwner) => {
@@ -415,10 +417,11 @@ class TakeOneCardFromOpponent extends BossMechanic {
                     }
                 })
                 cardAction.setActionDisabled(true)
+                // this.bossCard.trackedGame.saveGameAction(feedback.PLAYER_USED_CUSTOM_CARD_ACTION(abilityOwner, this.bossCard, cardAction))
                 this.bossCard.trackedGame.saveGameAction(feedback.PLAYER_USED_BOSS_RANKUP_MECHANIC(abilityOwner, this.bossCard, this))
             }
         })
-        this.bossCard.addCustomCardAction(cardAction)
+        // this.bossCard.addCustomCardAction(cardAction)
     }
 
     handleGameEvent(event: GameEvent) {
@@ -437,6 +440,7 @@ class Put1HeroFromCityOrHeroesStackAtYourDungeonEntrance extends BossMechanic {
 
     handleRankUp() {
         const cardAction = new CardAction({
+            assignTo: this.bossCard,
             allowUseFor: [this.bossCard.owner],
             title: "Użyj.",
             onUse: (bossOwner) => {
@@ -466,10 +470,11 @@ class Put1HeroFromCityOrHeroesStackAtYourDungeonEntrance extends BossMechanic {
                     })
                 }
                 cardAction.setActionDisabled(true)
+                // this.bossCard.trackedGame.saveGameAction(feedback.PLAYER_USED_CUSTOM_CARD_ACTION(bossOwner, this.bossCard, cardAction))
                 this.bossCard.trackedGame.saveGameAction(feedback.PLAYER_USED_BOSS_RANKUP_MECHANIC(bossOwner, this.bossCard, this))
             }
         })
-        this.bossCard.addCustomCardAction(cardAction)
+        // this.bossCard.addCustomCardAction(cardAction)
     }
 
     handleGameEvent(event: GameEvent) {
@@ -488,6 +493,7 @@ class TakeTwoCardFromDiscardedCardsStack extends BossMechanic {
 
     handleRankUp() {
         const cardAction = new CardAction({
+            assignTo: this.bossCard,
             allowUseFor: [this.bossCard.owner],
             title: "Użyj.",
             onUse: (bossOwner) => {
@@ -522,10 +528,11 @@ class TakeTwoCardFromDiscardedCardsStack extends BossMechanic {
                     })
                 }
                 cardAction.setActionDisabled(true)
+                // this.bossCard.trackedGame.saveGameAction(feedback.PLAYER_USED_CUSTOM_CARD_ACTION(bossOwner, this.bossCard, cardAction))
                 this.bossCard.trackedGame.saveGameAction(feedback.PLAYER_USED_BOSS_RANKUP_MECHANIC(bossOwner, this.bossCard, this))
             }
         })
-        this.bossCard.addCustomCardAction(cardAction)
+        // this.bossCard.addCustomCardAction(cardAction)
     }
 
     handleGameEvent(event: GameEvent) {
