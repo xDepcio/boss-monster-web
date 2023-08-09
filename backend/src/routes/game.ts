@@ -2,6 +2,7 @@ import { DungeonCard, HeroCard, SpellCard } from "../logic/game/cards";
 import { SelectionRequestUniversal } from "../logic/game/playerRequestSelections";
 import { CardAction } from "../logic/game/unique_mechanics/customCardActions";
 import { Player } from "../logic/player/player";
+import { saveInput } from "../utils/saveInput";
 
 const express = require('express');
 const router = express.Router();
@@ -10,7 +11,8 @@ const Lobby = require('../logic/lobby/lobby');
 // const Player = require('../logic/player/player')
 // const Game = require('../logic/game/game')
 const { flattenCircular, getCurrentGameData } = require('../utils/responseFormat')
-const { assignPlayer } = require('../utils/verifyPlayer')
+// const { assignPlayer } = require('../utils/verifyPlayer')
+import { assignPlayer } from '../utils/verifyPlayer'
 const { parse, stringify, toJSON, fromJSON } = require('flatted');
 const { updateLobbyPlayers } = require('../utils/socketsHelper');
 const { SelectionRequest, SelectionRequestOneFromGivenList } = require('../logic/game/playerRequestSelections');
@@ -32,7 +34,7 @@ router.get('/:lobbyId', (req, res) => {
 })
 
 // Select boss
-router.post('/:lobbyId/choose-boss', assignPlayer, (req, res, next) => {
+router.post('/:lobbyId/choose-boss', assignPlayer, saveInput, (req, res, next) => {
     const player = req.player
 
     const bossId = req.body.bossId
@@ -49,7 +51,7 @@ router.post('/:lobbyId/choose-boss', assignPlayer, (req, res, next) => {
 })
 
 // Build dungeon
-router.post('/:lobbyId/build-dungeon', assignPlayer, (req, res, next) => {
+router.post('/:lobbyId/build-dungeon', assignPlayer, saveInput, (req, res, next) => {
     const player = req.player
 
     try {
@@ -74,7 +76,7 @@ router.post('/:lobbyId/build-dungeon', assignPlayer, (req, res, next) => {
 })
 
 // Play spell
-router.post('/:lobbyId/play-spell', assignPlayer, (req, res, next) => {
+router.post('/:lobbyId/play-spell', assignPlayer, saveInput, (req, res, next) => {
 
     try {
         const player = req.player
@@ -90,7 +92,7 @@ router.post('/:lobbyId/play-spell', assignPlayer, (req, res, next) => {
 })
 
 // Select item for requested selection
-router.post('/:lobbyId/select-item', assignPlayer, (req, res, next) => {
+router.post('/:lobbyId/select-item', assignPlayer, saveInput, (req, res, next) => {
 
     try {
         const player: Player = req.player
@@ -169,7 +171,7 @@ router.post('/:lobbyId/select-item', assignPlayer, (req, res, next) => {
 })
 
 // Get ready
-router.post('/:lobbyId/become-ready', assignPlayer, (req, res, next) => {
+router.post('/:lobbyId/become-ready', assignPlayer, saveInput, (req, res, next) => {
     const player = req.player
 
     try {
@@ -185,7 +187,7 @@ router.post('/:lobbyId/become-ready', assignPlayer, (req, res, next) => {
 })
 
 // Accept hero move
-router.post('/:lobbyId/accept-hero-move', assignPlayer, (req, res, next) => {
+router.post('/:lobbyId/accept-hero-move', assignPlayer, saveInput, (req, res, next) => {
     const player = req.player
 
     try {
@@ -201,7 +203,7 @@ router.post('/:lobbyId/accept-hero-move', assignPlayer, (req, res, next) => {
 })
 
 // Accept spell play
-router.post('/:lobbyId/accept-spell-play', assignPlayer, (req, res, next) => {
+router.post('/:lobbyId/accept-spell-play', assignPlayer, saveInput, (req, res, next) => {
     const player = req.player
 
     try {
@@ -217,7 +219,7 @@ router.post('/:lobbyId/accept-spell-play', assignPlayer, (req, res, next) => {
 })
 
 // Destroy dungeon
-router.post('/:lobbyId/destroy-dungeon', assignPlayer, (req, res, next) => {
+router.post('/:lobbyId/destroy-dungeon', assignPlayer, saveInput, (req, res, next) => {
     const player = req.player
 
     try {
@@ -233,7 +235,7 @@ router.post('/:lobbyId/destroy-dungeon', assignPlayer, (req, res, next) => {
 })
 
 // Use dungeon effect
-router.post('/:lobbyId/use-dungeon', assignPlayer, (req, res, next) => {
+router.post('/:lobbyId/use-dungeon', assignPlayer, saveInput, (req, res, next) => {
     const player = req.player
 
     try {
@@ -249,7 +251,7 @@ router.post('/:lobbyId/use-dungeon', assignPlayer, (req, res, next) => {
 })
 
 // Use custom card action
-router.post('/:lobbyId/use-custom-action', assignPlayer, (req, res, next) => {
+router.post('/:lobbyId/use-custom-action', assignPlayer, saveInput, (req, res, next) => {
     const player = req.player
 
     try {

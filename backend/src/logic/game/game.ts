@@ -1,4 +1,5 @@
 import { getPrefabBossesCards, getPrefabDiscardedDungeonCard, getPrefabDiscardedSpells, getPrefabDungeonCards, getPrefabHeroCards, getPrefabSpellCards } from "../../utils/prefabs/gamePrefab"
+import { InputTracker } from "../inputTracker"
 import { Player } from "../player/player"
 import { Id, RoundPhase } from "../types"
 import { feedback } from "./actionFeedbacks"
@@ -38,6 +39,7 @@ class Game {
     heroToMove: HeroCard | null
     currentlyPlayedSpell: SpellCard | null
     roundModifiers: RoundModifer[]
+    inputsTracker: InputTracker
 
     constructor(id: Id, players: Player[] | null = null, prefab = null) {
         this.id = id
@@ -51,6 +53,7 @@ class Game {
         this.gameRound = 1
         this.roundPhase = "start"
         this.city = []
+        this.inputsTracker = new InputTracker()
         this.movesHistory = []
         this.heroToMove = null
         this.currentlyPlayedSpell = null

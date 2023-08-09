@@ -20,4 +20,4 @@ module.exports = {
     assignPlayer
 }
 
-export { }
+export { assignPlayer }
