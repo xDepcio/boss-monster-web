@@ -22,7 +22,7 @@ function MainPage() {
                 <div>
                     <label>
                         <p className='text-base font-semibold text-zinc-300 mb-1'>Twój Nick</p>
-                        <input type="text" defaultValue={"olek"} className='text-zinc-300 bg-zinc-800 p-1 text-base rounded-[0.4rem] border-zinc-400 border-[1px] border-solid outline-zinc-400' />
+                        <input type="text" defaultValue={"xXNodi1Xx"} className='text-zinc-300 bg-zinc-800 p-1 text-base rounded-[0.4rem] border-zinc-400 border-[1px] border-solid outline-zinc-400' />
                     </label>
                 </div>
                 {/* <h2 className='text-zinc-300'>Stwórz lobby</h2> */}

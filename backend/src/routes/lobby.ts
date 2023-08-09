@@ -9,6 +9,7 @@ const Lobby = require('../logic/lobby/lobby');
 // const prefabs = require('../utils/prefabs/prefabs.json')
 import prefabs from '../utils/prefabs/prefabs.json'
 import { Game } from "../logic/game/game";
+import { stringify } from "flatted";
 const { flattenCircular } = require('../utils/responseFormat')
 
 // const lobbies = {}
@@ -83,7 +84,11 @@ router.post('/:lobbyId/start-prefab', (req, res, next) => {
 // Get lobby info (players...)
 router.get('/:lobbyId', (req, res) => {
     const lobby = Lobby.getLobby(req.params.lobbyId)
-    res.json(flattenCircular({
+    // res.json(flattenCircular({
+    //     players: lobby.players,
+    //     gameStarted: !!lobby.trackedGame
+    // }))
+    res.send(stringify({
         players: lobby.players,
         gameStarted: !!lobby.trackedGame
     }))

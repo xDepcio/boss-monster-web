@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import configureStore from './store'
 import { BrowserRouter } from 'react-router-dom'
+import { Toaster } from 'react-hot-toast'
 
 const store = configureStore()
 
@@ -14,6 +15,7 @@ const Root = () => {
         <BrowserRouter>
             <Provider store={store}>
                 <App />
+                <Toaster />
             </Provider>
         </BrowserRouter>
     )

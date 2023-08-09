@@ -1,18 +1,26 @@
+import { parse } from "flatted"
+
 const LOAD_LOBBY_INFO = 'loadLobbyInfo'
 
 
 // Normal actions creator
-export const loadLobbyInfo = (info) => ({
-    type: LOAD_LOBBY_INFO,
-    info
-})
+export const loadLobbyInfo = (info) => {
+    info = parse(info)
+    return {
+        type: LOAD_LOBBY_INFO,
+        info
+    }
+}
 
 // Thunk actions creator
 export const getLobbyInfo = (lobbyId) => async (dispatch) => {
     const response = await fetch(`/lobby/${lobbyId}`)
 
     if (response.ok) {
-        const lobbyData = await response.json()
+        // const lobbyData = await response.json()
+        const lobbyData = await response.text()
+        // console.log(lobbyData)
+        // console.log(parse(lobbyData))
         dispatch(loadLobbyInfo(lobbyData))
     }
 }
