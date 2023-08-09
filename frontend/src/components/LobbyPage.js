@@ -14,15 +14,15 @@ function LobbyPage() {
     const gameStarted = useSelector((state) => state.lobby.info.gameStarted)
 
     useEffect(() => {
-        fetch(`/lobby/${params.lobbyId}/join`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                userId: Cookies.get('user')
-            })
-        })
+        // fetch(`/lobby/${params.lobbyId}/join`, {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify({
+        //         userId: Cookies.get('user')
+        //     })
+        // })
 
         const playersSyncInterval = setInterval(() => {
             dispatch(getLobbyInfo(params.lobbyId))

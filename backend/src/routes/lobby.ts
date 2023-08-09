@@ -34,13 +34,14 @@ router.post('/:lobbyId/join', (req, res, next) => {
     }
 
     const userId = req.body.userId
+    const name = req.body.name
     if (!userId) {
         return res.json({ success: false })
     }
 
     let player = Player.getPlayer(userId)
     if (!player) {
-        player = new Player(userId, 'olo')
+        player = new Player(userId, name || 'not provided')
     }
 
     if (!lobby.isPlayerIn(player)) {
@@ -59,7 +60,8 @@ router.post('/:lobbyId/start', (req, res, next) => {
     if (lobby.gameStarted) {
         return next(new Error("Cannot start game 2nd time"))
     }
-    const newPlayers = lobby.players.map((player) => new Player(player.id, 'olo'))
+    console.log(lobby.players)
+    const newPlayers = lobby.players.map((player) => new Player(player.id, player.name))
     // const game = new Game(uuid.v4(), lobby.players)
     const game = new Game(uuid.v4(), newPlayers)
     lobby.trackGame(game)
