@@ -17,7 +17,7 @@ function MainPage() {
     }
 
     return (
-        <div>
+        <div className='bg-zinc-800 p-4 flex items-center justify-center w-fit fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 '>
             <div>
                 <h2>Stwórz lobby</h2>
                 <button onClick={handleLobbyStart}>Rozpocznij</button>
