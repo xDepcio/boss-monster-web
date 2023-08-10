@@ -945,6 +945,41 @@ class DestroyDungeonToTakeOneCardFromDiscardedPile extends DungeonMechanic {
     }
 }
 
+class DrawTwoSpellCardsAndDiscardOneOnRoomBuild extends DungeonMechanic {
+    constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
+        super(dungeonCard, mechanicDescription)
+    }
+
+    use(): void {
+        this.dungeonCard.owner.drawNotUsedSpellCard()
+        this.dungeonCard.owner.drawNotUsedSpellCard()
+
+        new SelectionRequestUniversal<SpellCard>({
+            amount: 1,
+            avalibleItemsForSelectArr: [...this.dungeonCard.owner.spellCards],
+            metadata: {
+                displayType: "mixed"
+            },
+            selectionMessage: "Wybierz kartę do odrzucenia.",
+            requestedPlayer: this.dungeonCard.owner,
+            onFinish: ([selectedSpell]) => {
+                this.dungeonCard.owner.discardSpellCard(selectedSpell)
+                this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_DUNGEON_MECHANIC(this.dungeonCard.owner, this.dungeonCard, this))
+            }
+        })
+
+        this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_DUNGEON_MECHANIC(this.dungeonCard.owner, this.dungeonCard, this))
+    }
+
+    handleGameEvent(event: GameEvent): void {
+        if (event.type === "PLAYER_BUILD_DUNGEON") {
+            if (event.player === this.dungeonCard.owner && event.dungeon === this.dungeonCard) {
+                this.use()
+            }
+        }
+    }
+}
+
 const dungeonMechanicsMap = {
     'Bezdenna czeluść': EliminateHeroInDungeon,
     'Niestabilna kopalnia': Get3MoneyOnDestroy,
@@ -969,6 +1004,7 @@ const dungeonMechanicsMap = {
     'Neanderthal Cave': DisableBuildOfFancyDungeonOnTopOfThisDungeon,
     "Open Grave": ChooseDungeonCardFromDiscardedDungeonPileWhenHeroDiesInThisDungeonRoomOncePerRound,
     'Dark Altar': DestroyDungeonToTakeOneCardFromDiscardedPile,
+    'Dark Laboratory': DrawTwoSpellCardsAndDiscardOneOnRoomBuild,
 }
 
 

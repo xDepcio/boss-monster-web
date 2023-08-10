@@ -372,6 +372,19 @@
                 "mechanicType": null,
                 "mechanicDescription": "Destroy this Room: Choose one card from the discarded pile and put it into your hand.",
                 "isFancy": false
+            },
+            {
+                "CARDTYPE": "DUNGEON",
+                "id": 25,
+                "name": "Dark Laboratory",
+                "type": "traps",
+                "damage": 1,
+                "treasure": {
+                    "magic": 2
+                },
+                "mechanicType": null,
+                "mechanicDescription": "When you build this Room, draw two Spell cards, then discard a Spell card.",
+                "isFancy": false
             }
         ],
         "heroes": [
