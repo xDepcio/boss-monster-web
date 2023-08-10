@@ -335,9 +335,9 @@ class Player {
     }
 
     discardDungeonCard(dungeon: DungeonCard) {
-        const dungeonIndex = this.spellCards.findIndex(spellCard => spellCard.id === dungeon.id)
+        const dungeonIndex = this.dungeonCards.findIndex(dungeonCard => dungeonCard.id === dungeon.id)
         dungeon.setOwner(null)
-        this.spellCards.splice(dungeonIndex, 1)
+        this.dungeonCards.splice(dungeonIndex, 1)
         this.trackedGame.discardedDungeonCardsStack.push(dungeon)
         this.trackedGame.saveGameAction(feedback.PLAYER_THROWN_AWAY_DUNGEON_CARD(this, dungeon))
     }

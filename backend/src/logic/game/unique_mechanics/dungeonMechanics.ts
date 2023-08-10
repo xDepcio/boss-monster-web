@@ -1009,6 +1009,66 @@ class BoostNextRoomBy2IfItIsTrapsRoom extends DungeonMechanic {
     }
 }
 
+class DiscardTwoDungeonCardsToTakeOneFromDiscardedPileOnUseOncePerTurn extends DungeonMechanic {
+    cardAction: CardAction
+
+    constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
+        super(dungeonCard, mechanicDescription)
+
+        this.cardAction = new CardAction({
+            assignTo: this.dungeonCard,
+            allowUseFor: () => [this.dungeonCard.owner],
+            title: "Użyj",
+            additionalUseValidation: (mechanicUser) => {
+                const items = [...mechanicUser.dungeonCards]
+                if (items.length < 2) {
+                    throw new Error("Nie masz wystarczającej ilości kart lochu.")
+                }
+                return true
+            },
+            onUse: (mechanicUser) => {
+                const items = [...mechanicUser.dungeonCards]
+
+                new SelectionRequestUniversal({
+                    amount: 2,
+                    avalibleItemsForSelectArr: items,
+                    onFinish: ([selectedDungeon1, selectedDungeon2]) => {
+                        mechanicUser.discardDungeonCard(selectedDungeon1)
+                        mechanicUser.discardDungeonCard(selectedDungeon2)
+
+                        new SelectionRequestUniversal({
+                            amount: 1,
+                            avalibleItemsForSelectArr: [...mechanicUser.trackedGame.discardedDungeonCardsStack],
+                            metadata: {
+                                displayType: "mixed"
+                            },
+                            requestedPlayer: mechanicUser,
+                            selectionMessage: "Wybierz kartę do wzięcia.",
+                            onFinish: ([selectedDungeon]) => {
+                                mechanicUser.drawDungeonFromDiscardedCardsStack(selectedDungeon.id)
+                                this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_DUNGEON_MECHANIC(mechanicUser, this.dungeonCard, this))
+                            }
+                        })
+                    },
+                    metadata: {
+                        displayType: "mixed"
+                    },
+                    requestedPlayer: mechanicUser,
+                    selectionMessage: "Wybierz karty do odrzucenia.",
+                })
+
+                this.cardAction.setActionDisabled(true)
+            },
+        })
+    }
+
+    handleGameEvent(event: GameEvent): void {
+        if (event.type === "NEW_ROUND_BEGUN") {
+            this.cardAction.setActionDisabled(false)
+        }
+    }
+}
+
 const dungeonMechanicsMap = {
     'Bezdenna czeluść': EliminateHeroInDungeon,
     'Niestabilna kopalnia': Get3MoneyOnDestroy,
@@ -1035,6 +1095,7 @@ const dungeonMechanicsMap = {
     'Dark Altar': DestroyDungeonToTakeOneCardFromDiscardedPile,
     'Dark Laboratory': DrawTwoSpellCardsAndDiscardOneOnRoomBuild,
     'Dizzygas Hallway': BoostNextRoomBy2IfItIsTrapsRoom,
+    'Dracolich Lair': DiscardTwoDungeonCardsToTakeOneFromDiscardedPileOnUseOncePerTurn,
 }
 
 

@@ -398,6 +398,19 @@
                 "mechanicType": null,
                 "mechanicDescription": "If the next Room in your dungeon is a Trap Room, it has +2 damage.",
                 "isFancy": false
+            },
+            {
+                "CARDTYPE": "DUNGEON",
+                "id": 27,
+                "name": "Dracolich Lair",
+                "type": "monsters",
+                "damage": 3,
+                "treasure": {
+                    "fortune": 1
+                },
+                "mechanicType": null,
+                "mechanicDescription": "One per turn, you may discard two Room cards to choose one Room card from the discard pile and put it into your hand.",
+                "isFancy": true
             }
         ],
         "heroes": [
