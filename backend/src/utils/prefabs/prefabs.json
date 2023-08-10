@@ -362,19 +362,6 @@
             },
             {
                 "CARDTYPE": "DUNGEON",
-                "id": 24,
-                "name": "Dark Altar",
-                "type": "traps",
-                "damage": 1,
-                "treasure": {
-                    "faith": 2
-                },
-                "mechanicType": null,
-                "mechanicDescription": "Destroy this Room: Choose one card from the discarded pile and put it into your hand.",
-                "isFancy": false
-            },
-            {
-                "CARDTYPE": "DUNGEON",
                 "id": 25,
                 "name": "Dark Laboratory",
                 "type": "traps",
@@ -384,19 +371,6 @@
                 },
                 "mechanicType": null,
                 "mechanicDescription": "When you build this Room, draw two Spell cards, then discard a Spell card.",
-                "isFancy": false
-            },
-            {
-                "CARDTYPE": "DUNGEON",
-                "id": 26,
-                "name": "Dizzygas Hallway",
-                "type": "traps",
-                "damage": 1,
-                "treasure": {
-                    "fortune": 1
-                },
-                "mechanicType": null,
-                "mechanicDescription": "If the next Room in your dungeon is a Trap Room, it has +2 damage.",
                 "isFancy": false
             },
             {
@@ -427,6 +401,45 @@
                 "mechanicType": null,
                 "mechanicDescription": "(This Room contains all four treasure types.)",
                 "isFancy": false
+            },
+            {
+                "CARDTYPE": "DUNGEON",
+                "id": 26,
+                "name": "Dizzygas Hallway",
+                "type": "traps",
+                "damage": 1,
+                "treasure": {
+                    "fortune": 1
+                },
+                "mechanicType": null,
+                "mechanicDescription": "If the next Room in your dungeon is a Trap Room, it has +2 damage.",
+                "isFancy": false
+            },
+            {
+                "CARDTYPE": "DUNGEON",
+                "id": 24,
+                "name": "Dark Altar",
+                "type": "traps",
+                "damage": 1,
+                "treasure": {
+                    "faith": 2
+                },
+                "mechanicType": null,
+                "mechanicDescription": "Destroy this Room: Choose one card from the discarded pile and put it into your hand.",
+                "isFancy": false
+            },
+            {
+                "CARDTYPE": "DUNGEON",
+                "id": 29,
+                "name": "Recycling Center",
+                "type": "traps",
+                "damage": 3,
+                "treasure": {
+                    "fortune": 1
+                },
+                "mechanicType": null,
+                "mechanicDescription": "When another Room in your dungeon is destroyed, you may draw two Room cards.",
+                "isFancy": true
             }
         ],
         "heroes": [

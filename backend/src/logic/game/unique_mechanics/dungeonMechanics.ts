@@ -1075,6 +1075,38 @@ class ContainsAllFourTreasureTypes extends DungeonMechanic {
     }
 }
 
+class DrawTwoDungeonRoomCardsWhenDungeonIsDestroyed extends DungeonMechanic {
+    constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
+        super(dungeonCard, mechanicDescription)
+    }
+
+    use(): void {
+        new SelectionRequestUniversal<'tak' | 'nie'>({
+            amount: 1,
+            avalibleItemsForSelectArr: ['tak', 'nie'],
+            metadata: {
+                displayType: "mixed"
+            },
+            selectionMessage: "Czy chcesz dobrać dwie karty lochu? (Recycling Center)",
+            requestedPlayer: this.dungeonCard.owner,
+            onFinish: ([selected]) => {
+                if (selected === 'tak') {
+                    this.dungeonCard.owner.drawNotUsedDungeonCard()
+                    this.dungeonCard.owner.drawNotUsedDungeonCard()
+                }
+            }
+        })
+    }
+
+    handleGameEvent(event: GameEvent): void {
+        if (event.type === "PLAYER_DESTROYED_DUNGEON") {
+            if (event.dungeon.owner === this.dungeonCard.owner) {
+                this.use()
+            }
+        }
+    }
+}
+
 const dungeonMechanicsMap = {
     'Bezdenna czeluść': EliminateHeroInDungeon,
     'Niestabilna kopalnia': Get3MoneyOnDestroy,
@@ -1103,6 +1135,7 @@ const dungeonMechanicsMap = {
     'Dizzygas Hallway': BoostNextRoomBy2IfItIsTrapsRoom,
     'Dracolich Lair': DiscardTwoDungeonCardsToTakeOneFromDiscardedPileOnUseOncePerTurn,
     "Dragon Hatchery": ContainsAllFourTreasureTypes,
+    'Recycling Center': DrawTwoDungeonRoomCardsWhenDungeonIsDestroyed,
 }
 
 
