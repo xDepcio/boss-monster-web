@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 function MainPage() {
     const navigate = useNavigate()
     const [lobbyToJoin, setLobbyToJoin] = useState('')
-    const [nickname, setNickname] = useState('')
+    const [nickname, setNickname] = useState(Cookies.get('userNick') ?? '')
 
     useEffect(() => {
 
@@ -54,7 +54,10 @@ function MainPage() {
                         <p className='text-base font-semibold text-zinc-300 mb-1'>Twój Nick</p>
                         <input
                             value={nickname}
-                            onChange={(e) => setNickname(e.target.value)}
+                            onChange={(e) => {
+                                Cookies.set('userNick', e.target.value)
+                                setNickname(Cookies.get('userNick'))
+                            }}
                             type="text"
                             placeholder='Nick'
                             className='w-full box-border text-zinc-300 bg-zinc-800 p-1 text-base rounded-[0.4rem] border-zinc-400 border-[1px] border-solid outline-zinc-400'
