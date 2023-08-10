@@ -15,6 +15,7 @@ import ErrorMessageComp from './gamePageElements/ErrorMessageComp'
 import AcceptSpellComp from './gamePageElements/AcceptSpellComp'
 import CurrentActionsComp from './gamePageElements/CurrentActionsComp'
 import SelectionRequestsComp from './gamePageElements/SelectionRequestsComp'
+import DevMenu from './gamePageElements/DevMenu'
 
 function GamePage() {
     const params = useParams()
@@ -36,6 +37,7 @@ function GamePage() {
 
     return (
         <>
+            <DevMenu />
             <SelectionRequestsComp />
             <CurrentActionsComp />
             <ErrorMessageComp />

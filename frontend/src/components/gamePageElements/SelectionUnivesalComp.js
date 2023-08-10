@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom'
 import CardDungeon from './CardDungeon'
 import CardSpell from './CardSpell'
 import './SelectionUnivesalComp.css'
-import { saveResponseError } from '../utils'
+import { dumbFlat, saveResponseError } from '../utils'
 import CardHero from './CardHero'
 import { useState } from 'react'
 
@@ -27,7 +27,7 @@ export default function SelectionUnivesalComp() {
             },
             body: JSON.stringify({
                 userId: Cookies.get('user'),
-                selectedItem: stringify(item),
+                selectedItem: stringify(dumbFlat(item)),
                 // displayType: metadata?.displayType
             })
         })

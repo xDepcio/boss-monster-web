@@ -1,22 +1,26 @@
+import { Game } from "../game/game"
+import { Player } from "../player/player"
+import { Id } from "../types"
+
 class Lobby {
     static lobbies = {}
 
-    id
-    players
-    trackedGame
+    id: Id
+    players: Player[]
+    trackedGame: Game
 
-    constructor(id) {
+    constructor(id: Id) {
         this.id = id
         this.players = []
         this.trackedGame = null
         Lobby.lobbies[id] = this
     }
 
-    addPlayer(player) {
+    addPlayer(player: Player) {
         this.players.push(player)
     }
 
-    isPlayerIn(player) {
+    isPlayerIn(player: Player) {
         let isIn = false
         this.players.forEach(ele => {
             if (ele.id === player.id) {
@@ -26,7 +30,7 @@ class Lobby {
         return isIn
     }
 
-    trackGame(game) {
+    trackGame(game: Game) {
         this.trackedGame = game
     }
 
@@ -34,11 +38,11 @@ class Lobby {
         return this.trackedGame !== null
     }
 
-    static getLobby(lobbyId) {
+    static getLobby(lobbyId: Id): Lobby {
         return Lobby.lobbies[lobbyId]
     }
 }
 
-module.exports = Lobby
+// module.exports = Lobby
 
-export { }
+export { Lobby }

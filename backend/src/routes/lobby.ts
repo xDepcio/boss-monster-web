@@ -3,15 +3,17 @@ import { Player } from "../logic/player/player";
 // const express = require('express');
 const router = express.Router();
 const uuid = require('uuid');
-const Lobby = require('../logic/lobby/lobby');
+// const Lobby = require('../logic/lobby/lobby');
 // const Player = require('../logic/player/player')
 // const { Game } = require('../logic/game/game')
 // const prefabs = require('../utils/prefabs/prefabs.json')
 import prefabs from '../utils/prefabs/prefabs.json'
 import { Game } from "../logic/game/game";
 import { stringify } from "flatted";
+import { Lobby } from "../logic/lobby/lobby";
 const { flattenCircular } = require('../utils/responseFormat')
-
+import bodyParser from 'body-parser'
+import axios from "axios";
 // const lobbies = {}
 // const players = {}
 
@@ -57,7 +59,7 @@ router.post('/:lobbyId/join', (req, res, next) => {
 // Start game in a lobby
 router.post('/:lobbyId/start', (req, res, next) => {
     const lobby = Lobby.getLobby(req.params.lobbyId)
-    if (lobby.gameStarted) {
+    if (lobby.isGameStarted()) {
         return next(new Error("Cannot start game 2nd time"))
     }
     console.log(lobby.players)
@@ -72,10 +74,10 @@ router.post('/:lobbyId/start', (req, res, next) => {
 // Start game with preset data
 router.post('/:lobbyId/start-prefab', (req, res, next) => {
     const lobby = Lobby.getLobby(req.params.lobbyId)
-    if (lobby.gameStarted) {
+    if (lobby.isGameStarted()) {
         return next(new Error("Cannot start game 2nd time"))
     }
-    const newPlayers = lobby.players.map((player) => new Player(player.id, 'olo'))
+    const newPlayers = lobby.players.map((player) => new Player(player.id, player.name))
     // const game = new Game(uuid.v4(), lobby.players)
     const game = new Game(uuid.v4(), newPlayers, prefabs.first)
     lobby.trackGame(game)
@@ -97,6 +99,15 @@ router.get('/:lobbyId', (req, res) => {
 })
 
 
+// Start prefab game with injected moves
+router.post('/:lobbyId/start-prefab-with-injected-moves', bodyParser.text(), async (req, res) => {
+    const lobby = Lobby.getLobby(req.params.lobbyId)
+    const newPlayers = lobby.players.map((player) => new Player(player.id, player.name))
+    const game = new Game(uuid.v4(), newPlayers, prefabs.first)
+    lobby.trackGame(game)
+    await game.inputsTracker.injectMoves(lobby.id, req.body)
+    return res.json(flattenCircular(lobby))
+})
 
 module.exports = router;
 

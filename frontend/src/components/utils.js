@@ -143,3 +143,18 @@ export function saveResponseError(response, dispatch) {
         }
     })
 }
+
+export function dumbFlat(obj) {
+    if (typeof obj !== 'object') return obj
+    const newObj = {};
+
+    for (const key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            if (typeof obj[key] !== 'object') {
+                newObj[key] = obj[key];
+            }
+        }
+    }
+
+    return newObj;
+}

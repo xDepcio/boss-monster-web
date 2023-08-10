@@ -53,7 +53,7 @@ class Game {
         this.gameRound = 1
         this.roundPhase = "start"
         this.city = []
-        this.inputsTracker = new InputTracker()
+        this.inputsTracker = new InputTracker({ game: this })
         this.movesHistory = []
         this.heroToMove = null
         this.currentlyPlayedSpell = null

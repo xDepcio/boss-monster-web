@@ -1,5 +1,7 @@
+import { Lobby } from "../logic/lobby/lobby";
+
 const CircularJSON = require('circular-json')
-const Lobby = require('../logic/lobby/lobby')
+// const Lobby = require('../logic/lobby/lobby')
 const { parse, stringify, toJSON, fromJSON } = require('flatted');
 
 function flattenCircular(obj) {
