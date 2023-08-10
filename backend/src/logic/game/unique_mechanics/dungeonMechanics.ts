@@ -1069,6 +1069,12 @@ class DiscardTwoDungeonCardsToTakeOneFromDiscardedPileOnUseOncePerTurn extends D
     }
 }
 
+class ContainsAllFourTreasureTypes extends DungeonMechanic {
+    constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
+        super(dungeonCard, mechanicDescription)
+    }
+}
+
 const dungeonMechanicsMap = {
     'Bezdenna czeluść': EliminateHeroInDungeon,
     'Niestabilna kopalnia': Get3MoneyOnDestroy,
@@ -1096,6 +1102,7 @@ const dungeonMechanicsMap = {
     'Dark Laboratory': DrawTwoSpellCardsAndDiscardOneOnRoomBuild,
     'Dizzygas Hallway': BoostNextRoomBy2IfItIsTrapsRoom,
     'Dracolich Lair': DiscardTwoDungeonCardsToTakeOneFromDiscardedPileOnUseOncePerTurn,
+    "Dragon Hatchery": ContainsAllFourTreasureTypes,
 }
 
 

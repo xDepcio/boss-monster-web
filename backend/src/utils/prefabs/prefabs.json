@@ -411,6 +411,22 @@
                 "mechanicType": null,
                 "mechanicDescription": "One per turn, you may discard two Room cards to choose one Room card from the discard pile and put it into your hand.",
                 "isFancy": true
+            },
+            {
+                "CARDTYPE": "DUNGEON",
+                "id": 28,
+                "name": "Dragon Hatchery",
+                "type": "monsters",
+                "damage": 0,
+                "treasure": {
+                    "fortune": 1,
+                    "faith": 1,
+                    "magic": 1,
+                    "strength": 1
+                },
+                "mechanicType": null,
+                "mechanicDescription": "(This Room contains all four treasure types.)",
+                "isFancy": false
             }
         ],
         "heroes": [
