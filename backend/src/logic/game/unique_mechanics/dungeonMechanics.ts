@@ -980,6 +980,35 @@ class DrawTwoSpellCardsAndDiscardOneOnRoomBuild extends DungeonMechanic {
     }
 }
 
+class BoostNextRoomBy2IfItIsTrapsRoom extends DungeonMechanic {
+    lastBoosted: DungeonCard | null
+
+    constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
+        super(dungeonCard, mechanicDescription)
+        this.lastBoosted = null
+    }
+
+    use(): void {
+        if (this.lastBoosted) {
+            this.lastBoosted.damage -= 2
+            this.lastBoosted = null
+        }
+
+        const thisDungeonIndex = this.dungeonCard.owner.dungeon.indexOf(this.dungeonCard)
+        if (thisDungeonIndex === -1) return
+
+        const nextDungeon = this.dungeonCard.owner.dungeon[thisDungeonIndex - 1]
+        if (nextDungeon && nextDungeon.type === 'traps') {
+            nextDungeon.damage += 2
+            this.lastBoosted = nextDungeon
+        }
+    }
+
+    handleGameEvent(event: GameEvent): void {
+        this.use()
+    }
+}
+
 const dungeonMechanicsMap = {
     'Bezdenna czeluść': EliminateHeroInDungeon,
     'Niestabilna kopalnia': Get3MoneyOnDestroy,
@@ -1005,6 +1034,7 @@ const dungeonMechanicsMap = {
     "Open Grave": ChooseDungeonCardFromDiscardedDungeonPileWhenHeroDiesInThisDungeonRoomOncePerRound,
     'Dark Altar': DestroyDungeonToTakeOneCardFromDiscardedPile,
     'Dark Laboratory': DrawTwoSpellCardsAndDiscardOneOnRoomBuild,
+    'Dizzygas Hallway': BoostNextRoomBy2IfItIsTrapsRoom,
 }
 
 

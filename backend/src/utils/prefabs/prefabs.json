@@ -385,6 +385,19 @@
                 "mechanicType": null,
                 "mechanicDescription": "When you build this Room, draw two Spell cards, then discard a Spell card.",
                 "isFancy": false
+            },
+            {
+                "CARDTYPE": "DUNGEON",
+                "id": 26,
+                "name": "Dizzygas Hallway",
+                "type": "traps",
+                "damage": 1,
+                "treasure": {
+                    "fortune": 1
+                },
+                "mechanicType": null,
+                "mechanicDescription": "If the next Room in your dungeon is a Trap Room, it has +2 damage.",
+                "isFancy": false
             }
         ],
         "heroes": [

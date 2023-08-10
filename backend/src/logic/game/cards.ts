@@ -366,6 +366,9 @@ class DungeonCard extends Card {
         if (dungeonMechanic) {
             dungeonMechanic.handleGameEvent(event)
         }
+        if (this.belowDungeon) {
+            this.belowDungeon.handleGameEvent(event)
+        }
     }
 
     canBeBuiltOn(cardToBuildOn: DungeonCard): boolean {
