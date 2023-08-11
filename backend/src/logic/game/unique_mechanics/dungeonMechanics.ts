@@ -1218,6 +1218,7 @@ class HealWoundAndAddItsSoulToScoreWhenHeroDiesInThisDungeonOncePerRound extends
                 this.dungeonCard.owner.defeatedHeroes.push(hero)
                 this.dungeonCard.owner.updateScore()
                 this.usedInRound = true
+                this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_DUNGEON_MECHANIC(this.dungeonCard.owner, this.dungeonCard, this))
             }
         })
     }
@@ -1263,6 +1264,33 @@ class BoostAdjacentMonsterRoomsByOne extends DungeonMechanic {
     }
 }
 
+class DrawRoomCardIfHeroDiesInThisDungeonOncePerRound extends DungeonMechanic {
+    usedInRound: boolean = false
+
+    constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
+        super(dungeonCard, mechanicDescription)
+    }
+
+    use(): void {
+        if (this.usedInRound) return
+
+        this.dungeonCard.owner.drawNotUsedDungeonCard()
+        this.usedInRound = true
+        this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_DUNGEON_MECHANIC(this.dungeonCard.owner, this.dungeonCard, this))
+    }
+
+    handleGameEvent(event: GameEvent): void {
+        if (event.type === "HERO_DIED_IN_ROOM") {
+            if (event.room === this.dungeonCard) {
+                this.use()
+            }
+        }
+        else if (event.type === "NEW_ROUND_BEGUN") {
+            this.usedInRound = false
+        }
+    }
+}
+
 const dungeonMechanicsMap = {
     'Bezdenna czeluść': EliminateHeroInDungeon,
     'Niestabilna kopalnia': Get3MoneyOnDestroy,
@@ -1296,6 +1324,7 @@ const dungeonMechanicsMap = {
     "Succubus Spa": TakeRandomCardFromOpponentWhenHeroDiesInThisDungeonOncePerRound,
     "Vampire Bordello": HealWoundAndAddItsSoulToScoreWhenHeroDiesInThisDungeonOncePerRound,
     "Goblin Armory": BoostAdjacentMonsterRoomsByOne,
+    "Golem Factory": DrawRoomCardIfHeroDiesInThisDungeonOncePerRound,
 }
 
 
