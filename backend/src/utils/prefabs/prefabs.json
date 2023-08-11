@@ -571,6 +571,20 @@
                 "mechanicType": null,
                 "mechanicDescription": "Destroy this Room: Choose an opponent. That opponent discards a random Room card.",
                 "isFancy": false
+            },
+            {
+                "CARDTYPE": "DUNGEON",
+                "id": 40,
+                "name": "Zombie Prison",
+                "type": "monsters",
+                "damage": 1,
+                "treasure": {
+                    "magic": 1,
+                    "faith": 1
+                },
+                "mechanicType": null,
+                "mechanicDescription": "Destroy this Room: Choose a dead Hero in an opponents's scorekeeping area. Send it back to the entrance of that player's dungeon.",
+                "isFancy": false
             }
         ],
         "heroes": [

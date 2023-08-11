@@ -1502,6 +1502,56 @@ class OpponentDiscardsRandomDungeonCardOnDestroy extends DungeonMechanic {
     }
 }
 
+class ChooseDefeatedHeroAtAnyOpponentsDungeonAnSendItToHisEntranceAtDestroy extends DungeonMechanic {
+    cardAction: CardAction
+
+    constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
+        super(dungeonCard, mechanicDescription)
+
+        this.cardAction = new CardAction({
+            title: "Użyj - Zniszcz",
+            assignTo: this.dungeonCard,
+            allowUseFor: () => [this.dungeonCard.owner],
+            onUse: (playerThatUsed) => this.handleUsedByPlayer(playerThatUsed),
+        })
+    }
+
+    handleUsedByPlayer(player: Player) {
+        this.dungeonCard.setAllowDestroy(true)
+        player.destroyDungeonCard(this.dungeonCard.id)
+        this.dungeonCard.setAllowDestroy(false)
+
+        new SelectionRequestUniversal({
+            amount: 1,
+            metadata: {
+                displayType: "mixed"
+            },
+            avalibleItemsForSelectArr: this.dungeonCard.trackedGame.players.filter(p => p !== player),
+            selectionMessage: "Wybierz przeciwnika, którego pokonanego bohatera chcesz wysłać na początek jego lochu. (Zombie Prison)",
+            requestedPlayer: player,
+            onFinish: ([selectedPlayer]) => {
+                if (selectedPlayer.defeatedHeroes.length === 0) return
+
+                new SelectionRequestUniversal({
+                    amount: 1,
+                    avalibleItemsForSelectArr: [...selectedPlayer.defeatedHeroes],
+                    metadata: {
+                        displayType: "mixed"
+                    },
+                    requestedPlayer: player,
+                    selectionMessage: "Wybierz pokonanego bohatera, którego chcesz wysłać na początek lochu. (Zombie Prison)",
+                    onFinish: ([selectedHero]) => {
+                        selectedHero.health = selectedHero.baseHealth
+                        selectedPlayer.defeatedHeroes.splice(selectedPlayer.defeatedHeroes.indexOf(selectedHero), 1)
+                        selectedPlayer.dungeonEntranceHeroes.push(selectedHero)
+                        this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_DUNGEON_MECHANIC(player, this.dungeonCard, this))
+                    }
+                })
+            }
+        })
+    }
+}
+
 const dungeonMechanicsMap = {
     'Bezdenna czeluść': EliminateHeroInDungeon,
     'Niestabilna kopalnia': Get3MoneyOnDestroy,
@@ -1541,6 +1591,7 @@ const dungeonMechanicsMap = {
     "Bottomless Pit": KillHeroInThisRoomOnDestroy,
     "Jackpot Stash": DoubleEveryRoomTreasureOnDestroy,
     "Torture Chamber": OpponentDiscardsRandomDungeonCardOnDestroy,
+    "Zombie Prison": ChooseDefeatedHeroAtAnyOpponentsDungeonAnSendItToHisEntranceAtDestroy,
 }
 
 
