@@ -531,6 +531,19 @@
                 "mechanicType": null,
                 "mechanicDescription": "Once per turn, you may discard a Monster Room card to draw a Spell card.",
                 "isFancy": false
+            },
+            {
+                "CARDTYPE": "DUNGEON",
+                "id": 37,
+                "name": "Bottomless Pit",
+                "type": "traps",
+                "damage": 1,
+                "treasure": {
+                    "fortune": 1
+                },
+                "mechanicType": null,
+                "mechanicDescription": "Destroy this Room: Kill a Hero in this Room.",
+                "isFancy": false
             }
         ],
         "heroes": [

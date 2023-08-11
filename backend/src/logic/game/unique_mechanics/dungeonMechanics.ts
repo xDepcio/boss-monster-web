@@ -1374,6 +1374,32 @@ class DiscardMonsterRoomToDrawSpellCardOncePerRound extends DungeonMechanic {
     }
 }
 
+class KillHeroInThisRoomOnDestroy extends DungeonMechanic {
+    cardAction: CardAction
+
+    constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
+        super(dungeonCard, mechanicDescription)
+
+        this.cardAction = new CardAction({
+            title: "Użyj - Zniszcz",
+            assignTo: this.dungeonCard,
+            allowUseFor: () => [this.dungeonCard.owner],
+            onUse: (playerThatUsed) => this.handleUsedByPlayer(playerThatUsed),
+        })
+    }
+
+    handleUsedByPlayer(player: Player) {
+        const heroOnTop = this.dungeonCard.getHeroOnThisDungeon()
+        if (heroOnTop) {
+            heroOnTop.die()
+        }
+        this.dungeonCard.setAllowDestroy(true)
+        player.destroyDungeonCard(this.dungeonCard.id)
+        this.dungeonCard.setAllowDestroy(false)
+        this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_DUNGEON_MECHANIC(player, this.dungeonCard, this))
+    }
+}
+
 const dungeonMechanicsMap = {
     'Bezdenna czeluść': EliminateHeroInDungeon,
     'Niestabilna kopalnia': Get3MoneyOnDestroy,
@@ -1410,6 +1436,7 @@ const dungeonMechanicsMap = {
     "Golem Factory": DrawRoomCardIfHeroDiesInThisDungeonOncePerRound,
     "Haunted Library": DrawSpellCardAtRoundStartInsteadOfDungeonCard,
     "Witch's Kitchen": DiscardMonsterRoomToDrawSpellCardOncePerRound,
+    "Bottomless Pit": KillHeroInThisRoomOnDestroy,
 }
 
 
