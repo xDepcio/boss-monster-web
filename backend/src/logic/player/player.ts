@@ -65,6 +65,7 @@ class Player {
         fortune: number
     }
     requestedSelection: SelectionRequest | SelectionRequestOneFromGivenList<any> | null | SelectionRequestNEW | SelectionRequestUniversal<any>
+    requestedSelectionsQueue: (SelectionRequest | SelectionRequestOneFromGivenList<any> | null | SelectionRequestNEW | SelectionRequestUniversal<any>)[]
 
     constructor(id: Id, name: string) {
         this.objectType = "PLAYER_OBJECT"
@@ -86,6 +87,7 @@ class Player {
         this.totalScore = 0
         this.declaredBuild = null
         this.heroesThatDefeatedPlayer = []
+        this.requestedSelectionsQueue = []
         this.collectedTreasure = {
             faith: 0,
             strength: 0,
@@ -130,6 +132,23 @@ class Player {
 
     getName() {
         return this.name
+    }
+
+    addRequestedSelection(selection: SelectionRequest | SelectionRequestOneFromGivenList<any> | null | SelectionRequestNEW | SelectionRequestUniversal<any>, prioritize: boolean = false) {
+        if (prioritize) {
+            this.requestedSelectionsQueue.unshift(selection)
+        }
+        else {
+            this.requestedSelectionsQueue.push(selection)
+        }
+    }
+
+    removeRequestedSelection(selection: SelectionRequest | SelectionRequestOneFromGivenList<any> | null | SelectionRequestNEW | SelectionRequestUniversal<any>) {
+        this.requestedSelectionsQueue.splice(this.requestedSelectionsQueue.findIndex(s => s === selection), 1)
+    }
+
+    getNextRequestedSelection(): SelectionRequest | SelectionRequestOneFromGivenList<any> | null | SelectionRequestNEW | SelectionRequestUniversal<any> {
+        return this.requestedSelectionsQueue[0] ?? null
     }
 
     setRequestedSelection(selection: SelectionRequest | SelectionRequestOneFromGivenList<any> | null | SelectionRequestNEW | SelectionRequestUniversal<any>) {

@@ -275,7 +275,9 @@ class SelectionRequestUniversal<SelectableType> {
         this.metadata = metadata
         this.canceled = false
 
-        requestedPlayer.setRequestedSelection(this);
+        // requestedPlayer.setRequestedSelection(this);
+        requestedPlayer.addRequestedSelection(this);
+        this.requestedPlayer.setRequestedSelection(this.requestedPlayer.getNextRequestedSelection())
     }
 
     getRequestItemType() {
@@ -321,14 +323,22 @@ class SelectionRequestUniversal<SelectableType> {
 
     resolveTarget() {
         try {
+            // this.onFinish(this.selectedItems)
+            // if (this.requestedPlayer.requestedSelection === this) {
+            //     this.requestedPlayer.setRequestedSelection(null)
+            // }
+
             this.onFinish(this.selectedItems)
-            if (this.requestedPlayer.requestedSelection === this) {
-                this.requestedPlayer.setRequestedSelection(null)
-            }
+            this.requestedPlayer.removeRequestedSelection(this)
+            this.requestedPlayer.setRequestedSelection(this.requestedPlayer.getNextRequestedSelection())
+            // if (this.requestedPlayer.requestedSelection === this) {
+            //     this.requestedPlayer.setRequestedSelection(null)
+            // }
         } catch (error) {
             this.reset()
             // this.requestedPlayer.setRequestedSelection(this)
             this.onFinishError(error)
+            this.requestedPlayer.setRequestedSelection(this.requestedPlayer.getNextRequestedSelection())
             throw error
         }
     }
@@ -339,7 +349,9 @@ class SelectionRequestUniversal<SelectableType> {
     }
 
     cancel() {
-        this.requestedPlayer.setRequestedSelection(null)
+        // this.requestedPlayer.setRequestedSelection(null)
+        this.requestedPlayer.removeRequestedSelection(this)
+        this.requestedPlayer.setRequestedSelection(this.requestedPlayer.getNextRequestedSelection())
         this.canceled = true
     }
 }

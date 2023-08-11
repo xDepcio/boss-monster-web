@@ -268,20 +268,6 @@
             },
             {
                 "CARDTYPE": "DUNGEON",
-                "id": 18,
-                "name": "Construction Zone",
-                "type": "traps",
-                "damage": 1,
-                "treasure": {
-                    "fortune": 1,
-                    "strength": 1
-                },
-                "mechanicType": null,
-                "mechanicDescription": "When you build this Room, you may immiedatly build an additional Room.",
-                "isFancy": false
-            },
-            {
-                "CARDTYPE": "DUNGEON",
                 "id": 19,
                 "name": "Mimic Vault",
                 "type": "traps",
@@ -440,6 +426,20 @@
                 "mechanicType": null,
                 "mechanicDescription": "When another Room in your dungeon is destroyed, you may draw two Room cards.",
                 "isFancy": true
+            },
+            {
+                "CARDTYPE": "DUNGEON",
+                "id": 18,
+                "name": "Construction Zone",
+                "type": "traps",
+                "damage": 1,
+                "treasure": {
+                    "fortune": 1,
+                    "strength": 1
+                },
+                "mechanicType": null,
+                "mechanicDescription": "When you build this Room, you may immiedatly build an additional Room.",
+                "isFancy": false
             }
         ],
         "heroes": [

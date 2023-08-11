@@ -728,7 +728,7 @@ class BuildAnotherDungeonWhenThisDungeonBuild extends DungeonMechanic {
             selectionMessage: "Który loch chcesz wybudować?",
             requestedPlayer: this.dungeonCard.owner,
             onFinish: ([selectedDungeon]: DungeonCard[]) => {
-                new SelectionRequestUniversal<DungeonCard | 'Nowy' | 'Anuluj'>({
+                const selectionOuter = new SelectionRequestUniversal<DungeonCard | 'Nowy' | 'Anuluj'>({
                     avalibleItemsForSelectArr: this.dungeonCard.owner.dungeon.length === 5 ?
                         [...this.dungeonCard.owner.dungeon, 'Anuluj'] :
                         [...this.dungeonCard.owner.dungeon, 'Nowy', 'Anuluj'],
@@ -751,7 +751,9 @@ class BuildAnotherDungeonWhenThisDungeonBuild extends DungeonMechanic {
                     },
                     onFinishError: (err) => {
                         request.reset()
-                        this.dungeonCard.owner.setRequestedSelection(request)
+                        this.dungeonCard.owner.addRequestedSelection(request, true)
+                        this.dungeonCard.owner.removeRequestedSelection(selectionOuter)
+                        // this.dungeonCard.owner.setRequestedSelection(request)
                     },
                     onSingleSelect: (selection) => {
                         if (selection === 'Anuluj') {
@@ -1094,6 +1096,7 @@ class DrawTwoDungeonRoomCardsWhenDungeonIsDestroyed extends DungeonMechanic {
                     this.dungeonCard.owner.drawNotUsedDungeonCard()
                     this.dungeonCard.owner.drawNotUsedDungeonCard()
                 }
+                this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_DUNGEON_MECHANIC(this.dungeonCard.owner, this.dungeonCard, this))
             }
         })
     }
