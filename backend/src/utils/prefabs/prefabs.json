@@ -518,6 +518,19 @@
                 "mechanicType": null,
                 "mechanicDescription": "At the beginning of your turn, you may draw from the Spell deck instead of the Room deck.",
                 "isFancy": false
+            },
+            {
+                "CARDTYPE": "DUNGEON",
+                "id": 36,
+                "name": "Witch's Kitchen",
+                "type": "monsters",
+                "damage": 1,
+                "treasure": {
+                    "magic": 1
+                },
+                "mechanicType": null,
+                "mechanicDescription": "Once per turn, you may discard a Monster Room card to draw a Spell card.",
+                "isFancy": false
             }
         ],
         "heroes": [

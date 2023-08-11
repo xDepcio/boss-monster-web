@@ -50,11 +50,15 @@ class CardAction {
             allowUseFor = this.allowUseFor
         }
 
-        for (let allowedPlayer of allowUseFor) {
-            if (player.id === allowedPlayer.id) {
-                return true
-            }
+        const playerIsIn = allowUseFor.find(allowedPlayer => allowedPlayer.id === player.id)
+        if (!playerIsIn) {
+            throw new Error("This player is not allowed to use this action.")
         }
+        // for (let allowedPlayer of allowUseFor) {
+        //     if (player.id === allowedPlayer.id) {
+        //         return true
+        //     }
+        // }
         return this.additionalUseValidation(player)
     }
 

@@ -1326,6 +1326,54 @@ class DrawSpellCardAtRoundStartInsteadOfDungeonCard extends DungeonMechanic {
     }
 }
 
+class DiscardMonsterRoomToDrawSpellCardOncePerRound extends DungeonMechanic {
+    cardAction: CardAction
+
+    constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
+        super(dungeonCard, mechanicDescription)
+
+        this.cardAction = new CardAction({
+            allowUseFor: () => [this.dungeonCard.owner],
+            assignTo: this.dungeonCard,
+            title: "Użyj",
+            onUse: (playerThatUsed) => this.handleUsedByPlayer(playerThatUsed),
+            additionalUseValidation: (playerThatUsed) => {
+                if (playerThatUsed.dungeonCards.filter(room => room.type === 'monsters').length === 0) {
+                    throw new Error("Nie masz żadnych lochów potworów, które możesz odrzucić. (Witch's Kitchen)")
+                }
+                if (playerThatUsed.trackedGame.notUsedSpellCardsStack.length === 0) {
+                    throw new Error("Nie ma więcej kart czarów. (Witch's Kitchen)")
+                }
+                return true
+            }
+        })
+    }
+
+    handleUsedByPlayer(player: Player) {
+        new SelectionRequestUniversal({
+            amount: 1,
+            avalibleItemsForSelectArr: player.dungeonCards.filter(room => room.type === 'monsters'),
+            selectionMessage: "Wybierz loch potworów, który chcesz odrzucić. (Witch's Kitchen)",
+            metadata: {
+                displayType: "mixed"
+            },
+            requestedPlayer: player,
+            onFinish: ([room]) => {
+                player.discardDungeonCard(room)
+                player.drawNotUsedSpellCard()
+                this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_DUNGEON_MECHANIC(player, this.dungeonCard, this))
+            }
+        })
+        this.cardAction.setActionDisabled(true)
+    }
+
+    handleGameEvent(event: GameEvent): void {
+        if (event.type === "NEW_ROUND_BEGUN") {
+            this.cardAction.setActionDisabled(false)
+        }
+    }
+}
+
 const dungeonMechanicsMap = {
     'Bezdenna czeluść': EliminateHeroInDungeon,
     'Niestabilna kopalnia': Get3MoneyOnDestroy,
@@ -1361,6 +1409,7 @@ const dungeonMechanicsMap = {
     "Goblin Armory": BoostAdjacentMonsterRoomsByOne,
     "Golem Factory": DrawRoomCardIfHeroDiesInThisDungeonOncePerRound,
     "Haunted Library": DrawSpellCardAtRoundStartInsteadOfDungeonCard,
+    "Witch's Kitchen": DiscardMonsterRoomToDrawSpellCardOncePerRound,
 }
 
 
