@@ -505,6 +505,19 @@
                 "mechanicType": null,
                 "mechanicDescription": "Once per turn, if a Hero dies in this Room, draw a Room card.",
                 "isFancy": false
+            },
+            {
+                "CARDTYPE": "DUNGEON",
+                "id": 35,
+                "name": "Haunted Library",
+                "type": "traps",
+                "damage": 1,
+                "treasure": {
+                    "magic": 1
+                },
+                "mechanicType": null,
+                "mechanicDescription": "At the beginning of your turn, you may draw from the Spell deck instead of the Room deck.",
+                "isFancy": false
             }
         ],
         "heroes": [

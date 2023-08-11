@@ -180,7 +180,11 @@ class Game {
         this.incrementGameRound()
         this.saveGameAction(feedback.START_BUILD_PHASE())
         this.players.forEach(player => player.becomeNotReady())
-        this.players.forEach(player => player.drawNotUsedDungeonCard())
+        this.players.forEach(player => {
+            if (player.shouldAutomaticallyDrawNewRoundCards()) {
+                player.drawNotUsedDungeonCard()
+            }
+        })
         this.roundPhase = "build"
         this.fillCityWithHeroes()
         this.removeRoundModifiers()

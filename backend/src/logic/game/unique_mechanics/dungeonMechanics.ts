@@ -1291,6 +1291,41 @@ class DrawRoomCardIfHeroDiesInThisDungeonOncePerRound extends DungeonMechanic {
     }
 }
 
+class DrawSpellCardAtRoundStartInsteadOfDungeonCard extends DungeonMechanic {
+    constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
+        super(dungeonCard, mechanicDescription)
+    }
+
+    use(): void {
+        new SelectionRequestUniversal<'tak' | 'nie'>({
+            amount: 1,
+            avalibleItemsForSelectArr: ['tak', 'nie'],
+            metadata: {
+                displayType: "mixed"
+            },
+            selectionMessage: "Czy chcesz pobrać kartę czarów zamiast karty lochów? (Haunted Library)",
+            requestedPlayer: this.dungeonCard.owner,
+            onFinish: ([answer]) => {
+                if (answer === 'tak') {
+                    this.dungeonCard.owner.drawNotUsedSpellCard()
+                    this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_DUNGEON_MECHANIC(this.dungeonCard.owner, this.dungeonCard, this))
+                }
+                else if (answer === 'nie') {
+                    this.dungeonCard.owner.drawNotUsedDungeonCard()
+                }
+            }
+        })
+    }
+
+    handleGameEvent(event: GameEvent): void {
+        this.dungeonCard.owner.setAutomaticallyDrawNewRoundCards(!this.dungeonCard.isActive)
+
+        if (event.type === "NEW_ROUND_BEGUN" && this.dungeonCard.isActive) {
+            this.use()
+        }
+    }
+}
+
 const dungeonMechanicsMap = {
     'Bezdenna czeluść': EliminateHeroInDungeon,
     'Niestabilna kopalnia': Get3MoneyOnDestroy,
@@ -1325,6 +1360,7 @@ const dungeonMechanicsMap = {
     "Vampire Bordello": HealWoundAndAddItsSoulToScoreWhenHeroDiesInThisDungeonOncePerRound,
     "Goblin Armory": BoostAdjacentMonsterRoomsByOne,
     "Golem Factory": DrawRoomCardIfHeroDiesInThisDungeonOncePerRound,
+    "Haunted Library": DrawSpellCardAtRoundStartInsteadOfDungeonCard,
 }
 
 

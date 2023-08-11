@@ -66,6 +66,7 @@ class Player {
     }
     requestedSelection: SelectionRequest | SelectionRequestOneFromGivenList<any> | null | SelectionRequestNEW | SelectionRequestUniversal<any>
     requestedSelectionsQueue: (SelectionRequest | SelectionRequestOneFromGivenList<any> | null | SelectionRequestNEW | SelectionRequestUniversal<any>)[]
+    automaticallyDrawNewRoundCards: boolean
 
     constructor(id: Id, name: string) {
         this.objectType = "PLAYER_OBJECT"
@@ -88,6 +89,7 @@ class Player {
         this.declaredBuild = null
         this.heroesThatDefeatedPlayer = []
         this.requestedSelectionsQueue = []
+        this.automaticallyDrawNewRoundCards = true
         this.collectedTreasure = {
             faith: 0,
             strength: 0,
@@ -100,6 +102,14 @@ class Player {
 
     hasAcceptedSpellPlay() {
         return this.acceptedSpellPlay
+    }
+
+    setAutomaticallyDrawNewRoundCards(bool: boolean) {
+        this.automaticallyDrawNewRoundCards = bool
+    }
+
+    shouldAutomaticallyDrawNewRoundCards() {
+        return this.automaticallyDrawNewRoundCards
     }
 
     acceptSpellPlay() {
