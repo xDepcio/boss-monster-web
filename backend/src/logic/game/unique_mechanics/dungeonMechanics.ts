@@ -757,7 +757,7 @@ class BuildAnotherDungeonWhenThisDungeonBuild extends DungeonMechanic {
                     },
                     onSingleSelect: (selection) => {
                         if (selection === 'Anuluj') {
-                            request.cancel()
+                            selectionOuter.cancel()
                         }
                     }
                 })
@@ -1192,6 +1192,48 @@ class TakeRandomCardFromOpponentWhenHeroDiesInThisDungeonOncePerRound extends Du
     }
 }
 
+class HealWoundAndAddItsSoulToScoreWhenHeroDiesInThisDungeonOncePerRound extends DungeonMechanic {
+    usedInRound: boolean = false
+
+    constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
+        super(dungeonCard, mechanicDescription)
+    }
+
+    use(): void {
+        if (this.usedInRound) return
+
+        const heroes = [...this.dungeonCard.owner.heroesThatDefeatedPlayer]
+        if (heroes.length === 0) return
+
+        new SelectionRequestUniversal({
+            amount: 1,
+            avalibleItemsForSelectArr: heroes,
+            selectionMessage: "Wybierz bohatera, który cię pokonał. (Vampire Bordello)",
+            metadata: {
+                displayType: "mixed"
+            },
+            requestedPlayer: this.dungeonCard.owner,
+            onFinish: ([hero]) => {
+                this.dungeonCard.owner.health += hero.damageDealt
+                this.dungeonCard.owner.defeatedHeroes.push(hero)
+                this.dungeonCard.owner.updateScore()
+                this.usedInRound = true
+            }
+        })
+    }
+
+    handleGameEvent(event: GameEvent): void {
+        if (event.type === "HERO_DIED_IN_ROOM") {
+            if (event.room === this.dungeonCard) {
+                this.use()
+            }
+        }
+        else if (event.type === "NEW_ROUND_BEGUN") {
+            this.usedInRound = false
+        }
+    }
+}
+
 const dungeonMechanicsMap = {
     'Bezdenna czeluść': EliminateHeroInDungeon,
     'Niestabilna kopalnia': Get3MoneyOnDestroy,
@@ -1223,6 +1265,7 @@ const dungeonMechanicsMap = {
     'Recycling Center': DrawTwoDungeonRoomCardsWhenDungeonIsDestroyed,
     "Specter's Sanctum": OponnentDiscardRandomSpellCardOnBuild,
     "Succubus Spa": TakeRandomCardFromOpponentWhenHeroDiesInThisDungeonOncePerRound,
+    "Vampire Bordello": HealWoundAndAddItsSoulToScoreWhenHeroDiesInThisDungeonOncePerRound,
 }
 
 

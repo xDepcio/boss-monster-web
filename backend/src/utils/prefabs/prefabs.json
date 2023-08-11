@@ -466,6 +466,19 @@
                 "mechanicType": null,
                 "mechanicDescription": "Once per turn, if a Hero dies in this Room, choose an opponent. Take a random Room or Spell card from that opponent's hand.",
                 "isFancy": false
+            },
+            {
+                "CARDTYPE": "DUNGEON",
+                "id": 32,
+                "name": "Vampire Bordello",
+                "type": "monsters",
+                "damage": 3,
+                "treasure": {
+                    "faith": 1
+                },
+                "mechanicType": null,
+                "mechanicDescription": "Once per turn, if a Hero dies in this Room, you may heal one Wound. (Flip over one of your Wounds, addings its soul value to your total.)",
+                "isFancy": true
             }
         ],
         "heroes": [
