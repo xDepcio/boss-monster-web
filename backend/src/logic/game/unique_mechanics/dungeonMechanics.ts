@@ -1110,6 +1110,37 @@ class DrawTwoDungeonRoomCardsWhenDungeonIsDestroyed extends DungeonMechanic {
     }
 }
 
+class OponnentDiscardRandomSpellCardOnBuild extends DungeonMechanic {
+    constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
+        super(dungeonCard, mechanicDescription)
+    }
+
+    use(): void {
+        new SelectionRequestUniversal({
+            amount: 1,
+            avalibleItemsForSelectArr: [...this.dungeonCard.trackedGame.players.filter(player => player !== this.dungeonCard.owner)],
+            metadata: {
+                displayType: "mixed"
+            },
+            selectionMessage: "Wybierz przeciwnika. (Specter's Sanctum)",
+            requestedPlayer: this.dungeonCard.owner,
+            onFinish: ([selectedPlayer]) => {
+                const randomSpell = selectedPlayer.spellCards[Math.floor(Math.random() * selectedPlayer.spellCards.length)]
+                selectedPlayer.discardSpellCard(randomSpell)
+                this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_DUNGEON_MECHANIC(this.dungeonCard.owner, this.dungeonCard, this))
+            }
+        })
+    }
+
+    handleGameEvent(event: GameEvent): void {
+        if (event.type === "PLAYER_BUILD_DUNGEON") {
+            if (event.player === this.dungeonCard.owner && event.dungeon === this.dungeonCard) {
+                this.use()
+            }
+        }
+    }
+}
+
 const dungeonMechanicsMap = {
     'Bezdenna czeluść': EliminateHeroInDungeon,
     'Niestabilna kopalnia': Get3MoneyOnDestroy,
@@ -1139,6 +1170,7 @@ const dungeonMechanicsMap = {
     'Dracolich Lair': DiscardTwoDungeonCardsToTakeOneFromDiscardedPileOnUseOncePerTurn,
     "Dragon Hatchery": ContainsAllFourTreasureTypes,
     'Recycling Center': DrawTwoDungeonRoomCardsWhenDungeonIsDestroyed,
+    "Specter's Sanctum": OponnentDiscardRandomSpellCardOnBuild,
 }
 
 

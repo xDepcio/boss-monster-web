@@ -440,6 +440,19 @@
                 "mechanicType": null,
                 "mechanicDescription": "When you build this Room, you may immiedatly build an additional Room.",
                 "isFancy": false
+            },
+            {
+                "CARDTYPE": "DUNGEON",
+                "id": 30,
+                "name": "Specter's Sanctum",
+                "type": "monsters",
+                "damage": 2,
+                "treasure": {
+                    "faith": 1
+                },
+                "mechanicType": null,
+                "mechanicDescription": "When you build this Room, choose an opponent. That opponent discards a random Spell card.",
+                "isFancy": false
             }
         ],
         "heroes": [
