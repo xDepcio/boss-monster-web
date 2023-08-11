@@ -1234,6 +1234,35 @@ class HealWoundAndAddItsSoulToScoreWhenHeroDiesInThisDungeonOncePerRound extends
     }
 }
 
+class BoostAdjacentMonsterRoomsByOne extends DungeonMechanic {
+    previouslyBoosted: DungeonCard[] = []
+
+    constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
+        super(dungeonCard, mechanicDescription)
+    }
+
+    use(): void {
+        this.previouslyBoosted.forEach(room => room.damage -= 1)
+        this.previouslyBoosted = []
+
+        const dungeonIndex = this.dungeonCard.owner.dungeon.indexOf(this.dungeonCard)
+        if (dungeonIndex === -1) return
+
+        const adjacentRooms = [
+            ...(this.dungeonCard.owner.dungeon[dungeonIndex - 1] ? [this.dungeonCard.owner.dungeon[dungeonIndex - 1]] : []),
+            ...(this.dungeonCard.owner.dungeon[dungeonIndex + 1] ? [this.dungeonCard.owner.dungeon[dungeonIndex + 1]] : [])
+        ]
+        const adjacentMonsterRooms = adjacentRooms.filter(room => room.type === 'monsters')
+        this.previouslyBoosted = adjacentMonsterRooms
+
+        adjacentMonsterRooms.forEach(room => room.damage += 1)
+    }
+
+    handleGameEvent(event: GameEvent): void {
+        this.use()
+    }
+}
+
 const dungeonMechanicsMap = {
     'Bezdenna czeluść': EliminateHeroInDungeon,
     'Niestabilna kopalnia': Get3MoneyOnDestroy,
@@ -1266,6 +1295,7 @@ const dungeonMechanicsMap = {
     "Specter's Sanctum": OponnentDiscardRandomSpellCardOnBuild,
     "Succubus Spa": TakeRandomCardFromOpponentWhenHeroDiesInThisDungeonOncePerRound,
     "Vampire Bordello": HealWoundAndAddItsSoulToScoreWhenHeroDiesInThisDungeonOncePerRound,
+    "Goblin Armory": BoostAdjacentMonsterRoomsByOne,
 }
 
 
