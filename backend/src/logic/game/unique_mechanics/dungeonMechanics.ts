@@ -1464,6 +1464,44 @@ class DoubleEveryRoomTreasureOnDestroy extends DungeonMechanic {
     }
 }
 
+class OpponentDiscardsRandomDungeonCardOnDestroy extends DungeonMechanic {
+    cardAction: CardAction
+
+    constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
+        super(dungeonCard, mechanicDescription)
+
+        this.cardAction = new CardAction({
+            title: "Użyj - Zniszcz",
+            assignTo: this.dungeonCard,
+            allowUseFor: () => [this.dungeonCard.owner],
+            onUse: (playerThatUsed) => this.handleUsedByPlayer(playerThatUsed),
+        })
+    }
+
+    handleUsedByPlayer(player: Player) {
+        this.dungeonCard.setAllowDestroy(true)
+        player.destroyDungeonCard(this.dungeonCard.id)
+        this.dungeonCard.setAllowDestroy(false)
+
+        new SelectionRequestUniversal({
+            amount: 1,
+            metadata: {
+                displayType: "mixed"
+            },
+            avalibleItemsForSelectArr: this.dungeonCard.trackedGame.players.filter(p => p !== player),
+            selectionMessage: "Wybierz przeciwnika, który odrzuci losową kartę lochu. (Torture Chamber)",
+            requestedPlayer: player,
+            onFinish: ([selectedPlayer]) => {
+                if (selectedPlayer.dungeonCards.length === 0) return
+                const randomRoom = selectedPlayer.dungeonCards[Math.floor(Math.random() * selectedPlayer.dungeonCards.length)]
+                selectedPlayer.discardDungeonCard(randomRoom)
+                this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_DUNGEON_MECHANIC(player, this.dungeonCard, this))
+            }
+        })
+
+    }
+}
+
 const dungeonMechanicsMap = {
     'Bezdenna czeluść': EliminateHeroInDungeon,
     'Niestabilna kopalnia': Get3MoneyOnDestroy,
@@ -1502,6 +1540,7 @@ const dungeonMechanicsMap = {
     "Witch's Kitchen": DiscardMonsterRoomToDrawSpellCardOncePerRound,
     "Bottomless Pit": KillHeroInThisRoomOnDestroy,
     "Jackpot Stash": DoubleEveryRoomTreasureOnDestroy,
+    "Torture Chamber": OpponentDiscardsRandomDungeonCardOnDestroy,
 }
 
 

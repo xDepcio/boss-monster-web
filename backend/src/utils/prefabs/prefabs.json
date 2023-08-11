@@ -557,6 +557,20 @@
                 "mechanicType": null,
                 "mechanicDescription": "Destroy this Room: Double the treasure value of your dungeon's Rooms until end of turn.",
                 "isFancy": false
+            },
+            {
+                "CARDTYPE": "DUNGEON",
+                "id": 39,
+                "name": "Torture Chamber",
+                "type": "traps",
+                "damage": 1,
+                "treasure": {
+                    "fortune": 1,
+                    "faith": 1
+                },
+                "mechanicType": null,
+                "mechanicDescription": "Destroy this Room: Choose an opponent. That opponent discards a random Room card.",
+                "isFancy": false
             }
         ],
         "heroes": [
