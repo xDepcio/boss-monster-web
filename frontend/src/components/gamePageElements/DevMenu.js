@@ -43,7 +43,7 @@ export default function DevMenu() {
     }
 
     return (
-        <div data-opened={String(opened)} className="bg-zinc-600/75 text-zinc-950 p-4 pl-8 data-[opened=false]:-translate-x-[100%] duration-[0.3s] fixed left-0 top-0 z-10">
+        <div data-opened={String(opened)} className="bg-zinc-600/75 h-full text-zinc-950 p-4 pl-8 data-[opened=false]:-translate-x-[100%] duration-[0.3s] fixed left-0 top-0 z-10">
             <div onClick={() => setOpened(!opened)} className="cursor-pointer absolute flex flex-col bg-blue-900 w-fit right-[-35px] p-3 rounded-r-lg">
                 <p>D</p>
                 <p>E</p>
@@ -60,7 +60,7 @@ export default function DevMenu() {
                 <p className="text-lg font-medium text-center text-zinc-300 mb-2 border-solid border-t-[1px] border-b-0 border-r-0 border-l-0 pt-1 border-t-zinc-500">Moves injector</p>
                 <p className="bg-zinc-500 p-2 rounded-t-lg font-medium">New Game inputs</p>
                 <textarea
-                    className="min-w-[467px] min-h-[200px] bg-zinc-600 border-solid border-zinc-500 p-1"
+                    className="min-w-[467px] min-h-[400px] bg-zinc-600 border-solid border-zinc-500 p-1"
                     value={toInjectMovesStr}
                     onChange={(e) => setToInjectMovesStr(e.target.value)}
                 />
