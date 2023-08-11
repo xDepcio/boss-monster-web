@@ -544,6 +544,19 @@
                 "mechanicType": null,
                 "mechanicDescription": "Destroy this Room: Kill a Hero in this Room.",
                 "isFancy": false
+            },
+            {
+                "CARDTYPE": "DUNGEON",
+                "id": 38,
+                "name": "Jackpot Stash",
+                "type": "traps",
+                "damage": 1,
+                "treasure": {
+                    "fortune": 2
+                },
+                "mechanicType": null,
+                "mechanicDescription": "Destroy this Room: Double the treasure value of your dungeon's Rooms until end of turn.",
+                "isFancy": false
             }
         ],
         "heroes": [

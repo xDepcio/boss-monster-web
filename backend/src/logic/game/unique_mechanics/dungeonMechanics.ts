@@ -4,6 +4,7 @@ import { GameEvent, feedback } from "../actionFeedbacks"
 import { Card, DungeonCard, HeroCard, SpellCard } from "../cards"
 import { SelectableItem, SelectionRequest, SelectionRequestOneFromGivenList, SelectionRequestUniversal } from "../playerRequestSelections"
 import { CardAction } from "./customCardActions"
+import { EventListener } from "./eventListener"
 import { RoundModifer } from "./roundModifiers"
 
 const { OncePerRoundMechanicUsedAlready, DungeonMechanicUseConditionError } = require("../../errors")
@@ -1400,6 +1401,69 @@ class KillHeroInThisRoomOnDestroy extends DungeonMechanic {
     }
 }
 
+class DoubleEveryRoomTreasureOnDestroy extends DungeonMechanic {
+    cardAction: CardAction
+
+    constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
+        super(dungeonCard, mechanicDescription)
+
+        this.cardAction = new CardAction({
+            title: "Użyj - Zniszcz",
+            assignTo: this.dungeonCard,
+            allowUseFor: () => [this.dungeonCard.owner],
+            onUse: (playerThatUsed) => this.handleUsedByPlayer(playerThatUsed),
+        })
+    }
+
+    handleUsedByPlayer(player: Player) {
+        this.dungeonCard.setAllowDestroy(true)
+        player.destroyDungeonCard(this.dungeonCard.id)
+        this.dungeonCard.setAllowDestroy(false)
+
+        type RoomAffected = {
+            addedFaith?: number,
+            addedStrength?: number,
+            addedFortune?: number,
+            addedMagic?: number,
+            room: DungeonCard
+        }
+
+        let affectedList: RoomAffected[] = []
+
+        this.dungeonCard.owner.dungeon.forEach(room => {
+            for (let [key, value] of Object.entries(room.treasure)) {
+                let affectedRoom: RoomAffected = { room: room }
+
+                if (key === 'faith') affectedRoom.addedFaith = value
+                if (key === 'strength') affectedRoom.addedStrength = value
+                if (key === 'fortune') affectedRoom.addedFortune = value
+                if (key === 'magic') affectedRoom.addedMagic = value
+                room.treasure[key] = value * 2
+                affectedList.push(affectedRoom)
+            }
+        })
+
+        const listener = new EventListener({
+            trackedGame: this.dungeonCard.trackedGame,
+            eventsHandler: (event) => {
+                if (event.type === "NEW_ROUND_BEGUN") {
+                    affectedList.forEach((singleAffected) => {
+                        for (let [key, value] of Object.entries(singleAffected.room.treasure)) {
+                            if (key === 'faith') singleAffected.room.treasure[key] -= singleAffected.addedFaith
+                            if (key === 'fortune') singleAffected.room.treasure[key] -= singleAffected.addedFortune
+                            if (key === 'magic') singleAffected.room.treasure[key] -= singleAffected.addedMagic
+                            if (key === 'strength') singleAffected.room.treasure[key] -= singleAffected.addedStrength
+                        }
+                    })
+                    listener.unMount()
+                }
+            }
+        })
+
+        this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_DUNGEON_MECHANIC(player, this.dungeonCard, this))
+    }
+}
+
 const dungeonMechanicsMap = {
     'Bezdenna czeluść': EliminateHeroInDungeon,
     'Niestabilna kopalnia': Get3MoneyOnDestroy,
@@ -1437,6 +1501,7 @@ const dungeonMechanicsMap = {
     "Haunted Library": DrawSpellCardAtRoundStartInsteadOfDungeonCard,
     "Witch's Kitchen": DiscardMonsterRoomToDrawSpellCardOncePerRound,
     "Bottomless Pit": KillHeroInThisRoomOnDestroy,
+    "Jackpot Stash": DoubleEveryRoomTreasureOnDestroy,
 }
 
 

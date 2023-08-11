@@ -1,5 +1,5 @@
 import { Player } from "../player/player"
-import { CardPlayPhase, CardType, DungeonMechanicTypes, Id, RoundPhase, TreasureSign } from "../types"
+import { CardPlayPhase, CardType, DungeonMechanicTypes, Id, RoundPhase, Treasure, TreasureSign } from "../types"
 import { GameEvent, feedback } from "./actionFeedbacks"
 import { Game } from "./game"
 import { BossMechanic } from "./unique_mechanics/bossMecahnics"
@@ -246,7 +246,8 @@ class DungeonCard extends Card {
 
     baseDamage: number
     damage: number
-    treasure: TreasureSign
+    // treasure: TreasureSign
+    treasure: Treasure
     type: 'monsters' | 'traps'
     isFancy: boolean
     description: string | null
@@ -259,7 +260,7 @@ class DungeonCard extends Card {
     disableFancyBuildOnTop: boolean
 
     constructor(id: Id, name: string, CARDTYPE: CardType, trackedGame: Game,
-        baseDamage: number, treasure: TreasureSign, type: 'monsters' | 'traps', isFancy: boolean,
+        baseDamage: number, treasure: Treasure, type: 'monsters' | 'traps', isFancy: boolean,
         mechanic: typeof DungeonMechanic, mechanicType: DungeonMechanicTypes, mechanicDescription: string
     ) {
         super(id, name, CARDTYPE, trackedGame)

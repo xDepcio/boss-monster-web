@@ -2,8 +2,9 @@ import { getPrefabBossesCards, getPrefabDiscardedDungeonCard, getPrefabDiscarded
 import { InputTracker } from "../inputTracker"
 import { Player } from "../player/player"
 import { Id, RoundPhase } from "../types"
-import { feedback } from "./actionFeedbacks"
+import { GameEvent, feedback } from "./actionFeedbacks"
 import { BossCard, DungeonCard, HeroCard, SpellCard } from "./cards"
+import { EventListener } from "./unique_mechanics/eventListener"
 import { RoundModifer } from "./unique_mechanics/roundModifiers"
 
 // const Player = require('../player/player')
@@ -40,6 +41,7 @@ class Game {
     currentlyPlayedSpell: SpellCard | null
     roundModifiers: RoundModifer[]
     inputsTracker: InputTracker
+    eventListeners: EventListener[]
 
     constructor(id: Id, players: Player[] | null = null, prefab = null) {
         this.id = id
@@ -58,6 +60,7 @@ class Game {
         this.heroToMove = null
         this.currentlyPlayedSpell = null
         this.roundModifiers = []
+        this.eventListeners = []
         this.startGame()
     }
 
@@ -68,6 +71,14 @@ class Game {
             }
         }
         return false
+    }
+
+    addEventListener(eventListener: EventListener) {
+        this.eventListeners.push(eventListener)
+    }
+
+    removeEventListener(eventListener: EventListener) {
+        this.eventListeners = this.eventListeners.filter(listener => listener !== eventListener)
     }
 
     setCurrentlyPlayedSpell(spell: SpellCard | null) {
@@ -271,7 +282,8 @@ class Game {
         return true
     }
 
-    saveGameAction(feedbackObj) {
+    saveGameAction(feedbackObj: GameEvent) {
+        this.eventListeners.forEach(listener => listener.handleEvent(feedbackObj))
         this.players.forEach(player => {
             player.dungeon.forEach(dungeon => dungeon.handleGameEvent(feedbackObj))
             if (player.selectedBoss) {
