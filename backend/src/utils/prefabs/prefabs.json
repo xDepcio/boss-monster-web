@@ -453,6 +453,19 @@
                 "mechanicType": null,
                 "mechanicDescription": "When you build this Room, choose an opponent. That opponent discards a random Spell card.",
                 "isFancy": false
+            },
+            {
+                "CARDTYPE": "DUNGEON",
+                "id": 31,
+                "name": "Succubus Spa",
+                "type": "monsters",
+                "damage": 1,
+                "treasure": {
+                    "faith": 1
+                },
+                "mechanicType": null,
+                "mechanicDescription": "Once per turn, if a Hero dies in this Room, choose an opponent. Take a random Room or Spell card from that opponent's hand.",
+                "isFancy": false
             }
         ],
         "heroes": [

@@ -1141,6 +1141,57 @@ class OponnentDiscardRandomSpellCardOnBuild extends DungeonMechanic {
     }
 }
 
+class TakeRandomCardFromOpponentWhenHeroDiesInThisDungeonOncePerRound extends DungeonMechanic {
+    constructor(dungeonCard: DungeonCard, mechanicDescription: string, type?: DungeonMechanicTypes) {
+        super(dungeonCard, mechanicDescription)
+    }
+
+    use(): void {
+        new SelectionRequestUniversal({
+            amount: 1,
+            avalibleItemsForSelectArr: [...this.dungeonCard.trackedGame.players.filter(player => player !== this.dungeonCard.owner)],
+            metadata: {
+                displayType: "mixed"
+            },
+            selectionMessage: "Wybierz przeciwnika. (Succubus Spa)",
+            requestedPlayer: this.dungeonCard.owner,
+            onFinish: ([selectedPlayer]) => {
+                new SelectionRequestUniversal({
+                    selectionMessage: "Wybierz kartę do wzięcia.",
+                    amount: 1,
+                    metadata: {
+                        displayType: "mixed"
+                    },
+                    requestedPlayer: this.dungeonCard.owner,
+                    avalibleItemsForSelectArr: [
+                        `karta lochów (${selectedPlayer.dungeonCards.length} kart)`,
+                        `karta czarów (${selectedPlayer.dungeonCards.length} kart)`
+                    ],
+                    onFinish: ([selected]) => {
+                        if (selected.includes('karta lochów')) {
+                            const randomDungeon = selectedPlayer.dungeonCards[Math.floor(Math.random() * selectedPlayer.dungeonCards.length)]
+                            this.dungeonCard.owner.takeCardFromPlayer(randomDungeon, selectedPlayer)
+                        }
+                        else if (selected.includes('karta czarów')) {
+                            const randomSpell = selectedPlayer.spellCards[Math.floor(Math.random() * selectedPlayer.spellCards.length)]
+                            this.dungeonCard.owner.takeCardFromPlayer(randomSpell, selectedPlayer)
+                        }
+                        this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_DUNGEON_MECHANIC(this.dungeonCard.owner, this.dungeonCard, this))
+                    }
+                })
+            }
+        })
+    }
+
+    handleGameEvent(event: GameEvent): void {
+        if (event.type === "HERO_DIED_IN_ROOM") {
+            if (event.room === this.dungeonCard) {
+                this.use()
+            }
+        }
+    }
+}
+
 const dungeonMechanicsMap = {
     'Bezdenna czeluść': EliminateHeroInDungeon,
     'Niestabilna kopalnia': Get3MoneyOnDestroy,
@@ -1171,6 +1222,7 @@ const dungeonMechanicsMap = {
     "Dragon Hatchery": ContainsAllFourTreasureTypes,
     'Recycling Center': DrawTwoDungeonRoomCardsWhenDungeonIsDestroyed,
     "Specter's Sanctum": OponnentDiscardRandomSpellCardOnBuild,
+    "Succubus Spa": TakeRandomCardFromOpponentWhenHeroDiesInThisDungeonOncePerRound,
 }
 
 

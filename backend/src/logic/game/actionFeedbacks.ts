@@ -162,6 +162,20 @@ type EventSchema = {
         player: Player,
         dungeon: DungeonCard
     },
+    PLAYER_TOOK_SPELL_FROM_PLAYER: {
+        type: "PLAYER_TOOK_SPELL_FROM_PLAYER",
+        message: string,
+        whoTook: Player,
+        whoGave: Player,
+        spell: SpellCard
+    },
+    PLAYER_TOOK_DUNGEON_FROM_PLAYER: {
+        type: "PLAYER_TOOK_DUNGEON_FROM_PLAYER",
+        message: string,
+        whoTook: Player,
+        whoGave: Player,
+        dungeon: DungeonCard
+    }
     HERO_ENTERED_ROOM: {
         type: "HERO_ENTERED_ROOM",
         message: string,
@@ -398,6 +412,24 @@ export const feedback = {
             message: `player ${player.getName()} thrown away dungeon '${dungeon.getName()}'.`,
             player,
             dungeon
+        }
+    },
+    PLAYER_TOOK_SPELL_FROM_PLAYER: (whoTook: Player, whoGave: Player, spell: SpellCard): GameEvent => {
+        return {
+            type: "PLAYER_TOOK_SPELL_FROM_PLAYER",
+            message: `player ${whoTook.getName()} took spell from ${whoGave.getName()}.`,
+            spell,
+            whoGave,
+            whoTook
+        }
+    },
+    PLAYER_TOOK_DUNGEON_FROM_PLAYER: (whoTook: Player, whoGave: Player, dungeon: DungeonCard): GameEvent => {
+        return {
+            type: "PLAYER_TOOK_DUNGEON_FROM_PLAYER",
+            message: `player ${whoTook.getName()} took dungeon from ${whoGave.getName()}.`,
+            dungeon,
+            whoGave,
+            whoTook
         }
     },
     HERO_ENTERED_ROOM: (hero: HeroCard, dungeonCard: DungeonCard, dungeonOwner: Player): GameEvent => {

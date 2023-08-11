@@ -371,6 +371,23 @@ class Player {
         card.setOwner(this)
     }
 
+    takeCardFromPlayer(card: DungeonCard | SpellCard, player: Player) {
+        if (card instanceof SpellCard) {
+            const spellIndex = player.spellCards.findIndex(spellCard => spellCard.id === card.id)
+            player.spellCards.splice(spellIndex, 1)
+            card.setOwner(this)
+            this.spellCards.push(card)
+            this.trackedGame.saveGameAction(feedback.PLAYER_TOOK_SPELL_FROM_PLAYER(this, player, card))
+        }
+        else if (card instanceof DungeonCard) {
+            const dungeonIndex = player.dungeonCards.findIndex(dungeonCard => dungeonCard.id === card.id)
+            player.dungeonCards.splice(dungeonIndex, 1)
+            card.setOwner(this)
+            this.dungeonCards.push(card)
+            this.trackedGame.saveGameAction(feedback.PLAYER_TOOK_DUNGEON_FROM_PLAYER(this, player, card))
+        }
+    }
+
     checkIfSpellPlayValid(spellCard: SpellCard) {
         if (spellCard.playablePhase !== this.trackedGame.roundPhase) {
             throw new WrongRoundPhase(`${spellCard.name} can only be played during ${spellCard.playablePhase} phase. Current phase: ${this.trackedGame.roundPhase}`)
