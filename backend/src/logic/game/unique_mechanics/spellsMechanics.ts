@@ -1,6 +1,8 @@
+import { Player } from "../../player/player"
 import { feedback } from "../actionFeedbacks"
-import { HeroCard, SpellCard } from "../cards"
-import { SelectionRequest } from "../playerRequestSelections"
+import { DungeonCard, HeroCard, SpellCard } from "../cards"
+import { SelectionRequest, SelectionRequestUniversal } from "../playerRequestSelections"
+import { EventListener } from "./eventListener"
 
 // const { feedback } = require("../actionFeedbacks")
 // const { SelectionRequest } = require("../playerRequestSelections")
@@ -170,11 +172,48 @@ class ReviveDeadHeroAndPlaceInFrontOfDungeonAndAdd2HpFoHim extends SpellMechanic
     }
 }
 
+class GiveOneTrapRoomPlus3DamageForTurn extends SpellMechanic {
+    constructor(spellCard: SpellCard, mechanicDescription: string) {
+        super(spellCard, mechanicDescription)
+    }
+
+    use() {
+        new SelectionRequestUniversal({
+            amount: 1,
+            metadata: {
+                displayType: "mixed",
+            },
+            selectionMessage: "Wybierz pokój któremu dodać 3 obrażenia do końca tury (Annihilator).",
+            avalibleItemsForSelectArr: this.spellCard.trackedGame.players.reduce<DungeonCard[]>((acc, player) => {
+                return [...acc, ...player.dungeon.filter(room => room.type === 'traps')]
+            }, []),
+            requestedPlayer: this.spellCard.owner,
+            onFinish: ([room]) => {
+                room.damage += 3
+
+                const listener = new EventListener({
+                    trackedGame: this.spellCard.trackedGame,
+                    eventsHandler: (event) => {
+                        if (event.type === 'NEW_ROUND_BEGUN') {
+                            room.damage -= 3
+                            listener.unMount()
+                        }
+                    }
+                })
+
+                this.spellCard.trackedGame.saveGameAction(feedback.PLAYER_USED_SPELL_MECHANIC(this.spellCard.owner, this.spellCard, this))
+                this.spellCard.completeUsage()
+            }
+        })
+    }
+}
+
 const spellsMechanicsMap = {
     'Wyczerpanie': Exhaustion,
     'Przerażenie': Fear,
     'Na ratunek': PlaceHeroFromCityInOwnedDungeon,
-    'Atak żywych trupów': ReviveDeadHeroAndPlaceInFrontOfDungeonAndAdd2HpFoHim
+    'Atak żywych trupów': ReviveDeadHeroAndPlaceInFrontOfDungeonAndAdd2HpFoHim,
+    "Annihilator": GiveOneTrapRoomPlus3DamageForTurn,
 }
 
 module.exports = {

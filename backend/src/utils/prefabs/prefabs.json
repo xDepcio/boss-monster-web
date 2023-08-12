@@ -56,6 +56,13 @@
                 "name": "Przerażenie",
                 "playablePhase": "fight",
                 "description": "Wybierz bohatera w dowolonych podziemiach i odeślij go do miasta."
+            },
+            {
+                "CARDTYPE": "SPELL",
+                "id": 9,
+                "name": "Annihilator",
+                "playablePhase": "fight",
+                "description": "Give one Trap Room +3 damage until end of turn."
             }
         ],
         "dungeons": [
