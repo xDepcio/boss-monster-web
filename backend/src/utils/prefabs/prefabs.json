@@ -63,6 +63,13 @@
                 "name": "Annihilator",
                 "playablePhase": "fight",
                 "description": "Give one Trap Room +3 damage until end of turn."
+            },
+            {
+                "CARDTYPE": "SPELL",
+                "id": 10,
+                "name": "Assassin",
+                "playablePhase": "fight",
+                "description": "Choose a Hero in an opponent's dungeon. Give that Hero +3 Health until end of turn."
             }
         ],
         "dungeons": [

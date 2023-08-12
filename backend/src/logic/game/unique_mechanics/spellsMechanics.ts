@@ -208,12 +208,48 @@ class GiveOneTrapRoomPlus3DamageForTurn extends SpellMechanic {
     }
 }
 
+class BoostOpponentsHeroBy3HpForTurn extends SpellMechanic {
+    constructor(spellCard: SpellCard, mechanicDescription: string) {
+        super(spellCard, mechanicDescription)
+    }
+
+    use() {
+        new SelectionRequestUniversal({
+            amount: 1,
+            metadata: {
+                displayType: "mixed",
+            },
+            selectionMessage: "Wybierz gracza (Assassin).",
+            avalibleItemsForSelectArr: this.spellCard.trackedGame.players.filter(player => player !== this.spellCard.owner),
+            requestedPlayer: this.spellCard.owner,
+            onFinish: ([player]) => {
+                new SelectionRequestUniversal({
+                    amount: 1,
+                    metadata: {
+                        displayType: "mixed",
+                    },
+                    requestedPlayer: this.spellCard.owner,
+                    avalibleItemsForSelectArr: [...player.dungeonEntranceHeroes],
+                    selectionMessage: "Wybierz bohatera któremu dodać 3 punkty życia do końca tury (Assassin).",
+                    onFinish: ([hero]) => {
+                        hero.health += 3
+
+                        this.spellCard.trackedGame.saveGameAction(feedback.PLAYER_USED_SPELL_MECHANIC(this.spellCard.owner, this.spellCard, this))
+                        this.spellCard.completeUsage()
+                    }
+                })
+            }
+        })
+    }
+}
+
 const spellsMechanicsMap = {
     'Wyczerpanie': Exhaustion,
     'Przerażenie': Fear,
     'Na ratunek': PlaceHeroFromCityInOwnedDungeon,
     'Atak żywych trupów': ReviveDeadHeroAndPlaceInFrontOfDungeonAndAdd2HpFoHim,
     "Annihilator": GiveOneTrapRoomPlus3DamageForTurn,
+    "Assassin": BoostOpponentsHeroBy3HpForTurn
 }
 
 module.exports = {
