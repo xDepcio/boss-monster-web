@@ -3,13 +3,6 @@
         "spells": [
             {
                 "CARDTYPE": "SPELL",
-                "id": 1,
-                "name": "Wyczerpanie",
-                "playablePhase": "fight",
-                "description": "Zadaj X obrażeń jednemu bohaterowi w Twoich podziemiach, gdzie X jest równy liczbie widocznych komnat w Twoich podziemiach."
-            },
-            {
-                "CARDTYPE": "SPELL",
                 "id": 2,
                 "name": "Przerażenie",
                 "playablePhase": "fight",
@@ -84,6 +77,13 @@
                 "name": "Counterspell",
                 "playablePhase": "both",
                 "description": "Choose a Spell card that has just been declared. Cancel the effects of that Spell card. (The canceled Spell card is sent to the discard pile.)"
+            },
+            {
+                "CARDTYPE": "SPELL",
+                "id": 13,
+                "name": "Exhaustion",
+                "playablePhase": "fight",
+                "description": "Deal X damage to one Hero in your dungeon, where X is equal to the number of rooms in your dungeon."
             }
         ],
         "dungeons": [

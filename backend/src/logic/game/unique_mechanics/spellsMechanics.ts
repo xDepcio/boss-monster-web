@@ -32,46 +32,46 @@ class SpellMechanic {
 
 
 // Wyczerpanie
-class Exhaustion extends SpellMechanic {
+// class Exhaustion extends SpellMechanic {
 
-    targetHero: HeroCard | null
+//     targetHero: HeroCard | null
 
-    constructor(spellCard: SpellCard, mechanicDescription: string, targetHero: HeroCard | null = null) {
-        super(spellCard, mechanicDescription)
-        this.targetHero = targetHero
-    }
+//     constructor(spellCard: SpellCard, mechanicDescription: string, targetHero: HeroCard | null = null) {
+//         super(spellCard, mechanicDescription)
+//         this.targetHero = targetHero
+//     }
 
-    use() {
-        if (!this.targetHero) {
-            this.requestPlayerSelect()
-        }
-        else {
-            const damageToDeal = this.calculateDamageDealt()
-            this.targetHero.getDamaged(damageToDeal)
-            this.spellCard.trackedGame.saveGameAction(feedback.HERO_DAMAGED_BY_SPELL(this.targetHero, damageToDeal, this.spellCard.name, this.spellCard.owner))
-            if (this.targetHero.checkDeath()) {
-                this.targetHero.die()
-            }
+//     use() {
+//         if (!this.targetHero) {
+//             this.requestPlayerSelect()
+//         }
+//         else {
+//             const damageToDeal = this.calculateDamageDealt()
+//             this.targetHero.getDamaged(damageToDeal)
+//             this.spellCard.trackedGame.saveGameAction(feedback.HERO_DAMAGED_BY_SPELL(this.targetHero, damageToDeal, this.spellCard.name, this.spellCard.owner))
+//             if (this.targetHero.checkDeath()) {
+//                 this.targetHero.die()
+//             }
 
-            //code if valid TODO...
-            this.spellCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.spellCard.owner, this))
-            this.spellCard.completeUsage()
-        }
-    }
+//             //code if valid TODO...
+//             this.spellCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.spellCard.owner, this))
+//             this.spellCard.completeUsage()
+//         }
+//     }
 
-    receiveSelectionData(data) {
-        this.targetHero = data[0]
-    }
+//     receiveSelectionData(data) {
+//         this.targetHero = data[0]
+//     }
 
-    requestPlayerSelect() {
-        const selectionReq = new SelectionRequest(this.spellCard.owner, "hero", 1, this.spellCard.owner, this)
-        this.spellCard.owner.setRequestedSelection(selectionReq)
-    }
+//     requestPlayerSelect() {
+//         const selectionReq = new SelectionRequest(this.spellCard.owner, "hero", 1, this.spellCard.owner, this)
+//         this.spellCard.owner.setRequestedSelection(selectionReq)
+//     }
 
-    calculateDamageDealt() {
-        return this.spellCard.owner.dungeon.length
-    }
-}
+//     calculateDamageDealt() {
+//         return this.spellCard.owner.dungeon.length
+//     }
+// }
 
 // Przerażenie
 class Fear extends SpellMechanic {
@@ -291,8 +291,33 @@ class CancelPlayedSpell extends SpellMechanic {
     }
 }
 
+class DealDamageOfNumberOfRoomsInDungeonToHero extends SpellMechanic {
+    constructor(spellCard: SpellCard, mechanicDescription: string) {
+        super(spellCard, mechanicDescription)
+    }
+
+    use() {
+        const damage = this.spellCard.owner.dungeon.length
+
+        new SelectionRequestUniversal({
+            amount: 1,
+            metadata: {
+                displayType: "mixed",
+            },
+            selectionMessage: `Wybierz bohatera któremu zadać obrażenia (Exhaustion).`,
+            avalibleItemsForSelectArr: [...this.spellCard.owner.dungeonEntranceHeroes],
+            requestedPlayer: this.spellCard.owner,
+            onFinish: ([hero]) => {
+                hero.getDamaged(damage)
+                this.spellCard.trackedGame.saveGameAction(feedback.PLAYER_USED_SPELL_MECHANIC(this.spellCard.owner, this.spellCard, this))
+                this.spellCard.completeUsage()
+            }
+        })
+    }
+}
+
 const spellsMechanicsMap = {
-    'Wyczerpanie': Exhaustion,
+    // 'Wyczerpanie': Exhaustion,
     'Przerażenie': Fear,
     'Na ratunek': PlaceHeroFromCityInOwnedDungeon,
     'Atak żywych trupów': ReviveDeadHeroAndPlaceInFrontOfDungeonAndAdd2HpFoHim,
@@ -300,6 +325,7 @@ const spellsMechanicsMap = {
     "Assassin": BoostOpponentsHeroBy3HpForTurn,
     "Cave-In": SilentDestroyRoomInYourDungeonAndKillHeroThere,
     "Counterspell": CancelPlayedSpell,
+    "Exhaustion": DealDamageOfNumberOfRoomsInDungeonToHero,
 }
 
 module.exports = {
