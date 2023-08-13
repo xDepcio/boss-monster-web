@@ -243,13 +243,46 @@ class BoostOpponentsHeroBy3HpForTurn extends SpellMechanic {
     }
 }
 
+// Does not trigger on destory effects
+class SilentDestroyRoomInYourDungeonAndKillHeroThere extends SpellMechanic {
+    constructor(spellCard: SpellCard, mechanicDescription: string, targetRoom: DungeonCard | null = null) {
+        super(spellCard, mechanicDescription)
+    }
+
+    use() {
+        new SelectionRequestUniversal({
+            amount: 1,
+            metadata: {
+                displayType: "mixed",
+            },
+            selectionMessage: "Wybierz pokój do zniszczenia (Cave-In).",
+            avalibleItemsForSelectArr: [...this.spellCard.owner.dungeon],
+            requestedPlayer: this.spellCard.owner,
+            onFinish: ([room]) => {
+                const hero = room.getHeroOnThisDungeon()
+                if (hero) {
+                    hero.die()
+                }
+                room.setAllowDestroy(true)
+                this.spellCard.owner.destroyDungeonCard(room.id, true)
+                room.setAllowDestroy(false)
+
+                this.spellCard.trackedGame.saveGameAction(feedback.PLAYER_USED_SPELL_MECHANIC(this.spellCard.owner, this.spellCard, this))
+                this.spellCard.completeUsage()
+            }
+        })
+    }
+
+}
+
 const spellsMechanicsMap = {
     'Wyczerpanie': Exhaustion,
     'Przerażenie': Fear,
     'Na ratunek': PlaceHeroFromCityInOwnedDungeon,
     'Atak żywych trupów': ReviveDeadHeroAndPlaceInFrontOfDungeonAndAdd2HpFoHim,
     "Annihilator": GiveOneTrapRoomPlus3DamageForTurn,
-    "Assassin": BoostOpponentsHeroBy3HpForTurn
+    "Assassin": BoostOpponentsHeroBy3HpForTurn,
+    "Cave-In": SilentDestroyRoomInYourDungeonAndKillHeroThere,
 }
 
 module.exports = {

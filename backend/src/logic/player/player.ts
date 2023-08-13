@@ -118,7 +118,7 @@ class Player {
             throw new NoSpellCurrentylAtPlay('You cannot accept spell play when there is none at play')
         }
         if (this.hasAcceptedSpellPlay()) {
-            throw new PlayerAlreadyAcceptedSpellPlay('Player has already accepted current hero move')
+            throw new PlayerAlreadyAcceptedSpellPlay('Player has already accepted spell play')
         }
         this.acceptedSpellPlay = true
         this.trackedGame.saveGameAction(feedback.PLAYER_ACCEPTED_SPELL_PLAY(this, spell))
@@ -341,26 +341,18 @@ class Player {
         }
     }
 
-    // throwCardAway(card: DungeonCard | SpellCard) {
-    //     if (card instanceof SpellCard) {
-    //         this.trackedGame.saveGameAction(feedback.PLAYER_THROWN_AWAY_CARD(this, card))
-    //         this.discardSpellCard(card)
-    //     }
-    //     else if (card instanceof DungeonCard) {
-    //         // TODO...
-    //         throw new Error('TODO when player throw away dung card')
-    //     }
-    //     else {
-    //         throw new Error('cardtype doesnnot exists proly TODO...')
-    //     }
-    // }
-
-    discardSpellCard(spell: SpellCard) {
+    /** Discard spell card
+     * @param spell SpellCard to discard
+     * @param silent Default false. If true, no game action will be triggered
+     */
+    discardSpellCard(spell: SpellCard, silent: boolean = false) {
         const spellIndex = this.spellCards.findIndex(spellCard => spellCard.id === spell.id)
         spell.setOwner(null)
         this.spellCards.splice(spellIndex, 1)
         this.trackedGame.discardedSpellCardsStack.push(spell)
-        this.trackedGame.saveGameAction(feedback.PLAYER_THROWN_AWAY_SPELL_CARD(this, spell))
+        if (!silent) {
+            this.trackedGame.saveGameAction(feedback.PLAYER_THROWN_AWAY_SPELL_CARD(this, spell))
+        }
     }
 
     discardDungeonCard(dungeon: DungeonCard) {
@@ -422,12 +414,18 @@ class Player {
         this.declaredBuild = null
     }
 
-    destroyDungeonCard(cardId: Id) {
+    /** destroys dungeon card.
+     * @param cardId id of dungeon card to destroy
+     * @param silent Default false. if true, no game action will be triggered
+     */
+    destroyDungeonCard(cardId: Id, silent: boolean = false) {
         const dungeonCard = this.getDungeonCardFromDungeon(cardId)
         if (this.checkIfDungeonDestoryValid(dungeonCard)) {
-            dungeonCard.handleCardDestroyedMechanic()
             this.deleteFromDungeon(dungeonCard)
-            this.trackedGame.saveGameAction(feedback.PLAYER_DESTROYED_DUNGEON(this, dungeonCard))
+            if (!silent) {
+                dungeonCard.handleCardDestroyedMechanic()
+                this.trackedGame.saveGameAction(feedback.PLAYER_DESTROYED_DUNGEON(this, dungeonCard))
+            }
         }
     }
 

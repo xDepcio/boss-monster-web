@@ -436,14 +436,14 @@ class SpellCard extends Card {
         this.trackedGame.setCurrentlyPlayedSpell(this)
         if (this.trackedGame.hasAllPlayersAcceptedSpellPlay()) {
             this.mechanic.use()
+            this.trackedGame.setCurrentlyPlayedSpell(null)
+            this.trackedGame.players.forEach(player => player.becomeNotReadyForSpellPlay())
         }
     }
 
     completeUsage() {
         this.trackedGame.saveGameAction(feedback.PLAYER_PLAYED_SPELL(this.owner, this))
-        this.trackedGame.setCurrentlyPlayedSpell(null)
-        this.owner.discardSpellCard(this)
-        this.trackedGame.players.forEach(player => player.becomeNotReadyForSpellPlay())
+        this.owner.discardSpellCard(this, true)
     }
 
     static getSpell(spellId: Id): SpellCard | undefined {

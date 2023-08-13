@@ -70,6 +70,13 @@
                 "name": "Assassin",
                 "playablePhase": "fight",
                 "description": "Choose a Hero in an opponent's dungeon. Give that Hero +3 Health until end of turn."
+            },
+            {
+                "CARDTYPE": "SPELL",
+                "id": 11,
+                "name": "Cave-In",
+                "playablePhase": "fight",
+                "description": "Destroy a room in your dungeon. Kill any Hero in that Room."
             }
         ],
         "dungeons": [
