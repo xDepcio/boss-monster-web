@@ -74,38 +74,38 @@ class SpellMechanic {
 // }
 
 // Przerażenie
-class Fear extends SpellMechanic {
+// class Fear extends SpellMechanic {
 
-    targetHero: HeroCard | null
+//     targetHero: HeroCard | null
 
-    constructor(spellCard: SpellCard, mechanicDescription: string, targetHero: HeroCard | null = null) {
-        super(spellCard, mechanicDescription)
-        this.targetHero = targetHero
-    }
+//     constructor(spellCard: SpellCard, mechanicDescription: string, targetHero: HeroCard | null = null) {
+//         super(spellCard, mechanicDescription)
+//         this.targetHero = targetHero
+//     }
 
-    use() {
-        if (!this.targetHero) {
-            this.requestPlayerSelect()
-        }
-        else {
-            this.targetHero.goBackToCity()
-            // this.spellCard.trackedGame.addHeroToCity(this.targetHero)
-            // this.targetHero.finishMoving()
-            // this.targetHero.setDungeonOwner(null)
-            this.spellCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.spellCard.owner, this))
-            this.spellCard.completeUsage()
-        }
-    }
+//     use() {
+//         if (!this.targetHero) {
+//             this.requestPlayerSelect()
+//         }
+//         else {
+//             this.targetHero.goBackToCity()
+//             // this.spellCard.trackedGame.addHeroToCity(this.targetHero)
+//             // this.targetHero.finishMoving()
+//             // this.targetHero.setDungeonOwner(null)
+//             this.spellCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.spellCard.owner, this))
+//             this.spellCard.completeUsage()
+//         }
+//     }
 
-    requestPlayerSelect() {
-        const selectionReq = new SelectionRequest(this.spellCard.owner, "hero", 1, "ANY", this)
-        this.spellCard.owner.setRequestedSelection(selectionReq)
-    }
+//     requestPlayerSelect() {
+//         const selectionReq = new SelectionRequest(this.spellCard.owner, "hero", 1, "ANY", this)
+//         this.spellCard.owner.setRequestedSelection(selectionReq)
+//     }
 
-    receiveSelectionData(data) {
-        this.targetHero = data[0]
-    }
-}
+//     receiveSelectionData(data) {
+//         this.targetHero = data[0]
+//     }
+// }
 
 
 // Na ratuenk
@@ -316,9 +316,34 @@ class DealDamageOfNumberOfRoomsInDungeonToHero extends SpellMechanic {
     }
 }
 
+class ChooseHeroInANyDungeonAndPutItBackIntoCity extends SpellMechanic {
+    constructor(spellCard: SpellCard, mechanicDescription: string) {
+        super(spellCard, mechanicDescription)
+    }
+
+    use() {
+        new SelectionRequestUniversal({
+            amount: 1,
+            metadata: {
+                displayType: "mixed",
+            },
+            selectionMessage: `Wybierz bohatera do odesłania do miasta (Wyczerpanie).`,
+            avalibleItemsForSelectArr: this.spellCard.trackedGame.players.reduce<HeroCard[]>((acc, player) => {
+                return [...acc, ...player.dungeonEntranceHeroes]
+            }, []),
+            requestedPlayer: this.spellCard.owner,
+            onFinish: ([hero]) => {
+                hero.goBackToCity()
+                this.spellCard.trackedGame.saveGameAction(feedback.PLAYER_USED_SPELL_MECHANIC(this.spellCard.owner, this.spellCard, this))
+                this.spellCard.completeUsage()
+            }
+        })
+    }
+}
+
 const spellsMechanicsMap = {
     // 'Wyczerpanie': Exhaustion,
-    'Przerażenie': Fear,
+    // 'Przerażenie': Fear,
     'Na ratunek': PlaceHeroFromCityInOwnedDungeon,
     'Atak żywych trupów': ReviveDeadHeroAndPlaceInFrontOfDungeonAndAdd2HpFoHim,
     "Annihilator": GiveOneTrapRoomPlus3DamageForTurn,
@@ -326,6 +351,7 @@ const spellsMechanicsMap = {
     "Cave-In": SilentDestroyRoomInYourDungeonAndKillHeroThere,
     "Counterspell": CancelPlayedSpell,
     "Exhaustion": DealDamageOfNumberOfRoomsInDungeonToHero,
+    "Fear": ChooseHeroInANyDungeonAndPutItBackIntoCity,
 }
 
 module.exports = {

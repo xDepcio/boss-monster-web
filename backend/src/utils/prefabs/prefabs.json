@@ -3,13 +3,6 @@
         "spells": [
             {
                 "CARDTYPE": "SPELL",
-                "id": 2,
-                "name": "Przerażenie",
-                "playablePhase": "fight",
-                "description": "Wybierz bohatera w dowolonych podziemiach i odeślij go do miasta."
-            },
-            {
-                "CARDTYPE": "SPELL",
                 "id": 3,
                 "name": "Na ratunek",
                 "playablePhase": "build",
@@ -21,34 +14,6 @@
                 "name": "Atak żywych trupów",
                 "playablePhase": "build",
                 "description": "Wybierz wyeliminowanego bohatera na obszarze punktacji przeciwnika i odeślij go przed wejście do podziemi tego gracz. Do końca rundy otrzymuje on +2 hp."
-            },
-            {
-                "CARDTYPE": "SPELL",
-                "id": 5,
-                "name": "Przerażenie",
-                "playablePhase": "fight",
-                "description": "Wybierz bohatera w dowolonych podziemiach i odeślij go do miasta."
-            },
-            {
-                "CARDTYPE": "SPELL",
-                "id": 6,
-                "name": "Przerażenie",
-                "playablePhase": "fight",
-                "description": "Wybierz bohatera w dowolonych podziemiach i odeślij go do miasta."
-            },
-            {
-                "CARDTYPE": "SPELL",
-                "id": 7,
-                "name": "Przerażenie",
-                "playablePhase": "fight",
-                "description": "Wybierz bohatera w dowolonych podziemiach i odeślij go do miasta."
-            },
-            {
-                "CARDTYPE": "SPELL",
-                "id": 8,
-                "name": "Przerażenie",
-                "playablePhase": "fight",
-                "description": "Wybierz bohatera w dowolonych podziemiach i odeślij go do miasta."
             },
             {
                 "CARDTYPE": "SPELL",
@@ -84,6 +49,13 @@
                 "name": "Exhaustion",
                 "playablePhase": "fight",
                 "description": "Deal X damage to one Hero in your dungeon, where X is equal to the number of rooms in your dungeon."
+            },
+            {
+                "CARDTYPE": "SPELL",
+                "id": 14,
+                "name": "Fear",
+                "playablePhase": "fight",
+                "description": "Choose a Hero in any dungeon and send it back to town."
             }
         ],
         "dungeons": [
