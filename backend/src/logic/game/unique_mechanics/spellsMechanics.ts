@@ -272,7 +272,23 @@ class SilentDestroyRoomInYourDungeonAndKillHeroThere extends SpellMechanic {
             }
         })
     }
+}
 
+class CancelPlayedSpell extends SpellMechanic {
+    constructor(spellCard: SpellCard, mechanicDescription: string) {
+        super(spellCard, mechanicDescription)
+        this.spellCard.setAllowForcePlay(true)
+    }
+
+    use() {
+        const playedSpell = this.spellCard.trackedGame.currentlyPlayedSpell
+        if (playedSpell) {
+            playedSpell.cancelPlay()
+        }
+
+        this.spellCard.trackedGame.saveGameAction(feedback.PLAYER_USED_SPELL_MECHANIC(this.spellCard.owner, this.spellCard, this))
+        this.spellCard.completeUsage()
+    }
 }
 
 const spellsMechanicsMap = {
@@ -283,6 +299,7 @@ const spellsMechanicsMap = {
     "Annihilator": GiveOneTrapRoomPlus3DamageForTurn,
     "Assassin": BoostOpponentsHeroBy3HpForTurn,
     "Cave-In": SilentDestroyRoomInYourDungeonAndKillHeroThere,
+    "Counterspell": CancelPlayedSpell,
 }
 
 module.exports = {

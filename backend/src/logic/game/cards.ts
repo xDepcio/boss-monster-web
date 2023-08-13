@@ -408,6 +408,7 @@ class SpellCard extends Card {
     description: string | null
     owner: Player | null
     mechanic: SpellMechanic | null
+    private allowForcePlay: boolean
 
     constructor(id: Id, name: string, CARDTYPE: CardType, trackedGame: Game, playablePhase: CardPlayPhase,
         mechanic: typeof SpellMechanic | null, mechanicDescription: string
@@ -416,8 +417,17 @@ class SpellCard extends Card {
         this.playablePhase = playablePhase
         this.description = null
         this.owner = null
+        this.allowForcePlay = false
         this.mechanic = mechanic ? new mechanic(this, mechanicDescription) : null
         SpellCard.spells[id] = this
+    }
+
+    public setAllowForcePlay(bool: boolean) {
+        this.allowForcePlay = bool
+    }
+
+    public canForcePlay() {
+        return this.allowForcePlay
     }
 
     setOwner(player: Player | null) {
@@ -430,6 +440,17 @@ class SpellCard extends Card {
 
     setDescription(description: string) {
         this.description = description
+    }
+
+    forcePlay() {
+        this.mechanic.use()
+    }
+
+    cancelPlay() {
+        this.trackedGame.setCurrentlyPlayedSpell(null)
+        this.trackedGame.players.forEach(player => player.becomeNotReadyForSpellPlay())
+        this.owner.discardSpellCard(this, true)
+        this.trackedGame.saveGameAction(feedback.SPELL_GOT_CANCELLED(this))
     }
 
     play() {

@@ -112,6 +112,11 @@ type EventSchema = {
         type: "PLAYER_USED_MECHANIC",
         message: string
     },
+    SPELL_GOT_CANCELLED: {
+        type: "SPELL_GOT_CANCELLED",
+        message: string,
+        spell: SpellCard
+    },
     HERO_DAMAGED_BY_SPELL: {
         type: "HERO_DAMAGED_BY_SPELL",
         message: string
@@ -334,6 +339,13 @@ export const feedback = {
         return {
             type: "PLAYER_USED_MECHANIC",
             message: `player ${player.getName()} used '${mechanic.getDescription()}'`
+        }
+    },
+    SPELL_GOT_CANCELLED: (spell: SpellCard): GameEvent => {
+        return {
+            type: "SPELL_GOT_CANCELLED",
+            message: `spell ${spell.getName()} got cancelled`,
+            spell
         }
     },
     PLAYER_USED_SPELL_MECHANIC: (player: Player, spell: SpellCard, mechanic: SpellMechanic): GameEvent => {

@@ -77,6 +77,13 @@
                 "name": "Cave-In",
                 "playablePhase": "fight",
                 "description": "Destroy a room in your dungeon. Kill any Hero in that Room."
+            },
+            {
+                "CARDTYPE": "SPELL",
+                "id": 12,
+                "name": "Counterspell",
+                "playablePhase": "both",
+                "description": "Choose a Spell card that has just been declared. Cancel the effects of that Spell card. (The canceled Spell card is sent to the discard pile.)"
             }
         ],
         "dungeons": [

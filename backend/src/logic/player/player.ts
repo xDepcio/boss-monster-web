@@ -336,6 +336,10 @@ class Player {
     playSpell(spellId: Id): void {
         const spell = this.getSpellInHandById(spellId)
         if (this.checkIfSpellPlayValid(spell)) {
+            if (spell.canForcePlay()) {
+                spell.forcePlay()
+                return
+            }
             this.trackedGame.players.forEach(player => player.becomeNotReadyForSpellPlay())
             spell.play()
         }
@@ -391,9 +395,10 @@ class Player {
     }
 
     checkIfSpellPlayValid(spellCard: SpellCard) {
-        if (spellCard.playablePhase !== this.trackedGame.roundPhase) {
+        if (spellCard.playablePhase !== this.trackedGame.roundPhase && spellCard.playablePhase !== 'both') {
             throw new WrongRoundPhase(`${spellCard.name} can only be played during ${spellCard.playablePhase} phase. Current phase: ${this.trackedGame.roundPhase}`)
         }
+        if (spellCard.canForcePlay()) return true
         if (this.trackedGame.getCurrentlyPlayedSpell()) {
             throw new OtherSpellCurrentlyAtPlay("You have to wait for other spell play to end to use your spell.")
         }
