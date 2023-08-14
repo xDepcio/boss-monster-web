@@ -61,8 +61,15 @@
                 "CARDTYPE": "SPELL",
                 "id": 15,
                 "name": "Freeze",
-                "playablePhase": "fight",
+                "playablePhase": "both",
                 "description": "Choose and deactivate one Room in any dungeon. (It has no damage, treasure, or abilities until end of turn.)"
+            },
+            {
+                "CARDTYPE": "SPELL",
+                "id": 16,
+                "name": "Giant Size",
+                "playablePhase": "fight",
+                "description": "Give one Monster Room +3 damage until end of turn."
             }
         ],
         "dungeons": [

@@ -373,6 +373,38 @@ class DeactivateAnyRoom extends SpellMechanic {
     }
 }
 
+class BoostMonsterRoomBy3ForTurn extends SpellMechanic {
+    constructor(spellCard: SpellCard, mechanicDescription: string) {
+        super(spellCard, mechanicDescription)
+    }
+
+    use(): void {
+        new SelectionRequestUniversal({
+            amount: 1,
+            avalibleItemsForSelectArr: this.spellCard.trackedGame.players.reduce<DungeonCard[]>((acc, player) => {
+                return [...acc, ...player.dungeon.filter(room => room.type === 'monsters')]
+            }, []),
+            metadata: {
+                displayType: "mixed",
+            },
+            requestedPlayer: this.spellCard.owner,
+            selectionMessage: "Wybierz pokój potworów do wzmocnienia o 3 (Giant Size).",
+            onFinish: ([room]) => {
+                room.damage += 3
+                const listener = new EventListener({
+                    trackedGame: this.spellCard.trackedGame,
+                    eventsHandler: (event) => {
+                        if (event.type === "NEW_ROUND_BEGUN") {
+                            room.damage -= 3
+                            listener.unMount()
+                        }
+                    }
+                })
+            },
+        })
+    }
+}
+
 const spellsMechanicsMap = {
     // 'Wyczerpanie': Exhaustion,
     // 'Przerażenie': Fear,
@@ -385,6 +417,7 @@ const spellsMechanicsMap = {
     "Exhaustion": DealDamageOfNumberOfRoomsInDungeonToHero,
     "Fear": ChooseHeroInANyDungeonAndPutItBackIntoCity,
     "Freeze": DeactivateAnyRoom,
+    "Giant Size": BoostMonsterRoomBy3ForTurn,
 }
 
 module.exports = {
