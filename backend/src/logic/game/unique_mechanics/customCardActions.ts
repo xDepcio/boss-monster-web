@@ -26,7 +26,8 @@ class CardAction {
         this.assignTo = assignTo
         CardAction.cardActions[this.id] = this
 
-        assignTo.customCardActions.push(this)
+        // assignTo.customCardActions.push(this)
+        assignTo.addCustomCardAction(this)
     }
 
     isDisabled(): boolean {

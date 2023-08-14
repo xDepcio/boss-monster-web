@@ -997,6 +997,8 @@ class BoostNextRoomBy2IfItIsTrapsRoom extends DungeonMechanic {
             this.lastBoosted = null
         }
 
+        if (!this.dungeonCard.isActive) return
+
         const thisDungeonIndex = this.dungeonCard.owner.dungeon.indexOf(this.dungeonCard)
         if (thisDungeonIndex === -1) return
 
@@ -1247,6 +1249,7 @@ class BoostAdjacentMonsterRoomsByOne extends DungeonMechanic {
         this.previouslyBoosted.forEach(room => room.damage -= 1)
         this.previouslyBoosted = []
 
+        if (!this.dungeonCard.isActive) return
         const dungeonIndex = this.dungeonCard.owner.dungeon.indexOf(this.dungeonCard)
         if (dungeonIndex === -1) return
 

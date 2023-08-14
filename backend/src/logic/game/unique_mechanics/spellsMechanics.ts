@@ -341,6 +341,38 @@ class ChooseHeroInANyDungeonAndPutItBackIntoCity extends SpellMechanic {
     }
 }
 
+class DeactivateAnyRoom extends SpellMechanic {
+    constructor(spellCard: SpellCard, mechanicDescription: string) {
+        super(spellCard, mechanicDescription)
+    }
+
+    use(): void {
+        new SelectionRequestUniversal({
+            amount: 1,
+            avalibleItemsForSelectArr: this.spellCard.trackedGame.players.reduce<DungeonCard[]>((acc, player) => {
+                return [...acc, ...player.dungeon]
+            }, []),
+            metadata: {
+                displayType: "mixed",
+            },
+            requestedPlayer: this.spellCard.owner,
+            selectionMessage: "Wybierz pokój do zamrożenia (Freeze).",
+            onFinish: ([room]) => {
+                room.deactivate()
+                const listener = new EventListener({
+                    trackedGame: this.spellCard.trackedGame,
+                    eventsHandler: (event) => {
+                        if (event.type === "NEW_ROUND_BEGUN") {
+                            room.activate()
+                            listener.unMount()
+                        }
+                    }
+                })
+            },
+        })
+    }
+}
+
 const spellsMechanicsMap = {
     // 'Wyczerpanie': Exhaustion,
     // 'Przerażenie': Fear,
@@ -352,6 +384,7 @@ const spellsMechanicsMap = {
     "Counterspell": CancelPlayedSpell,
     "Exhaustion": DealDamageOfNumberOfRoomsInDungeonToHero,
     "Fear": ChooseHeroInANyDungeonAndPutItBackIntoCity,
+    "Freeze": DeactivateAnyRoom,
 }
 
 module.exports = {

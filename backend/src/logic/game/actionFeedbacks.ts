@@ -220,6 +220,16 @@ type EventSchema = {
         dungeon: DungeonCard,
         mechanic: DungeonMechanic
     },
+    DUNGEON_CARD_GOT_ACTIVATED: {
+        type: "DUNGEON_CARD_GOT_ACTIVATED",
+        message: string,
+        dungeon: DungeonCard
+    },
+    DUNGEON_CARD_GOT_DEACTIVATED: {
+        type: "DUNGEON_CARD_GOT_DEACTIVATED",
+        message: string,
+        dungeon: DungeonCard
+    }
 }
 
 export type GameEvent = EventSchema[keyof EventSchema]
@@ -485,6 +495,20 @@ export const feedback = {
             message: `player ${player.getName()} ranked up ${boss.getName()}`,
             player,
             boss
+        }
+    },
+    DUNGEON_CARD_GOT_ACTIVATED: (dungeon: DungeonCard): GameEvent => {
+        return {
+            type: "DUNGEON_CARD_GOT_ACTIVATED",
+            message: `dungeon ${dungeon.getName()} got activated ${dungeon.owner ? `at ${dungeon.owner.getName()}'s dungeon` : ''}}`,
+            dungeon,
+        }
+    },
+    DUNGEON_CARD_GOT_DEACTIVATED: (dungeon: DungeonCard): GameEvent => {
+        return {
+            type: "DUNGEON_CARD_GOT_DEACTIVATED",
+            message: `dungeon ${dungeon.getName()} got deactivated ${dungeon.owner ? `at ${dungeon.owner.getName()}'s dungeon` : ''}}`,
+            dungeon,
         }
     }
 }

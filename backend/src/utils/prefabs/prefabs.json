@@ -56,6 +56,13 @@
                 "name": "Fear",
                 "playablePhase": "fight",
                 "description": "Choose a Hero in any dungeon and send it back to town."
+            },
+            {
+                "CARDTYPE": "SPELL",
+                "id": 15,
+                "name": "Freeze",
+                "playablePhase": "fight",
+                "description": "Choose and deactivate one Room in any dungeon. (It has no damage, treasure, or abilities until end of turn.)"
             }
         ],
         "dungeons": [

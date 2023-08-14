@@ -248,6 +248,7 @@ class DungeonCard extends Card {
     damage: number
     // treasure: TreasureSign
     treasure: Treasure
+    baseTreasure: Treasure
     type: 'monsters' | 'traps'
     isFancy: boolean
     description: string | null
@@ -258,6 +259,7 @@ class DungeonCard extends Card {
     allowUse: boolean
     mechanic: DungeonMechanic | null
     disableFancyBuildOnTop: boolean
+    onRactivateActions: () => void | null
 
     constructor(id: Id, name: string, CARDTYPE: CardType, trackedGame: Game,
         baseDamage: number, treasure: Treasure, type: 'monsters' | 'traps', isFancy: boolean,
@@ -267,6 +269,7 @@ class DungeonCard extends Card {
         this.baseDamage = baseDamage
         this.damage = baseDamage
         this.treasure = treasure
+        this.baseTreasure = treasure
         this.type = type
         this.isFancy = isFancy
         this.description = null
@@ -276,6 +279,7 @@ class DungeonCard extends Card {
         this.allowDestroy = false
         this.allowUse = false
         this.disableFancyBuildOnTop = false
+        this.onRactivateActions = null
         this.mechanic = mechanic ? new mechanic(this, mechanicDescription, mechanicType) : null
         DungeonCard.dungeons[id] = this
     }
@@ -309,6 +313,32 @@ class DungeonCard extends Card {
             }
         }
         return null
+    }
+
+    activate() {
+        this.isActive = true
+        this.treasure = this.baseTreasure
+        this.damage = this.baseDamage
+        if (this.onRactivateActions) {
+            this.onRactivateActions()
+        }
+        this.onRactivateActions = null
+        this.trackedGame.saveGameAction(feedback.DUNGEON_CARD_GOT_ACTIVATED(this))
+    }
+
+    deactivate() {
+        this.isActive = false
+        this.treasure = {}
+        this.damage = 0
+        let changedActions: CardAction[] = []
+        this.customCardActions.forEach(action => {
+            if (!action.isDisabled()) {
+                action.setActionDisabled(true)
+                changedActions.push(action)
+            }
+        })
+        this.onRactivateActions = () => changedActions.forEach(action => action.setActionDisabled(false))
+        this.trackedGame.saveGameAction(feedback.DUNGEON_CARD_GOT_DEACTIVATED(this))
     }
 
     heroEnteredRoom(hero: HeroCard) {
