@@ -77,6 +77,13 @@
                 "name": "Jeopardy",
                 "playablePhase": "both",
                 "description": "All players must discard their hands, then draw one Spell card and two Room cards."
+            },
+            {
+                "CARDTYPE": "SPELL",
+                "id": 18,
+                "name": "Kobold Strike",
+                "playablePhase": "build",
+                "description": "No rooms can be built this turn. Any face-down Room is returned to its owner's hand."
             }
         ],
         "dungeons": [

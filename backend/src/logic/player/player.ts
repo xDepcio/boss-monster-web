@@ -284,12 +284,15 @@ class Player {
                 card.setCardToBuildOn(this.dungeon[index])
             }
             this.declaredBuild = card
-            this.trackedGame.saveGameAction(feedback.PLAYER_DECLARED_BUILD(this))
+            this.trackedGame.saveGameAction(feedback.PLAYER_DECLARED_BUILD(this, card))
             this.useDungeonCard(card)
         }
     }
 
     checkIfDungeonBuildValid(card: DungeonCard, index: number | null, buildOptions?: BuildOptions): boolean {
+        if (this.trackedGame.isBuildForceBanned()) {
+            throw new Error("Building is disabled.")
+        }
         if (this.trackedGame.getCurrentlyPlayedSpell()) {
             throw new OtherSpellCurrentlyAtPlay("You have to wait for current spell play to end to build a dungeon.")
         }

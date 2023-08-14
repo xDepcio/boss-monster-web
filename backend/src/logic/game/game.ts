@@ -42,6 +42,7 @@ class Game {
     roundModifiers: RoundModifer[]
     inputsTracker: InputTracker
     eventListeners: EventListener[]
+    forceBanBuild: boolean
 
     constructor(id: Id, players: Player[] | null = null, prefab = null) {
         this.id = id
@@ -61,7 +62,16 @@ class Game {
         this.currentlyPlayedSpell = null
         this.roundModifiers = []
         this.eventListeners = []
+        this.forceBanBuild = false
         this.startGame()
+    }
+
+    setForceBanBuild(bool: boolean) {
+        this.forceBanBuild = bool
+    }
+
+    isBuildForceBanned() {
+        return this.forceBanBuild
     }
 
     isModifierAcitve(modifier: RoundModifer) {

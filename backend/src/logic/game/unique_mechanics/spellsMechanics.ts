@@ -344,6 +344,26 @@ class PlayersDiscardCardsAndDraw1SpellAnd2Rooms extends SpellMechanic {
     }
 }
 
+class DenyAnyRoomBuildInThisRound extends SpellMechanic {
+    constructor(spellCard: SpellCard, mechanicDescription: string) {
+        super(spellCard, mechanicDescription)
+    }
+
+    use(playerThatUsed: Player): void {
+        this.spellCard.trackedGame.setForceBanBuild(true)
+        const listener = new EventListener({
+            trackedGame: this.spellCard.trackedGame,
+            eventsHandler: (event) => {
+                if (event.type === 'NEW_ROUND_BEGUN') {
+                    this.spellCard.trackedGame.setForceBanBuild(false)
+                    listener.unMount()
+                }
+            }
+        })
+        this.spellCard.trackedGame.saveGameAction(feedback.PLAYER_USED_SPELL_MECHANIC(playerThatUsed, this.spellCard, this))
+    }
+}
+
 const spellsMechanicsMap = {
     // 'Wyczerpanie': Exhaustion,
     // 'Przerażenie': Fear,
@@ -358,6 +378,7 @@ const spellsMechanicsMap = {
     "Freeze": DeactivateAnyRoom,
     "Giant Size": BoostMonsterRoomBy3ForTurn,
     "Jeopardy": PlayersDiscardCardsAndDraw1SpellAnd2Rooms,
+    "Kobold Strike": DenyAnyRoomBuildInThisRound,
 }
 
 module.exports = {

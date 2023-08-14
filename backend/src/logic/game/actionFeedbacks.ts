@@ -39,8 +39,11 @@ import { SpellMechanic } from "./unique_mechanics/spellsMechanics"
 // }
 type EventSchema = {
     PLAYER_DECLARED_BUILD: {
-        type: 'BUILD',
+        type: 'PLAYER_DECLARED_BUILD',
         message: string,
+        player: Player,
+        dungeon: DungeonCard
+
     },
     PLAYER_BECOME_READY: {
         type: 'READY',
@@ -242,16 +245,18 @@ export type GameEvent = EventSchema[keyof EventSchema]
 // }
 
 export const feedback = {
-    PLAYER_DECLARED_BUILD: (player: Player): GameEvent => {
+    PLAYER_DECLARED_BUILD: (player: Player, dungeon: DungeonCard): GameEvent => {
         return {
-            type: "BUILD",
-            message: `player with id ${player.id} declared building an dungeon`,
+            type: "PLAYER_DECLARED_BUILD",
+            message: `player ${player.getName()} declared building an dungeon`,
+            player,
+            dungeon
         }
     },
     PLAYER_BECOME_READY: (player: Player): GameEvent => {
         return {
             type: "READY",
-            message: `player with id ${player.id} is ready now`
+            message: `player ${player.getName()} is ready now`
         }
     },
     START_FIGHT_PHASE: (): GameEvent => {
