@@ -25,14 +25,14 @@ class SpellMechanic {
         return this.mechanicDescription
     }
 
-    use() {
+    use(playerThatUsed: Player): void {
 
     }
 }
 
 
-// Wyczerpanie
-// class Exhaustion extends SpellMechanic {
+// Na ratuenk
+// class PlaceHeroFromCityInOwnedDungeon extends SpellMechanic {
 
 //     targetHero: HeroCard | null
 
@@ -41,59 +41,13 @@ class SpellMechanic {
 //         this.targetHero = targetHero
 //     }
 
-//     use() {
+//     use(playerThatUsed: Player) {
 //         if (!this.targetHero) {
 //             this.requestPlayerSelect()
 //         }
 //         else {
-//             const damageToDeal = this.calculateDamageDealt()
-//             this.targetHero.getDamaged(damageToDeal)
-//             this.spellCard.trackedGame.saveGameAction(feedback.HERO_DAMAGED_BY_SPELL(this.targetHero, damageToDeal, this.spellCard.name, this.spellCard.owner))
-//             if (this.targetHero.checkDeath()) {
-//                 this.targetHero.die()
-//             }
-
-//             //code if valid TODO...
 //             this.spellCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.spellCard.owner, this))
-//             this.spellCard.completeUsage()
-//         }
-//     }
-
-//     receiveSelectionData(data) {
-//         this.targetHero = data[0]
-//     }
-
-//     requestPlayerSelect() {
-//         const selectionReq = new SelectionRequest(this.spellCard.owner, "hero", 1, this.spellCard.owner, this)
-//         this.spellCard.owner.setRequestedSelection(selectionReq)
-//     }
-
-//     calculateDamageDealt() {
-//         return this.spellCard.owner.dungeon.length
-//     }
-// }
-
-// Przerażenie
-// class Fear extends SpellMechanic {
-
-//     targetHero: HeroCard | null
-
-//     constructor(spellCard: SpellCard, mechanicDescription: string, targetHero: HeroCard | null = null) {
-//         super(spellCard, mechanicDescription)
-//         this.targetHero = targetHero
-//     }
-
-//     use() {
-//         if (!this.targetHero) {
-//             this.requestPlayerSelect()
-//         }
-//         else {
-//             this.targetHero.goBackToCity()
-//             // this.spellCard.trackedGame.addHeroToCity(this.targetHero)
-//             // this.targetHero.finishMoving()
-//             // this.targetHero.setDungeonOwner(null)
-//             this.spellCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.spellCard.owner, this))
-//             this.spellCard.completeUsage()
+//             this.targetHero.goToPlayer(this.spellCard.owner)
 //         }
 //     }
 
@@ -107,77 +61,44 @@ class SpellMechanic {
 //     }
 // }
 
-
-// Na ratuenk
-class PlaceHeroFromCityInOwnedDungeon extends SpellMechanic {
-
-    targetHero: HeroCard | null
-
-    constructor(spellCard: SpellCard, mechanicDescription: string, targetHero: HeroCard | null = null) {
-        super(spellCard, mechanicDescription)
-        this.targetHero = targetHero
-    }
-
-    use() {
-        if (!this.targetHero) {
-            this.requestPlayerSelect()
-        }
-        else {
-            this.spellCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.spellCard.owner, this))
-            this.targetHero.goToPlayer(this.spellCard.owner)
-            this.spellCard.completeUsage()
-        }
-    }
-
-    requestPlayerSelect() {
-        const selectionReq = new SelectionRequest(this.spellCard.owner, "hero", 1, "ANY", this)
-        this.spellCard.owner.setRequestedSelection(selectionReq)
-    }
-
-    receiveSelectionData(data) {
-        this.targetHero = data[0]
-    }
-}
-
 // Atak żywych trupów
-class ReviveDeadHeroAndPlaceInFrontOfDungeonAndAdd2HpFoHim extends SpellMechanic {
+// class ReviveDeadHeroAndPlaceInFrontOfDungeonAndAdd2HpFoHim extends SpellMechanic {
 
-    targetHero: HeroCard | null
+//     targetHero: HeroCard | null
 
-    constructor(spellCard: SpellCard, mechanicDescription: string) {
-        super(spellCard, mechanicDescription)
-        this.targetHero = null
-    }
+//     constructor(spellCard: SpellCard, mechanicDescription: string) {
+//         super(spellCard, mechanicDescription)
+//         this.targetHero = null
+//     }
 
-    use() {
-        if (!this.targetHero) {
-            this.requestPlayerSelect()
-        }
-        else {
-            this.targetHero.health = this.targetHero.baseHealth + 2
-            this.targetHero.finishedMoving = false
-            this.targetHero.dungeonRoom = null
-            this.spellCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.spellCard.owner, this))
-            this.spellCard.completeUsage()
-        }
-    }
+//     use(playerThatUsed: Player) {
+//         if (!this.targetHero) {
+//             this.requestPlayerSelect()
+//         }
+//         else {
+//             this.targetHero.health = this.targetHero.baseHealth + 2
+//             this.targetHero.finishedMoving = false
+//             this.targetHero.dungeonRoom = null
+//             this.spellCard.trackedGame.saveGameAction(feedback.PLAYER_USED_MECHANIC(this.spellCard.owner, this))
+//         }
+//     }
 
-    requestPlayerSelect() {
-        const selectionReq = new SelectionRequest(this.spellCard.owner, "hero", 1, "DEAD_HEROES", this)
-        this.spellCard.owner.setRequestedSelection(selectionReq)
-    }
+//     requestPlayerSelect() {
+//         const selectionReq = new SelectionRequest(this.spellCard.owner, "hero", 1, "DEAD_HEROES", this)
+//         this.spellCard.owner.setRequestedSelection(selectionReq)
+//     }
 
-    receiveSelectionData(data) {
-        this.targetHero = data[0]
-    }
-}
+//     receiveSelectionData(data) {
+//         this.targetHero = data[0]
+//     }
+// }
 
 class GiveOneTrapRoomPlus3DamageForTurn extends SpellMechanic {
     constructor(spellCard: SpellCard, mechanicDescription: string) {
         super(spellCard, mechanicDescription)
     }
 
-    use() {
+    use(playerThatUsed: Player) {
         new SelectionRequestUniversal({
             amount: 1,
             metadata: {
@@ -187,7 +108,7 @@ class GiveOneTrapRoomPlus3DamageForTurn extends SpellMechanic {
             avalibleItemsForSelectArr: this.spellCard.trackedGame.players.reduce<DungeonCard[]>((acc, player) => {
                 return [...acc, ...player.dungeon.filter(room => room.type === 'traps')]
             }, []),
-            requestedPlayer: this.spellCard.owner,
+            requestedPlayer: playerThatUsed,
             onFinish: ([room]) => {
                 room.damage += 3
 
@@ -201,8 +122,7 @@ class GiveOneTrapRoomPlus3DamageForTurn extends SpellMechanic {
                     }
                 })
 
-                this.spellCard.trackedGame.saveGameAction(feedback.PLAYER_USED_SPELL_MECHANIC(this.spellCard.owner, this.spellCard, this))
-                this.spellCard.completeUsage()
+                this.spellCard.trackedGame.saveGameAction(feedback.PLAYER_USED_SPELL_MECHANIC(playerThatUsed, this.spellCard, this))
             }
         })
     }
@@ -213,29 +133,28 @@ class BoostOpponentsHeroBy3HpForTurn extends SpellMechanic {
         super(spellCard, mechanicDescription)
     }
 
-    use() {
+    use(playerThatUsed: Player) {
         new SelectionRequestUniversal({
             amount: 1,
             metadata: {
                 displayType: "mixed",
             },
             selectionMessage: "Wybierz gracza (Assassin).",
-            avalibleItemsForSelectArr: this.spellCard.trackedGame.players.filter(player => player !== this.spellCard.owner),
-            requestedPlayer: this.spellCard.owner,
+            avalibleItemsForSelectArr: this.spellCard.trackedGame.players.filter(player => player !== playerThatUsed),
+            requestedPlayer: playerThatUsed,
             onFinish: ([player]) => {
                 new SelectionRequestUniversal({
                     amount: 1,
                     metadata: {
                         displayType: "mixed",
                     },
-                    requestedPlayer: this.spellCard.owner,
+                    requestedPlayer: playerThatUsed,
                     avalibleItemsForSelectArr: [...player.dungeonEntranceHeroes],
                     selectionMessage: "Wybierz bohatera któremu dodać 3 punkty życia do końca tury (Assassin).",
                     onFinish: ([hero]) => {
                         hero.health += 3
 
-                        this.spellCard.trackedGame.saveGameAction(feedback.PLAYER_USED_SPELL_MECHANIC(this.spellCard.owner, this.spellCard, this))
-                        this.spellCard.completeUsage()
+                        this.spellCard.trackedGame.saveGameAction(feedback.PLAYER_USED_SPELL_MECHANIC(playerThatUsed, this.spellCard, this))
                     }
                 })
             }
@@ -249,26 +168,25 @@ class SilentDestroyRoomInYourDungeonAndKillHeroThere extends SpellMechanic {
         super(spellCard, mechanicDescription)
     }
 
-    use() {
+    use(playerThatUsed: Player) {
         new SelectionRequestUniversal({
             amount: 1,
             metadata: {
                 displayType: "mixed",
             },
             selectionMessage: "Wybierz pokój do zniszczenia (Cave-In).",
-            avalibleItemsForSelectArr: [...this.spellCard.owner.dungeon],
-            requestedPlayer: this.spellCard.owner,
+            avalibleItemsForSelectArr: [...playerThatUsed.dungeon],
+            requestedPlayer: playerThatUsed,
             onFinish: ([room]) => {
                 const hero = room.getHeroOnThisDungeon()
                 if (hero) {
                     hero.die()
                 }
                 room.setAllowDestroy(true)
-                this.spellCard.owner.destroyDungeonCard(room.id, true)
+                playerThatUsed.destroyDungeonCard(room.id, true)
                 room.setAllowDestroy(false)
 
-                this.spellCard.trackedGame.saveGameAction(feedback.PLAYER_USED_SPELL_MECHANIC(this.spellCard.owner, this.spellCard, this))
-                this.spellCard.completeUsage()
+                this.spellCard.trackedGame.saveGameAction(feedback.PLAYER_USED_SPELL_MECHANIC(playerThatUsed, this.spellCard, this))
             }
         })
     }
@@ -280,14 +198,13 @@ class CancelPlayedSpell extends SpellMechanic {
         this.spellCard.setAllowForcePlay(true)
     }
 
-    use() {
+    use(playerThatUsed: Player) {
         const playedSpell = this.spellCard.trackedGame.currentlyPlayedSpell
         if (playedSpell) {
             playedSpell.cancelPlay()
         }
 
-        this.spellCard.trackedGame.saveGameAction(feedback.PLAYER_USED_SPELL_MECHANIC(this.spellCard.owner, this.spellCard, this))
-        this.spellCard.completeUsage()
+        this.spellCard.trackedGame.saveGameAction(feedback.PLAYER_USED_SPELL_MECHANIC(playerThatUsed, this.spellCard, this))
     }
 }
 
@@ -296,8 +213,8 @@ class DealDamageOfNumberOfRoomsInDungeonToHero extends SpellMechanic {
         super(spellCard, mechanicDescription)
     }
 
-    use() {
-        const damage = this.spellCard.owner.dungeon.length
+    use(playerThatUsed: Player) {
+        const damage = playerThatUsed.dungeon.length
 
         new SelectionRequestUniversal({
             amount: 1,
@@ -305,12 +222,11 @@ class DealDamageOfNumberOfRoomsInDungeonToHero extends SpellMechanic {
                 displayType: "mixed",
             },
             selectionMessage: `Wybierz bohatera któremu zadać obrażenia (Exhaustion).`,
-            avalibleItemsForSelectArr: [...this.spellCard.owner.dungeonEntranceHeroes],
-            requestedPlayer: this.spellCard.owner,
+            avalibleItemsForSelectArr: [...playerThatUsed.dungeonEntranceHeroes],
+            requestedPlayer: playerThatUsed,
             onFinish: ([hero]) => {
                 hero.getDamaged(damage)
-                this.spellCard.trackedGame.saveGameAction(feedback.PLAYER_USED_SPELL_MECHANIC(this.spellCard.owner, this.spellCard, this))
-                this.spellCard.completeUsage()
+                this.spellCard.trackedGame.saveGameAction(feedback.PLAYER_USED_SPELL_MECHANIC(playerThatUsed, this.spellCard, this))
             }
         })
     }
@@ -321,7 +237,7 @@ class ChooseHeroInANyDungeonAndPutItBackIntoCity extends SpellMechanic {
         super(spellCard, mechanicDescription)
     }
 
-    use() {
+    use(playerThatUsed: Player) {
         new SelectionRequestUniversal({
             amount: 1,
             metadata: {
@@ -331,11 +247,10 @@ class ChooseHeroInANyDungeonAndPutItBackIntoCity extends SpellMechanic {
             avalibleItemsForSelectArr: this.spellCard.trackedGame.players.reduce<HeroCard[]>((acc, player) => {
                 return [...acc, ...player.dungeonEntranceHeroes]
             }, []),
-            requestedPlayer: this.spellCard.owner,
+            requestedPlayer: playerThatUsed,
             onFinish: ([hero]) => {
                 hero.goBackToCity()
-                this.spellCard.trackedGame.saveGameAction(feedback.PLAYER_USED_SPELL_MECHANIC(this.spellCard.owner, this.spellCard, this))
-                this.spellCard.completeUsage()
+                this.spellCard.trackedGame.saveGameAction(feedback.PLAYER_USED_SPELL_MECHANIC(playerThatUsed, this.spellCard, this))
             }
         })
     }
@@ -346,7 +261,7 @@ class DeactivateAnyRoom extends SpellMechanic {
         super(spellCard, mechanicDescription)
     }
 
-    use(): void {
+    use(playerThatUsed: Player): void {
         new SelectionRequestUniversal({
             amount: 1,
             avalibleItemsForSelectArr: this.spellCard.trackedGame.players.reduce<DungeonCard[]>((acc, player) => {
@@ -355,7 +270,7 @@ class DeactivateAnyRoom extends SpellMechanic {
             metadata: {
                 displayType: "mixed",
             },
-            requestedPlayer: this.spellCard.owner,
+            requestedPlayer: playerThatUsed,
             selectionMessage: "Wybierz pokój do zamrożenia (Freeze).",
             onFinish: ([room]) => {
                 room.deactivate()
@@ -368,6 +283,7 @@ class DeactivateAnyRoom extends SpellMechanic {
                         }
                     }
                 })
+                this.spellCard.trackedGame.saveGameAction(feedback.PLAYER_USED_SPELL_MECHANIC(playerThatUsed, this.spellCard, this))
             },
         })
     }
@@ -378,7 +294,7 @@ class BoostMonsterRoomBy3ForTurn extends SpellMechanic {
         super(spellCard, mechanicDescription)
     }
 
-    use(): void {
+    use(playerThatUsed: Player): void {
         new SelectionRequestUniversal({
             amount: 1,
             avalibleItemsForSelectArr: this.spellCard.trackedGame.players.reduce<DungeonCard[]>((acc, player) => {
@@ -387,7 +303,7 @@ class BoostMonsterRoomBy3ForTurn extends SpellMechanic {
             metadata: {
                 displayType: "mixed",
             },
-            requestedPlayer: this.spellCard.owner,
+            requestedPlayer: playerThatUsed,
             selectionMessage: "Wybierz pokój potworów do wzmocnienia o 3 (Giant Size).",
             onFinish: ([room]) => {
                 room.damage += 3
@@ -400,16 +316,39 @@ class BoostMonsterRoomBy3ForTurn extends SpellMechanic {
                         }
                     }
                 })
+                this.spellCard.trackedGame.saveGameAction(feedback.PLAYER_USED_SPELL_MECHANIC(playerThatUsed, this.spellCard, this))
             },
         })
+    }
+}
+
+class PlayersDiscardCardsAndDraw1SpellAnd2Rooms extends SpellMechanic {
+    constructor(spellCard: SpellCard, mechanicDescription: string) {
+        super(spellCard, mechanicDescription)
+        this.spellCard.setAllowForcePlay(true)
+    }
+
+    use(playerThatUsed: Player): void {
+        const currentlyPlayedSpell = this.spellCard.trackedGame.getCurrentlyPlayedSpell()
+        if (currentlyPlayedSpell) {
+            currentlyPlayedSpell.cancelPlay()
+        }
+        this.spellCard.trackedGame.players.forEach(player => {
+            let tempD = [...player.dungeonCards].forEach(dungeon => player.discardDungeonCard(dungeon))
+            let tempS = [...player.spellCards].forEach(spell => player.discardSpellCard(spell))
+            player.drawNotUsedSpellCard()
+            player.drawNotUsedDungeonCard()
+            player.drawNotUsedDungeonCard()
+        })
+        this.spellCard.trackedGame.saveGameAction(feedback.PLAYER_USED_SPELL_MECHANIC(playerThatUsed, this.spellCard, this))
     }
 }
 
 const spellsMechanicsMap = {
     // 'Wyczerpanie': Exhaustion,
     // 'Przerażenie': Fear,
-    'Na ratunek': PlaceHeroFromCityInOwnedDungeon,
-    'Atak żywych trupów': ReviveDeadHeroAndPlaceInFrontOfDungeonAndAdd2HpFoHim,
+    // 'Na ratunek': PlaceHeroFromCityInOwnedDungeon,
+    // 'Atak żywych trupów': ReviveDeadHeroAndPlaceInFrontOfDungeonAndAdd2HpFoHim,
     "Annihilator": GiveOneTrapRoomPlus3DamageForTurn,
     "Assassin": BoostOpponentsHeroBy3HpForTurn,
     "Cave-In": SilentDestroyRoomInYourDungeonAndKillHeroThere,
@@ -418,6 +357,7 @@ const spellsMechanicsMap = {
     "Fear": ChooseHeroInANyDungeonAndPutItBackIntoCity,
     "Freeze": DeactivateAnyRoom,
     "Giant Size": BoostMonsterRoomBy3ForTurn,
+    "Jeopardy": PlayersDiscardCardsAndDraw1SpellAnd2Rooms,
 }
 
 module.exports = {

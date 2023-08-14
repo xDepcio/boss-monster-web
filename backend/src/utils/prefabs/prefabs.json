@@ -70,6 +70,13 @@
                 "name": "Giant Size",
                 "playablePhase": "fight",
                 "description": "Give one Monster Room +3 damage until end of turn."
+            },
+            {
+                "CARDTYPE": "SPELL",
+                "id": 17,
+                "name": "Jeopardy",
+                "playablePhase": "both",
+                "description": "All players must discard their hands, then draw one Spell card and two Room cards."
             }
         ],
         "dungeons": [

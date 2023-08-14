@@ -235,7 +235,7 @@ class NegateSpellByRemovingYourSpell extends DungeonMechanic {
             }
             else {
                 const playedSpell = this.dungeonCard.trackedGame.getCurrentlyPlayedSpell()
-                playedSpell.completeUsage()
+                playedSpell.canForcePlay()
                 this.selectedSpell.owner.discardSpellCard(this.selectedSpell)
                 // this.selectedSpell.owner.throwCardAway(this.selectedSpell)
                 this.dungeonCard.trackedGame.saveGameAction(feedback.PLAYER_USED_DUNGEON_MECHANIC(this.dungeonCard.owner, this.dungeonCard, this))

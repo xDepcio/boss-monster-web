@@ -473,7 +473,10 @@ class SpellCard extends Card {
     }
 
     forcePlay() {
-        this.mechanic.use()
+        const owner = this.owner
+        this.owner.discardSpellCard(this, true)
+        this.mechanic.use(owner)
+        this.trackedGame.saveGameAction(feedback.PLAYER_PLAYED_SPELL(owner, this))
     }
 
     cancelPlay() {
@@ -486,16 +489,19 @@ class SpellCard extends Card {
     play() {
         this.trackedGame.setCurrentlyPlayedSpell(this)
         if (this.trackedGame.hasAllPlayersAcceptedSpellPlay()) {
-            this.mechanic.use()
+            const owner = this.owner
+            this.owner.discardSpellCard(this, true)
+            this.mechanic.use(owner)
             this.trackedGame.setCurrentlyPlayedSpell(null)
             this.trackedGame.players.forEach(player => player.becomeNotReadyForSpellPlay())
+            this.trackedGame.saveGameAction(feedback.PLAYER_PLAYED_SPELL(owner, this))
         }
     }
 
-    completeUsage() {
-        this.trackedGame.saveGameAction(feedback.PLAYER_PLAYED_SPELL(this.owner, this))
-        this.owner.discardSpellCard(this, true)
-    }
+    // completeUsage() {
+    //     this.trackedGame.saveGameAction(feedback.PLAYER_PLAYED_SPELL(this.owner, this))
+    //     this.owner.discardSpellCard(this, true)
+    // }
 
     static getSpell(spellId: Id): SpellCard | undefined {
         return SpellCard.spells[spellId]
