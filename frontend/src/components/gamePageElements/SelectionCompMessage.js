@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom'
 import { symbolImage } from '../../static/constants'
 import { saveResponseError } from '../utils'
 import './SelectionCompOneFromList.css'
+import { BACKEND_URL } from '../../App'
 
 
 function SelectionCompMessage() {
@@ -12,7 +13,7 @@ function SelectionCompMessage() {
     const params = useParams()
 
     function handleSelectItem(item) {
-        const res = fetch(`/game/${params.lobbyId}/select-item`, {
+        const res = fetch(BACKEND_URL + `/game/${params.lobbyId}/select-item`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

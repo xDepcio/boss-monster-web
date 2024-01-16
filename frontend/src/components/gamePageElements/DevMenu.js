@@ -4,6 +4,7 @@ import { useSelector } from "react-redux"
 import { useNavigate, useParams } from "react-router-dom"
 import { HiSwitchVertical } from 'react-icons/hi'
 import { ImExit } from 'react-icons/im'
+import { BACKEND_URL } from "../../App"
 
 
 export default function DevMenu() {
@@ -23,7 +24,7 @@ export default function DevMenu() {
     const handleStartWithInjectedMoves = async () => {
         // console.log(toInjectMovesStr)
         // console.log(JSON.parse(toInjectMovesStr))
-        const res = await fetch(`/lobby/${params.lobbyId}/start-prefab-with-injected-moves`, {
+        const res = await fetch(BACKEND_URL + `/lobby/${params.lobbyId}/start-prefab-with-injected-moves`, {
             method: 'POST',
             body: toInjectMovesStr,
             headers: {

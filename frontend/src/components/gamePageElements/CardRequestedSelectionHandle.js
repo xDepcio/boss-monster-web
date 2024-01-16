@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { saveResponseError } from '../utils'
 import './CardRequestedSelectionHandle.css'
+import { BACKEND_URL } from '../../App'
 
 
 function CardRequestedSelectionHandle({ card = null }) {
@@ -64,7 +65,7 @@ function CardRequestedSelectionHandle({ card = null }) {
     function handleSelectableCardClick(event) {
         event.stopPropagation()
         if (isSelectionValid(card)) {
-            const res = fetch(`/game/${params.lobbyId}/select-item`, {
+            const res = fetch(BACKEND_URL + `/game/${params.lobbyId}/select-item`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

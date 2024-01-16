@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom'
 import { saveResponseError } from '../utils'
 import './AcceptSpellComp.css'
 import CardSpell from './CardSpell'
+import { BACKEND_URL } from '../../App'
 
 
 function AcceptSpellComp() {
@@ -17,7 +18,7 @@ function AcceptSpellComp() {
     const params = useParams()
 
     function handleAcceptSpell() {
-        const res = fetch(`/game/${params.lobbyId}/accept-spell-play`, {
+        const res = fetch(BACKEND_URL + `/game/${params.lobbyId}/accept-spell-play`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

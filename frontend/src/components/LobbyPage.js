@@ -5,6 +5,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { getLobbyInfo } from '../store/lobby'
 import { LuClipboard, LuUser } from 'react-icons/lu'
 import { toast } from 'react-hot-toast'
+import { BACKEND_URL } from '../App'
 
 function LobbyPage() {
     const params = useParams()
@@ -14,7 +15,7 @@ function LobbyPage() {
     const gameStarted = useSelector((state) => state.lobby.info.gameStarted)
 
     useEffect(() => {
-        // fetch(`/lobby/${params.lobbyId}/join`, {
+        // fetch(BACKEND_URL + `/lobby/${params.lobbyId}/join`, {
         //     method: 'POST',
         //     headers: {
         //         'Content-Type': 'application/json'
@@ -42,13 +43,13 @@ function LobbyPage() {
     }, [gameStarted])
 
     const handleStartGame = () => {
-        fetch(`/lobby/${params.lobbyId}/start`, {
+        fetch(BACKEND_URL + `/lobby/${params.lobbyId}/start`, {
             method: 'POST'
         })
     }
 
     const handleStartPrefabGame = () => {
-        fetch(`/lobby/${params.lobbyId}/start-prefab`, {
+        fetch(BACKEND_URL + `/lobby/${params.lobbyId}/start-prefab`, {
             method: 'POST'
         })
     }

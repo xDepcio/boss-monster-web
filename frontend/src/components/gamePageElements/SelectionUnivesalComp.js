@@ -10,6 +10,7 @@ import './SelectionUnivesalComp.css'
 import { dumbFlat, saveResponseError } from '../utils'
 import CardHero from './CardHero'
 import { useState } from 'react'
+import { BACKEND_URL } from '../../App'
 
 export default function SelectionUnivesalComp() {
     const avalibleItemsForSelectArr = useSelector(state => state.game?.selfPlayer?.requestedSelection?.avalibleItemsForSelectArr)
@@ -20,7 +21,7 @@ export default function SelectionUnivesalComp() {
     const [minimized, setMinimized] = useState(false)
 
     function handleSelectItem(item) {
-        const res = fetch(`/game/${params.lobbyId}/select-item`, {
+        const res = fetch(BACKEND_URL + `/game/${params.lobbyId}/select-item`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

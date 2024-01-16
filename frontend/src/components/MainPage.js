@@ -3,6 +3,7 @@ import './MainPage.css'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from 'react-router-dom'
+import { BACKEND_URL } from '../App'
 
 function MainPage() {
     const navigate = useNavigate()
@@ -14,12 +15,12 @@ function MainPage() {
     }, [])
 
     const handleLobbyStart = () => {
-        fetch('/lobby', {
+        fetch(BACKEND_URL + '/lobby', {
             method: 'POST'
         })
             .then((res) => res.json())
             .then((data) => {
-                fetch(`/lobby/${data.lobbyId}/join`, {
+                fetch(BACKEND_URL + `/lobby/${data.lobbyId}/join`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -34,7 +35,7 @@ function MainPage() {
     }
 
     const handleJoinLobby = () => {
-        fetch(`/lobby/${lobbyToJoin}/join`, {
+        fetch(BACKEND_URL + `/lobby/${lobbyToJoin}/join`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
