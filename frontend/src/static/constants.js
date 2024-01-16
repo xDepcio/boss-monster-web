@@ -1,4 +1,4 @@
-export const BACKEND_URL = 'http://localhost:3001'
+export const BACKEND_URL = process.env.REACT_APP_BACKEND_URL
 
 export const symbolImage = {
     strength: `${BACKEND_URL}/images/treasure_symbols/strength_sword_cut.png`,
