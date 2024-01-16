@@ -7,7 +7,6 @@ import { v4 as uuidv4 } from 'uuid';
 import GamePage from './components/GamePage';
 import io from "socket.io-client";
 
-export const BACKEND_URL = 'http://localhost:3001'
 export const socket = io.connect("http://localhost:3001");
 
 function App() {

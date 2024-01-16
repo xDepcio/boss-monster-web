@@ -4,7 +4,7 @@ import { useSelector } from "react-redux"
 import { useNavigate, useParams } from "react-router-dom"
 import { HiSwitchVertical } from 'react-icons/hi'
 import { ImExit } from 'react-icons/im'
-import { BACKEND_URL } from "../../App"
+import { BACKEND_URL } from "../../static/constants"
 
 
 export default function DevMenu() {

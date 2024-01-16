@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { saveResponseError } from '../utils'
 import './CardRequestedSelectionHandle.css'
-import { BACKEND_URL } from '../../App'
+import { BACKEND_URL } from "../../static/constants"
 
 
 function CardRequestedSelectionHandle({ card = null }) {

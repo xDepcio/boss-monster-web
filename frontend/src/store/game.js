@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 import { stringify, parse, fromJSON, toJSON } from 'flatted'
-import { BACKEND_URL } from '../App'
+import { BACKEND_URL } from "../static/constants"
 
 
 const LOAD_GAME_INFO = 'loadGameInfo'

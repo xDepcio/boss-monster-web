@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 import { symbolImage } from '../../static/constants'
 import { saveResponseError } from '../utils'
 import './SelectionCompOneFromList.css'
-import { BACKEND_URL } from '../../App'
+import { BACKEND_URL } from "../../static/constants"
 
 
 function SelectionCompMessage() {

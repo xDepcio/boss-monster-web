@@ -1,13 +1,14 @@
+import { BACKEND_URL } from "../static/constants"
 import { loadErrorMessage } from "../store/game"
 
 export function getBgColor(treasure) {
     if (treasure) {
         const bgs = {
-            yellow: '/images/cards_bgs/bg_yellow.png',
-            red: '/images/cards_bgs/bg_red.png',
-            blue: '/images/cards_bgs/bg_blue.png',
-            white: '/images/cards_bgs/bg_white.png',
-            black: '/images/cards_bgs/bg_black.png',
+            yellow: `${BACKEND_URL}/images/cards_bgs/bg_yellow.png`,
+            red: `${BACKEND_URL}/images/cards_bgs/bg_red.png`,
+            blue: `${BACKEND_URL}/images/cards_bgs/bg_blue.png`,
+            white: `${BACKEND_URL}/images/cards_bgs/bg_white.png`,
+            black: `${BACKEND_URL}/images/cards_bgs/bg_black.png`,
         }
 
         const symbols = Object.keys(treasure)

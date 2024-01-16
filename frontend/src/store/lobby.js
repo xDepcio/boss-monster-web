@@ -1,5 +1,5 @@
 import { parse } from "flatted"
-import { BACKEND_URL } from "../App"
+import { BACKEND_URL } from "../static/constants"
 
 const LOAD_LOBBY_INFO = 'loadLobbyInfo'
 

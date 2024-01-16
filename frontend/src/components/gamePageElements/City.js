@@ -6,6 +6,7 @@ import Card from './card'
 import CardBack from './CardBack'
 import CardHero from './CardHero'
 import './City.css'
+import { BACKEND_URL } from "../../static/constants"
 
 
 function City() {
@@ -66,7 +67,7 @@ function City() {
                             <CardBack
                                 width={150}
                                 text={'TALIA KOMNAT'}
-                                bgImage={'/images/basic/dungeon_back_no_text.png'}
+                                bgImage={`${BACKEND_URL}/images/basic/dungeon_back_no_text.png`}
                             />
                             <h4>27 kart</h4>
                         </div>
@@ -74,7 +75,7 @@ function City() {
                             <CardBack
                                 width={150}
                                 text={'TALIA CZARÓW'}
-                                bgImage={'/images/basic/spell_back_no_text.png'}
+                                bgImage={`${BACKEND_URL}/images/basic/spell_back_no_text.png`}
                             />
                             <h4>27 kart</h4>
                         </div>
@@ -82,7 +83,7 @@ function City() {
                             <CardBack
                                 width={150}
                                 text={'BOHATER'}
-                                bgImage={'/images/basic/hero_back_no_text.png'}
+                                bgImage={`${BACKEND_URL}/images/basic/hero_back_no_text.png`}
                             />
                             <h4>27 kart</h4>
                         </div>
@@ -90,7 +91,7 @@ function City() {
                             <CardBack
                                 width={150}
                                 text={'KARTY ODRZUCONE'}
-                                bgImage={'/images/basic/dungeon_back_no_text.png'}
+                                bgImage={`${BACKEND_URL}/images/basic/dungeon_back_no_text.png`}
                             />
                             <h4>27 kart</h4>
                         </div>

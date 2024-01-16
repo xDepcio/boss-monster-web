@@ -12,7 +12,7 @@ import CardHero from './CardHero'
 import EmptyDungeon from './EmptyDungeon'
 import HeroToMoveMarker from './HeroToMoveMarker'
 import './PlayerDungeon.css'
-import { BACKEND_URL } from '../../App'
+import { BACKEND_URL } from "../../static/constants"
 
 
 function PlayerDungeon({ player, selectedDungCard, setSelectedDungCard }) {

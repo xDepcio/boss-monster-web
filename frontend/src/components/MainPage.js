@@ -3,7 +3,7 @@ import './MainPage.css'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from 'react-router-dom'
-import { BACKEND_URL } from '../App'
+import { BACKEND_URL } from "../static/constants"
 
 function MainPage() {
     const navigate = useNavigate()

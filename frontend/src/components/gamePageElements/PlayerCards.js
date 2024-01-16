@@ -9,7 +9,7 @@ import CardSpell from './CardSpell'
 import { useParams } from 'react-router-dom'
 import Cookies from 'js-cookie'
 import { saveResponseError } from '../utils'
-import { BACKEND_URL } from '../../App'
+import { BACKEND_URL } from "../../static/constants"
 
 
 function PlayerCards({ setSelectedDungCard, selectedDungCard }) {

@@ -1,12 +1,14 @@
+export const BACKEND_URL = 'http://localhost:3001'
+
 export const symbolImage = {
-    strength: '/images/treasure_symbols/strength_sword_cut.png',
-    magic: '/images/treasure_symbols/magic_symbol.png',
-    faith: '/images/treasure_symbols/faith_symbol.png',
-    fortune: '/images/treasure_symbols/fortune_symbol.png',
+    strength: `${BACKEND_URL}/images/treasure_symbols/strength_sword_cut.png`,
+    magic: `${BACKEND_URL}/images/treasure_symbols/magic_symbol.png`,
+    faith: `${BACKEND_URL}/images/treasure_symbols/faith_symbol.png`,
+    fortune: `${BACKEND_URL}/images/treasure_symbols/fortune_symbol.png`,
 }
 
 export const phaseImage = {
-    build: '/images/spell_symbols/spell_build_phase.png',
-    fight: '/images/spell_symbols/spell_fight_phase.png',
-    both: '/images/spell_symbols/spell_both_phase.png',
+    build: `${BACKEND_URL}/images/spell_symbols/spell_build_phase.png`,
+    fight: `${BACKEND_URL}/images/spell_symbols/spell_fight_phase.png`,
+    both: `${BACKEND_URL}/images/spell_symbols/spell_both_phase.png`,
 }

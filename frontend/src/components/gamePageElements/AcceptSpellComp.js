@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom'
 import { saveResponseError } from '../utils'
 import './AcceptSpellComp.css'
 import CardSpell from './CardSpell'
-import { BACKEND_URL } from '../../App'
+import { BACKEND_URL } from "../../static/constants"
 
 
 function AcceptSpellComp() {

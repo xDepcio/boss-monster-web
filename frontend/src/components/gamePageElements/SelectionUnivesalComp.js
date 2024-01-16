@@ -10,7 +10,7 @@ import './SelectionUnivesalComp.css'
 import { dumbFlat, saveResponseError } from '../utils'
 import CardHero from './CardHero'
 import { useState } from 'react'
-import { BACKEND_URL } from '../../App'
+import { BACKEND_URL } from "../../static/constants"
 
 export default function SelectionUnivesalComp() {
     const avalibleItemsForSelectArr = useSelector(state => state.game?.selfPlayer?.requestedSelection?.avalibleItemsForSelectArr)

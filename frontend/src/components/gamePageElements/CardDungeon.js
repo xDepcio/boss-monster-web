@@ -6,6 +6,7 @@ import { getBgColor, getDungDescEm, getFontEm } from '../utils'
 import { useSelector } from 'react-redux'
 import HeroToMoveMarker from './HeroToMoveMarker'
 import CardRequestedSelectionHandle from './CardRequestedSelectionHandle'
+import { BACKEND_URL } from "../../static/constants"
 
 
 function CardDungeon({ width, _className, bgImage, isFancy = false, description = '', mainImg, damage = 'X', type, treasure, name = '', _onClick, fontHelp, id, card, baseDamage = 'X' }) {
@@ -22,22 +23,22 @@ function CardDungeon({ width, _className, bgImage, isFancy = false, description 
             case 'traps': {
                 if (isFancy) {
                     setSubHeader('Wypaśna komnata pułapek')
-                    setTypeUrl('/images/dungeon_types/traps_type_enchanced.png')
+                    setTypeUrl(`${BACKEND_URL}/images/dungeon_types/traps_type_enchanced.png`)
                 }
                 else {
                     setSubHeader('Komnata pułapek')
-                    setTypeUrl('/images/dungeon_types/traps_type.png')
+                    setTypeUrl(`${BACKEND_URL}/images/dungeon_types/traps_type.png`)
                 }
                 break
             }
             case 'monsters': {
                 if (isFancy) {
                     setSubHeader('Wypaśna komnata potworów')
-                    setTypeUrl('/images/dungeon_types/monsters_type_enchanced.png')
+                    setTypeUrl(`${BACKEND_URL}/images/dungeon_types/monsters_type_enchanced.png`)
                 }
                 else {
                     setSubHeader('Komnata potworów')
-                    setTypeUrl('/images/dungeon_types/monsters_type.png')
+                    setTypeUrl(`${BACKEND_URL}/images/dungeon_types/monsters_type.png`)
                 }
                 break
             }
@@ -84,9 +85,9 @@ function CardDungeon({ width, _className, bgImage, isFancy = false, description 
             >{damage}</p>
             <p style={{ fontSize: getDungDescEm(description?.length) }} className='card-info-comp card-comp dung-card-desc'>{description}</p>
             <img className='card-info-comp card-img-comp card-comp card-type-comp' src={typeUrl} />
-            <img className='card-info-comp card-img-comp card-comp card-bg-comp' src={bgUrl || '/images/red_bg_canvas.png'} />
-            <img className='card-info-comp card-img-comp card-comp card-main-img-comp' src={mainImg || '/images/bosses/boss_ROBOBO.png'} />
-            <img className='card-info-comp card-img-comp card-comp dungeon-card-damage-img' src={mainImg || '/images/basic/dungeon_damage_heart.png'} />
+            <img className='card-info-comp card-img-comp card-comp card-bg-comp' src={bgUrl || `${BACKEND_URL}/images/red_bg_canvas.png`} />
+            <img className='card-info-comp card-img-comp card-comp card-main-img-comp' src={mainImg || `${BACKEND_URL}/images/bosses/boss_ROBOBO.png`} />
+            <img className='card-info-comp card-img-comp card-comp dungeon-card-damage-img' src={mainImg || `${BACKEND_URL}/images/basic/dungeon_damage_heart.png`} />
             {cardTreasureArr.map((symbol, i) => {
                 return (
                     <img key={i} style={{

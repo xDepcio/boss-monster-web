@@ -5,7 +5,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { getLobbyInfo } from '../store/lobby'
 import { LuClipboard, LuUser } from 'react-icons/lu'
 import { toast } from 'react-hot-toast'
-import { BACKEND_URL } from '../App'
+import { BACKEND_URL } from "../static/constants"
 
 function LobbyPage() {
     const params = useParams()

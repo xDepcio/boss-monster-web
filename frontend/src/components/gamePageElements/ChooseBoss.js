@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 import { saveResponseError } from '../utils'
 import CardBoss from './CardBoss'
 import './ChooseBoss.css'
-import { BACKEND_URL } from '../../App'
+import { BACKEND_URL } from "../../static/constants"
 
 
 function ChooseBoss() {
