@@ -31,6 +31,7 @@ function ChooseBoss() {
             <h3 className='choose-boss-header'>WYBIERZ BOSSA:</h3>
             <div className='choose-boss-holder'>
                 {selfPlayer?.drawnBosses.map((boss, i) => <CardBoss
+                    key={i}
                     _onClick={() => handleBossSelect(boss)}
                     _className={'choose-boss'}
                     treasure={boss.treasure}
