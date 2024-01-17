@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import GamePage from './components/GamePage';
 import io from "socket.io-client";
 
-export const socket = io.connect("http://localhost:3001");
+export const socket = io.connect(process.env.REACT_APP_BACKEND_URL);
 
 function App() {
 
