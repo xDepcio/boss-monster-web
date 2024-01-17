@@ -25,7 +25,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:3006",
+        origin: "*",
         methods: ["GET", "POST"],
     },
 });
@@ -65,9 +65,9 @@ app.use((err: any, _req: Request, res: Response, _next: NextFunction): any => {
 });
 
 
-
-server.listen(3001, () => {
-    console.log("SERVER IS RUNNING on 3001");
+const port = process.env.PORT || 3001;
+server.listen(port, () => {
+    console.log(`SERVER IS RUNNING on ${port}`);
 });
 
 
