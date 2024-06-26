@@ -235,6 +235,7 @@ function PlayerDungeon({ player, selectedDungCard, setSelectedDungCard }) {
                         pd={player.selectedBoss?.pd}
                         name={player.selectedBoss?.name}
                         description={player.selectedBoss?.mechanic?.mechanicDescription}
+                        bgImage={`${BACKEND_URL}/images/cards_bgs/bg_red.png`}
                     />
                 </div>
             </div>

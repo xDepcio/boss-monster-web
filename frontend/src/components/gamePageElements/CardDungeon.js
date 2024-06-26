@@ -85,7 +85,7 @@ function CardDungeon({ width, _className, bgImage, isFancy = false, description 
             >{damage}</p>
             <p style={{ fontSize: getDungDescEm(description?.length) }} className='card-info-comp card-comp dung-card-desc'>{description}</p>
             <img className='card-info-comp card-img-comp card-comp card-type-comp' src={typeUrl} />
-            <img className='card-info-comp card-img-comp card-comp card-bg-comp' src={bgUrl || `${BACKEND_URL}/images/red_bg_canvas.png`} />
+            <img className='card-info-comp card-img-comp card-comp card-bg-comp' src={bgUrl} />
             <img className='card-info-comp card-img-comp card-comp card-main-img-comp' src={mainImg || `${BACKEND_URL}/images/bosses/boss_ROBOBO.png`} />
             <img className='card-info-comp card-img-comp card-comp dungeon-card-damage-img' src={mainImg || `${BACKEND_URL}/images/basic/dungeon_damage_heart.png`} />
             {cardTreasureArr.map((symbol, i) => {

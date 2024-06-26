@@ -44,7 +44,7 @@ function CardBoss({ width, _className, bgImage, description = '', mainImg, treas
             <p className='card-info-comp card-comp card-desc-header'>Awans:</p>
             <p className='card-info-comp card-comp boss-card-desc' style={{ fontSize: getBossDescEm(description?.length ?? '') }} >{description ?? ''}</p>
             <img className='card-info-comp card-img-comp card-comp card-type-comp' src={`${BACKEND_URL}/images/dungeon_types/monsters_symbol.png`} />
-            <img className='card-info-comp card-img-comp card-comp card-bg-comp' src={bgUrl || `${BACKEND_URL}/images/red_bg_canvas.png`} />
+            <img className='card-info-comp card-img-comp card-comp card-bg-comp' src={bgUrl} />
             <img className='card-info-comp card-img-comp card-comp card-main-img-comp' src={mainImg || `${BACKEND_URL}/images/bosses/boss_ROBOBO.png`} />
             {cardTreasureArr.map((symbol, i) => {
                 return (

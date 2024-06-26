@@ -39,6 +39,7 @@ function ChooseBoss() {
                     pd={boss.pd}
                     width={300}
                     description={boss?.mechanic?.mechanicDescription}
+                    bgImage={`${BACKEND_URL}/images/cards_bgs/bg_red.png`}
                 />)}
             </div>
         </div>
