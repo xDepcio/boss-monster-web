@@ -1,3 +1,4 @@
+# Dockerfile for bulding create-react-app image
 # Use an official Node.js runtime as the base image
 FROM node:22
 
@@ -13,11 +14,11 @@ RUN npm install
 # Copy the rest of the application source code to the working directory
 COPY . .
 
-# Build the TypeScript project
-RUN npm run only-build-ts
+# Build the React application
+RUN npm run build
 
 # Expose the port your application will listen on
-EXPOSE 3001
+EXPOSE 3006
 
-# Start the Express application
-CMD ["node", "build/src/app.js"]
+# Start the React application
+CMD ["npm", "start"]
