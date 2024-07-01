@@ -1,25 +1,13 @@
-import { getPrefabBossesCards, getPrefabDiscardedDungeonCard, getPrefabDiscardedSpells, getPrefabDungeonCards, getPrefabHeroCards, getPrefabSpellCards } from "../../utils/prefabs/gamePrefab"
-import { InputTracker } from "../inputTracker"
-import { Player } from "../player/player"
-import { Id, RoundPhase } from "../types"
-import { GameEvent, feedback } from "./actionFeedbacks"
-import { BossCard, DungeonCard, HeroCard, SpellCard } from "./cards"
-import { EventListener } from "./unique_mechanics/eventListener"
-import { RoundModifer } from "./unique_mechanics/roundModifiers"
-
-// const Player = require('../player/player')
-const { getShuffledDungeonCards, getShuffledHeroCards, getShuffledSpellCards, getShuffledBossesCards } = require('./utils')
-const { PlayerAlreadyDeclaredBuild, HeroesCardsStackEmpty, NotAllPlayersAcceptedHeroMove } = require('../errors')
-// const { getPrefabBossesCards, getPrefabDungeonCards, getPrefabHeroCards, getPrefabSpellCards } = require('../../utils/prefabs/gamePrefab')
-// const { feedback } = require('./actionFeedbacks')
-const { mechanicsTypes } = require('./unique_mechanics/dungeonMechanics')
-
-
-// const phase = {
-//     BUILD: 'build',
-//     FIGHT: 'fight',
-//     START: 'start'
-// }
+import { getPrefabBossesCards, getPrefabDiscardedDungeonCard, getPrefabDiscardedSpells, getPrefabDungeonCards, getPrefabHeroCards, getPrefabSpellCards } from "../../utils/prefabs/gamePrefab.js"
+import { HeroesCardsStackEmpty, NotAllPlayersAcceptedHeroMove } from "../errors.js"
+import { InputTracker } from "../inputTracker.js"
+import { Player } from "../player/player.js"
+import { Id, RoundPhase } from "../types.js"
+import { GameEvent, feedback } from "./actionFeedbacks.js"
+import { BossCard, DungeonCard, HeroCard, SpellCard } from "./cards.js"
+import { EventListener } from "./unique_mechanics/eventListener.js"
+import { RoundModifer } from "./unique_mechanics/roundModifiers.js"
+import { getShuffledBossesCards, getShuffledDungeonCards, getShuffledHeroCards, getShuffledSpellCards } from "./utils.js"
 
 
 class Game {

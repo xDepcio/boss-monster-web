@@ -1,15 +1,12 @@
-import { Player } from "../player/player"
-import { CardPlayPhase, CardType, DungeonMechanicTypes, Id, RoundPhase, Treasure, TreasureSign } from "../types"
-import { GameEvent, feedback } from "./actionFeedbacks"
-import { Game } from "./game"
-import { BossMechanic } from "./unique_mechanics/bossMecahnics"
-import { CardAction } from "./unique_mechanics/customCardActions"
-import { DungeonMechanic } from "./unique_mechanics/dungeonMechanics"
-import { SpellMechanic } from "./unique_mechanics/spellsMechanics"
-
-const { NotAllPlayersAcceptedHeroMove, HeroAlreadyInCity } = require('../errors')
-// const { feedback, eventTypes } = require('./actionFeedbacks')
-// const { mechanicsTypes } = require('./unique_mechanics/dungeonMechanics')
+import { HeroAlreadyInCity, NotAllPlayersAcceptedHeroMove } from "../errors.js"
+import { Player } from "../player/player.js"
+import { CardPlayPhase, CardType, DungeonMechanicTypes, Id, Treasure, TreasureSign } from "../types.js"
+import { GameEvent, feedback } from "./actionFeedbacks.js"
+import { Game } from "./game.js"
+import { BossMechanic } from "./unique_mechanics/bossMecahnics.js"
+import { CardAction } from "./unique_mechanics/customCardActions.js"
+import { DungeonMechanic } from "./unique_mechanics/dungeonMechanics.js"
+import { SpellMechanic } from "./unique_mechanics/spellsMechanics.js"
 
 class Card {
 
@@ -449,8 +446,14 @@ class SpellCard extends Card {
     mechanic: SpellMechanic | null
     private allowForcePlay: boolean
 
-    constructor(id: Id, name: string, CARDTYPE: CardType, trackedGame: Game, playablePhase: CardPlayPhase,
-        mechanic: typeof SpellMechanic | null, mechanicDescription: string
+    constructor(
+        id: Id,
+        name: string,
+        CARDTYPE: CardType,
+        trackedGame: Game,
+        playablePhase: CardPlayPhase,
+        mechanic: typeof SpellMechanic | null,
+        mechanicDescription: string
     ) {
         super(id, name, CARDTYPE, trackedGame)
         this.playablePhase = playablePhase
@@ -577,4 +580,4 @@ module.exports = {
     BossCard
 }
 
-export { DungeonCard, SpellCard, BossCard, HeroCard, Card }
+export { BossCard, Card, DungeonCard, HeroCard, SpellCard }

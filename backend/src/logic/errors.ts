@@ -229,4 +229,36 @@ module.exports = {
     NoSuchHeroAtDungeonEntrance
 }
 
-export { }
+export {
+    CardCannotBeBuilt,
+    DungeonCardsStackEmpty,
+    PlayerAlreadyDeclaredBuild,
+    SpellCardsStackEmpty,
+    HeroesCardsStackEmpty,
+    DungeonFullError,
+    NotAllPlayersAcceptedHeroMove,
+    BossCardStackEmpty,
+    NoSuchBossInPlayerCards,
+    PlayerAlreadySelectedBoss,
+    InvalidFancyDungeonBuild,
+    NoSuchDungeonInPlayerCards,
+    WrongPhaseToBuild,
+    PhaseNotFinished,
+    PlayerAlreadyReady,
+    PlayerAlreadyAcceptedHeroMove,
+    CardCannotBeDestroyed,
+    NoSuchDungeonCardInPlayerDungeon,
+    WrongRoundPhase,
+    NoSuchSpellInPlayerHand,
+    HeroAlreadyInCity,
+    OncePerRoundMechanicUsedAlready,
+    HeroNotFoundInCity,
+    OtherSpellCurrentlyAtPlay,
+    NoSpellCurrentylAtPlay,
+    PlayerAlreadyAcceptedSpellPlay,
+    DungeonEffectCannotBeUsed,
+    DungeonMechanicUseConditionError,
+    InvalidTreasureType,
+    PlayerHasNotEnoughMoney,
+    NoSuchHeroAtDungeonEntrance
+}
