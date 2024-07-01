@@ -1,14 +1,29 @@
-const { expect } = require("chai");
-const { Game } = require('../logic/game/game')
-const Player = require('../logic/player/player')
-const { BossCard, DungeonCard, HeroCard, SpellCard } = require('../logic/game/cards')
-const DUNGEON_CARDS = require('./test-cards.json').dungeons
-const BOSS_CARDS = require('./test-cards.json').bosses
-const HERO_CARDS = require('./test-cards.json').heroes;
-const SPELL_CARDS = require('./test-cards.json').spells;
-const { bossesMechanicsMap } = require('../logic/game/unique_mechanics/bossMecahnics')
-const { dungeonMechanicsMap } = require('../logic/game/unique_mechanics/dungeonMechanics')
-const { spellsMechanicsMap } = require('../logic/game/unique_mechanics/spellsMechanics')
+// const { expect } = require("chai");
+// const { Game } = require('../logic/game/game')
+// const Player = require('../logic/player/player')
+// const { BossCard, DungeonCard, HeroCard, SpellCard } = require('../logic/game/cards')
+// const DUNGEON_CARDS = require('./test-cards.json').dungeons
+// const BOSS_CARDS = require('./test-cards.json').bosses
+// const HERO_CARDS = require('./test-cards.json').heroes;
+// const SPELL_CARDS = require('./test-cards.json').spells;
+// const { bossesMechanicsMap } = require('../logic/game/unique_mechanics/bossMecahnics')
+// const { dungeonMechanicsMap } = require('../logic/game/unique_mechanics/dungeonMechanics')
+
+import { expect } from "chai";
+import { Game } from "../src/logic/game/game";
+import { Player } from "../src/logic/player/player";
+import { BossCard, DungeonCard, HeroCard, SpellCard } from "../src/logic/game/cards";
+
+// const { spellsMechanicsMap } = require('../logic/game/unique_mechanics/spellsMechanics')
+import {
+    bosses as BOSS_CARDS,
+    dungeons as DUNGEON_CARDS,
+    heroes as HERO_CARDS,
+    spells as SPELL_CARDS
+} from './test-cards.json'
+import { bossesMechanicsMap } from '../src/logic/game/unique_mechanics/bossMecahnics'
+import { dungeonMechanicsMap } from '../src/logic/game/unique_mechanics/dungeonMechanics'
+import { spellsMechanicsMap } from "../src/logic/game/unique_mechanics/spellsMechanics";
 
 const findCardByName = (where, cardName) => {
     let foundCard
@@ -51,11 +66,11 @@ const createCard = (game, card) => {
     let createdObj
     if (card.CARDTYPE === "DUNGEON") {
         const { id, name, CARDTYPE, damage, isFancy, treasure, type } = card
-        createdObj = new DungeonCard(id, name, CARDTYPE, game, damage, treasure, type, isFancy)
+        createdObj = new DungeonCard(id, name, CARDTYPE, game, damage, treasure, type, isFancy, undefined, undefined, undefined)
     }
     else if (card.CARDTYPE === "SPELL") {
         const { id, name, CARDTYPE, playablePhase } = card
-        createdObj = new SpellCard(id, name, CARDTYPE, game, playablePhase)
+        createdObj = new SpellCard(id, name, CARDTYPE, game, playablePhase, undefined, undefined)
     }
     else if (card.CARDTYPE === "HERO") {
         const { id, name, CARDTYPE, health, treasure, damageDealt } = card
@@ -63,7 +78,7 @@ const createCard = (game, card) => {
     }
     else if (card.CARDTYPE === "BOSS") {
         const { id, name, CARDTYPE, pd, treasure } = card
-        createdObj = new BossCard(id, name, CARDTYPE, game, pd, treasure)
+        createdObj = new BossCard(id, name, CARDTYPE, game, pd, treasure, undefined, undefined)
     }
     return createdObj
 }
@@ -71,12 +86,11 @@ const createCard = (game, card) => {
 describe('Spell cards', () => {
 
     context("Wyczerpanie (Zadaj X obrażeń jednemu bohaterowi w Twoich podziemiach, gdzie X jest równy liczbie widocznych komnat w Twoich podziemiach.)", () => {
-        let player1 = new Player()
-        let player2 = new Player()
+        let player1 = new Player(undefined, 'olek')
+        let player2 = new Player(undefined, 'mat')
         let bosses
-        let game = new Game()
+        let game = new Game(undefined, [player1, player2])
         let testedCard
-        let hero = new HeroCard()
         beforeEach(() => {
             testedCard = findCardByName(SPELL_CARDS, "Wyczerpanie")
 
@@ -90,11 +104,11 @@ describe('Spell cards', () => {
                     let createdObj
                     if (card.CARDTYPE === "DUNGEON") {
                         const { id, name, CARDTYPE, damage, isFancy, treasure, type } = card
-                        createdObj = new DungeonCard(id, name, CARDTYPE, game, damage, treasure, type, isFancy)
+                        createdObj = new DungeonCard(id, name, CARDTYPE, game, damage, treasure, type, isFancy, undefined, undefined, undefined)
                     }
                     else if (card.CARDTYPE === "SPELL") {
                         const { id, name, CARDTYPE, playablePhase } = card
-                        createdObj = new SpellCard(id, name, CARDTYPE, game, playablePhase)
+                        createdObj = new SpellCard(id, name, CARDTYPE, game, playablePhase, undefined, undefined)
                     }
                     else if (card.CARDTYPE === "HERO") {
                         const { id, name, CARDTYPE, health, treasure, damageDealt } = card
@@ -102,7 +116,7 @@ describe('Spell cards', () => {
                     }
                     else if (card.CARDTYPE === "BOSS") {
                         const { id, name, CARDTYPE, pd, treasure } = card
-                        createdObj = new BossCard(id, name, CARDTYPE, game, pd, treasure)
+                        createdObj = new BossCard(id, name, CARDTYPE, game, pd, treasure, undefined, undefined)
                     }
                     finalCards.push(createdObj)
                 }

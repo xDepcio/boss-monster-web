@@ -560,4 +560,4 @@ module.exports = {
     bossesMechanicsMap
 }
 
-export { BossMechanic }
+export { BossMechanic, bossesMechanicsMap }

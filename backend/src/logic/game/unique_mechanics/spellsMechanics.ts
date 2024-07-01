@@ -385,4 +385,4 @@ module.exports = {
     spellsMechanicsMap,
 }
 
-export { SpellMechanic }
+export { SpellMechanic, spellsMechanicsMap }

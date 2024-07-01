@@ -4,7 +4,7 @@
 // const { BossCard, DungeonCard, HeroCard, SpellCard } = require('../logic/game/cards')
 
 
-// describe('Dungeon Cards', () => {
+// describe('Game Object', () => {
 
 //     context("Full game cycle tests", () => {
 //         let spells
@@ -284,8 +284,6 @@
 //             game.notUsedBossesStack = [...bosses]
 //         })
 
-//         it('Bezdenna czeluść ()', () => { })
-
 //         it('One round not full cycle with hero passing up to 1 dungeon', () => {
 //             player1.drawnBosses = [bosses[3], bosses[0]]
 //             player2.drawnBosses = [bosses[1], bosses[2]]
@@ -336,4 +334,4 @@
 //     })
 // })
 
-export { }
+// export { }

@@ -1603,4 +1603,4 @@ module.exports = {
     // mechanicsTypes
 }
 
-export { DungeonMechanic }
+export { DungeonMechanic, dungeonMechanicsMap }

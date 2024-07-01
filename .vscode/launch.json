@@ -4,6 +4,17 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+        // This bac boy WORKS!!!!
+        {
+            "localRoot": "${workspaceFolder}/backend",
+            "name": "Mocha Tests :(((",
+            "program": "${workspaceFolder}/backend/node_modules/.bin/mocha",
+            "request": "launch",
+            "type": "node",
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
+        },
         {
             "args": [
                 "--timeout",
@@ -28,6 +39,6 @@
                 "<node_internals>/**"
             ],
             "program": "${workspaceFolder}/backend/test/game-spec.js"
-        }
+        },
     ]
 }

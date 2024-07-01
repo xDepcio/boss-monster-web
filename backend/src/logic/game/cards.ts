@@ -261,9 +261,18 @@ class DungeonCard extends Card {
     disableFancyBuildOnTop: boolean
     onRactivateActions: () => void | null
 
-    constructor(id: Id, name: string, CARDTYPE: CardType, trackedGame: Game,
-        baseDamage: number, treasure: Treasure, type: 'monsters' | 'traps', isFancy: boolean,
-        mechanic: typeof DungeonMechanic, mechanicType: DungeonMechanicTypes, mechanicDescription: string
+    constructor(
+        id: Id,
+        name: string,
+        CARDTYPE: CardType,
+        trackedGame: Game,
+        baseDamage: number,
+        treasure: Treasure,
+        type: 'monsters' | 'traps',
+        isFancy: boolean,
+        mechanic: typeof DungeonMechanic,
+        mechanicType: DungeonMechanicTypes,
+        mechanicDescription: string
     ) {
         super(id, name, CARDTYPE, trackedGame)
         this.baseDamage = baseDamage

@@ -2,10 +2,7 @@
 // const { Game } = require('../logic/game/game')
 // const Player = require('../logic/player/player')
 // const { BossCard, DungeonCard, HeroCard, SpellCard } = require('../logic/game/cards')
-
-
 // describe('Game Object', () => {
-
 //     context("Full game cycle tests", () => {
 //         let spells
 //         let dungeons
@@ -283,7 +280,6 @@
 //             game.notUsedHeroCardsStack = [...heroes]
 //             game.notUsedBossesStack = [...bosses]
 //         })
-
 //         it('One round not full cycle with hero passing up to 1 dungeon', () => {
 //             player1.drawnBosses = [bosses[3], bosses[0]]
 //             player2.drawnBosses = [bosses[1], bosses[2]]
@@ -300,7 +296,6 @@
 //             player2.acceptHeroMove()
 //             player1.acceptHeroMove()
 //         })
-
 //         it('2 rounds cycle with hero passing 2 dungeons', () => {
 //             game.city = [heroes[2], heroes[7], heroes[1], heroes[3]]
 //             player1.drawnBosses = [bosses[0], bosses[1]]
@@ -328,10 +323,6 @@
 //             player2.acceptHeroMove()
 //             player1.acceptHeroMove()
 //         })
-
-
-
 //     })
 // })
-
-export { }
+// export { }
