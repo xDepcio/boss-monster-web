@@ -1,3 +1,4 @@
+import * as _ from 'mocha'
 import { expect } from 'chai';
 import { Game } from '../src/logic/game/game';
 
