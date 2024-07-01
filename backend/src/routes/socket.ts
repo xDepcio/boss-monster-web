@@ -1,4 +1,4 @@
-const { getIo } = require('../app');
+import { getIo } from "../app.js";
 
 
 const io = getIo()

@@ -1,11 +1,8 @@
-import { BossCard, DungeonCard, HeroCard, SpellCard } from "../../logic/game/cards"
-import { Game } from "../../logic/game/game"
-
-// const { Game } = require('../../logic/game/game')
-// const { DungeonCard, HeroCard, SpellCard, BossCard } = require('../../logic/game/cards')
-const { bossesMechanicsMap } = require('../../logic/game/unique_mechanics/bossMecahnics')
-const { dungeonMechanicsMap } = require('../../logic/game/unique_mechanics/dungeonMechanics')
-const { spellsMechanicsMap } = require('../../logic/game/unique_mechanics/spellsMechanics')
+import { BossCard, DungeonCard, HeroCard, SpellCard } from "../../logic/game/cards.js"
+import { Game } from "../../logic/game/game.js"
+import { bossesMechanicsMap } from "../../logic/game/unique_mechanics/bossMecahnics.js"
+import { dungeonMechanicsMap } from "../../logic/game/unique_mechanics/dungeonMechanics.js"
+import { spellsMechanicsMap } from "../../logic/game/unique_mechanics/spellsMechanics.js"
 
 
 function getPrefabDungeonCards(game, cards) {
@@ -110,10 +107,8 @@ function getPrefabDiscardedDungeonCard(game: Game, cards): DungeonCard[] {
 // }
 
 export {
-    getPrefabBossesCards,
-    getPrefabDungeonCards,
+    getPrefabBossesCards, getPrefabDiscardedDungeonCard,
+    getPrefabDiscardedSpells, getPrefabDungeonCards,
     getPrefabHeroCards,
-    getPrefabSpellCards,
-    getPrefabDiscardedDungeonCard,
-    getPrefabDiscardedSpells
+    getPrefabSpellCards
 }

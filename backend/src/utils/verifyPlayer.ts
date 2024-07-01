@@ -1,7 +1,5 @@
-import { parse } from "flatted"
-import { Player } from "../logic/player/player"
+import { Player } from "../logic/player/player.js"
 
-// const Player = require("../logic/player/player")
 
 function assignPlayer(req, res, next) {
     const userId = req.body.userId

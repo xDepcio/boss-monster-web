@@ -1,21 +1,15 @@
+import bodyParser from 'body-parser';
 import express from "express";
-import { Player } from "../logic/player/player";
-// const express = require('express');
-const router = express.Router();
-const uuid = require('uuid');
-// const Lobby = require('../logic/lobby/lobby');
-// const Player = require('../logic/player/player')
-// const { Game } = require('../logic/game/game')
-// const prefabs = require('../utils/prefabs/prefabs.json')
-import prefabs from '../utils/prefabs/prefabs.json'
-import { Game } from "../logic/game/game";
 import { stringify } from "flatted";
-import { Lobby } from "../logic/lobby/lobby";
-const { flattenCircular } = require('../utils/responseFormat')
-import bodyParser from 'body-parser'
-import axios from "axios";
-// const lobbies = {}
-// const players = {}
+import * as uuid from 'uuid';
+import { Game } from "../logic/game/game.js";
+import { Lobby } from "../logic/lobby/lobby.js";
+import { Player } from "../logic/player/player.js";
+import prefabs from '../utils/prefabs/prefabs.json';
+import { flattenCircular } from '../utils/responseFormat.js';
+
+
+const router = express.Router();
 
 // Create lobby
 router.post('/', (req, res, next) => {
@@ -111,4 +105,4 @@ router.post('/:lobbyId/start-prefab-with-injected-moves', bodyParser.text(), asy
 
 module.exports = router;
 
-export { }
+export default router;

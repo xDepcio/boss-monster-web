@@ -1,26 +1,16 @@
-import { DungeonCard, HeroCard, SpellCard } from "../logic/game/cards";
-import { SelectionRequestUniversal } from "../logic/game/playerRequestSelections";
-import { CardAction } from "../logic/game/unique_mechanics/customCardActions";
-import { Lobby } from "../logic/lobby/lobby";
-import { Player } from "../logic/player/player";
-import { saveInput } from "../utils/saveInput";
+// @ts-nocheck
+import * as express from 'express';
+import { parse, stringify } from "flatted";
+import { DungeonCard, HeroCard, SpellCard } from "../logic/game/cards.js";
+import { SelectionRequestUniversal } from "../logic/game/playerRequestSelections.js";
+import { CardAction } from "../logic/game/unique_mechanics/customCardActions.js";
+import { Lobby } from "../logic/lobby/lobby.js";
+import { Player } from "../logic/player/player.js";
+import { saveInput } from "../utils/saveInput.js";
+import { updateLobbyPlayers } from "../utils/socketsHelper.js";
+import { assignPlayer } from '../utils/verifyPlayer.js';
 
-const express = require('express');
 const router = express.Router();
-// const uuid = require('uuid');
-// const Lobby = require('../logic/lobby/lobby');
-// const Player = require('../logic/player/player')
-// const Game = require('../logic/game/game')
-const { flattenCircular, getCurrentGameData } = require('../utils/responseFormat')
-// const { assignPlayer } = require('../utils/verifyPlayer')
-import { assignPlayer } from '../utils/verifyPlayer'
-const { parse, stringify, toJSON, fromJSON } = require('flatted');
-const { updateLobbyPlayers } = require('../utils/socketsHelper');
-const { SelectionRequest, SelectionRequestOneFromGivenList } = require('../logic/game/playerRequestSelections');
-// const { HeroCard, DungeonCard, SpellCard } = require('../logic/game/cards');
-// const Player = require('../logic/player/player');
-// const { CardAction } = require('../logic/game/unique_mechanics/customCardActions');
-
 
 // Get game info (players...)
 router.get('/:lobbyId', (req, res) => {
@@ -270,4 +260,4 @@ router.post('/:lobbyId/use-custom-action', assignPlayer, saveInput, (req, res, n
 
 module.exports = router;
 
-export { }
+export default router;

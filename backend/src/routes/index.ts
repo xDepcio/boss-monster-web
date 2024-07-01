@@ -1,14 +1,15 @@
-const express = require('express');
-const router = express.Router();
+import express from 'express';
+import usersRouter from './users.js'
+import lobbyRouter from './lobby.js'
+import gameRouter from './game.js'
+import * as _ from './socket.js'
 
-const usersRouter = require('./users')
-const lobbyRouter = require('./lobby')
-const gameRouter = require('./game')
+const router = express.Router();
 
 router.use('/users', usersRouter)
 router.use('/lobby', lobbyRouter)
 router.use('/game', gameRouter)
-require('./socket')
+
 
 /* GET home page. */
 router.get('/', (req, res, next) => {

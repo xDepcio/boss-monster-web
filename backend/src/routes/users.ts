@@ -1,4 +1,5 @@
-const express = require('express');
+import * as express from 'express';
+
 const router = express.Router();
 
 /* GET users listing. */
@@ -8,4 +9,4 @@ router.get('/', function (req, res, next) {
 
 module.exports = router;
 
-export { }
+export default router;

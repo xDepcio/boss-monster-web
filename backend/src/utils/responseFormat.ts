@@ -1,8 +1,8 @@
-import { Lobby } from "../logic/lobby/lobby";
+import CircularJSON from 'circular-json';
+import { stringify } from "flatted";
+import { Lobby } from "../logic/lobby/lobby.js";
 
-const CircularJSON = require('circular-json')
-// const Lobby = require('../logic/lobby/lobby')
-const { parse, stringify, toJSON, fromJSON } = require('flatted');
+
 
 function flattenCircular(obj) {
     return JSON.parse(CircularJSON.stringify(obj))
@@ -24,4 +24,7 @@ module.exports = {
     getCurrentGameData
 }
 
-export { }
+export {
+    flattenCircular,
+    getCurrentGameData
+};

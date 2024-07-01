@@ -1,7 +1,6 @@
-import { parse } from "flatted"
-import { Player } from "../logic/player/player"
 import { NextFunction, Request, Response } from "express"
-import { InputTracker } from "../logic/inputTracker"
+import { InputTracker } from "../logic/inputTracker.js"
+import { Player } from "../logic/player/player.js"
 
 interface ChangedRequest extends Request {
     player: Player

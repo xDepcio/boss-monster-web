@@ -1,5 +1,5 @@
-const { getIo } = require("../app");
-const { getCurrentGameData } = require("./responseFormat");
+import { getIo } from "../app.js"
+import { getCurrentGameData } from "./responseFormat.js"
 
 
 function updateLobbyPlayers(lobbyId) {
@@ -10,4 +10,6 @@ module.exports = {
     updateLobbyPlayers
 }
 
-export { }
+export {
+    updateLobbyPlayers
+}
