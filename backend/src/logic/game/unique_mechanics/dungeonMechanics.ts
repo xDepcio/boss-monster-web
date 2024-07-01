@@ -1,11 +1,11 @@
-import { Player } from "../../player/player"
-import { DungeonMechanicTypes, TreasureSign } from "../../types"
-import { GameEvent, feedback } from "../actionFeedbacks"
-import { Card, DungeonCard, HeroCard, SpellCard } from "../cards"
-import { SelectableItem, SelectionRequest, SelectionRequestOneFromGivenList, SelectionRequestUniversal } from "../playerRequestSelections"
-import { CardAction } from "./customCardActions"
-import { EventListener } from "./eventListener"
-import { RoundModifer } from "./roundModifiers"
+import { Player } from "../../player/player.js"
+import { DungeonMechanicTypes, TreasureSign } from "../../types.js"
+import { GameEvent, feedback } from "../actionFeedbacks.js"
+import { Card, DungeonCard, HeroCard, SpellCard } from "../cards.js"
+import { SelectableItem, SelectionRequest, SelectionRequestOneFromGivenList, SelectionRequestUniversal } from "../playerRequestSelections.js"
+import { CardAction } from "./customCardActions.js"
+import { EventListener } from "./eventListener.js"
+import { RoundModifer } from "./roundModifiers.js"
 
 const { OncePerRoundMechanicUsedAlready, DungeonMechanicUseConditionError } = require("../../errors")
 // const { feedback, eventTypes } = require("../actionFeedbacks")

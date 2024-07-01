@@ -1,9 +1,10 @@
-import { Player } from "../../player/player"
-import { Id } from "../../types"
-import { feedback } from "../actionFeedbacks"
-import { BossCard, DungeonCard, HeroCard } from "../cards"
+import { Player } from "../../player/player.js"
+import { Id } from "../../types.js"
+import { feedback } from "../actionFeedbacks.js"
+import { BossCard, DungeonCard, HeroCard } from "../cards.js"
 
-const { v4 } = require("uuid")
+import { v4 } from 'uuid'
+
 
 class CardAction {
     static cardActions: { [id: Id]: CardAction } = {}

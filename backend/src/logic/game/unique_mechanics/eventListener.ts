@@ -1,5 +1,5 @@
-import { GameEvent } from "../actionFeedbacks";
-import { Game } from "../game";
+import { GameEvent } from "../actionFeedbacks.js";
+import { Game } from "../game.js";
 
 export class EventListener {
     eventsHandler: (event: GameEvent) => void

@@ -80,10 +80,6 @@ class HeroCard extends Card {
         const mostValuablePlayer = this.getMostValuablePlayer(this.trackedGame.players)
         if (mostValuablePlayer) {
             this.goToPlayer(mostValuablePlayer)
-            // this.trackedGame.saveGameAction(feedback.HERO_GOTO_PLAYER(this, mostValuablePlayer))
-            // this.removeSelfFromCity()
-            // mostValuablePlayer.addHeroToDungeonEntrance(this)
-            // this.setDungeonOwner(mostValuablePlayer)
         }
     }
 
@@ -354,11 +350,6 @@ class DungeonCard extends Card {
 
     damageHero(hero: HeroCard) {
         hero.getDamaged(this.damage)
-        // this.trackedGame.saveGameAction(feedback.HERO_DAMAGED(hero, this, hero.dungeonOwner))
-        // if (hero.checkDeath()) {
-        //     hero.die()
-        //     this.handleHeroDiedInRoom(hero)
-        // }
     }
 
     setAllowDestroy(bool: boolean) {

@@ -6,37 +6,6 @@ import { CardAction } from "./unique_mechanics/customCardActions"
 import { DungeonMechanic } from "./unique_mechanics/dungeonMechanics"
 import { SpellMechanic } from "./unique_mechanics/spellsMechanics"
 
-// const eventTypes = {
-//     PLAYER_DECLARED_BUILD: 'BUILD' as const,
-//     PLAYER_BECOME_READY: 'READY' as const,
-//     START_FIGHT_PHASE: 'START_FIGHT' as const,
-//     HERO_GOTO_PLAYER: 'HERO_LURED' as const,
-//     PLAYER_KILLED_HERO: 'HERO_KILLED' as const,
-//     HERO_ATTACKED_PLAYER: 'PLAYER_DAMAGED' as const,
-//     PLAYER_SELECTED_BOSS: 'PLAYER_SELECTED_BOSS' as const,
-//     START_FIRST_ROUND: 'START_FIRST_ROUND' as const,
-//     HERO_DAMAGED: 'HERO_DAMAGED' as const,
-//     PLAYER_ACCEPTED_HERO_MOVE: 'PLAYER_ACCEPTED_HERO_MOVE' as const,
-//     NO_MORE_HEROES_IN_FIGHT_PHASE: 'NO_MORE_HEROES_IN_FIGHT_PHASE' as const,
-//     NEW_ROUND_BEGUN: 'NEW_ROUND_BEGUN' as const,
-//     START_BUILD_PHASE: 'START_BUILD_PHASE' as const,
-//     PLAYER_DESTROYED_DUNGEON: 'PLAYER_DESTROYED_DUNGEON' as const,
-//     PLAYER_USED_MECHANIC: 'PLAYER_USED_MECHANIC' as const,
-//     HERO_DAMAGED_BY_SPELL: 'HERO_DAMAGED_BY_SPELL' as const,
-//     HERO_WENT_BACK_TO_CITY: 'HERO_WENT_BACK_TO_CITY' as const,
-//     PLAYER_PLAYED_SPELL: 'PLAYER_PLAYED_SPELL' as const,
-//     PLAYER_DRAWNED_DUNGEON_CARD: 'PLAYER_DRAWNED_DUNGEON_CARD' as const,
-//     PLAYER_DRAWNED_SPELL_CARD: 'PLAYER_DRAWNED_SPELL_CARD' as const,
-//     PLAYER_BUILD_DUNGEON: 'PLAYER_BUILD_DUNGEON' as const,
-//     PLAYER_ACCEPTED_SPELL_PLAY: 'PLAYER_ACCEPTED_SPELL_PLAY' as const,
-//     PLAYER_THROWN_AWAY_CARD: 'PLAYER_THROWN_AWAY_CARD' as const,
-//     HERO_ENTERED_ROOM: 'HERO_ENTERED_ROOM' as const,
-//     HERO_DIED_IN_ROOM: 'HERO_DIED_IN_ROOM' as const,
-//     PLAYER_USED_BOSS_RANKUP_MECHANIC: 'PLAYER_USED_BOSS_RANKUP_MECHANIC' as const,
-//     PLAYER_USED_CUSTOM_CARD_ACTION: 'PLAYER_USED_CUSTOM_CARD_ACTION' as const,
-//     PLAYER_USED_SPELL_MECHANIC: 'PLAYER_USED_SPELL_MECHANIC' as const,
-//     PLAYER_USED_DUNGEON_MECHANIC: 'PLAYER_USED_DUNGEON_MECHANIC' as const
-// }
 type EventSchema = {
     PLAYER_DECLARED_BUILD: {
         type: 'PLAYER_DECLARED_BUILD',
@@ -236,13 +205,6 @@ type EventSchema = {
 }
 
 export type GameEvent = EventSchema[keyof EventSchema]
-
-
-// export type FeedbackEventType = typeof eventTypes[keyof typeof eventTypes]
-// export type FeedbackEventCore = {
-//     type: FeedbackEventType,
-//     message: string,
-// }
 
 export const feedback = {
     PLAYER_DECLARED_BUILD: (player: Player, dungeon: DungeonCard): GameEvent => {

@@ -1,21 +1,11 @@
-import { Player } from "../player/player"
-import { RequestItemType, SelectionChoiceScope, TreasureSign } from "../types"
-import { BossCard, DungeonCard, HeroCard, SpellCard } from "./cards"
+import { HeroNotFoundInCity, InvalidTreasureType } from "../errors.js"
+import { Player } from "../player/player.js"
+import { RequestItemType, SelectionChoiceScope, TreasureSign } from "../types.js"
+import { BossCard, DungeonCard, HeroCard, SpellCard } from "./cards.js"
 
-const { HeroNotFoundInCity, InvalidTreasureType } = require("../errors")
 
 export type SelectableItem = Player | HeroCard | DungeonCard | SpellCard | BossCard | TreasureSign
 class SelectionRequest {
-    // static requestItemTypes = {
-    //     HERO: 'hero',
-    //     DUNGEON: 'dungeon',
-    //     PLAYER: 'player',
-    //     SPELL: 'spell',
-    //     TREASURE: 'treasure'
-    // }
-    // static scopeAny = 'ANY'
-    // static scopeCity = 'CITY'
-    // static scopeDeadHeroes = 'DEAD_HEROES'
     requestedPlayer: Player
     requestItemType: RequestItemType
     amount: number
@@ -355,23 +345,6 @@ class SelectionRequestUniversal<SelectableType> {
         this.canceled = true
     }
 }
-
-// class Class1<T> {
-//     avalibleItemsForSelectArr: T[]
-//     selectedItems: T[]
-//     constructor(a: number, avalibleItemsForSelectArr: T[]) {
-//         this.avalibleItemsForSelectArr = avalibleItemsForSelectArr
-//         this.selectedItems = []
-//     }
-
-//     resolve() {
-//         return this.selectedItems
-//     }
-// }
-
-// const a = new Class1<"tak" | "nie">(1, ['tak', "nie"])
-// let xd = a.resolve()
-
 
 module.exports = {
     SelectionRequest,

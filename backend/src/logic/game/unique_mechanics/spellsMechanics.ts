@@ -1,12 +1,8 @@
-import { Player } from "../../player/player"
-import { feedback } from "../actionFeedbacks"
-import { DungeonCard, HeroCard, SpellCard } from "../cards"
-import { SelectionRequest, SelectionRequestUniversal } from "../playerRequestSelections"
-import { EventListener } from "./eventListener"
-
-// const { feedback } = require("../actionFeedbacks")
-// const { SelectionRequest } = require("../playerRequestSelections")
-
+import { Player } from "../../player/player.js"
+import { feedback } from "../actionFeedbacks.js"
+import { DungeonCard, HeroCard, SpellCard } from "../cards.js"
+import { SelectionRequestUniversal } from "../playerRequestSelections.js"
+import { EventListener } from "./eventListener.js"
 
 class SpellMechanic {
 

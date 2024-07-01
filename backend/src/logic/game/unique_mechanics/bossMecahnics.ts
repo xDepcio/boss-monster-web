@@ -1,13 +1,10 @@
-import { GameEvent, feedback } from "../actionFeedbacks"
-import { BossCard, Card, DungeonCard, HeroCard, SpellCard } from "../cards"
-import { SelectionRequest, SelectionRequestNEW, SelectionRequestUniversal } from "../playerRequestSelections"
-import { CardAction } from "./customCardActions"
-import { RoundModifer } from "./roundModifiers"
+import { GameEvent, feedback } from "../actionFeedbacks.js"
+import { BossCard, DungeonCard, HeroCard, SpellCard } from "../cards.js"
+import { SelectionRequestNEW, SelectionRequestUniversal } from "../playerRequestSelections.js"
+import { CardAction } from "./customCardActions.js"
+import { RoundModifer } from "./roundModifiers.js"
 
-// const { eventTypes, feedback } = require("../actionFeedbacks")
-const GAME_CONSTANTS = require('../gameConstants.json')
-// const { CardAction } = require("./customCardActions")
-// const { RoundModifer } = require("./roundModifiers")
+import * as GAME_CONSTANTS from "../gameConstants.json"
 
 class BossMechanic {
 
