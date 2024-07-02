@@ -1,5 +1,5 @@
 import path from "path";
-import express, { Request, Response, NextFunction } from "express"; 'express'
+import express, { Request, Response, NextFunction } from "express";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import http from "http";
