@@ -9,7 +9,7 @@ type Input = {
     payload: any;
 }
 
-export class InputTracker {
+class InputTracker {
     private inputs: Input[] = [];
     trackedGame: Game
 
@@ -43,4 +43,9 @@ export class InputTracker {
     public getInputs() {
         return this.inputs;
     }
+}
+
+
+export {
+    InputTracker
 }

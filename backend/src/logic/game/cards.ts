@@ -563,12 +563,4 @@ class BossCard extends Card {
 }
 
 
-module.exports = {
-    Card,
-    HeroCard,
-    DungeonCard,
-    SpellCard,
-    BossCard
-}
-
 export { BossCard, Card, DungeonCard, HeroCard, SpellCard }

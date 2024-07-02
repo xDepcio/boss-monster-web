@@ -19,10 +19,6 @@ function getCurrentGameData(lobbyId) {
     return data
 }
 
-module.exports = {
-    flattenCircular,
-    getCurrentGameData
-}
 
 export {
     flattenCircular,

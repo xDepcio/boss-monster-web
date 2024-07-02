@@ -258,6 +258,5 @@ router.post('/:lobbyId/use-custom-action', assignPlayer, saveInput, (req, res, n
     })
 })
 
-module.exports = router;
 
 export default router;

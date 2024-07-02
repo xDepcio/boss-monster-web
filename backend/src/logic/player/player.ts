@@ -1,37 +1,35 @@
-import { feedback } from "../game/actionFeedbacks"
-import { BossCard, Card, DungeonCard, HeroCard, SpellCard } from "../game/cards"
-import { Game } from "../game/game"
-import { SelectionRequest, SelectionRequestNEW, SelectionRequestOneFromGivenList, SelectionRequestUniversal } from "../game/playerRequestSelections"
-import { Id } from "../types"
-
-const {
-    PlayerAlreadyDeclaredBuild,
-    DungeonCardsStackEmpty,
-    SpellCardsStackEmpty,
-    CardCannotBeBuilt,
-    DungeonFullError,
+import { feedback } from "../game/actionFeedbacks.js"
+import { BossCard, DungeonCard, HeroCard, SpellCard } from "../game/cards.js"
+import { Game } from "../game/game.js"
+import { SelectionRequest, SelectionRequestNEW, SelectionRequestOneFromGivenList, SelectionRequestUniversal } from "../game/playerRequestSelections.js"
+import { Id } from "../types.js"
+import {
     BossCardStackEmpty,
-    NoSuchBossInPlayerCards,
-    PlayerAlreadySelectedBoss,
-    InvalidFancyDungeonBuild,
-    NoSuchDungeonInPlayerCards,
-    WrongPhaseToBuild,
-    PhaseNotFinished,
-    PlayerAlreadyReady,
-    PlayerAlreadyAcceptedHeroMove,
+    CardCannotBeBuilt,
     CardCannotBeDestroyed,
+    DungeonCardsStackEmpty,
+    DungeonEffectCannotBeUsed,
+    DungeonFullError,
+    InvalidFancyDungeonBuild,
+    NoSpellCurrentylAtPlay,
+    NoSuchBossInPlayerCards,
     NoSuchDungeonCardInPlayerDungeon,
-    WrongRoundPhase,
+    NoSuchDungeonInPlayerCards,
+    NoSuchHeroAtDungeonEntrance,
     NoSuchSpellInPlayerHand,
     OtherSpellCurrentlyAtPlay,
+    PhaseNotFinished,
+    PlayerAlreadyAcceptedHeroMove,
     PlayerAlreadyAcceptedSpellPlay,
-    NoSpellCurrentylAtPlay,
-    DungeonEffectCannotBeUsed,
+    PlayerAlreadyDeclaredBuild,
+    PlayerAlreadyReady,
+    PlayerAlreadySelectedBoss,
     PlayerHasNotEnoughMoney,
-    NoSuchHeroAtDungeonEntrance
-} = require('../errors')
-// const { feedback } = require('../game/actionFeedbacks')
-// const { mechanicsTypes } = require('../game/unique_mechanics/dungeonMechanics')
+    SpellCardsStackEmpty,
+    WrongPhaseToBuild,
+    WrongRoundPhase
+} from '../errors.js'
+
 export type BuildOptions = {
     ignoreRoundPhase?: boolean
 }
@@ -598,6 +596,5 @@ class Player {
     }
 }
 
-// module.exports = Player
 
 export { Player }

@@ -86,13 +86,6 @@ function shuuffled(array) {
 }
 
 
-module.exports = {
-    getShuffledDungeonCards,
-    getShuffledHeroCards,
-    getShuffledSpellCards,
-    getShuffledBossesCards
-}
-
 export {
     getShuffledDungeonCards,
     getShuffledHeroCards,

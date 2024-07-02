@@ -43,6 +43,5 @@ class Lobby {
     }
 }
 
-// module.exports = Lobby
 
 export { Lobby }

@@ -1598,9 +1598,4 @@ const dungeonMechanicsMap = {
 }
 
 
-module.exports = {
-    dungeonMechanicsMap,
-    // mechanicsTypes
-}
-
 export { DungeonMechanic, dungeonMechanicsMap }

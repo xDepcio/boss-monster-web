@@ -99,16 +99,12 @@ function getPrefabDiscardedDungeonCard(game: Game, cards): DungeonCard[] {
     return discardedDungeons
 }
 
-// module.exports = {
-//     getPrefabBossesCards,
-//     getPrefabDungeonCards,
-//     getPrefabHeroCards,
-//     getPrefabSpellCards
-// }
 
 export {
-    getPrefabBossesCards, getPrefabDiscardedDungeonCard,
-    getPrefabDiscardedSpells, getPrefabDungeonCards,
+    getPrefabBossesCards,
+    getPrefabDiscardedDungeonCard,
+    getPrefabDiscardedSpells,
+    getPrefabDungeonCards,
     getPrefabHeroCards,
     getPrefabSpellCards
 }

@@ -377,8 +377,5 @@ const spellsMechanicsMap = {
     "Kobold Strike": DenyAnyRoomBuildInThisRound,
 }
 
-module.exports = {
-    spellsMechanicsMap,
-}
 
 export { SpellMechanic, spellsMechanicsMap }

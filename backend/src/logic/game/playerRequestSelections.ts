@@ -346,11 +346,5 @@ class SelectionRequestUniversal<SelectableType> {
     }
 }
 
-module.exports = {
-    SelectionRequest,
-    SelectionRequestOneFromGivenList,
-    SelectionRequestNEW,
-    SelectionRequestUniversal
-}
 
 export { SelectionRequest, SelectionRequestOneFromGivenList, SelectionRequestNEW, SelectionRequestUniversal }

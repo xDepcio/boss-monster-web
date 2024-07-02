@@ -25,8 +25,4 @@ class RoundModifer {
 }
 
 
-module.exports = {
-    RoundModifer
-}
-
 export { RoundModifer }

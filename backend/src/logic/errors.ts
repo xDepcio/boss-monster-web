@@ -194,41 +194,6 @@ class InvalidTreasureType extends Error {
 }
 
 
-
-module.exports = {
-    CardCannotBeBuilt,
-    DungeonCardsStackEmpty,
-    PlayerAlreadyDeclaredBuild,
-    SpellCardsStackEmpty,
-    HeroesCardsStackEmpty,
-    DungeonFullError,
-    NotAllPlayersAcceptedHeroMove,
-    BossCardStackEmpty,
-    NoSuchBossInPlayerCards,
-    PlayerAlreadySelectedBoss,
-    InvalidFancyDungeonBuild,
-    NoSuchDungeonInPlayerCards,
-    WrongPhaseToBuild,
-    PhaseNotFinished,
-    PlayerAlreadyReady,
-    PlayerAlreadyAcceptedHeroMove,
-    CardCannotBeDestroyed,
-    NoSuchDungeonCardInPlayerDungeon,
-    WrongRoundPhase,
-    NoSuchSpellInPlayerHand,
-    HeroAlreadyInCity,
-    OncePerRoundMechanicUsedAlready,
-    HeroNotFoundInCity,
-    OtherSpellCurrentlyAtPlay,
-    NoSpellCurrentylAtPlay,
-    PlayerAlreadyAcceptedSpellPlay,
-    DungeonEffectCannotBeUsed,
-    DungeonMechanicUseConditionError,
-    InvalidTreasureType,
-    PlayerHasNotEnoughMoney,
-    NoSuchHeroAtDungeonEntrance
-}
-
 export {
     CardCannotBeBuilt,
     DungeonCardsStackEmpty,

@@ -77,8 +77,4 @@ class CardAction {
 }
 
 
-module.exports = {
-    CardAction
-}
-
 export { CardAction }

@@ -103,6 +103,5 @@ router.post('/:lobbyId/start-prefab-with-injected-moves', bodyParser.text(), asy
     return res.json(flattenCircular(lobby))
 })
 
-module.exports = router;
 
 export default router;

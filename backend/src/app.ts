@@ -29,10 +29,6 @@ function getIo() {
     return io
 }
 
-module.exports = {
-    getIo
-}
-
 // serving static files
 app.use(express.static(path.join(__dirname, '../public')))
 

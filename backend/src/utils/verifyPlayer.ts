@@ -14,8 +14,5 @@ function assignPlayer(req, res, next) {
 }
 
 
-module.exports = {
-    assignPlayer
-}
 
 export { assignPlayer }

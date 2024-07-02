@@ -553,8 +553,5 @@ const bossesMechanicsMap = {
     'XYZAX': TakeTwoCardFromDiscardedCardsStack
 }
 
-module.exports = {
-    bossesMechanicsMap
-}
 
 export { BossMechanic, bossesMechanicsMap }

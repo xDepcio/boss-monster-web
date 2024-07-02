@@ -479,10 +479,3 @@ export const feedback = {
         }
     }
 }
-
-module.exports = {
-    feedback,
-    // eventTypes
-}
-
-export { }
