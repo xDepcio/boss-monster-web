@@ -18,4 +18,4 @@ router.get('/', (req, res, next) => {
 
 module.exports = router;
 
-export { }
+export default router;

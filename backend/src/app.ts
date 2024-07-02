@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import http from "http";
 import { Server } from "socket.io";
 import cors from "cors";
+import routes from "./routes";
 
 const app = express();
 
@@ -35,7 +36,6 @@ module.exports = {
 // serving static files
 app.use(express.static(path.join(__dirname, '../public')))
 
-const routes = require('./routes')
 app.use(routes)
 
 // Catch unhandled requests and forward to error handler.
