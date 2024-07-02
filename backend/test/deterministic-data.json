@@ -1,0 +1,20 @@
+{
+    "firstScenerio": {
+        "players": [
+            {
+                "id": 1,
+                "name": "Player1"
+            },
+            {
+                "id": 2,
+                "name": "Player2"
+            }
+        ],
+        "notUsedSpellCardsStack": [],
+        "notUsedDungeonCardsStack": [],
+        "notUsedHeroCardsStack": [],
+        "notUsedBossesStack": [],
+        "discardedDungeonCardsStack": [],
+        "discardedSpellCardsStack": []
+    }
+}
