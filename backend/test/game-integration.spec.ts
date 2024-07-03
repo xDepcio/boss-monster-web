@@ -32,7 +32,9 @@ describe('Dungeon Cards Tests', () => {
         let { game, players } = startScenarioSimple()
 
         beforeEach(() => {
-            let { game, players } = startScenarioSimple()
+            const data = startScenarioSimple()
+            game = data.game
+            players = data.players
         })
 
         it('should select correct boss', () => {
