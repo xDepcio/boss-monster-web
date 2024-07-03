@@ -3,58 +3,72 @@ export default {
         {
             "CARDTYPE": "SPELL",
             "id": 1,
-            "name": "Wyczerpanie",
+            "name": "Annihilator",
             "playablePhase": "fight",
-            "description": "Zadaj X obrażeń jednemu bohaterowi w Twoich podziemiach, gdzie X jest równy liczbie widocznych komnat w Twoich podziemiach."
+            "description": "Give one Trap Room +3 damage until end of turn."
         },
         {
             "CARDTYPE": "SPELL",
             "id": 2,
-            "name": "Przerażenie",
+            "name": "Assassin",
             "playablePhase": "fight",
-            "description": "Wybierz bohatera w dowolonych podziemiach i odeślij go do miasta."
+            "description": "Choose a Hero in an opponent's dungeon. Give that Hero +3 Health until end of turn."
         },
         {
             "CARDTYPE": "SPELL",
             "id": 3,
-            "name": "Na ratunek",
-            "playablePhase": "build",
-            "description": "Wybierz jednego bohatera w mieście. Połóż go przed wejściem do Twoich podziemi."
+            "name": "Cave-In",
+            "playablePhase": "fight",
+            "description": "Destroy a room in your dungeon. Kill any Hero in that Room."
         },
         {
             "CARDTYPE": "SPELL",
             "id": 4,
-            "name": "Atak żywych trupów",
-            "playablePhase": "build",
-            "description": "Wybierz wyeliminowanego bohatera na obszarze punktacji przeciwnika i odeślij go przed wejście do podziemi tego gracz. Do końca rundy otrzymuje on +2 hp."
+            "name": "Counterspell",
+            "playablePhase": "both",
+            "description": "Choose a Spell card that has just been declared. Cancel the effects of that Spell card. (The canceled Spell card is sent to the discard pile.)"
         },
         {
             "CARDTYPE": "SPELL",
             "id": 5,
-            "name": "Przerażenie",
+            "name": "Exhaustion",
             "playablePhase": "fight",
-            "description": "Wybierz bohatera w dowolonych podziemiach i odeślij go do miasta."
+            "description": "Deal X damage to one Hero in your dungeon, where X is equal to the number of rooms in your dungeon."
         },
         {
             "CARDTYPE": "SPELL",
             "id": 6,
-            "name": "Przerażenie",
+            "name": "Fear",
             "playablePhase": "fight",
-            "description": "Wybierz bohatera w dowolonych podziemiach i odeślij go do miasta."
+            "description": "Choose a Hero in any dungeon and send it back to town."
         },
         {
             "CARDTYPE": "SPELL",
             "id": 7,
-            "name": "Przerażenie",
-            "playablePhase": "fight",
-            "description": "Wybierz bohatera w dowolonych podziemiach i odeślij go do miasta."
+            "name": "Freeze",
+            "playablePhase": "both",
+            "description": "Choose and deactivate one Room in any dungeon. (It has no damage, treasure, or abilities until end of turn.)"
         },
         {
             "CARDTYPE": "SPELL",
             "id": 8,
-            "name": "Przerażenie",
+            "name": "Giant Size",
             "playablePhase": "fight",
-            "description": "Wybierz bohatera w dowolonych podziemiach i odeślij go do miasta."
+            "description": "Give one Monster Room +3 damage until end of turn."
+        },
+        {
+            "CARDTYPE": "SPELL",
+            "id": 9,
+            "name": "Jeopardy",
+            "playablePhase": "both",
+            "description": "All players must discard their hands, then draw one Spell card and two Room cards."
+        },
+        {
+            "CARDTYPE": "SPELL",
+            "id": 10,
+            "name": "Kobold Strike",
+            "playablePhase": "build",
+            "description": "No rooms can be built this turn. Any face-down Room is returned to its owner's hand."
         }
     ],
     "dungeons": [
