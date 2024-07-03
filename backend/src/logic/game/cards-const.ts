@@ -82,8 +82,7 @@ export default {
                 "magic": 1,
                 "strength": 1
             },
-            "isFancy": false,
-            "skip": true
+            "isFancy": false
         },
         {
             "CARDTYPE": "DUNGEON",
@@ -94,8 +93,7 @@ export default {
             "treasure": {
                 "magic": 1
             },
-            "isFancy": false,
-            "skip": true
+            "isFancy": false
         },
         {
             "CARDTYPE": "DUNGEON",
