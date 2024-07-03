@@ -1,4 +1,4 @@
-{
+export default {
     "spells": [
         {
             "CARDTYPE": "SPELL",
@@ -806,4 +806,4 @@
             "mechanicDescription": "Do końca gry: Twoje komnaty pułapek otrzymują +1 obrażeń. Dowonly przeciwnik może Ci dać 1 gold, aby do końca rundy zanegować ten efekt."
         }
     ]
-}
+} as const
