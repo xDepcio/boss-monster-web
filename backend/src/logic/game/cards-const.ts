@@ -908,5 +908,6 @@ export default allCards
 export {
     dungeonCardFromPojo,
     bossCardFromPojo,
-    spellCardFromPojo
+    spellCardFromPojo,
+    heroCardFromPojo
 }
