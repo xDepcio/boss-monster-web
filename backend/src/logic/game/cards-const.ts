@@ -1,4 +1,8 @@
-export default {
+import { DungeonCard } from "./cards"
+import { Game } from "./game"
+import { dungeonMechanicsMap } from "./unique_mechanics/dungeonMechanics"
+
+const allCards = {
     "spells": [
         {
             "CARDTYPE": "SPELL",
@@ -82,7 +86,9 @@ export default {
                 "magic": 1,
                 "strength": 1
             },
-            "isFancy": false
+            "isFancy": false,
+            "mechanicType": null,
+            "mechanicDescription": ""
         },
         {
             "CARDTYPE": "DUNGEON",
@@ -93,7 +99,9 @@ export default {
             "treasure": {
                 "magic": 1
             },
-            "isFancy": false
+            "isFancy": false,
+            "mechanicType": null,
+            "mechanicDescription": ""
         },
         {
             "CARDTYPE": "DUNGEON",
@@ -117,7 +125,9 @@ export default {
             "treasure": {
                 "faith": 1
             },
-            "isFancy": false
+            "isFancy": false,
+            "mechanicType": null,
+            "mechanicDescription": ""
         },
         {
             "CARDTYPE": "DUNGEON",
@@ -862,3 +872,30 @@ export default {
         }
     ]
 } as const
+
+
+interface DungeonCardFromPojoParams {
+    card: typeof allCards.dungeons[number]
+    trackedGame: Game
+}
+function dungeonCardFromPojo({ card, trackedGame }: DungeonCardFromPojoParams) {
+    const dungeonCard = new DungeonCard(
+        card.id,
+        card.name,
+        "DUNGEON",
+        trackedGame,
+        card.damage,
+        card.treasure,
+        card.type,
+        card.isFancy,
+        dungeonMechanicsMap[card.name],
+        card.mechanicType,
+        card.mechanicDescription
+    )
+}
+
+
+export default allCards
+export {
+
+}

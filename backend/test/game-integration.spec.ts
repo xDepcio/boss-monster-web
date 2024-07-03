@@ -3,6 +3,7 @@ import { expect } from 'chai';
 import { Game } from '../src/logic/game/game';
 import { Player } from '../src/logic/player/player';
 import { BossCard, DungeonCard, HeroCard, SpellCard } from '../src/logic/game/cards';
+import allCards from '../src/logic/game/cards-const.js'
 
 describe('Dungeon Cards Tests', () => {
     describe('Haunted Library', () => {
@@ -17,26 +18,3 @@ describe('Dungeon Cards Tests', () => {
         })
     })
 });
-
-type DeterministicGameData = {
-    players: Player[],
-    notUsedSpellCardsStack: SpellCard[],
-    notUsedDungeonCardsStack: DungeonCard[],
-    notUsedHeroCardsStack: HeroCard[],
-    notUsedBossesStack: BossCard[],
-    discardedDungeonCardsStack: DungeonCard[],
-    discardedSpellCardsStack: SpellCard[]
-}
-interface StartDeterministicGameParams {
-    data: DeterministicGameData
-}
-function createDeterministicGame({ data }: StartDeterministicGameParams) {
-    const game = new Game('1', data.players)
-    game.notUsedSpellCardsStack = data.notUsedSpellCardsStack
-    game.notUsedDungeonCardsStack = data.notUsedDungeonCardsStack
-    game.notUsedHeroCardsStack = data.notUsedHeroCardsStack
-    game.notUsedBossesStack = data.notUsedBossesStack
-    game.discardedDungeonCardsStack = data.discardedDungeonCardsStack
-    game.discardedSpellCardsStack = data.discardedSpellCardsStack
-    return game
-}
