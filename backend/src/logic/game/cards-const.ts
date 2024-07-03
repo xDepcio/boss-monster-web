@@ -1,5 +1,7 @@
-import { DungeonCard } from "./cards"
+import { TreasureSign } from "../types"
+import { BossCard, DungeonCard } from "./cards"
 import { Game } from "./game"
+import { bossesMechanicsMap } from "./unique_mechanics/bossMecahnics"
 import { dungeonMechanicsMap } from "./unique_mechanics/dungeonMechanics"
 
 const allCards = {
@@ -892,10 +894,31 @@ function dungeonCardFromPojo({ card, trackedGame }: DungeonCardFromPojoParams) {
         card.mechanicType,
         card.mechanicDescription
     )
+
+    return dungeonCard
 }
 
+interface BossCardFromPojoParams {
+    card: typeof allCards.bosses[number]
+    trackedGame: Game
+}
+function bossCardFromPojo({ card, trackedGame }: BossCardFromPojoParams) {
+    const tresureSign = Object.keys(card.treasure)[0] as TreasureSign
+    const bossCard = new BossCard(
+        card.id,
+        card.name,
+        "BOSS",
+        trackedGame,
+        card.pd,
+        tresureSign,
+        bossesMechanicsMap[card.name],
+        card.mechanicDescription
+    )
+
+    return bossCard
+}
 
 export default allCards
 export {
-
+    dungeonCardFromPojo
 }

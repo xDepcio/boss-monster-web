@@ -521,8 +521,15 @@ class BossCard extends Card {
     owner: Player | null
     mechanic: BossMechanic
 
-    constructor(id: Id, name: string, CARDTYPE: CardType, trackedGame: Game, pd: number,
-        treasure: TreasureSign, mechanic: typeof BossMechanic, mechanicDescription: string
+    constructor(
+        id: Id,
+        name: string,
+        CARDTYPE: CardType,
+        trackedGame: Game,
+        pd: number,
+        treasure: TreasureSign,
+        mechanic: typeof BossMechanic,
+        mechanicDescription: string
     ) {
         super(id, name, CARDTYPE, trackedGame)
         this.pd = pd
