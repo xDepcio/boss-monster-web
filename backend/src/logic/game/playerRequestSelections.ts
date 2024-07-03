@@ -251,7 +251,27 @@ class SelectionRequestUniversal<SelectableType> {
     amount: number
     canceled: boolean
 
-    constructor({ requestedPlayer, selectionMessage, avalibleItemsForSelectArr, onFinish, metadata, amount, additonalValidation = () => true, onSingleSelect = () => { }, onFinishError = () => { } }: { onSingleSelect?: (data: SelectableType) => void, additonalValidation?: (selectedItem: SelectableType) => boolean, amount: number, metadata: { displayType: 'dungeonCard' | 'text' | 'mixed' | 'spellCard' | 'player' }, requestedPlayer: Player, selectionMessage: string, avalibleItemsForSelectArr: SelectableType[], onFinish: (data: SelectableType[]) => void, onFinishError?: (error: Error) => void }) {
+    constructor({
+        requestedPlayer,
+        selectionMessage,
+        avalibleItemsForSelectArr,
+        onFinish,
+        metadata,
+        amount,
+        additonalValidation = () => true,
+        onSingleSelect = () => { },
+        onFinishError = () => { }
+    }: {
+        onSingleSelect?: (data: SelectableType) => void,
+        additonalValidation?: (selectedItem: SelectableType) => boolean,
+        amount: number,
+        metadata: { displayType: 'dungeonCard' | 'text' | 'mixed' | 'spellCard' | 'player' },
+        requestedPlayer: Player,
+        selectionMessage: string,
+        avalibleItemsForSelectArr: SelectableType[],
+        onFinish: (data: SelectableType[]) => void,
+        onFinishError?: (error: Error) => void
+    }) {
         this.requestedPlayer = requestedPlayer
         this.selectionMessage = selectionMessage
         this.avalibleItemsForSelectArr = avalibleItemsForSelectArr
