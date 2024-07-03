@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { Game } from '../src/logic/game/game.js';
 import { Player } from '../src/logic/player/player.js';
 import { BossCard, DungeonCard, HeroCard, SpellCard } from '../src/logic/game/cards.js';
-import allCards, { bossCardFromPojo, dungeonCardFromPojo } from '../src/logic/game/cards-const.js'
+import allCards, { bossCardFromPojo, dungeonCardFromPojo, spellCardFromPojo } from '../src/logic/game/cards-const.js'
 import { Id } from '../src/logic/types.js';
 
 const startScenarioSimple = function () {
@@ -14,14 +14,16 @@ const startScenarioSimple = function () {
                 name: 'player1',
                 drawnBossesNames: ['Scott', 'KRÓL ROPUCH'],
                 selectedBossName: 'Scott',
-                dungeonCardsNames: ['Beast Menagerie', 'Bezdenna czeluść', 'Biuro kadr', 'Boulder Ramp']
+                dungeonCardsNames: ['Beast Menagerie', 'Bezdenna czeluść', 'Biuro kadr', 'Boulder Ramp'],
+                spellCardsNames: ['Annihilator', 'Assassin']
             },
             {
                 id: 2,
                 name: 'player2',
                 drawnBossesNames: ['BAŁAMUTIA', 'CEREBELLUS'],
                 selectedBossName: 'BAŁAMUTIA',
-                dungeonCardsNames: ['Beast Menagerie', 'Bezdenna czeluść', 'Biuro kadr', 'Boulder Ramp']
+                dungeonCardsNames: ['Beast Menagerie', 'Bezdenna czeluść', 'Biuro kadr', 'Boulder Ramp'],
+                spellCardsNames: ['Annihilator', 'Assassin']
             }
         ]
     })
@@ -54,6 +56,11 @@ describe('Dungeon Cards Tests', () => {
         it('should start in build phase', () => {
             expect(game.roundPhase).to.equal('build')
         })
+
+        it('should have correct spell cards', () => {
+            expect(players.get('player1')!.spellCards.map(s => s.name)).to.deep.equal(['Annihilator', 'Assassin'])
+            expect(players.get('player2')!.spellCards.map(s => s.name)).to.deep.equal(['Annihilator', 'Assassin'])
+        })
     })
 });
 
@@ -64,6 +71,7 @@ interface InitDeterminsticGameParams<T extends string> {
         drawnBossesNames: typeof allCards.bosses[number]['name'][],
         selectedBossName: typeof allCards.bosses[number]['name'],
         dungeonCardsNames: typeof allCards.dungeons[number]['name'][]
+        spellCardsNames: typeof allCards.spells[number]['name'][]
     }[]
 }
 function initDeterminsticGame<D extends string>({ players }: InitDeterminsticGameParams<D>) {
@@ -93,6 +101,13 @@ function initDeterminsticGame<D extends string>({ players }: InitDeterminsticGam
         p.dungeonCards = player.dungeonCardsNames.map(dungeonName => dungeonCardFromPojo({
             trackedGame: game,
             card: allCards.dungeons.find(dungeon => dungeon.name === dungeonName)!
+        }))
+    })
+    players.forEach((player, i) => {
+        const p = playersArr[i]
+        p.spellCards = player.spellCardsNames.map(spellName => spellCardFromPojo({
+            trackedGame: game,
+            card: allCards.spells.find(spell => spell.name === spellName)!
         }))
     })
 
