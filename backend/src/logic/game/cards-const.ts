@@ -783,11 +783,12 @@ export default {
         {
             "CARDTYPE": "BOSS",
             "id": 2,
-            "name": "Belladonna",
-            "pd": 860,
+            "name": "Scott",
+            "pd": 780,
             "treasure": {
-                "faith": 1
-            }
+                "fortune": 1
+            },
+            "mechanicDescription": "Do końca gry: Twoje komnaty pułapek otrzymują +1 obrażeń. Dowonly przeciwnik może Ci dać 1 gold, aby do końca rundy zanegować ten efekt."
         },
         {
             "CARDTYPE": "BOSS",
@@ -796,26 +797,68 @@ export default {
             "pd": 400,
             "treasure": {
                 "strength": 1
-            }
+            },
+            "mechanicDescription": "Każdy przeciwnik musi wybrać i zniszczyć komnatę w swoich podziemiach."
         },
         {
             "CARDTYPE": "BOSS",
             "id": 4,
-            "name": "gała",
-            "pd": 630,
+            "name": "KRÓL ROPUCH",
+            "pd": 800,
             "treasure": {
-                "magic": 1
-            }
+                "strength": 1
+            },
+            "mechanicDescription": "Przejrzyj talię komnat lub stos odrzuconych kart w poszukiwaniu wypaśnej komnaty potworów. Możesz natychmiast zbudować tę komnatę. (Na wierzchu komnaty z pasującym rodzajem skarbu)."
         },
         {
             "CARDTYPE": "BOSS",
             "id": 5,
-            "name": "Scott",
-            "pd": 780,
+            "name": "KLEOPATRA",
+            "pd": 850,
             "treasure": {
                 "fortune": 1
             },
-            "mechanicDescription": "Do końca gry: Twoje komnaty pułapek otrzymują +1 obrażeń. Dowonly przeciwnik może Ci dać 1 gold, aby do końca rundy zanegować ten efekt."
+            "mechanicDescription": "Przejrzyj talię komnat lub stos odrzuconych kart w poszukiwaniu wypaśnej komnaty pułapek. Możesz ją natychmiast zbudować. (Na wierzchu komnaty z pasującym rodzajem skarbu)."
+        },
+        {
+            "CARDTYPE": "BOSS",
+            "id": 6,
+            "name": "CEREBELLUS",
+            "pd": 650,
+            "treasure": {
+                "magic": 1
+            },
+            "mechanicDescription": "Dobierz 3 karty czarów i odrzuć jedną."
+        },
+        {
+            "CARDTYPE": "BOSS",
+            "id": 7,
+            "name": "DRAKULORD",
+            "pd": 900,
+            "treasure": {
+                "faith": 1
+            },
+            "mechanicDescription": "Wybrany przeciwnik odkrywa przed Tobą karty ze swojej ręki. Zabierz mu jedną kartę i weź ją na swoją rękę."
+        },
+        {
+            "CARDTYPE": "BOSS",
+            "id": 8,
+            "name": "BAŁAMUTIA",
+            "pd": 600,
+            "treasure": {
+                "magic": 1
+            },
+            "mechanicDescription": "Możesz przejrzeć miasto lub talie bohaterów, wybrać jednego z bohaterów i położyć go przed wejściem do twoich podziemi."
+        },
+        {
+            "CARDTYPE": "BOSS",
+            "id": 9,
+            "name": "XYZAX",
+            "pd": 750,
+            "treasure": {
+                "faith": 1
+            },
+            "mechanicDescription": "Wybierz dwie karty ze stosu odrzuconych kart i weź je na swoją rękę."
         }
     ]
 } as const
