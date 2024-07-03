@@ -26,7 +26,7 @@ router.get('/:lobbyId', (req, res) => {
 
 // Select boss
 router.post('/:lobbyId/choose-boss', assignPlayer, saveInput, (req, res, next) => {
-    const player = req.player
+    const player: Player = req.player
 
     const bossId = req.body.bossId
     try {

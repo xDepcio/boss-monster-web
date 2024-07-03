@@ -1,9 +1,9 @@
-import { TreasureSign } from "../types"
-import { BossCard, DungeonCard, HeroCard, SpellCard } from "./cards"
-import { Game } from "./game"
-import { bossesMechanicsMap } from "./unique_mechanics/bossMecahnics"
-import { dungeonMechanicsMap } from "./unique_mechanics/dungeonMechanics"
-import { spellsMechanicsMap } from "./unique_mechanics/spellsMechanics"
+import { TreasureSign } from "../types.js"
+import { BossCard, DungeonCard, HeroCard, SpellCard } from "./cards.js"
+import { Game } from "./game.js"
+import { bossesMechanicsMap } from "./unique_mechanics/bossMecahnics.js"
+import { dungeonMechanicsMap } from "./unique_mechanics/dungeonMechanics.js"
+import { spellsMechanicsMap } from "./unique_mechanics/spellsMechanics.js"
 
 const allCards = {
     "spells": [
