@@ -61,6 +61,16 @@ describe('Dungeon Cards Tests', () => {
             expect(players.get('player1')!.spellCards.map(s => s.name)).to.deep.equal(['Annihilator', 'Assassin'])
             expect(players.get('player2')!.spellCards.map(s => s.name)).to.deep.equal(['Annihilator', 'Assassin'])
         })
+
+        it("Should save correct moves history without logging drawing cards", () => {
+            expect(game.movesHistory).to.deep.equal([
+                { type: 'PLAYER_SELECTED_BOSS', message: "player player1 selected boss Scott" },
+                { type: "READY", message: "player player1 is ready now" },
+                { type: 'PLAYER_SELECTED_BOSS', message: "player player2 selected boss BAŁAMUTIA" },
+                { type: "READY", message: "player player2 is ready now" },
+                { type: "START_FIRST_ROUND", message: "All players chose their bosses and first round has started" }
+            ])
+        })
     })
 });
 
