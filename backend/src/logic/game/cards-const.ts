@@ -1,5 +1,5 @@
 import { TreasureSign } from "../types"
-import { BossCard, DungeonCard, SpellCard } from "./cards"
+import { BossCard, DungeonCard, HeroCard, SpellCard } from "./cards"
 import { Game } from "./game"
 import { bossesMechanicsMap } from "./unique_mechanics/bossMecahnics"
 import { dungeonMechanicsMap } from "./unique_mechanics/dungeonMechanics"
@@ -646,7 +646,8 @@ const allCards = {
             "damageDealt": 1,
             "typeName": "Typowy bohater",
             "specialName": "Gienia, Pogromczyni Wampirów",
-            "description": "Gienia twierdzi, że pokonała wampiró na kopy. Niestety trudno to jednoznacznie stwierdzić. W końcu Gienia jest nie tylko zabójczynią nieumarłych, ale też wprawną gawędziarką."
+            "description": "Gienia twierdzi, że pokonała wampiró na kopy. Niestety trudno to jednoznacznie stwierdzić. W końcu Gienia jest nie tylko zabójczynią nieumarłych, ale też wprawną gawędziarką.",
+            "isLegendary": false
         },
         {
             "CARDTYPE": "HERO",
@@ -657,7 +658,8 @@ const allCards = {
             "damageDealt": 1,
             "typeName": "Typowy bohater",
             "specialName": "Wilczarz, Młodociany Bohater",
-            "description": "Ten młody paladyn walczy z każdym przejawem zła - tak zwykłym, jak i nadnaturalnym. Kiedy jego przyjaciele znajdą się w potrzebie, nic go nie powstrzyma."
+            "description": "Ten młody paladyn walczy z każdym przejawem zła - tak zwykłym, jak i nadnaturalnym. Kiedy jego przyjaciele znajdą się w potrzebie, nic go nie powstrzyma.",
+            "isLegendary": false
         },
         {
             "CARDTYPE": "HERO",
@@ -668,7 +670,8 @@ const allCards = {
             "damageDealt": 1,
             "typeName": "Typowy bohater",
             "specialName": "Tess, Krasnoludzka Tarczowniczka",
-            "description": "Tess zaryzykowała wygnanie, byle tylko zostać awanturniczką. Przyłączyła się do grupy wojowniczek i wciąż bezskutecznie poszukuje podziemi lub tawerny, któych po odwiedzinach nie zmieniłaby w kupę gruzu."
+            "description": "Tess zaryzykowała wygnanie, byle tylko zostać awanturniczką. Przyłączyła się do grupy wojowniczek i wciąż bezskutecznie poszukuje podziemi lub tawerny, któych po odwiedzinach nie zmieniłaby w kupę gruzu.",
+            "isLegendary": false
         },
         {
             "CARDTYPE": "HERO",
@@ -679,7 +682,8 @@ const allCards = {
             "damageDealt": 1,
             "typeName": "Typowy bohater",
             "specialName": "Maxine, Siostra Stali",
-            "description": "Kiedy jej ojczyzna została zniszczona apokaliptyczną magią. Maxine przywdziała bezszkową zbroję swych przodków i wyruszyła na misję przywrócenia porządku w krainie."
+            "description": "Kiedy jej ojczyzna została zniszczona apokaliptyczną magią. Maxine przywdziała bezszkową zbroję swych przodków i wyruszyła na misję przywrócenia porządku w krainie.",
+            "isLegendary": false
         },
         {
             "CARDTYPE": "HERO",
@@ -690,7 +694,8 @@ const allCards = {
             "damageDealt": 1,
             "typeName": "Typowy bohater",
             "specialName": "Tymon i Magiczny Bąbel",
-            "description": "Uzbrojony w wiernego Bąbla, Tymon odważnie penetruje niebezpieczne ruiny i lochy w poszukiwaniu instrumentów muzycznych skradzionych jego ludowi."
+            "description": "Uzbrojony w wiernego Bąbla, Tymon odważnie penetruje niebezpieczne ruiny i lochy w poszukiwaniu instrumentów muzycznych skradzionych jego ludowi.",
+            "isLegendary": false
         },
         {
             "CARDTYPE": "HERO",
@@ -701,7 +706,8 @@ const allCards = {
             "damageDealt": 1,
             "typeName": "Typowy bohater",
             "specialName": "Dovkro, Smoczy Syn",
-            "description": "Legendy mówią o bohaterze, który ocali albo zgubi północne krainy. Dovkro, półsmok władający słowami mocy, może okazać się Śmiałkiem z rzeczonej przepowiedni."
+            "description": "Legendy mówią o bohaterze, który ocali albo zgubi północne krainy. Dovkro, półsmok władający słowami mocy, może okazać się Śmiałkiem z rzeczonej przepowiedni.",
+            "isLegendary": false
         },
         {
             "CARDTYPE": "HERO",
@@ -712,7 +718,8 @@ const allCards = {
             "damageDealt": 1,
             "typeName": "Typowy bohater",
             "specialName": "Joman Chimm, Kieszonkowiec",
-            "description": "Kiedy widzisz usmiech na jego twarzy, wydaje Ci się, że zyskałeś nowego przyjaciela... dopóki nie sprawdzisz swoich pustych kieszeni."
+            "description": "Kiedy widzisz usmiech na jego twarzy, wydaje Ci się, że zyskałeś nowego przyjaciela... dopóki nie sprawdzisz swoich pustych kieszeni.",
+            "isLegendary": false
         },
         {
             "CARDTYPE": "HERO",
@@ -723,64 +730,9 @@ const allCards = {
             "damageDealt": 1,
             "typeName": "Typowy bohater",
             "specialName": "Jeremi, Małpi Karateka",
-            "description": "Ta hiperaktywna małpka przybyła z dalekich krain, gdzie uczyła sie sztuk walki u legendarnego sifu Wanga."
+            "description": "Ta hiperaktywna małpka przybyła z dalekich krain, gdzie uczyła sie sztuk walki u legendarnego sifu Wanga.",
+            "isLegendary": false
         },
-        {
-            "CARDTYPE": "HERO",
-            "id": 9,
-            "name": "hero 2",
-            "health": 11,
-            "treasure": "strength",
-            "damageDealt": 1
-        },
-        {
-            "CARDTYPE": "HERO",
-            "id": 10,
-            "name": "hero 3",
-            "health": 8,
-            "treasure": "fortune",
-            "damageDealt": 1
-        },
-        {
-            "CARDTYPE": "HERO",
-            "id": 11,
-            "name": "hero 4",
-            "health": 4,
-            "treasure": "faith",
-            "damageDealt": 1
-        },
-        {
-            "CARDTYPE": "HERO",
-            "id": 12,
-            "name": "Mag",
-            "health": 4,
-            "treasure": "magic",
-            "damageDealt": 1
-        },
-        {
-            "CARDTYPE": "HERO",
-            "id": 13,
-            "name": "Najemnik",
-            "health": 6,
-            "treasure": "strength",
-            "damageDealt": 1
-        },
-        {
-            "CARDTYPE": "HERO",
-            "id": 14,
-            "name": "Wojownik",
-            "health": 6,
-            "treasure": "strength",
-            "damageDealt": 1
-        },
-        {
-            "CARDTYPE": "HERO",
-            "id": 15,
-            "name": "Złodziej",
-            "health": 4,
-            "treasure": "fortune",
-            "damageDealt": 1
-        }
     ],
     "bosses": [
         {
@@ -929,6 +881,26 @@ function spellCardFromPojo({ card, trackedGame }: SpellCardFromPojoParams) {
         card.playablePhase,
         spellsMechanicsMap[card.name],
         card.description
+    )
+}
+
+interface HeroCardFromPojoParams {
+    card: typeof allCards.heroes[number]
+    trackedGame: Game
+}
+function heroCardFromPojo({ card, trackedGame }: HeroCardFromPojoParams) {
+    return new HeroCard(
+        card.id,
+        card.name,
+        'HERO',
+        trackedGame,
+        card.health,
+        card.treasure,
+        card.damageDealt,
+        card.description,
+        card.specialName,
+        card.typeName,
+        card.isLegendary
     )
 }
 
