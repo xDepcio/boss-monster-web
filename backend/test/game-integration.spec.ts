@@ -1,6 +1,7 @@
 import * as mocha from 'mocha'
 import { expect } from 'chai';
 import { initDeterminsticGame } from './utils.js';
+import { Player } from '../src/logic/player/player.js';
 
 const startScenarioSimple = function () {
     return initDeterminsticGame({
@@ -23,6 +24,17 @@ const startScenarioSimple = function () {
             }
         ]
     })
+}
+
+interface IPlayerEntrypointsPure {
+    selectBoss: typeof Player.prototype.selectBoss
+    declareBuild: typeof Player.prototype.declareBuild
+    playSpell: typeof Player.prototype.playSpell
+    becomeReady: typeof Player.prototype.becomeReady
+    acceptHeroMove: typeof Player.prototype.acceptHeroMove
+    acceptSpellPlay: typeof Player.prototype.acceptSpellPlay
+    destroyDungeonCard: typeof Player.prototype.destroyDungeonCard
+    useDungeonEffect: typeof Player.prototype.useDungeonEffect
 }
 
 describe('Dungeon Cards Tests', () => {
